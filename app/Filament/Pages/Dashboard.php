@@ -43,7 +43,7 @@ class Dashboard extends BaseDashboard
     public function getWidgets(): array
     {
         return [
-            Widgets\StatsOverviewWidget::class,
+            // Widgets\StatsOverviewWidget::class,
             Widgets\WorkOrderClassificationChart::class,
             Widgets\EquipmentByLocationChart::class,
             Widgets\MaintenanceTrendChart::class,
