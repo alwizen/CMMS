@@ -19,9 +19,9 @@ class MaintenanceCalendar extends Page
 
     protected static ?string $navigationLabel = 'Kalender Maintenance';
 
-    protected static string|UnitEnum|null $navigationGroup = 'Maintenance';
+    // protected static string|UnitEnum|null $navigationGroup = 'Maintenance';
 
-    protected static ?int $navigationSort = 6;
+    // protected static ?int $navigationSort = 6;
 
     protected string $view = 'filament.pages.maintenance-calendar';
 

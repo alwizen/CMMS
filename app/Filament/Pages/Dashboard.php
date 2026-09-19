@@ -45,7 +45,7 @@ class Dashboard extends BaseDashboard
         return [
             // Widgets\StatsOverviewWidget::class,
             Widgets\WorkOrderClassificationChart::class,
-            Widgets\EquipmentByLocationChart::class,
+            // Widgets\EquipmentByLocationChart::class,
             Widgets\MaintenanceTrendChart::class,
             Widgets\RecentWorkOrdersWidget::class,
             Widgets\EquipmentHealthWidget::class,

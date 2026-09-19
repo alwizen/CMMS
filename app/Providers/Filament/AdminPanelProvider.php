@@ -3,6 +3,7 @@
 namespace App\Providers\Filament;
 
 use App\Filament\Pages\Dashboard;
+use BezhanSalleh\FilamentShield\FilamentShieldPlugin;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\AuthenticateSession;
 use Filament\Http\Middleware\DisableBladeIconComponents;
@@ -28,23 +29,24 @@ class AdminPanelProvider extends PanelProvider
             ->maxContentWidth(Width::Full)
             ->id('admin')
             ->path('admin')
+            ->brandName('CMMS')
             ->login()
-            ->spa()
+            // ->spa()
             // ->topNavigation()
             ->colors([
                 'primary' => Color::Amber,
             ])
-            // ->plugin(
-            //     // MiaTheme::make()
-            //         // ->accentColor('#2752c9')
-            //         // ->secondaryColor('#c0c5e8')
-            //         // ->font('Jost', 'Cormorant Garamond')
-            //         // ->roundness('soft')
-            //         // ->density('comfortable')
-            //         // ->elevation(0.75)
-            //         // ->motion()
-            //         // ->darkMode(),
-            // )
+            ->plugin(
+                MiaTheme::make()
+                    ->accentColor('#2752c9')
+                    ->secondaryColor('#c0c5e8')
+                    ->font('Jost', 'Cormorant Garamond')
+                    ->roundness('soft')
+                    ->density('comfortable')
+                    ->elevation(0.75)
+                    ->motion()
+                    ->darkMode(),
+            )
 
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\Filament\Resources')
             ->discoverClusters(in: app_path('Filament/Clusters'), for: 'App\Filament\Clusters')
@@ -63,6 +65,9 @@ class AdminPanelProvider extends PanelProvider
                 SubstituteBindings::class,
                 DisableBladeIconComponents::class,
                 DispatchServingFilamentEvent::class,
+            ])
+            ->plugins([
+                FilamentShieldPlugin::make(),
             ])
             ->authMiddleware([
                 Authenticate::class,
