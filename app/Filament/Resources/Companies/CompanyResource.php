@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\Companies;
 
+use App\Filament\Resources\Areas\AreaResource;
 use App\Filament\Resources\Companies\Pages\CreateCompany;
 use App\Filament\Resources\Companies\Pages\EditCompany;
 use App\Filament\Resources\Companies\Pages\ListCompanies;
@@ -33,6 +34,13 @@ class CompanyResource extends Resource
     public static function table(Table $table): Table
     {
         return CompaniesTable::configure($table);
+    }
+
+    public static function getChildResources(): array
+    {
+        return [
+            AreaResource::class,
+        ];
     }
 
     public static function getRelations(): array

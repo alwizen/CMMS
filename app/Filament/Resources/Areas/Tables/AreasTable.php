@@ -2,13 +2,15 @@
 
 namespace App\Filament\Resources\Areas\Tables;
 
+use App\Filament\Resources\Areas\AreaResource;
+use Filament\Actions\Action;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
-use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Columns\BooleanColumn;
-use Filament\Tables\Filters\TernaryFilter;
+use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\SelectFilter;
+use Filament\Tables\Filters\TernaryFilter;
 use Filament\Tables\Table;
 
 class AreasTable
@@ -44,6 +46,10 @@ class AreasTable
             ])
             ->recordActions([
                 EditAction::make(),
+                Action::make('view_equipment')
+                    ->label('Lihat Equipment')
+                    ->icon('heroicon-m-wrench-screwdriver')
+                    ->url(fn ($record) => AreaResource::getUrl('equipment', ['record' => $record], shouldGuessMissingParameters: true)),
             ])
             ->toolbarActions([
                 BulkActionGroup::make([

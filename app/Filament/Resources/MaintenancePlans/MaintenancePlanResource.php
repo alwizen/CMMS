@@ -19,6 +19,8 @@ class MaintenancePlanResource extends Resource
 {
     protected static ?string $model = MaintenancePlan::class;
 
+    protected static ?string $navigationLabel = 'Maintenance Plans (Preventive)';
+
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedCalendarDays;
 
     protected static string|UnitEnum|null $navigationGroup = 'Maintenance';

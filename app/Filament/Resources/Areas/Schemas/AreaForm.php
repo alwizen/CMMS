@@ -19,7 +19,8 @@ class AreaForm
                     ->label('Company')
                     ->options(Company::pluck('name', 'id'))
                     ->required()
-                    ->placeholder('Select company'),
+                    ->placeholder('Select company')
+                    ->disabled(),
                 TextInput::make('code')
                     ->label('Code')
                     ->required()

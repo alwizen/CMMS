@@ -19,6 +19,8 @@ class MaintenanceRequestResource extends Resource
 {
     protected static ?string $model = MaintenanceRequest::class;
 
+    protected static ?string $navigationLabel = 'Maintenance Requests (Corrective)';
+    
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedExclamationTriangle;
 
     protected static string|UnitEnum|null $navigationGroup = 'Maintenance';

@@ -31,6 +31,8 @@ class AdminPanelProvider extends PanelProvider
             ->id('admin')
             ->path('admin')
             ->brandName('CMMS')
+            ->brandLogo(asset('img/rumat.png'))
+            ->brandLogoHeight('3rem')
             ->login()
             // ->spa()
             // ->topNavigation()

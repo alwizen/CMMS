@@ -2,28 +2,25 @@
 
 namespace App\Filament\Resources\Areas;
 
+use App\Filament\Resources\Companies\CompanyResource;
 use App\Filament\Resources\Areas\Pages\CreateArea;
 use App\Filament\Resources\Areas\Pages\EditArea;
 use App\Filament\Resources\Areas\Pages\ListAreas;
+use App\Filament\Resources\Areas\Pages\ManageAreaEquipment;
 use App\Filament\Resources\Areas\Schemas\AreaForm;
 use App\Filament\Resources\Areas\Tables\AreasTable;
 use App\Models\Area;
-use BackedEnum;
-use UnitEnum;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
-use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
 
 class AreaResource extends Resource
 {
     protected static ?string $model = Area::class;
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedMapPin;
+    protected static ?string $parentResource = CompanyResource::class;
 
-    protected static string|UnitEnum|null $navigationGroup = 'Master Data';
-
-    protected static ?int $navigationSort = 2;
+    protected static bool $shouldRegisterNavigation = false;
 
     public static function form(Schema $schema): Schema
     {
@@ -46,6 +43,7 @@ class AreaResource extends Resource
             'index' => ListAreas::route('/'),
             'create' => CreateArea::route('/create'),
             'edit' => EditArea::route('/{record}/edit'),
+            'equipment' => ManageAreaEquipment::route('/{record}/equipment'),
         ];
     }
 }
