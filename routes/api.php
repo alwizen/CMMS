@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\DashboardController;
 use App\Http\Controllers\Api\EquipmentController;
 use App\Http\Controllers\Api\MaintenancePlanController;
 use App\Http\Controllers\Api\MaintenanceScheduleController;
@@ -14,6 +15,7 @@ Route::post('/login', [AuthController::class, 'login']);
 Route::middleware('auth:sanctum')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout']);
     Route::get('/me', [AuthController::class, 'me']);
+    Route::get('/dashboard', [DashboardController::class, 'index']);
 
     Route::get('/maintenance-plans', [MaintenancePlanController::class, 'index']);
     Route::get('/maintenance-plans/{id}', [MaintenancePlanController::class, 'show']);

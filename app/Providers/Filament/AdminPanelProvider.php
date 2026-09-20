@@ -4,6 +4,7 @@ namespace App\Providers\Filament;
 
 use App\Filament\Pages\Dashboard;
 use BezhanSalleh\FilamentShield\FilamentShieldPlugin;
+use Filament\Enums\UserMenuPosition;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\AuthenticateSession;
 use Filament\Http\Middleware\DisableBladeIconComponents;
@@ -33,6 +34,7 @@ class AdminPanelProvider extends PanelProvider
             ->login()
             // ->spa()
             // ->topNavigation()
+            ->userMenu(position: UserMenuPosition::Sidebar)
             ->colors([
                 'primary' => Color::Amber,
             ])
@@ -40,7 +42,8 @@ class AdminPanelProvider extends PanelProvider
                 MiaTheme::make()
                     ->accentColor('#2752c9')
                     ->secondaryColor('#c0c5e8')
-                    ->font('Jost', 'Cormorant Garamond')
+                    // ->font('Jost', 'Cormorant Garamond')
+                    ->font('Outfit', 'Fraunces')
                     ->roundness('soft')
                     ->density('comfortable')
                     ->elevation(0.75)

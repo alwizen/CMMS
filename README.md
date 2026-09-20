@@ -751,6 +751,342 @@ Akses: `http://localhost:8000/admin`
 
 ---
 
+---
+
+## 13. REST API
+
+API untuk integrasi dengan perangkat mobile (Android/iOS). Menggunakan **Laravel Sanctum** untuk autentikasi token.
+
+### Base URL
+
+```
+http://localhost:8000/api
+```
+
+### Header Standar
+
+Semua request yang membutuhkan autentikasi harus menyertakan header:
+
+```
+Authorization: Bearer <token>
+Content-Type: application/json
+Accept: application/json
+```
+
+### Format Response
+
+```json
+{
+    "success": true,
+    "message": "Pesan sukses",
+    "data": { ... },
+    "meta": {
+        "current_page": 1,
+        "last_page": 5,
+        "per_page": 15,
+        "total": 75
+    }
+}
+```
+
+---
+
+### 13.1 Autentikasi
+
+#### `POST /api/login`
+
+Login dan mendapatkan token.
+
+**Request Body:**
+
+| Field | Tipe | Wajib | Keterangan |
+|---|---|---|---|
+| email | string | Ya | Email user |
+| password | string | Ya | Password user |
+
+**Contoh Request (cURL):**
+
+```bash
+curl -X POST http://localhost:8000/api/login \
+  -H "Content-Type: application/json" \
+  -d '{"email":"tech1@ft-tegal.com","password":"password"}'
+```
+
+**Contoh Response (200):**
+
+```json
+{
+    "success": true,
+    "message": "Login berhasil.",
+    "data": {
+        "user": {
+            "id": 2,
+            "name": "Technician 1",
+            "email": "tech1@ft-tegal.com",
+            "employee_number": "TECH-001",
+            "phone": null,
+            "roles": ["technician"]
+        },
+        "token": "1|abc123def456..."
+    }
+}
+```
+
+**Error Response (422):**
+
+```json
+{
+    "message": "Email atau password salah.",
+    "errors": {
+        "email": ["Email atau password salah."]
+    }
+}
+```
+
+---
+
+#### `POST /api/logout`
+
+Logout dan revoke token saat ini.
+
+```bash
+curl -X POST http://localhost:8000/api/logout \
+  -H "Authorization: Bearer <token>"
+```
+
+**Response (200):**
+
+```json
+{
+    "success": true,
+    "message": "Logout berhasil."
+}
+```
+
+---
+
+#### `GET /api/me`
+
+Mendapatkan profil user yang sedang login.
+
+```bash
+curl http://localhost:8000/api/me \
+  -H "Authorization: Bearer <token>"
+```
+
+**Response (200):**
+
+```json
+{
+    "success": true,
+    "data": {
+        "id": 2,
+        "name": "Technician 1",
+        "email": "tech1@ft-tegal.com",
+        "employee_number": "TECH-001",
+        "phone": null,
+        "status": true,
+        "roles": ["technician"]
+    }
+}
+```
+
+---
+
+### 13.2 Maintenance Plans
+
+#### `GET /api/maintenance-plans`
+
+Daftar maintenance plan (dengan pagination).
+
+| Parameter | Tipe | Keterangan |
+|---|---|---|
+| per_page | integer | Jumlah data per halaman (default: 15) |
+| status | string | Filter: `Active`, `Inactive`, `Suspended`, `Completed` |
+| search | string | Cari berdasarkan nama/tag number equipment |
+
+```bash
+curl "http://localhost:8000/api/maintenance-plans?status=Active&per_page=10" \
+  -H "Authorization: Bearer <token>"
+```
+
+---
+
+#### `GET /api/maintenance-plans/{id}`
+
+Detail maintenance plan + activities + schedules.
+
+```bash
+curl http://localhost:8000/api/maintenance-plans/1 \
+  -H "Authorization: Bearer <token>"
+```
+
+---
+
+### 13.3 Maintenance Schedules
+
+#### `GET /api/maintenance-schedules`
+
+Daftar jadwal maintenance.
+
+| Parameter | Tipe | Keterangan |
+|---|---|---|
+| per_page | integer | Jumlah data per halaman (default: 15) |
+| status | string | Filter: `Scheduled`, `In Progress`, `Completed`, `Delayed`, `Rescheduled`, `Cancelled` |
+| date_from | date | Filter tanggal mulai (`YYYY-MM-DD`) |
+| date_to | date | Filter tanggal akhir (`YYYY-MM-DD`) |
+| search | string | Cari berdasarkan nama/tag number equipment |
+
+```bash
+curl "http://localhost:8000/api/maintenance-schedules?status=Scheduled&date_from=2026-09-01" \
+  -H "Authorization: Bearer <token>"
+```
+
+---
+
+#### `GET /api/maintenance-schedules/{id}`
+
+Detail schedule + work orders terkait.
+
+```bash
+curl http://localhost:8000/api/maintenance-schedules/1 \
+  -H "Authorization: Bearer <token>"
+```
+
+---
+
+### 13.4 Work Orders
+
+#### `GET /api/work-orders`
+
+Daftar work order.
+
+| Parameter | Tipe | Keterangan |
+|---|---|---|
+| per_page | integer | Jumlah data per halaman (default: 15) |
+| status | string | Filter: `Pending`, `In Progress`, `On Hold`, `Completed`, `Cancelled` |
+| classification | string | Filter: `Preventive`, `Corrective` |
+| search | string | Cari berdasarkan WO number, note, atau nama/tag equipment |
+
+```bash
+curl "http://localhost:8000/api/work-orders?status=In+Progress" \
+  -H "Authorization: Bearer <token>"
+```
+
+---
+
+#### `GET /api/work-orders/{id}`
+
+Detail work order lengkap (activities, workers, plan, schedule, request).
+
+```bash
+curl http://localhost:8000/api/work-orders/1 \
+  -H "Authorization: Bearer <token>"
+```
+
+---
+
+#### `PUT /api/work-orders/{id}`
+
+Update work order (status, catatan, tanggal).
+
+| Field | Tipe | Keterangan |
+|---|---|---|
+| status | string | `Pending`, `In Progress`, `On Hold`, `Completed`, `Cancelled` |
+| note | string | Catatan pekerjaan |
+| start_at | datetime | Waktu mulai (ISO 8601) |
+| finish_at | datetime | Waktu selesai (ISO 8601) |
+
+```bash
+curl -X PUT http://localhost:8000/api/work-orders/1 \
+  -H "Authorization: Bearer <token>" \
+  -H "Content-Type: application/json" \
+  -d '{"status":"Completed","note":"Selesai dikerjakan"}'
+```
+
+---
+
+#### `PUT /api/work-orders/{woId}/activities/{actId}`
+
+Update aktivitas work order (hasil inspeksi, status eksekusi).
+
+| Field | Tipe | Keterangan |
+|---|---|---|
+| pre_inspection | string | Hasil inspeksi awal |
+| follow_up | string | Tindak lanjut |
+| final_result | string | Hasil akhir |
+| executed | boolean | Sudah dieksekusi atau belum |
+| note | string | Catatan |
+
+```bash
+curl -X PUT http://localhost:8000/api/work-orders/1/activities/1 \
+  -H "Authorization: Bearer <token>" \
+  -H "Content-Type: application/json" \
+  -d '{"executed":true,"final_result":"Normal"}'
+```
+
+---
+
+### 13.5 Equipment
+
+#### `GET /api/equipment`
+
+Daftar equipment.
+
+| Parameter | Tipe | Keterangan |
+|---|---|---|
+| per_page | integer | Jumlah data per halaman (default: 15) |
+| area_id | integer | Filter berdasarkan area |
+| status | string | Filter: `active`, `inactive`, `retired` |
+| search | string | Cari berdasarkan nama, tag number, atau tipe |
+
+```bash
+curl "http://localhost:8000/api/equipment?status=active" \
+  -H "Authorization: Bearer <token>"
+```
+
+---
+
+#### `GET /api/equipment/{id}`
+
+Detail equipment + maintenance plans + schedules.
+
+```bash
+curl http://localhost:8000/api/equipment/1 \
+  -H "Authorization: Bearer <token>"
+```
+
+---
+
+### 13.6 Ringkasan Endpoint
+
+| Method | Endpoint | Auth | Keterangan |
+|---|---|---|---|
+| `POST` | `/api/login` | Tidak | Login, dapatkan token |
+| `POST` | `/api/logout` | Ya | Logout, revoke token |
+| `GET` | `/api/me` | Ya | Profil user login |
+| `GET` | `/api/maintenance-plans` | Ya | Daftar plan |
+| `GET` | `/api/maintenance-plans/{id}` | Ya | Detail plan |
+| `GET` | `/api/maintenance-schedules` | Ya | Daftar schedule |
+| `GET` | `/api/maintenance-schedules/{id}` | Ya | Detail schedule |
+| `GET` | `/api/work-orders` | Ya | Daftar work order |
+| `GET` | `/api/work-orders/{id}` | Ya | Detail work order |
+| `PUT` | `/api/work-orders/{id}` | Ya | Update work order |
+| `PUT` | `/api/work-orders/{woId}/activities/{actId}` | Ya | Update aktivitas WO |
+| `GET` | `/api/equipment` | Ya | Daftar equipment |
+| `GET` | `/api/equipment/{id}` | Ya | Detail equipment |
+
+---
+
+### 13.7 Testing dengan Bruno/Postman
+
+1. **Login** - `POST /api/login` dengan email + password → copy token
+2. **Set Header** - `Authorization: Bearer <token>` di semua request
+3. **Get Data** - Akses endpoint lainnya dengan token
+
+
+---
+
 ## Struktur File
 
 ```
@@ -758,9 +1094,9 @@ maintenance/
 ├── app/
 │   ├── Filament/
 │   │   ├── Pages/
-│   │   │   ├── Dashboard.php              ← Dashboard + Filter
-│   │   │   └── MaintenanceCalendar.php    ← Kalender Maintenance
-│   │   ├── Resources/                     ← Resource CRUD
+│   │   │   ├── Dashboard.php
+│   │   │   └── MaintenanceCalendar.php
+│   │   ├── Resources/
 │   │   │   ├── Activities/
 │   │   │   ├── Companies/
 │   │   │   ├── Areas/
@@ -772,28 +1108,32 @@ maintenance/
 │   │   │   ├── MaintenanceSchedules/
 │   │   │   ├── MeterLogs/
 │   │   │   └── WorkOrders/
-│   │   └── Widgets/                       ← Widget Dashboard
-│   │       ├── Concerns/
-│   │       │   └── FiltersByDate.php
-│   │       ├── StatsOverviewWidget.php
-│   │       ├── WorkOrderClassificationChart.php
-│   │       ├── EquipmentByLocationChart.php
-│   │       ├── MaintenanceTrendChart.php
-│   │       ├── RecentWorkOrdersWidget.php
-│   │       └── EquipmentHealthWidget.php
-│   ├── Models/                            ← Eloquent Model
+│   │   └── Widgets/
+│   ├── Http/Controllers/Api/
+│   │   ├── AuthController.php
+│   │   ├── EquipmentController.php
+│   │   ├── MaintenancePlanController.php
+│   │   ├── MaintenanceScheduleController.php
+│   │   └── WorkOrderController.php
+│   ├── Http/Resources/
+│   │   ├── EquipmentResource.php
+│   │   ├── MaintenancePlanResource.php
+│   │   ├── MaintenancePlanActivityResource.php
+│   │   ├── MaintenanceScheduleResource.php
+│   │   ├── WorkOrderResource.php
+│   │   ├── WorkOrderActivityResource.php
+│   │   └── WorkOrderWorkerResource.php
+│   ├── Models/
 │   ├── Observers/
-│   │   └── WorkOrderObserver.php          ← Auto WO number
-│   └── Providers/
-│       └── Filament/
-│           └── AdminPanelProvider.php
+│   │   └── WorkOrderObserver.php
+│   └── Providers/Filament/
+│       └── AdminPanelProvider.php
+├── routes/
+│   ├── api.php
+│   └── web.php
 ├── database/
-│   ├── migrations/                        ← Migration
-│   └── seeders/                           ← Seeders
-├── resources/
-│   └── views/
-│       └── filament/
-│           └── pages/
-│               └── maintenance-calendar.blade.php ← View Kalender
-└── USER-GUIDE.md                          ← Dokumen ini
+│   ├── migrations/
+│   └── seeders/
+└── resources/views/filament/pages/
+    └── maintenance-calendar.blade.php
 ```
