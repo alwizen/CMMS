@@ -23,7 +23,7 @@ class WorkOrderResource extends JsonResource
                 'id' => $this->equipment->id,
                 'tag_number' => $this->equipment->tag_number,
                 'name' => $this->equipment->name,
-                'equipment_type' => $this->equipment->equipment_type,
+                'equipment_type' => $this->equipment->equipmentType?->name,
                 'area' => $this->whenLoaded('equipment.area', fn () => [
                     'id' => $this->equipment->area->id,
                     'name' => $this->equipment->area->name,

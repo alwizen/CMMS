@@ -12,7 +12,7 @@ class EquipmentController extends Controller
 {
     public function index(Request $request): JsonResponse
     {
-        $query = Equipment::with(['area.company'])->orderBy('tag_number');
+        $query = Equipment::with(['area.company', 'equipmentType'])->orderBy('tag_number');
 
         if ($request->filled('area_id')) {
             $query->where('area_id', $request->area_id);
@@ -27,7 +27,7 @@ class EquipmentController extends Controller
             $query->where(function ($q) use ($search) {
                 $q->where('name', 'like', "%{$search}%")
                     ->orWhere('tag_number', 'like', "%{$search}%")
-                    ->orWhere('equipment_type', 'like', "%{$search}%");
+                    ->orWhere('equipment_type_id', 'like', "%{$search}%");
             });
         }
 

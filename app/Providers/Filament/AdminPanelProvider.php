@@ -4,6 +4,7 @@ namespace App\Providers\Filament;
 
 use App\Filament\Pages\Dashboard;
 use BezhanSalleh\FilamentShield\FilamentShieldPlugin;
+use Filament\Enums\GlobalSearchPosition;
 use Filament\Enums\UserMenuPosition;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\AuthenticateSession;
@@ -28,6 +29,8 @@ class AdminPanelProvider extends PanelProvider
         return $panel
             ->default()
             ->maxContentWidth(Width::Full)
+            ->globalSearch(position: GlobalSearchPosition::Sidebar)
+            ->globalSearchKeyBindings(['command+k', 'ctrl+k'])
             ->id('admin')
             ->path('admin')
             ->brandName('CMMS')
@@ -40,18 +43,18 @@ class AdminPanelProvider extends PanelProvider
             ->colors([
                 'primary' => Color::Amber,
             ])
-            ->plugin(
-                MiaTheme::make()
-                    ->accentColor('#2752c9')
-                    ->secondaryColor('#c0c5e8')
-                    // ->font('Jost', 'Cormorant Garamond')
-                    ->font('Outfit', 'Fraunces')
-                    ->roundness('soft')
-                    ->density('comfortable')
-                    ->elevation(0.75)
-                    ->motion()
-                    ->darkMode(),
-            )
+            // ->plugin(
+            //     MiaTheme::make()
+            //         ->accentColor('#2752c9')
+            //         ->secondaryColor('#c0c5e8')
+            //         // ->font('Jost', 'Cormorant Garamond')
+            //         ->font('Outfit', 'Fraunces')
+            //         ->roundness('soft')
+            //         ->density('comfortable')
+            //         ->elevation(0.75)
+            //         ->motion()
+            //         ->darkMode(),
+            // )
 
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\Filament\Resources')
             ->discoverClusters(in: app_path('Filament/Clusters'), for: 'App\Filament\Clusters')

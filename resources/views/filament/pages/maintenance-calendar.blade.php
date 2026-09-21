@@ -1,33 +1,10 @@
 <x-filament-panels::page>
-    {{-- Calendar Card --}}
-    <div class="fi-wi-widget-card">
-        <div id="maintenance-calendar" class="fc fc-media-screen fc-direction-ltr fc-theme-standard p-4"></div>
-
-        {{-- Legend --}}
-        {{-- <div class="px-6 pt-4 pb-3 border-t border-gray-200 dark:border-gray-700">
-            <p class="text-xs font-medium text-gray-400 dark:text-gray-500 mb-2">Legenda</p>
-            <div class="grid grid-cols-2 sm:grid-cols-3 gap-2">
-                <span class="inline-flex items-center gap-1.5 text-xs text-gray-500 dark:text-gray-400">
-                    <span class="w-2.5 h-2.5 rounded-sm shrink-0" style="background:#2563eb"></span> WO Aktif
-                </span>
-                <span class="inline-flex items-center gap-1.5 text-xs text-gray-500 dark:text-gray-400">
-                    <span class="w-2.5 h-2.5 rounded-sm shrink-0" style="background:#16a34a"></span> Selesai
-                </span>
-                <span class="inline-flex items-center gap-1.5 text-xs text-gray-500 dark:text-gray-400">
-                    <span class="w-2.5 h-2.5 rounded-sm shrink-0" style="background:#d97706"></span> Tertunda
-                </span>
-                <span class="inline-flex items-center gap-1.5 text-xs text-gray-500 dark:text-gray-400">
-                    <span class="w-2.5 h-2.5 rounded-sm shrink-0" style="background:#dc2626"></span> Dibatalkan
-                </span>
-                <span class="inline-flex items-center gap-1.5 text-xs text-gray-500 dark:text-gray-400">
-                    <span class="w-2.5 h-2.5 rounded-sm shrink-0" style="background:#7c3aed; opacity:0.35"></span> Plan Aktif
-                </span>
-                <span class="inline-flex items-center gap-1.5 text-xs text-gray-500 dark:text-gray-400">
-                    <span class="w-2.5 h-2.5 rounded-sm shrink-0" style="background:#7c3aed"></span> Rescheduled
-                </span>
-            </div>
+    <div>
+        {{-- Calendar Card --}}
+        <div class="fi-wi-widget-card">
+            <div id="maintenance-calendar" class="fc fc-media-screen fc-direction-ltr fc-theme-standard p-4"></div>
         </div>
-    </div> --}}
+    </div>
 
     {{-- FullCalendar CSS & JS --}}
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.17/index.global.min.css">

@@ -15,7 +15,7 @@ class Equipment extends Model
         'tag_number',
         'name',
         'description',
-        'equipment_type',
+        'equipment_type_id',
         'manufacturer',
         'model',
         'serial_number',
@@ -33,6 +33,11 @@ class Equipment extends Model
     public function area(): BelongsTo
     {
         return $this->belongsTo(Area::class);
+    }
+
+    public function equipmentType(): BelongsTo
+    {
+        return $this->belongsTo(EquipmentType::class);
     }
 
     public function maintenanceRequests(): HasMany

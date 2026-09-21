@@ -589,6 +589,46 @@ Recorded By  : Technician 1
 
 ## 11. Alur & Workflow
 
+### 11.0 Urutan Penggunaan Aplikasi
+
+Pertama kali menggunakan aplikasi, ikuti urutan ini:
+
+**Langkah 1 — Setup Master Data**
+
+| No | Menu | Keterangan |
+|---|---|---|
+| 1 | Companies | Buat data perusahaan/site terlebih dahulu |
+| 2 | Areas | Buat area di dalam company (pilih company) |
+| 3 | Equipment Types | Buat jenis equipment (Pump, Tank, Valve, dll) |
+| 4 | Equipment | Buat data equipment (pilih area + equipment type) |
+
+**Langkah 2 — Setup Aktivitas**
+
+| No | Menu | Keterangan |
+|---|---|---|
+| 5 | Activities | Buat master aktivitas maintenance per equipment type |
+
+**Langkah 3 — Operasional Harian**
+
+| No | Menu | Keterangan |
+|---|---|---|
+| 6 | Maintenance Request | Laporkan kerusakan equipment (jika ada) |
+| 7 | Maintenance Plan | Buat rencana maintenance preventif |
+| 8 | Maintenance Schedule | Buat jadwal spesifik dari plan |
+| 9 | Work Order | Terbitkan perintah kerja |
+| 10 | Maintenance History | Catat hasil pengerjaan |
+| 11 | Meter Log | Catat pembacaan meter berkala |
+
+**Diagram Alur:**
+
+```
+Company → Area → Equipment Type → Equipment → Activity
+                                                ↓
+                              Maintenance Request/Plan → Work Order → History
+```
+
+> **Tips:** Master data (langkah 1-2) hanya perlu dibuat sekali. Operasional (langkah 3) dilakukan setiap hari sesuai kebutuhan.
+
 ### 11.1 Preventive Maintenance (Pencegahan)
 
 ```

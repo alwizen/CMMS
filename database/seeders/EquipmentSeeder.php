@@ -3,8 +3,8 @@
 namespace Database\Seeders;
 
 use App\Models\Equipment;
+use App\Models\EquipmentType;
 use App\Models\Area;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 class EquipmentSeeder extends Seeder
@@ -16,12 +16,19 @@ class EquipmentSeeder extends Seeder
         $storage = Area::where('code', 'STORAGE')->first();
         $mcc = Area::where('code', 'MCC')->first();
 
+        $pump = EquipmentType::where('code', 'PUMP')->first();
+        $meter = EquipmentType::where('code', 'METER')->first();
+        $valve = EquipmentType::where('code', 'VALVE')->first();
+        $tank = EquipmentType::where('code', 'TANK')->first();
+        $transmitter = EquipmentType::where('code', 'TRANSMITTER')->first();
+        $panel = EquipmentType::where('code', 'PANEL')->first();
+
         Equipment::create([
             'area_id' => $loading->id,
+            'equipment_type_id' => $pump->id,
             'tag_number' => 'P-101',
             'name' => 'Pump',
             'description' => 'Main loading pump',
-            'equipment_type' => 'Pump',
             'manufacturer' => 'GRUNDFOS',
             'model' => 'CR32',
             'serial_number' => 'SN-P-101',
@@ -33,10 +40,10 @@ class EquipmentSeeder extends Seeder
 
         Equipment::create([
             'area_id' => $unloading->id,
+            'equipment_type_id' => $meter->id,
             'tag_number' => 'FM-101',
             'name' => 'Flow Meter',
             'description' => 'Flow measurement device',
-            'equipment_type' => 'Flow Meter',
             'manufacturer' => 'SIEMENS',
             'model' => 'SITRANS F M',
             'serial_number' => 'SN-FM-101',
@@ -47,10 +54,10 @@ class EquipmentSeeder extends Seeder
 
         Equipment::create([
             'area_id' => $unloading->id,
+            'equipment_type_id' => $valve->id,
             'tag_number' => 'MOV-101',
             'name' => 'Motor Operated Valve',
             'description' => 'Automated control valve',
-            'equipment_type' => 'Valve',
             'manufacturer' => 'ASCO',
             'model' => 'EF8320',
             'serial_number' => 'SN-MOV-101',
@@ -61,10 +68,10 @@ class EquipmentSeeder extends Seeder
 
         Equipment::create([
             'area_id' => $storage->id,
+            'equipment_type_id' => $tank->id,
             'tag_number' => 'TK-01',
             'name' => 'Storage Tank',
             'description' => 'Main storage tank',
-            'equipment_type' => 'Tank',
             'manufacturer' => 'VESTOIL',
             'model' => 'STD-50000',
             'serial_number' => 'SN-TK-01',
@@ -75,10 +82,10 @@ class EquipmentSeeder extends Seeder
 
         Equipment::create([
             'area_id' => $storage->id,
+            'equipment_type_id' => $tank->id,
             'tag_number' => 'TK-02',
             'name' => 'Storage Tank Secondary',
             'description' => 'Secondary storage tank',
-            'equipment_type' => 'Tank',
             'manufacturer' => 'VESTOIL',
             'model' => 'STD-50000',
             'serial_number' => 'SN-TK-02',
@@ -89,10 +96,10 @@ class EquipmentSeeder extends Seeder
 
         Equipment::create([
             'area_id' => $storage->id,
+            'equipment_type_id' => $transmitter->id,
             'tag_number' => 'LT-01',
             'name' => 'Level Transmitter',
             'description' => 'Tank level measurement',
-            'equipment_type' => 'Instrument',
             'manufacturer' => 'SIEMENS',
             'model' => 'SITRANS LVL',
             'serial_number' => 'SN-LT-01',
@@ -103,10 +110,10 @@ class EquipmentSeeder extends Seeder
 
         Equipment::create([
             'area_id' => $mcc->id,
+            'equipment_type_id' => $panel->id,
             'tag_number' => 'MCC-01',
             'name' => 'Main MCC Panel',
             'description' => 'Main control center panel',
-            'equipment_type' => 'Panel',
             'manufacturer' => 'SIEMENS',
             'model' => 'SIRIUS',
             'serial_number' => 'SN-MCC-01',
@@ -117,10 +124,10 @@ class EquipmentSeeder extends Seeder
 
         Equipment::create([
             'area_id' => $mcc->id,
+            'equipment_type_id' => $panel->id,
             'tag_number' => 'MCC-02',
             'name' => 'Pump MCC Panel',
             'description' => 'Pump control panel',
-            'equipment_type' => 'Panel',
             'manufacturer' => 'SIEMENS',
             'model' => 'SIRIUS',
             'serial_number' => 'SN-MCC-02',

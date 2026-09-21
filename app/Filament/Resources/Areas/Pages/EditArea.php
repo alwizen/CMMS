@@ -19,6 +19,8 @@ class EditArea extends EditRecord
 
     protected function getRedirectUrl(): string
     {
-        return $this->getResource()::getUrl('index');
+        return $this->getResource()::getUrl('index', [
+            'company' => $this->getRecord()->company_id,
+        ]);
     }
 }
