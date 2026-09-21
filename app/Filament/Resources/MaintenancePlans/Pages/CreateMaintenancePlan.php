@@ -8,4 +8,12 @@ use Filament\Resources\Pages\CreateRecord;
 class CreateMaintenancePlan extends CreateRecord
 {
     protected static string $resource = MaintenancePlanResource::class;
+
+    protected function mutateFormDataBeforeCreate(array $data): array
+    {
+        $data['created_by'] = auth()->id();
+        // $data['status'] = $data['status'] ?? 'Active';
+
+        return $data;
+    }
 }

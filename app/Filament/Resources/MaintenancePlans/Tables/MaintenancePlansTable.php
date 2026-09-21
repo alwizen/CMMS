@@ -15,7 +15,7 @@ class MaintenancePlansTable
     {
         return $table
             ->columns([
-                TextColumn::make('equipment.name')
+                TextColumn::make('equipment.tag_number')
                     ->label('Equipment')
                     ->sortable(),
                 TextColumn::make('maintenance_classification')
@@ -24,6 +24,8 @@ class MaintenancePlansTable
                 TextColumn::make('interval')
                     ->label('Interval')
                     ->sortable(),
+                TextColumn::make('technicianCoordinator.name')
+                    ->label('Technician Coordinator'),
                 TextColumn::make('start_date')
                     ->label('Start Date')
                     ->date()
@@ -39,7 +41,7 @@ class MaintenancePlansTable
             ->filters([
                 SelectFilter::make('equipment_id')
                     ->label('Equipment')
-                    ->relationship('equipment', 'name'),
+                    ->relationship('equipment', 'tag_number'),
                 SelectFilter::make('maintenance_classification')
                     ->label('Classification')
                     ->options([

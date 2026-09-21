@@ -3,7 +3,6 @@
 namespace App\Filament\Resources\MaintenancePlans\Schemas;
 
 use App\Models\Equipment;
-use App\Models\User;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Textarea;
@@ -20,21 +19,39 @@ class MaintenancePlanForm
                     ->schema([
                         Select::make('equipment_id')
                             ->label('Equipment')
-                            ->options(Equipment::pluck('name', 'id'))
+                            ->options(Equipment::pluck('tag_number', 'id'))
                             ->required()
+                            ->searchable()
+                            // ->preload()
                             ->placeholder('Select equipment'),
-                        TextInput::make('maintenance_classification')
+                        Select::make('maintenance_classification')
                             ->label('Maintenance Classification')
-                            ->required()
-                            ->placeholder('e.g., Preventive, Corrective'),
-                        TextInput::make('interval')
-                            ->label('Interval')
-                            ->required()
-                            ->placeholder('e.g., Daily, Monthly, Yearly'),
-                        TextInput::make('status')
+                            ->options([
+                                'Preventive' => 'Preventive',
+                                'Corrective' => 'Corrective',
+                            ])
+                            ->required(),
+                        Select::make('interval')
+                            ->label('Maintenance Interval')
+                            ->options([
+                               'Daily' => 'Daily',
+                                'Weekly' => 'Weekly',
+                                'Monthly' => 'Monthly',
+                                'Quarterly' => 'Quarterly',
+                                'Yearly' => 'Yearly',
+                            ])
+                            ->required(),
+                       
+                        Select::make('status')
                             ->label('Status')
+                            ->options([
+                                'Active' => 'Active',
+                                'Inactive' => 'Inactive',
+                                'Suspended' => 'Suspended',
+                                'Completed' => 'Completed',
+                            ])
                             ->required()
-                            ->placeholder('e.g., Active, Inactive'),
+                            ->default('Active'),
                     ])
                     ->columns(2),
 
@@ -53,14 +70,9 @@ class MaintenancePlanForm
 
                 Section::make('Personnel & Details')
                     ->schema([
-                        Select::make('created_by')
-                            ->label('Created By')
-                            ->options(User::pluck('name', 'id'))
-                            ->required()
-                            ->placeholder('Select creator'),
                         Select::make('technician_coordinator_id')
                             ->label('Technician Coordinator')
-                            ->options(User::pluck('name', 'id'))
+                            ->options(\App\Models\User::pluck('name', 'id'))
                             ->nullable()
                             ->placeholder('Select coordinator'),
                         Textarea::make('description')
