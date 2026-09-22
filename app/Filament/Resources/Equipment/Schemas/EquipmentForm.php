@@ -24,6 +24,9 @@ class EquipmentForm
                             ->options(Area::pluck('name', 'id'))
                             ->required()
                             ->placeholder('Select area'),
+                        Select::make('equipment_type_id')
+                            ->label('Equipment Type')
+                            ->options(EquipmentType::pluck('name', 'id')),
                         TextInput::make('tag_number')
                             ->label('Tag Number')
                             ->required()
@@ -37,9 +40,6 @@ class EquipmentForm
                             ->label('Description')
                             ->nullable()
                             ->placeholder('Enter equipment description...'),
-                        Select::make('equipment_type_id')
-                            ->label('Equipment Type')
-                            ->options(EquipmentType::pluck('name', 'id')),
                     ])
                     ->columns(2),
 

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "c79dbe1a5e17c0cc1865480371e1f5ea",
+    "content-hash": "d389d135620a75ec1b2626377bf302c0",
     "packages": [
         {
             "name": "anourvalar/eloquent-serialize",
@@ -1166,6 +1166,90 @@
                 }
             ],
             "time": "2025-03-06T22:45:56+00:00"
+        },
+        {
+            "name": "elemind/press-filament-theme",
+            "version": "v1.0.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/elemind/press-filament-theme.git",
+                "reference": "4d688d6843a169aa4bfe8dd88a51ee7d80640296"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/elemind/press-filament-theme/zipball/4d688d6843a169aa4bfe8dd88a51ee7d80640296",
+                "reference": "4d688d6843a169aa4bfe8dd88a51ee7d80640296",
+                "shasum": ""
+            },
+            "require": {
+                "filament/filament": "^5.0",
+                "illuminate/contracts": "^11.28|^12.0|^13.0",
+                "php": "^8.3",
+                "spatie/laravel-package-tools": "^1.15.0"
+            },
+            "require-dev": {
+                "larastan/larastan": "^3.0",
+                "laravel/pint": "^1.0",
+                "nunomaduro/collision": "^8.0",
+                "orchestra/testbench": "^9.0|^10.0|^11.0",
+                "pestphp/pest": "^4.0",
+                "pestphp/pest-plugin-arch": "^4.0",
+                "pestphp/pest-plugin-laravel": "^4.0",
+                "pestphp/pest-plugin-livewire": "^4.0",
+                "rector/rector": "^2.0",
+                "spatie/laravel-ray": "^1.26"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Elemind\\PressFilamentTheme\\PressFilamentThemeServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Elemind\\PressFilamentTheme\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "elemind",
+                    "email": "info@elemind.com",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Press is an editorial theme for Filament v5 in four editions, built on a horizontal rail instead of a sidebar.",
+            "homepage": "https://github.com/elemind/press-filament-theme",
+            "keywords": [
+                "admin-panel",
+                "editorial",
+                "elemind",
+                "filament",
+                "filament-plugin",
+                "filament-theme",
+                "filamentphp",
+                "laravel",
+                "press",
+                "theme",
+                "top-navigation"
+            ],
+            "support": {
+                "docs": "https://github.com/elemind/press-filament-theme#readme",
+                "issues": "https://github.com/elemind/press-filament-theme/issues",
+                "source": "https://github.com/elemind/press-filament-theme"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/elemind",
+                    "type": "github"
+                }
+            ],
+            "time": "2026-09-09T09:53:15+00:00"
         },
         {
             "name": "filament/actions",
@@ -4208,6 +4292,67 @@
                 "source": "https://github.com/nikic/PHP-Parser/tree/v5.9.0"
             },
             "time": "2026-09-13T18:51:52+00:00"
+        },
+        {
+            "name": "noreviq/filament-theme",
+            "version": "v1.0.7",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Y-Jallad/noreviq-filament-theme.git",
+                "reference": "5e40f816d738f1df59c1ac01b460c101502b4892"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Y-Jallad/noreviq-filament-theme/zipball/5e40f816d738f1df59c1ac01b460c101502b4892",
+                "reference": "5e40f816d738f1df59c1ac01b460c101502b4892",
+                "shasum": ""
+            },
+            "require": {
+                "filament/filament": "^4.0|^5.0",
+                "php": "^8.2",
+                "spatie/laravel-package-tools": "^1.16"
+            },
+            "require-dev": {
+                "laravel/pint": "^1.24",
+                "orchestra/testbench": "^10.0|^11.0",
+                "phpunit/phpunit": "^11.0|^12.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Noreviq\\FilamentTheme\\NoreviqThemeServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Noreviq\\FilamentTheme\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Yousef Al-Jallad",
+                    "email": "eng.yousef.aljallad@gmail.com"
+                }
+            ],
+            "description": "A focused teal and graphite theme for Filament 4 and 5 panels.",
+            "keywords": [
+                "filament",
+                "filament-theme",
+                "laravel",
+                "panel",
+                "theme"
+            ],
+            "support": {
+                "issues": "https://github.com/Y-Jallad/noreviq-filament-theme/issues",
+                "source": "https://github.com/Y-Jallad/noreviq-filament-theme/tree/v1.0.7"
+            },
+            "time": "2026-09-06T12:02:43+00:00"
         },
         {
             "name": "nunomaduro/termwind",

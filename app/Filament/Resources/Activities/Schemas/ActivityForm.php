@@ -27,18 +27,37 @@ class ActivityForm
                             ->label('Name')
                             ->required()
                             ->placeholder('e.g., Pump Oil Change'),
-                        TextInput::make('type')
+                        Select::make('type')
                             ->label('Type')
                             ->required()
-                            ->placeholder('e.g., Maintenance, Inspection, Testing'),
-                        TextInput::make('maintenance_classification')
+                            ->options([
+                                'maintenance' => 'Maintenance',
+                                'inspection' => 'Inspection',
+                                'testing' => 'Testing',
+                            ])
+                            ->placeholder('Select type'),
+                        Select::make('maintenance_classification')
                             ->label('Maintenance Classification')
                             ->required()
-                            ->placeholder('e.g., Preventive, Corrective'),
-                        TextInput::make('interval')
+                            ->options([
+                                'preventive' => 'Preventive',
+                                'corrective' => 'Corrective',
+                                'predictive' => 'Predictive',
+                                'condition_based' => 'Condition-Based',
+                            ])
+                            ->placeholder('Select classification'),
+                        Select::make('interval')
                             ->label('Interval')
                             ->nullable()
-                            ->placeholder('e.g., Daily, Monthly, Yearly'),
+                            ->options([
+                                'daily' => 'Daily',
+                                'weekly' => 'Weekly',
+                                'monthly' => 'Monthly',
+                                'quarterly' => 'Quarterly',
+                                'semi_annual' => 'Semi-Annual',
+                                'yearly' => 'Yearly',
+                            ])
+                            ->placeholder('Select interval'),
                         TextInput::make('answer_type')
                             ->label('Answer Type')
                             ->required()

@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\MaintenancePlans\Schemas;
 
 use App\Models\Equipment;
+use App\Models\EquipmentType;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Textarea;
@@ -17,13 +18,19 @@ class MaintenancePlanForm
             ->components([
                 Section::make('General Information')
                     ->schema([
-                        Select::make('equipment_id')
-                            ->label('Equipment')
-                            ->options(Equipment::pluck('tag_number', 'id'))
+                        Select::make('equipment_type_id')
+                            ->label('Equipment Type')
+                            ->options(EquipmentType::pluck('name', 'id'))
                             ->required()
-                            ->searchable()
-                            // ->preload()
-                            ->placeholder('Select equipment'),
+                            ->placeholder('Select equipment type')
+                            ->reactive()
+                            ->afterStateUpdated(fn ($set) => $set('equipment_id', null)),
+                        Select::make('equipment_id')
+                            ->label('Equipment (Tag Number)')
+                            ->options(fn ($get) => Equipment::where('equipment_type_id', $get('equipment_type_id'))->pluck('tag_number', 'id'))
+                            ->required()
+                            ->placeholder('Select equipment')
+                            ->visible(fn ($get) => filled($get('equipment_type_id'))),
                         Select::make('maintenance_classification')
                             ->label('Maintenance Classification')
                             ->options([

@@ -1,4 +1,4 @@
-# FT Tegal Maintenance Management System
+# Rumat | Reliable · Utility · Maintenance · Asset · Tracking
 
 ## Panduan Penggunaan Lengkap
 
@@ -748,12 +748,13 @@ Company → Area → Equipment Type → Equipment → Activity
 │          │                    │ WO Activities  │←─────────┘       │
 │          │                    │ ├ Pre Inspect  │                  │
 │          │                    │ ├ Follow Up    │                  │
-│          │                    │ └ Final Result │                  │
+│          │                    │ └ Report      
+             │                  │   
 │          │                    └────────────────┘                  │
 │          │                         │                             │
 │          │                    ┌────┴─────┐                       │
-│          │                    │ Work Order│                       │
-│          │                    │ Workers   │                       │
+│          │                    │ Aproval  |                       │
+│          │                    │          │                       │
 │          │                    └──────────┘                       │
 │          │                                                       │
 │          ├───────→ Meter Logs                                    │

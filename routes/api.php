@@ -4,6 +4,7 @@ use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\DashboardController;
 use App\Http\Controllers\Api\EquipmentController;
 use App\Http\Controllers\Api\MaintenancePlanController;
+use App\Http\Controllers\Api\MaintenanceRequestController;
 use App\Http\Controllers\Api\MaintenanceScheduleController;
 use App\Http\Controllers\Api\WorkOrderController;
 use Illuminate\Support\Facades\Route;
@@ -30,4 +31,10 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::get('/equipment', [EquipmentController::class, 'index']);
     Route::get('/equipment/{id}', [EquipmentController::class, 'show']);
+
+    Route::get('/maintenance-requests', [MaintenanceRequestController::class, 'index']);
+    Route::get('/maintenance-requests/{id}', [MaintenanceRequestController::class, 'show']);
+    Route::post('/maintenance-requests', [MaintenanceRequestController::class, 'store']);
+    Route::put('/maintenance-requests/{id}', [MaintenanceRequestController::class, 'update']);
+    Route::delete('/maintenance-requests/{id}', [MaintenanceRequestController::class, 'destroy']);
 });

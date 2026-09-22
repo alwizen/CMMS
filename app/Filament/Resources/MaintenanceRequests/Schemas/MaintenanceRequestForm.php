@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\MaintenanceRequests\Schemas;
 
 use App\Models\Equipment;
+use App\Models\EquipmentType;
 use App\Models\User;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
@@ -18,29 +19,51 @@ class MaintenanceRequestForm
             ->components([
                 Section::make('General Information')
                     ->schema([
-                        Select::make('equipment_id')
-                            ->label('Equipment')
-                            ->options(Equipment::pluck('name', 'id'))
+                        Select::make('equipment_type_id')
+                            ->label('Equipment Type')
+                            ->options(EquipmentType::pluck('name', 'id'))
                             ->required()
-                            ->placeholder('Select equipment'),
+                            ->placeholder('Select equipment type')
+                            ->reactive()
+                            ->afterStateUpdated(fn ($set) => $set('equipment_id', null)),
+                        Select::make('equipment_id')
+                            ->label('Equipment (Tag Number)')
+                            ->options(fn ($get) => Equipment::where('equipment_type_id', $get('equipment_type_id'))->pluck('tag_number', 'id'))
+                            ->required()
+                            ->placeholder('Select equipment')
+                            ->visible(fn ($get) => filled($get('equipment_type_id'))),
                         TextInput::make('request_number')
                             ->label('Request Number')
-                            ->required()
-                            ->unique(ignoreRecord: true)
-                            ->placeholder('e.g., MR-20260918-001'),
+                            ->disabled()
+                            ->dehydrated()
+                            ->placeholder('Auto-generated'),
                         Select::make('reported_by')
                             ->label('Reported By')
                             ->options(User::pluck('name', 'id'))
                             ->required()
                             ->placeholder('Select reporter'),
-                        TextInput::make('operation_status')
+                        Select::make('operation_status')
                             ->label('Operation Status')
+                            ->options([
+                                'Running' => 'Running',
+                                'Stopped' => 'Stopped',
+                                'Standby' => 'Standby',
+                                'Faulty' => 'Faulty',
+                            ])
                             ->required()
-                            ->placeholder('e.g., Running, Stopped'),
-                        TextInput::make('status')
+                            ->placeholder('Select operation status'),
+                        Select::make('status')
                             ->label('Status')
+                            ->options([
+                                'Open' => 'Open',
+                                'Assigned' => 'Assigned',
+                                'In Progress' => 'In Progress',
+                                'Completed' => 'Completed',
+                                'Rejected' => 'Rejected',
+                            ])
+                            ->default('Open')
                             ->required()
-                            ->placeholder('e.g., Pending, Approved, Completed'),
+                            ->placeholder('Select status'),
                     ])
                     ->columns(2),
 

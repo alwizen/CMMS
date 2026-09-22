@@ -5,6 +5,7 @@ namespace App\Filament\Resources\MaintenanceRequests\Tables;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
+use Filament\Actions\ViewAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
@@ -22,7 +23,10 @@ class MaintenanceRequestsTable
                 TextColumn::make('equipment.name')
                     ->label('Equipment')
                     ->sortable(),
-                TextColumn::make('reported_by')
+                TextColumn::make('equipment.tag_number')
+                    ->label('Tag Number')
+                    ->sortable(),
+                TextColumn::make('reportedBy.name')
                     ->label('Reported By')
                     ->sortable(),
                 TextColumn::make('damage_date')
@@ -31,9 +35,26 @@ class MaintenanceRequestsTable
                     ->sortable(),
                 TextColumn::make('operation_status')
                     ->label('Operation Status')
+                    ->badge()
+                    ->color(fn (string $state): string => match ($state) {
+                        'Running' => 'success',
+                        'Stopped' => 'danger',
+                        'Standby' => 'warning',
+                        'Faulty' => 'danger',
+                        default => 'gray',
+                    })
                     ->sortable(),
                 TextColumn::make('status')
                     ->label('Status')
+                    ->badge()
+                    ->color(fn (string $state): string => match ($state) {
+                        'Open' => 'info',
+                        'Assigned' => 'primary',
+                        'In Progress' => 'warning',
+                        'Completed' => 'success',
+                        'Rejected' => 'danger',
+                        default => 'gray',
+                    })
                     ->sortable(),
             ])
             ->filters([
@@ -50,6 +71,7 @@ class MaintenanceRequestsTable
                     ]),
             ])
             ->recordActions([
+                ViewAction::make(),
                 EditAction::make(),
             ])
             ->toolbarActions([

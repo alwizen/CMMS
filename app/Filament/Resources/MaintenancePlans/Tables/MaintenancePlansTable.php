@@ -15,6 +15,9 @@ class MaintenancePlansTable
     {
         return $table
             ->columns([
+                TextColumn::make('equipment.equipmentType.name')
+                    ->label('Equipment Type')
+                    ->sortable(),
                 TextColumn::make('equipment.tag_number')
                     ->label('Equipment')
                     ->sortable(),
@@ -36,6 +39,14 @@ class MaintenancePlansTable
                     ->sortable(),
                 TextColumn::make('status')
                     ->label('Status')
+                    ->badge()
+                    ->color(fn (string $state): string => match ($state) {
+                        'Active' => 'success',
+                        'Inactive' => 'gray',
+                        'Suspended' => 'warning',
+                        'Completed' => 'info',
+                        default => 'gray',
+                    })
                     ->sortable(),
             ])
             ->filters([

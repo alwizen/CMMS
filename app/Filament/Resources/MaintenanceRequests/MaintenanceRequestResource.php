@@ -5,7 +5,9 @@ namespace App\Filament\Resources\MaintenanceRequests;
 use App\Filament\Resources\MaintenanceRequests\Pages\CreateMaintenanceRequest;
 use App\Filament\Resources\MaintenanceRequests\Pages\EditMaintenanceRequest;
 use App\Filament\Resources\MaintenanceRequests\Pages\ListMaintenanceRequests;
+use App\Filament\Resources\MaintenanceRequests\Pages\ViewMaintenanceRequests;
 use App\Filament\Resources\MaintenanceRequests\Schemas\MaintenanceRequestForm;
+use App\Filament\Resources\MaintenanceRequests\Schemas\MaintenanceRequestInfolist;
 use App\Filament\Resources\MaintenanceRequests\Tables\MaintenanceRequestsTable;
 use App\Models\MaintenanceRequest;
 use BackedEnum;
@@ -37,6 +39,11 @@ class MaintenanceRequestResource extends Resource
         return MaintenanceRequestsTable::configure($table);
     }
 
+    public static function infolist(Schema $schema): Schema
+    {
+        return MaintenanceRequestInfolist::configure($schema);
+    }
+
     public static function getRelations(): array
     {
         return [];
@@ -48,6 +55,7 @@ class MaintenanceRequestResource extends Resource
             'index' => ListMaintenanceRequests::route('/'),
             'create' => CreateMaintenanceRequest::route('/create'),
             'edit' => EditMaintenanceRequest::route('/{record}/edit'),
+            'view' => ViewMaintenanceRequests::route('/{record}'),
         ];
     }
 }

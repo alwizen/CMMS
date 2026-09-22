@@ -4,6 +4,7 @@ namespace App\Providers\Filament;
 
 use App\Filament\Pages\Dashboard;
 use BezhanSalleh\FilamentShield\FilamentShieldPlugin;
+use Elemind\PressFilamentTheme\PressFilamentTheme;
 use Filament\Enums\DatabaseNotificationsPosition;
 use Filament\Enums\GlobalSearchPosition;
 use Filament\Enums\UserMenuPosition;
@@ -21,7 +22,14 @@ use Illuminate\Foundation\Http\Middleware\PreventRequestForgery;
 use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
+use Filament\View\PanelsRenderHook;
 use JohnRivera7\FilamentMia\MiaTheme;
+use Noreviq\FilamentTheme\NoreviqThemePlugin;
+use Noreviq\FilamentTheme\Enums\AuthStyle;
+use Noreviq\FilamentTheme\Enums\CornerStyle;
+use Noreviq\FilamentTheme\Enums\ShadowStyle;
+use Elemind\PressFilamentTheme\Enums\PressVariant;
+
 
 class AdminPanelProvider extends PanelProvider
 {
@@ -30,32 +38,30 @@ class AdminPanelProvider extends PanelProvider
         return $panel
             ->default()
             ->maxContentWidth(Width::Full)
-            ->globalSearch(position: GlobalSearchPosition::Sidebar)
+            // ->globalSearch(position: GlobalSearchPosition::Sidebar)
+            // ->databaseNotifications(position: DatabaseNotificationsPosition::Sidebar)
+            ->userMenu(position: UserMenuPosition::Sidebar)
             ->globalSearchKeyBindings(['command+k', 'ctrl+k'])
             ->databaseNotifications()
             ->sidebarFullyCollapsibleOnDesktop()
-            ->databaseNotifications(position: DatabaseNotificationsPosition::Sidebar)
             ->id('admin')
             ->path('admin')
             ->brandLogo(asset('img/rumat.png'))
             ->favicon(asset('img/logo.svg'))
             ->brandLogoHeight('3rem')
             ->login()
-            ->userMenu(position: UserMenuPosition::Sidebar)
             ->colors([
                 'primary' => Color::Amber,
             ])
             ->plugin(
-                MiaTheme::make()
-                    ->accentColor('#2752c9')
-                    ->secondaryColor('#c0c5e8')
-                    // ->font('Jost', 'Cormorant Garamond')
-                    ->font('Outfit', 'Fraunces')
-                    ->roundness('soft')
-                    ->density('comfortable')
-                    ->elevation(0.75)
-                    ->motion()
-                    ->darkMode(),
+                // PressFilamentTheme::make()->variant(PressVariant::Telex)
+                PressFilamentTheme::make()->telex()->rail(false)
+
+                // NoreviqThemePlugin::make()
+                //     ->corners(CornerStyle::Sharp)
+                //     ->shadows(ShadowStyle::Balanced)
+                //     ->authStyle(AuthStyle::Noreviq)
+
             )
 
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\Filament\Resources')
@@ -80,6 +86,10 @@ class AdminPanelProvider extends PanelProvider
                 FilamentShieldPlugin::make()
                     ->navigationGroup('User & Permission'),
             ])
+            ->renderHook(
+                PanelsRenderHook::SIMPLE_LAYOUT_END,
+                fn() => view('filament.auth.login-footer'),
+            )
             ->authMiddleware([
                 Authenticate::class,
             ]);
