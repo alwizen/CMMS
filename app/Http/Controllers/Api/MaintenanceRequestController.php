@@ -59,6 +59,7 @@ class MaintenanceRequestController extends Controller
         $maintenanceRequest = MaintenanceRequest::with([
             'equipment.area',
             'reportedBy',
+            'approvedBy',
             'workOrders',
         ])->findOrFail($id);
 

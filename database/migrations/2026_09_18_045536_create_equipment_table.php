@@ -16,7 +16,6 @@ return new class extends Migration
                 ->restrictOnDelete();
 
             $table->string('tag_number', 50)->unique();
-            $table->string('name', 150);
             $table->text('description')->nullable();
 
             $table->string('equipment_type', 100)->nullable();

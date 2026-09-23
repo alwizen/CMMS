@@ -13,7 +13,6 @@ class Equipment extends Model
     protected $fillable = [
         'area_id',
         'tag_number',
-        'name',
         'description',
         'equipment_type_id',
         'manufacturer',

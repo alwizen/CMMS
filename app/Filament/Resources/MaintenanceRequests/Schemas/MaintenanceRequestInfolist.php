@@ -69,7 +69,7 @@ class MaintenanceRequestInfolist
                 Section::make('Equipment')
                     ->icon(Heroicon::OutlinedWrenchScrewdriver)
                     ->schema([
-                        TextEntry::make('equipment.name')
+                        TextEntry::make('equipment.equipmentType.name')
                             ->label('Nama'),
                         TextEntry::make('equipment.tag_number')
                             ->label('Tag Number'),

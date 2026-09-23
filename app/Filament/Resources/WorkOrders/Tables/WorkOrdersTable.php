@@ -19,7 +19,7 @@ class WorkOrdersTable
                     ->label('WO Number')
                     ->searchable()
                     ->sortable(),
-                TextColumn::make('equipment.name')
+                TextColumn::make('equipment.equipmentType.name')
                     ->label('Equipment')
                     ->sortable(),
                 TextColumn::make('classification')
@@ -36,7 +36,7 @@ class WorkOrdersTable
             ->filters([
                 SelectFilter::make('equipment_id')
                     ->label('Equipment')
-                    ->relationship('equipment', 'name'),
+                    ->relationship('equipment', 'tag_number'),
                 SelectFilter::make('classification')
                     ->label('Classification')
                     ->options([

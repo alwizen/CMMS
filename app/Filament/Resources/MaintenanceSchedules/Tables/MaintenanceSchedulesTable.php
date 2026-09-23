@@ -15,7 +15,7 @@ class MaintenanceSchedulesTable
     {
         return $table
             ->columns([
-                TextColumn::make('equipment.name')
+                TextColumn::make('equipment.equipmentType.name')
                     ->label('Equipment')
                     ->sortable(),
                 TextColumn::make('maintenance_plan_id')
@@ -36,7 +36,7 @@ class MaintenanceSchedulesTable
             ->filters([
                 SelectFilter::make('equipment_id')
                     ->label('Equipment')
-                    ->relationship('equipment', 'name'),
+                    ->relationship('equipment', 'tag_number'),
                 SelectFilter::make('status')
                     ->label('Status')
                     ->options([

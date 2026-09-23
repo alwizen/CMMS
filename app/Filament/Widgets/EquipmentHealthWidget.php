@@ -23,9 +23,8 @@ class EquipmentHealthWidget extends BaseWidget
                 Tables\Columns\TextColumn::make('tag_number')
                     ->label('Tag')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('name')
-                    ->label('Equipment')
-                    ->searchable(),
+                Tables\Columns\TextColumn::make('equipmentType.name')
+                    ->label('Equipment Type'),
                 Tables\Columns\TextColumn::make('area.name')
                     ->label('Area'),
                 Tables\Columns\TextColumn::make('status')

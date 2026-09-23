@@ -20,8 +20,8 @@ class MaintenanceRequestsTable
                     ->label('Request Number')
                     ->searchable()
                     ->sortable(),
-                TextColumn::make('equipment.name')
-                    ->label('Equipment')
+                TextColumn::make('equipment.equipmentType.name')
+                    ->label('Equipment Type')
                     ->sortable(),
                 TextColumn::make('equipment.tag_number')
                     ->label('Tag Number')
@@ -60,7 +60,7 @@ class MaintenanceRequestsTable
             ->filters([
                 SelectFilter::make('equipment_id')
                     ->label('Equipment')
-                    ->relationship('equipment', 'name'),
+                    ->relationship('equipment', 'tag_number'),
                 SelectFilter::make('status')
                     ->label('Status')
                     ->options([

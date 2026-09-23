@@ -25,7 +25,7 @@ class MaintenanceScheduleForm
                             ->placeholder('Select maintenance plan'),
                         Select::make('equipment_id')
                             ->label('Equipment')
-                            ->options(Equipment::pluck('name', 'id'))
+                            ->options(Equipment::pluck('tag_number', 'id'))
                             ->required()
                             ->placeholder('Select equipment'),
                         TextInput::make('scheduled_date')

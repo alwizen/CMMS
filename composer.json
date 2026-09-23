@@ -19,6 +19,7 @@
         "saade/filament-fullcalendar": "^4.0@beta"
     },
     "require-dev": {
+        "doctrine/dbal": "^4.4",
         "fakerphp/faker": "^1.23",
         "laravel/boost": "^2.9",
         "laravel/pail": "^1.2.5",

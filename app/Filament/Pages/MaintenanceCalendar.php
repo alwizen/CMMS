@@ -53,7 +53,7 @@ class MaintenanceCalendar extends Page
                     'extendedProps' => [
                         'type' => 'work_order',
                         'status' => $wo->status,
-                        'equipment' => $wo->equipment->name . ' (' . $tag . ')',
+                        'equipment' => $wo->equipment->equipmentType?->name . ' (' . $tag . ')',
                         'area' => $wo->equipment->area->name ?? '-',
                         'classification' => $wo->classification,
                         'issuedBy' => $wo->issuedBy?->name ?? '-',
@@ -73,13 +73,13 @@ class MaintenanceCalendar extends Page
                     'id' => 'plan-' . $mp->id,
                     'title' => 'Plan: ' . $tag,
                     'start' => $mp->start_date->toDateString(),
-                    'end' => $mp->end_date->copy()->addDay()->toDateString(),
+                    'end' => $mp->end_date?->copy()->addDay()->toDateString(),
                     'color' => '#7c3aed',
                     'display' => 'background',
                     'extendedProps' => [
                         'type' => 'plan',
                         'status' => $mp->status,
-                        'equipment' => $mp->equipment->name . ' (' . $tag . ')',
+                        'equipment' => $mp->equipment->equipmentType?->name . ' (' . $tag . ')',
                         'area' => $mp->equipment->area->name ?? '-',
                         'classification' => $mp->maintenance_classification,
                         'interval' => $mp->interval,
@@ -113,7 +113,7 @@ class MaintenanceCalendar extends Page
                     'extendedProps' => [
                         'type' => 'schedule',
                         'status' => $ms->status,
-                        'equipment' => $ms->equipment->name . ' (' . $tag . ')',
+                        'equipment' => $ms->equipment->equipmentType?->name . ' (' . $tag . ')',
                         'area' => $ms->equipment->area->name ?? '-',
                         'description' => $ms->description,
                         'planName' => $ms->maintenancePlan

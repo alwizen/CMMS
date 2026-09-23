@@ -15,7 +15,7 @@ class MeterLogsTable
     {
         return $table
             ->columns([
-                TextColumn::make('equipment.name')
+                TextColumn::make('equipment.equipmentType.name')
                     ->label('Equipment')
                     ->sortable(),
                 TextColumn::make('reading_date')
@@ -32,7 +32,7 @@ class MeterLogsTable
             ->filters([
                 SelectFilter::make('equipment_id')
                     ->label('Equipment')
-                    ->relationship('equipment', 'name'),
+                    ->relationship('equipment', 'tag_number'),
             ])
             ->recordActions([
                 EditAction::make(),

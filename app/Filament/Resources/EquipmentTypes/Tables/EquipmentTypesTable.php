@@ -24,6 +24,10 @@ class EquipmentTypesTable
                     ->label('Name')
                     ->searchable()
                     ->sortable(),
+                TextColumn::make('equipment_count')
+                    ->label('Total Equipment')
+                    ->counts('equipment')
+                    ->sortable(),
                 BooleanColumn::make('status')
                     ->label('Active')
                     ->sortable(),

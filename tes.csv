@@ -1,0 +1,2098 @@
+﻿area,tag_number,description,equipment_type_id,manufacturer,model,serial_number,installation_date,operational_unit,photo,status,criticality
+1,T-TGL-200A,TANK STORAGE T.1 200A,1,PT. BARATA INDONESIA,Horisontal Tank,,,,,active,medium
+1,PSV-TGL-201A,PSV INLET T.1 200A,1,BROADY VALVE,Balanced ,,,,,active,medium
+1,MOV-TGL-201A,MOV INLET T.1 200A,1,ROTORK,IQ3,,,,,active,medium
+1,"6""-CKV-026",CHECK VALVE INLET T.1 200A,1,Standar Vendor list Pertamina,ASTMA 216 WCB,,,,,active,medium
+1,FL-TGL-201A,FLEXIBLE INLET T.1 200A,1,Singaflex,SSH 1 Single Braid,,,,,active,medium
+1,"6""-GV-033",GATE VALVE INLET T.1 200A,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,PSV-TGL-202A,PSV OUTLET T.1 200A,1,BROADY VALVE,Balanced ,,,,,active,medium
+1,MOV-TGL-202A,MOV OUTLET T.1 200A,1,ROTORK,IQ3,,,,,active,medium
+1,"10""-CKV-027",CHECK VALVE OUTLET T.1 200A,1,Standar Vendor list Pertamina,ASTMA 216 WCB,,,,,active,medium
+1,FL-TGL-202A,FLEXIBLE OUTLET T.1 200A,1,Singaflex,SSH 1 Single Braid,,,,,active,medium
+1,"10""-GV-034",GATE VALVE OUTLET T.1 200A,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,ATG-TGL-200A,ATG T.1 200A,1,Honeywell Enraf,VITO LT Interface 76,,,,,active,medium
+1,FV-TGL-200A,FREE VENT T.1 200A,1,KSPC,Section 3.6 KFD,,,,,active,medium
+1,"8""-FA-005",FLAME ARRESTER FV T.1 200A,1,KSPC Tank Tech,KFD,,,,,active,medium
+1,LSHH-TGL-200A,LEVEL SWITCH HIGH HIGH T.1 200A,1,SOR ,ELCT-651K9 / PROB-CB,,,,,active,medium
+1,LSLL-TGL-200A,LEVEL SWITCH LOW LOW T.1 200A,1,SOR ,ELCT-651K9 / PROB-CB,,,,,active,medium
+1,"4""-GV-037",VALVE DRAIN CD T.1 200A,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,"4""-GV-067",VALVE DRAIN WD T.1 200A,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,SDD-TGL-200A,SLOT DIPPING DEVICE T.1 200A,1,KSPC-TANK TECH,"KSSD-A-4""",,,,,active,medium
+1,FC-TGL-200A,FOAM CHAMBER T.1 200A,1,NATIONAL FOAM,MCS-17 Type B,,,,,active,medium
+1,SS-TGL-200A,SPRAY SYSTEM T.1 200A,1,TYCO,TYCO D3 ,,,,,active,medium
+1,ERV-TGL-200A,EMERGENCY RELIEF VALVE T.1 200A,1,KSPC-TANKTECH,"KSEPK-24""",,,,,active,medium
+1,"6""-GV-040",GATE VALVE,1,0,0,,,,,active,medium
+1,TIT-TGL-200A,TEMPERATUR INDICATOR TRASMITTER,1,0,0,,,,,active,medium
+1,LIT-TGL-200A,LEVEL INDICATOR TRASMITTER,1,0,0,,,,,active,medium
+1,T-TGL-200B,TANK STORAGE T.2 200B,1,PT. BARATA INDONESIA,Horisontal Tank,,,,,active,medium
+1,PSV-TGL-201B,PSV INLET T.2 200B,1,BROADY VALVE,Balanced ,,,,,active,medium
+1,MOV-TGL-201B,MOV INLET T.2 200B,1,ROTORK,IQ3,,,,,active,medium
+1,"6""-CKV-028",CHECK VALVE INLET T.2 200B,1,Standar Vendor list Pertamina,ASTMA 216 WCB,,,,,active,medium
+1,FL-TGL-201B,FLEXIBLE INLET T.2 200B,1,Singaflex,SSH 1 Single Braid,,,,,active,medium
+1,"6""-GV-035",GATE VALVE INLET T.2 200B,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,PSV-TGL-202B,PSV OUTLET T.2 200B,1,BROADY VALVE,Balanced ,,,,,active,medium
+1,MOV-TGL-202B,MOV OUTLET T.2 200B,1,ROTORK,IQ3,,,,,active,medium
+1,"10""-CKV-029",CHECK VALVE OUTLET T.2 200B,1,Standar Vendor list Pertamina,ASTMA 216 WCB,,,,,active,medium
+1,FL-TGL-202B,FLEXIBLE OUTLET T.2 200B,1,Singaflex,SSH 1 Single Braid,,,,,active,medium
+1,"10""-GV-036",GATE VALVE OUTLET T.2 200B,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,ATG-TGL-200B,ATG T.2 200B,1,Honeywell Enraf,VITO LT Interface 76,,,,,active,medium
+1,FV-TGL-200B,FREE VENT T.2 200B,1,KSPC,Section 3.6 KFD,,,,,active,medium
+1,"8""-FA-006",FLAME ARRESTER FV T.2 200B,1,KSPC Tank Tech,KFD,,,,,active,medium
+1,LSHH-TGL-200B,LEVEL SWITCH HIGH HIGH T.2 200B,1,SOR ,ELCT-651K9 / PROB-CB,,,,,active,medium
+1,LSLL-TGL-200B,LEVEL SWITCH LOW LOW T.2 200B,1,SOR ,ELCT-651K9 / PROB-CB,,,,,active,medium
+1,"4""-GV-038",VALVE DRAIN CD T.2 200B,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,"4""-GV-068",VALVE DRAIN WD T.2 200B,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,SDD-TGL-200B,SLOT DIPPING DEVICE T.2 200B,1,KSPC-TANK TECH,"KSSD-A-4""",,,,,active,medium
+1,FC-TGL-200B,FOAM CHAMBER T.2 200B,1,NATIONAL FOAM,MCS-17 Type B,,,,,active,medium
+1,SS-TGL-200B,SPRAY SYSTEM T.2 200B,1,TYCO,TYCO D3,,,,,active,medium
+1,ERV-TGL-200B,EMERGENCY RELIEF VALVE T.2 200B,1,KSPC-TANKTECH,"KSEPK-24""",,,,,active,medium
+1,TIT-TGL-200B,TEMPERATUR INDICATOR TRASMITTER,1,0,0,,,,,active,medium
+1,LIT-TGL-200B,LEVEL INDICATOR TRASMITTER,1,0,0,,,,,active,medium
+1,T-TGL-100A,TANK STORAGE T.3 100A,1,PT. BARATA INDONESIA,Horisontal Tank,,,,,active,medium
+1,PSV-TGL-101A,PSV INLET T.3 100A,1,BROADY VALVE,Balanced ,,,,,active,medium
+1,MOV-TGL-101A,MOV INLET T.3 100A,1,ROTORK,IQ3,,,,,active,medium
+1,"6""-CKV-006",CHECK VALVE INLET T.3 100A,1,Standar Vendor list Pertamina,ASTMA 216 WCB,,,,,active,medium
+1,FL-TGL-101A,FLEXIBLE INLET T.3 100A,1,Singaflex,SSH 1 Single Braid,,,,,active,medium
+1,"6""-GV-004",GATE VALVE INLET T.3 100A,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,PSV-TGL-102A,PSV OUTLET T.3 100A,1,BROADY VALVE,Balanced ,,,,,active,medium
+1,MOV-TGL-102A,MOV OUTLET T.3 100A,1,ROTORK,IQ3,,,,,active,medium
+1,"16""-CKV-007",CHECK VALVE OUTLET T.3 100A,1,Standar Vendor list Pertamina,ASTMA 216 WCB,,,,,active,medium
+1,FL-TGL-102A,FLEXIBLE OUTLET T.3 100A,1,Singaflex,SSH 1 Single Braid,,,,,active,medium
+1,"16""-GV-005",GATE VALVE OUTLET T.3 100A,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,ATG-TGL-100A,ATG T.3 100A,1,Honeywell Enraf,VITO LT Interface 76,,,,,active,medium
+1,PVRV-TGL-100A,PRESSURE VACUM RELIEF VALVE T.3 100A,1,KSPC Tank Tech,VACCUM - KSBBFI-A,,,,,active,medium
+1,"8""-FA-001",FLAME ARRESTER PVRV T.3 100A,1,KSPC Tank Tech,VACCUM - KSBBFI-A,,,,,active,medium
+1,LSHH-TGL-100A,LEVEL SWITCH HIGH HIGH T.3 100A,1,SOR ,ELCT-651K9 / PROB-CB,,,,,active,medium
+1,LSLL-TGL-100A,LEVEL SWITCH LOW LOW T.3 100A,1,SOR ,ELCT-651K9 / PROB-CB,,,,,active,medium
+1,"4""-GV-008",VALVE DRAIN CD T.3 100A,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,"4""-GV-042",VALVE DRAIN WD T.3 100A,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,SDD-TGL-100A,SLOT DIPPING DEVICE T.3 100A,1,KSPC-TANK TECH,"KSSD-A-4""",,,,,active,medium
+1,FC-TGL-100A,FOAM CHAMBER T.3 100A,1,NATIONAL FOAM,MCS-17 Type B,,,,,active,medium
+1,SS-TGL-100A,SPRAY SYSTEM T.3 100A,1,TYCO,TYCO D3,,,,,active,medium
+1,ERV-TGL-100A,EMERGENCY RELIEF VALVE T.3 100A,1,KSPC-TANKTECH,"KSEPK-24""",,,,,active,medium
+1,TIT-TGL-100A,TEMPERATUR INDICATOR TRASMITTER,1,0,0,,,,,active,medium
+1,LIT-TGL-100A,LEVEL INDICATOR TRASMITTER,1,0,0,,,,,active,medium
+1,T-TGL-100B,TANK STORAGE T.4 100B,1,PT. BARATA INDONESIA,Horisontal Tank,,,,,active,medium
+1,PSV-TGL-101B,PSV INLET T.4 100B,1,BROADY VALVE,Balanced ,,,,,active,medium
+1,MOV-TGL-101B,MOV INLET T.4 100B,1,ROTORK,IQ3,,,,,active,medium
+1,"6""-CKV-008",CHECK VALVE INLET T.4 100B,1,Standar Vendor list Pertamina,ASTMA 216 WCB,,,,,active,medium
+1,FL-TGL-101B,FLEXIBLE INLET T.4 100B,1,Singaflex,SSH 1 Single Braid,,,,,active,medium
+1,"6""-GV-006",GATE VALVE INLET T.4 100B,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,PSV-TGL-102B,PSV OUTLET T.4 100B,1,BROADY VALVE,Balanced ,,,,,active,medium
+1,MOV-TGL-102B,MOV OUTLET T.4 100B,1,ROTORK,IQ3,,,,,active,medium
+1,"16""-CKV-009",CHECK VALVE OUTLET T.4 100B,1,Standar Vendor list Pertamina,ASTMA 216 WCB,,,,,active,medium
+1,FL-TGL-102B,FLEXIBLE OUTLET T.4 100B,1,Singaflex,SSH 1 Single Braid,,,,,active,medium
+1,"16""-GV-007",GATE VALVE OUTLET T.4 100B,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,BTG-TGL-100B,ATG T.4 100B,1,Honeywell Enraf,VITO LT Interface 76,,,,,active,medium
+1,PVRV-TGL-100B,PRESSURE VACUM RELIEF VALVE T.4 100B,1,KSPC Tank Tech,VACCUM - KSBBFI-A,,,,,active,medium
+1,"8""-FA-002",FLAME ARRESTER PVRV T.4 100B,1,KSPC Tank Tech,VACCUM - KSBBFI-A,,,,,active,medium
+1,LSHH-TGL-100B,LEVEL SWITCH HIGH HIGH T.4 100B,1,SOR ,ELCT-651K9 / PROB-CB,,,,,active,medium
+1,LSLL-TGL-100B,LEVEL SWITCH LOW LOW T.4 100B,1,SOR ,ELCT-651K9 / PROB-CB,,,,,active,medium
+1,"4""-GV-009",VALVE DRAIN CD T.4 100B,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,"4""-GV-043",VALVE DRAIN WD T.4 100B,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,SDD-TGL-100B,SLOT DIPPING DEVICE T.4 100B,1,KSPC-TANK TECH,"KSSD-A-4""",,,,,active,medium
+1,FC-TGL-100B,FOAM CHAMBER T.4 100B,1,NATIONAL FOAM,MCS-17 Type B,,,,,active,medium
+1,SS-TGL-100B,SPRAY SYSTEM T.4 100B,1,TYCO,TYCO D3,,,,,active,medium
+1,ERV-TGL-100B,EMERGENCY RELIEF VALVE T.4 100B,1,KSPC-TANKTECH,"KSEPK-24""",,,,,active,medium
+1,TIT-TGL-100B,TEMPERATUR INDICATOR TRASMITTER,1,0,0,,,,,active,medium
+1,LIT-TGL-100B,LEVEL INDICATOR TRASMITTER,1,0,0,,,,,active,medium
+1,T-TGL-500A,TANK STORAGE T.5 500A,1,PT. BARATA INDONESIA,Horisontal Tank,,,,,active,medium
+1,PSV-TGL-501A,PSV INLET T.5 500A,1,BROADY VALVE,Balanced ,,,,,active,medium
+1,MOV-TGL-501A,MOV INLET T.5 500A,1,ROTORK,IQ3,,,,,active,medium
+1,"4""-CKV-091",CHECK VALVE INLET T.5 500A,1,Standar Vendor list Pertamina,ASTMA 216 WCB,,,,,active,medium
+1,FL-TGL-501A,FLEXIBLE INLET T.5 500A,1,Singaflex,SSH 1 Single Braid,,,,,active,medium
+1,"4""-GV-306",GATE VALVE INLET T.5 500A,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,PSV-TGL-502A,PSV OUTLET T.5 500A,1,BROADY VALVE,Balanced ,,,,,active,medium
+1,MOV-TGL-502A,MOV OUTLET T.5 500A,1,ROTORK,IQ3,,,,,active,medium
+1,"8""-CKV-092",CHECK VALVE OUTLET T.5 500A,1,Standar Vendor list Pertamina,ASTMA 216 WCB,,,,,active,medium
+1,FL-TGL-502A,FLEXIBLE OUTLET T.5 500A,1,Singaflex,SSH 1 Single Braid,,,,,active,medium
+1,"8""-GV-307",GATE VALVE OUTLET T.5 500A,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,ATG-TGL-500A,ATG T.5 500A,1,Honeywell Enraf,VITO LT Interface 76,,,,,active,medium
+1,FV-TGL-500A,FREE VENT T.5 500A,1,KSPC,Section 3.6 KFD,,,,,active,medium
+1,"6""-FA-008",FLAME ARRESTER FV T.5 500A,1,KSPC Tank Tech,KFD,,,,,active,medium
+1,LSHH-TGL-500A,LEVEL SWITCH HIGH HIGH T.5 500A,1,SOR ,ELCT-651K9 / PROB-CB,,,,,active,medium
+1,LSLL-TGL-500A,LEVEL SWITCH LOW LOW T.5 500A,1,SOR ,ELCT-651K9 / PROB-CB,,,,,active,medium
+1,"4""-GV-113",VALVE DRAIN CD T.5 500A,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,"4""-GV-129",VALVE DRAIN WD T.5 500A,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,SDD-TGL-500A,SLOT DIPPING DEVICE T.5 500A,1,KSPC-TANK TECH,"KSSD-A-4""",,,,,active,medium
+1,SS-TGL-500A,SPRAY SYSTEM T.5 500A,1,TYCO,TYCO D3,,,,,active,medium
+1,ERV-TGL-500A,EMERGENCY RELIEF VALVE T.5 500A,1,KSPC-TANKTECH,"KSEPK-24""",,,,,active,medium
+1,LIT-TGL-500A,LEVEL INDICATOR TRASMITTER,1,0,0,,,,,active,medium
+1,TIT-TGL-500A,TEMPERATUR INDICATOR TRASMITTER,1,0,0,,,,,active,medium
+1,"8""-GV-310",GATE VALVE,1,0,0,,,,,active,medium
+1,T-TGL-500B,TANK STORAGE T.6 500B,1,PT. BARATA INDONESIA,Horisontal Tank,,,,,active,medium
+1,PSV-TGL-501B,PSV INLET T.6 500B,1,BROADY VALVE,Balanced ,,,,,active,medium
+1,MOV-TGL-501B,MOV INLET T.6 500B,1,ROTORK,IQ3,,,,,active,medium
+1,"4""-CKV-093",CHECK VALVE INLET T.6 500B,1,Standar Vendor list Pertamina,ASTMA 216 WCB,,,,,active,medium
+1,FL-TGL-501B,FLEXIBLE INLET T.6 500B,1,Singaflex,SSH 1 Single Braid,,,,,active,medium
+1,"4""-GV-308",GATE VALVE INLET T.6 500B,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,PSV-TGL-502B,PSV OUTLET T.6 500B,1,BROADY VALVE,Balanced ,,,,,active,medium
+1,MOV-TGL-502B,MOV OUTLET T.6 500B,1,ROTORK,IQ3,,,,,active,medium
+1,"8""-CKV-094",CHECK VALVE OUTLET T.6 500B,1,Standar Vendor list Pertamina,ASTMA 216 WCB,,,,,active,medium
+1,FL-TGL-502B,FLEXIBLE OUTLET T.6 500B,1,Singaflex,SSH 1 Single Braid,,,,,active,medium
+1,"8""-GV-309",GATE VALVE OUTLET T.6 500B,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,ATG-TGL-500B,ATG T.6 500B,1,Honeywell Enraf,VITO LT Interface 76,,,,,active,medium
+1,FV-TGL-500B,FREE VENT T.6 500B,1,KSPC,Section 3.6 KFD,,,,,active,medium
+1,"6""-FA-009",FLAME ARRESTER FV T.6 500B,1,KSPC Tank Tech,KFD,,,,,active,medium
+1,LSHH-TGL-500B,LEVEL SWITCH HIGH HIGH T.6 500B,1,SOR ,ELCT-651K9 / PROB-CB,,,,,active,medium
+1,LSLL-TGL-500B,LEVEL SWITCH LOW LOW T.6 500B,1,SOR ,ELCT-651K9 / PROB-CB,,,,,active,medium
+1,"4""-GV-114",VALVE DRAIN CD T.6 500B,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,"4""-GV-130",VALVE DRAIN WD T.6 500B,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,SDD-TGL-500B,SLOT DIPPING DEVICE T.6 500B,1,KSPC-TANK TECH,"KSSD-A-4""",,,,,active,medium
+1,SS-TGL-500B,SPRAY SYSTEM T.6 500B,1,TYCO,TYCO D3,,,,,active,medium
+1,ERV-TGL-500B,EMERGENCY RELIEF VALVE T.6 500B,1,KSPC-TANKTECH,"KSEPK-24""",,,,,active,medium
+1,LIT-TGL-500B,LEVEL INDICATOR TRASMITTER,1,0,0,,,,,active,medium
+1,TIT-TGL-500B,TEMPERATUR INDICATOR TRASMITTER,1,0,0,,,,,active,medium
+1,T-TGL-300,TANK STORAGE T.7 300,1,PT. BARATA INDONESIA,Horisontal Tank,,,,,active,medium
+1,PSV-TGL-301,PSV INLET T.7 300,1,BROADY VALVE,Balanced ,,,,,active,medium
+1,MOV-TGL-301,MOV INLET T.7 300,1,ROTORK,IQ3,,,,,active,medium
+1,"6""-CKV-046",CHECK VALVE INLET T.7 300,1,Standar Vendor list Pertamina,ASTMA 216 WCB,,,,,active,medium
+1,FL-TGL-301,FLEXIBLE INLET T.7 300,1,Singaflex,SSH 1 Single Braid,,,,,active,medium
+1,"6""-GV-058",GATE VALVE INLET T.7 300,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,PSV-TGL-302,PSV OUTLET T.7 300,1,BROADY VALVE,Balanced ,,,,,active,medium
+1,MOV-TGL-302,MOV OUTLET T.7 300,1,ROTORK,IQ3,,,,,active,medium
+1,"16""-CKV-047",CHECK VALVE OUTLET T.7 300,1,Standar Vendor list Pertamina,ASTMA 216 WCB,,,,,active,medium
+1,FL-TGL-302,FLEXIBLE OUTLET T.7 300,1,Singaflex,SSH 1 Single Braid,,,,,active,medium
+1,"16""-GV-059",GATE VALVE OUTLET T.7 300,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,ATG-TGL-300,ATG T.7 300,1,Honeywell Enraf,VITO LT Interface 76,,,,,active,medium
+1,PVRV-TGL-300,PRESSURE VACUM RELIEF VALVE T.7 300,1,KSPC Tank Tech,VACCUM - KSBBFI-A,,,,,active,medium
+1,"8""-FA-003",FLAME ARRESTER PVRV T.7 300,1,KSPC Tank Tech,VACCUM - KSBBFI-A,,,,,active,medium
+1,LSHH-TGL-300,LEVEL SWITCH HIGH HIGH T.7 300,1,SOR ,ELCT-651K9 / PROB-CB,,,,,active,medium
+1,LSLL-TGL-300,LEVEL SWITCH LOW LOW T.7 300,1,SOR ,ELCT-651K9 / PROB-CB,,,,,active,medium
+1,"4""-GV-070",VALVE DRAIN CD T.7 300,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,"4""-GV-071",VALVE DRAIN WD T.7 300,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,SDD-TGL-300,SLOT DIPPING DEVICE T.7 300,1,KSPC-TANK TECH,"KSSD-A-4""",,,,,active,medium
+1,FC-TGL-300,FOAM CHAMBER T.7 300,1,NATIONAL FOAM,MCS-17 Type B,,,,,active,medium
+1,SS-TGL-300,SPRAY SYSTEM T.7 300,1,TYCO,TYCO D3,,,,,active,medium
+1,ERV-TGL-300,EMERGENCY RELIEF VALVE T.7 300,1,KSPC-TANKTECH,"KSEPK-24""",,,,,active,medium
+1,LIT-TGL-300,LEVEL INDICATOR TRASMITTER,1,0,0,,,,,active,medium
+1,TIT-TGL-300,TEMPERATURE INDICATOR TRANSMITTER,1,0,0,,,,,active,medium
+1,"6""-GV-613",GLOBE VALVE,1,0,0,,,,,active,medium
+1,"16""-GV-614",GLOBE VALVE,1,0,0,,,,,active,medium
+1,"16""-GV-614B",GLOBE VALVE,1,0,0,,,,,active,medium
+1,T-TGL-600,TANK STORAGE T.8 600,1,PT. BARATA INDONESIA,Horisontal Tank,,,,,active,medium
+1,PSV-TGL-601,PSV INLET T.8 600,1,BROADY VALVE,Balanced ,,,,,active,medium
+1,MOV-TGL-601,MOV INLET T.8 600,1,ROTORK,IQ3,,,,,active,medium
+1,"4""-CKV-066",CHECK VALVE INLET T.8 600,1,Standar Vendor list Pertamina,ASTMA 216 WCB,,,,,active,medium
+1,FL-TGL-601,FLEXIBLE INLET T.8 600,1,Singaflex,SSH 1 Single Braid,,,,,active,medium
+1,"4""-GV-083",GATE VALVE INLET T.8 600,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,PSV-TGL-602,PSV OUTLET T.8 600,1,BROADY VALVE,Balanced ,,,,,active,medium
+1,MOV-TGL-602,MOV OUTLET T.8 600,1,ROTORK,IQ3,,,,,active,medium
+1,"8""-CKV-067",CHECK VALVE OUTLET T.8 600,1,Standar Vendor list Pertamina,ASTMA 216 WCB,,,,,active,medium
+1,FL-TGL-602,FLEXIBLE OUTLET T.8 600,1,Singaflex,SSH 1 Single Braid,,,,,active,medium
+1,"8""-GV-084",GATE VALVE OUTLET T.8 600,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,ATG-TGL-600,ATG T.8 600,1,Honeywell Enraf,VITO LT Interface 76,,,,,active,medium
+1,FV-TGL-600,FREE VENT T.8 600,1,KSPC,Section 3.6 KFD,,,,,active,medium
+1,"6""-FA-007",FLAME ARRESTER FV T.8 600,1,KSPC Tank Tech,KFD,,,,,active,medium
+1,LSHH-TGL-600,LEVEL SWITCH HIGH HIGH T.8 600,1,SOR ,ELCT-651K9 / PROB-CB,,,,,active,medium
+1,LSLL-TGL-600,LEVEL SWITCH LOW LOW T.8 600,1,SOR ,ELCT-651K9 / PROB-CB,,,,,active,medium
+1,"4""-GV-086",VALVE DRAIN CD T.8 600,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,"4""-GV-072",VALVE DRAIN WD T.8 600,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,SDD-TGL-600,SLOT DIPPING DEVICE T.8 600,1,KSPC-TANK TECH,"KSSD-A-4""",,,,,active,medium
+1,FC-TGL-600,FOAM CHAMBER T.8 600,1,NATIONAL FOAM,MCS-17 Type B,,,,,active,medium
+1,SS-TGL-600,SPRAY SYSTEM T.8 600,1,TYCO,TYCO D3,,,,,active,medium
+1,ERV-TGL-600,EMERGENCY RELIEF VALVE T.8 600,1,KSPC-TANKTECH,"KSEPK-24""",,,,,active,medium
+1,LIT-TGL-600,LEVEL INDICATOR TRASMITTER,1,0,0,,,,,active,medium
+1,TIT-TGL-600,TEMPERATURE INDICATOR TRANSMITTER,1,0,0,,,,,active,medium
+1,"4""-GV-090",GLOBE VALVE,1,0,0,,,,,active,medium
+1,"4""-GV-091",GLOBE VALVE,1,0,0,,,,,active,medium
+1,T-TGL-100C,TANK STORAGE T.10 100C,1,PT. JUDHI SAKTI,Horisontal Tank,,,,,active,medium
+1,PSV-TGL-101C,PSV INLET T.10 100C,1,BROADY VALVE,Balanced ,,,,,active,medium
+1,MOV-TGL-101C,MOV INLET T.10 100C,1,ROTORK,IQ3,,,,,active,medium
+1,"6""-CKV-101C",CHECK VALVE INLET T.10 100C,1,Standar Vendor list Pertamina,ASTMA 216 WCB,,,,,active,medium
+1,FL-TGL-101C,FLEXIBLE INLET T.10 100C,1,Singaflex,SSH 1 Single Braid,,,,,active,medium
+1,"6""-GV-101C",GATE VALVE INLET T.10 100C,1,0,0,,,,,active,medium
+1,PSV-TGL-102C,PSV OUTLET T.10 100C,1,BROADY VALVE,Balanced ,,,,,active,medium
+1,MOV-TGL-102C,MOV OUTLET T.10 100C,1,ROTORK,IQ3,,,,,active,medium
+1,"16""-CKV-102C",CHECK VALVE OUTLET T.10 100C,1,Standar Vendor list Pertamina,ASTMA 216 WCB,,,,,active,medium
+1,FL-TGL-102C,FLEXIBLE OUTLET T.10 100C,1,Singaflex,SSH 1 Single Braid,,,,,active,medium
+1,"16""-GV-102C",GATE VALVE OUTLET T.10 100C,1,0,0,,,,,active,medium
+1,ATG-TGL-100C,ATG T.10 100C,1,Honeywell Enraf,VITO LT Interface 76,,,,,active,medium
+1,PVRV-TGL-100C,PRESSURE VACUM RELIEF VALVE T.10 100C,1,PRE'CON,KONVENSIONAL ,,,,,active,medium
+1,"8""-FA-101C",FLAME ARRESTER PVRV T.10 100C,1,PRE'CON,KONVENSIONAL ,,,,,active,medium
+1,LSHH-TGL-100C,LEVEL SWITCH HIGH HIGH T.10 100C,1,SOR ,ELCT-651K9 / PROB-CB,,,,,active,medium
+1,LSLL-TGL-100C,LEVEL SWITCH LOW LOW T.10 100C,1,SOR ,ELCT-651K9 / PROB-CB,,,,,active,medium
+1,"4""-GV-030",VALVE DRAIN CD T.10 100C,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,"4""-GV-031",VALVE DRAIN WD T.10 100C,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,SDD-TGL-100C,SLOT DIPPING DEVICE T.10 100C,1,PRE'CON,PFCI/SD/2062,,,,,active,medium
+1,FC-TGL-100C,FOAM CHAMBER T.10 100C,1,NATIONAL FOAM,MCS-17 Type B,,,,,active,medium
+1,SS-TGL-100C,SPRAY SYSTEM T.10 100C,1,TYCO,TYCO D3,,,,,active,medium
+1,ERV-TGL-100C,EMERGENCY RELIEF VALVE T.10 100C,1,PRE'CON,2051,,,,,active,medium
+1,LIT-TGL-100C,LEVEL INDICATOR TRASMITTER,1,0,0,,,,,active,medium
+1,TIT-TGL-100C,TEMPERATURE INDICATOR TRANSMITTER,1,0,0,,,,,active,medium
+1,"3/4""-SLR-094",LINE 1 PSV INLET T.1 200A,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"1""-SLR-095",LINE 2 PSV INLET T.1 200A,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"3/4""-SLR-096",LINE 1 PSV OUTLET T.1 200A,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"1""-SLR-097",LINE 2 PSV OUTLET T.1 200A,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"6""-SLR-087",LINE INLET T.1 200A,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"10""-SLR-088",LINE OUTLET T.1 200A,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"3/4""-SLR-098",LINE 1 PSV INLET T.2 200B,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"1""-SLR-099",LINE 2 PSV INLET T.2 200B,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"3/4""-SLR-100",LINE 1 PSV OUTLET T.2 200B,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"1""-SLR-101",LINE 2 PSV OUTLET T.2 200B,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"6""-SLR-089",LINE INLET T.2 200B,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"10""-SLR-090",LINE OUTLET T.2 200B,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"6""-SLR-086",LINE HEADER INLET TANK 200A/B,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"10""-SLR-091",LINE HEADER OUTLET TANK 200A/B,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"4""-DC-102",LINE CLOSED DRAIN T.1 200A,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"4""-DC-103",LINE CLOSED DRAIN T.2 200B,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"4""-DC-104",LINE CLS DRAIN T200A/B TO HDR SUMP TANK,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"4""-WD-342",LINE WATER DITCH T.1 200A,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"4""-WD-343",LINE WATER DITCH T.2 200B,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"3/4""-PRE-029",LINE 1 PSV INLET T.3 100A,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"1""-PRE-030",LINE 2 PSV INLET T.3 100A,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"3/4""-PRE-031",LINE 1 PSV OUTLET T.3 100A,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"1""-PRE-032",LINE 2 PSV OUTLET T.3 100A,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"6""-PRE-022",LINE INLET T.3 100A,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"16""-PRE-023",LINE OUTLET T.3 100A,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"3/4""-PRE-033",LINE 1 PSV INLET T.4 100B,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"1""-PRE-034",LINE 2 PSV INLET T.4 100B,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"3/4""-PRE-035",LINE 1 PSV OUTLET T.4 100B,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"1""-PRE-036",LINE 2 PSV OUTLET T.4 100B,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"6""-PRE-024",LINE INLET T.4 100B,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"16""-PRE-025",LINE OUTLET T.4 100B,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"6""-PER-145",LINE HEADER INLET TANK 100A/B,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"16""-PER-146",LINE HEADER OUTLET TANK 100A/B,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"4""-DC-037",LINE CLOSED DRAIN T.3 100A,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"4""-DC-038",LINE CLOSED DRAIN T.4 100B,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"4""-DC-039",LINE CLS DRAIN T100A/B TO HDR SUMP TANK,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"4""-WD-340",LINE WATER DITCH T.3 100A,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"4""-WD-341",LINE WATER DITCH T.4 100B,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"3/4""-FAM-370",LINE 1 PSV INLET T.5 500A,1,Standar Vendor list Pertamina,A312 TP403 - 10S,,,,,active,medium
+1,"1""-FAM-369",LINE 2 PSV INLET T.5 500A,1,Standar Vendor list Pertamina,A312 TP403 - 10S,,,,,active,medium
+1,"3/4""-FAM-371",LINE 1 PSV OUTLET T.5 500A,1,Standar Vendor list Pertamina,A312 TP403 - 10S,,,,,active,medium
+1,"1""-FAM-372",LINE 2 PSV OUTLET T.5 500A,1,Standar Vendor list Pertamina,A312 TP403 - 10S,,,,,active,medium
+1,"4""-FAM-S1A-287",LINE INLET T.5 500A,1,Standar Vendor list Pertamina,A312 TP403 - 10S,,,,,active,medium
+1,"8""-FAM-S1A-288",LINE OUTLET T.5 500A,1,Standar Vendor list Pertamina,A312 TP403 - 10S,,,,,active,medium
+1,"3/4""-FAM-374",LINE 1 PSV INLET T.6 500B,1,Standar Vendor list Pertamina,A312 TP403 - 10S,,,,,active,medium
+1,"1""-FAM-373",LINE 2 PSV INLET T.6 500B,1,Standar Vendor list Pertamina,A312 TP403 - 10S,,,,,active,medium
+1,"3/4""-FAM-375",LINE 1 PSV OUTLET T.6 500B,1,Standar Vendor list Pertamina,A312 TP403 - 10S,,,,,active,medium
+1,"1""-FAM-376",LINE 2 PSV OUTLET T.6 500B,1,Standar Vendor list Pertamina,A312 TP403 - 10S,,,,,active,medium
+1,"4""-FAM-S1A-289",LINE INLET T.6 500B,1,Standar Vendor list Pertamina,A312 TP403 - 10S,,,,,active,medium
+1,"8""-FAM-S1A-290",LINE OUTLET T.6 500B,1,Standar Vendor list Pertamina,A312 TP403 - 10S,,,,,active,medium
+1,"4""-FAM-S1A-286",LINE HEADER INLET TANK 500A/B,1,Standar Vendor list Pertamina,A312 TP403 - 10S,,,,,active,medium
+1,"8""-FAM-S1A-291",LINE HEADER OUTLET TANK 500A/B,1,Standar Vendor list Pertamina,A312 TP403 - 10S,,,,,active,medium
+1,"4""-DC-301",LINE CLOSED DRAIN T.5 500A,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"4""-DC-302",LINE CLOSED DRAIN T.6 500B,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"4""-DC-303",LINE CLS DRAIN T500A/B TO HDR SUMP TANK,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"4""-WD-358",LINE WATER DITCH T.5 500A,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"4""-WD-359",LINE WATER DITCH T.6 500B,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"3/4""-PER-153",LINE 1 PSV INLET T.7 300,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"1""-PER-154",LINE 2 PSV INLET T.7 300,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"3/4""-PER-156",LINE 1 PSV OUTLET T.7 300,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"1""-PER-155",LINE 2 PSV OUTLET T.7 300,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"4""-PER-148",LINE INLET T.7 300 MT PX,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"6""-PRE-021",LINE INLET T.7 300 MT P,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"16""-PER-152",LINE OUTLET T.7 300 PX,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"16""-PRE-026",LINE OUTLET T.7 300 P,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"4""-DC-157",LINE CLS DRAIN T300/100C - HDR SUMP TANK,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"4""-WD-344",LINE WATER DITCH T.7 300,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"3/4""-PRE-037",LINE 1 PSV INLET T.10 100C,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"1""-PRE-038",LINE 2 PSV INLET T.10 100C,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"3/4""-PRE-039",LINE 1 PSV OUTLET T.10 100C,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"1""-PRE-040",LINE 2 PSV OUTLET T.10 100C,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"6""-PER-148",LINE INLET T.10 100C,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"16""-PER-028",LINE OUTLET T.10 100C,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"6""-PRE-030",LINE INLET T.10 100C P,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"16""-PRE-031",LINE OUTLET T.10 100C P,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"6""-PER-149",LINE INLET T.10 100C PX,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"16""-PER-029",LINE OUTLET T.10 100C PX,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"4""-DC-158",LINE CLOSED DRAIN T.10 100C,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"4""-WD-346",LINE WATER DITCH T.10 100C,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"3/4""-DEX-208",LINE 1 PSV INLET T.8 600,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"1""-DEX-209",LINE 2 PSV INLET T.8 600,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"3/4""-DEX-210",LINE 1 PSV OUTLET T.8 600,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"1""-DEX-211",LINE 2 PSV OUTLET T.8 600,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"4""-DC-212",LINE CLOSED DRAIN T.8 600,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"4""-WD-345",LINE WATER DITCH T.8 600,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"6""-GV-545",GV MANIFOLD INLET T500 T200,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,"3""-GV-049",GV MANIFOLD OUTLET T500 T200,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,"4""-GV-020",GV MANIFOLD INLET T200 T500,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,"4""-GV-021",GV MANIFOLD OUTLET T200 T500,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,"6""-GV-047",GV 1 MANIFOLD INLET 300/100C 100A/B,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,"6""-GV-048",GV 2 MANIFOLD INLET 300/100C 100A/B,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,"6""-GV-546",GV 3 MANIFOLD INLET 300/100C 100A/B,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,"6""-GV-013A",GV 4 MANIFOLD INLET 300/100C 100A/B,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,"6""-GV-049",GV 1 MANIFOLD INLET 100A/B 300/100C,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,"6""-GV-050",GV 2 MANIFOLD INLET 100A/B 300/100C,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,"6""-GV-009",GV 3 MANIFOLD INLET 100A/B 300/100C,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,"6""-GV-014A",GV 4 MANIFOLD INLET 100A/B 300/100C,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,"16""-GV-008",GV 1 MANIFOLD OUTLET 300/100C 100A/B,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,"16""-GV-009",GV 2 MANIFOLD OUTLET 300/100C 100A/B,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,"16""-GV-013",GV 3 MANIFOLD OUTLET 300/100C 100A/B,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,"6""-GV-614A",GV 4 MANIFOLD OUTLET 300/100C 100A/B,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,"16""-GV-010",GV 1 MANIFOLD OUTLET 100A/B 300/100C,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,"16""-GV-011",GV 2 MANIFOLD OUTLET 100A/B 300/100C,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,"16""-GV-012",GV 3 MANIFOLD OUTLET 100A/B 300/100C,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,"6""-GV-614B",GV 4 MANIFOLD OUTLET 100A/B 300/100C,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,"6""-FW-555",LINE FW T.2 200B,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"4""-FW-557",LINE FW T.5 500A,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"4""-FW-558",LINE FW T.6 500B,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"6""-FW-551",LINE FW T.3 100A,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"6""-FW-559",LINE FW T.3 100C,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"4""-FW-553",LINE FW T.7 300,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"4""-FW-556",LINE FW T.8 600,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"10""-GV-500",GV MAIN FIRE RING 1,1,Standar Vendor list Pertamina,ASTMA 216 WCB,,,,,active,medium
+1,"10""-GV-501",GV MAIN FIRE RING 2,1,Standar Vendor list Pertamina,ASTMA 216 WCB,,,,,active,medium
+1,"10""-GV-502",GV MAIN FIRE RING 3,1,Standar Vendor list Pertamina,ASTMA 216 WCB,,,,,active,medium
+1,"10""-GV-503",GV MAIN FIRE RING 4,1,Standar Vendor list Pertamina,ASTMA 216 WCB,,,,,active,medium
+1,"10""-GV-504",GV MAIN FIRE RING 5,1,Standar Vendor list Pertamina,ASTMA 216 WCB,,,,,active,medium
+1,"10""-GV-505",GV MAIN FIRE RING 6,1,Standar Vendor list Pertamina,ASTMA 216 WCB,,,,,active,medium
+1,"10""-GV-503A",GV MAIN FIRE RING 7,1,Standar Vendor list Pertamina,ASTMA 216 WCB,,,,,active,medium
+1,FM-001,FIRE MONITOR 1,1,ELKHART BRASS,COPPERHEAD,,,,,active,medium
+1,FM-002,FIRE MONITOR 2,1,ELKHART BRASS,COPPERHEAD,,,,,active,medium
+1,FM-003,FIRE MONITOR 3,1,ELKHART BRASS,COPPERHEAD,,,,,active,medium
+1,FM-004,FIRE MONITOR 4,1,ELKHART BRASS,COPPERHEAD,,,,,active,medium
+1,FM-005,FIRE MONITOR 5,1,ELKHART BRASS,COPPERHEAD,,,,,active,medium
+1,FH-001,HYDRANT PILLAR 1,1,NEWAGE,FEMALE INSTANTANEOUS,,,,,active,medium
+1,FH-002,HYDRANT PILLAR 2,1,NEWAGE,FEMALE INSTANTANEOUS,,,,,active,medium
+1,FH-003,HYDRANT PILLAR 3,1,NEWAGE,FEMALE INSTANTANEOUS,,,,,active,medium
+1,FH-004,HYDRANT PILLAR 4,1,NEWAGE,FEMALE INSTANTANEOUS,,,,,active,medium
+1,FH-005,HYDRANT PILLAR 5,1,NEWAGE,FEMALE INSTANTANEOUS,,,,,active,medium
+1,FH-006,HYDRANT PILLAR 6,1,NEWAGE,FEMALE INSTANTANEOUS,,,,,active,medium
+1,FH-007,HYDRANT PILLAR 7,1,NEWAGE,FEMALE INSTANTANEOUS,,,,,active,medium
+1,"4""-GV-502",GV FIRE MONITOR 1,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,"4""-GV-505",GV FIRE MONITOR 2,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,"4""-GV-510",GV FIRE MONITOR 3,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,"4""-GV-505A",GV FIRE MONITOR 4,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,"4""-GV-507",GV FIRE MONITOR 5,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,"4""-GV-504",GV HYDRANT PILLAR 1,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,"4""-GV-501",GV HYDRANT PILLAR 2,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,"4""-GV-500",GV HYDRANT PILLAR 3,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,"4""-GV-506",GV HYDRANT PILLAR 4,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,"4""-GV-509",GV HYDRANT PILLAR 5,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,"4""-GV-508",GV HYDRANT PILLAR 6,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,"4""-GV-503",GV HYDRANT PILLAR 7,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,DV-TGL-526,DELUGE VALVE FW T.1 200A,1,Tyco Fire Protection,TYCO DV-5 ,,,,,active,medium
+1,DV-TGL-530,DELUGE VALVE FW T.2 200B,1,Tyco Fire Protection,TYCO DV-5 ,,,,,active,medium
+1,DV-TGL-511,DELUGE VALVE FW T.3 100A,1,Tyco Fire Protection,TYCO DV-5 ,,,,,active,medium
+1,DV-TGL-515,DELUGE VALVE FW T.4 100B,1,Tyco Fire Protection,TYCO DV-5 ,,,,,active,medium
+1,DV-TGL-541,DELUGE VALVE FW T.5 500A,1,Tyco Fire Protection,TYCO DV-5 ,,,,,active,medium
+1,DV-TGL-545,DELUGE VALVE FW T.6 500B,1,Tyco Fire Protection,TYCO DV-5 ,,,,,active,medium
+1,DV-TGL-519A,DELUGE VALVE FW T.7 300,1,Tyco Fire Protection,TYCO DV-5 ,,,,,active,medium
+1,DV-TGL-534,DELUGE VALVE FW T.8 600,1,Tyco Fire Protection,TYCO DV-5 ,,,,,active,medium
+1,"6""-GV-496",GV 1 DELUGE T.1 200A,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,"6""-GV-497",GV 2 DELUGE T.1 200A,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,"6""-GV-498",GV BYPASS DELUGE T.1 200A,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,"6""-GV-499",GV 1 DELUGE T.2 200B,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,"6""-GV-500",GV 2 DELUGE T.2 200B,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,"6""-GV-501",GV BYPASS DELUGE T.2 200B,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,"6""-GV-487",GV 1 DELUGE T.3 100A,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,"6""-GV-488",GV 2 DELUGE T.3 100A,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,"6""-GV-489",GV BYPASS DELUGE T.3 100A,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,"6""-GV-490",GV 1 DELUGE T.4 100B,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,"6""-GV-491",GV 2 DELUGE T.4 100B,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,"6""-GV-492",GV BYPASS DELUGE T.4 100B,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,"4""-GV-514",GV 1 DELUGE T.5 500A,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,"4""-GV-515",GV 2 DELUGE T.5 500A,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,"4""-GV-516",GV BYPASS DELUGE T.5 500A,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,"4""-GV-517",GV 1 DELUGE T.6 500B,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,"4""-GV-518",GV 2 DELUGE T.6 500B,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,"4""-GV-519",GV BYPASS DELUGE T.6 500B,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,"4""-GV-493",GV 1 DELUGE T.7 300,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,"4""-GV-494",GV 2 DELUGE T.7 300,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,"4""-GV-495",GV BYPASS DELUGE T.7 300,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,"4""-GV-511",GV 1 DELUGE T.8 600,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,"4""-GV-512",GV 2 DELUGE T.8 600,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,"4""-GV-513",GV BYPASS DELUGE T.8 600,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,DV-TGL-512,DELUGE VALVE T-TGL-100A,1,Tyco Fire Protection,TYCO DV-5 ,,,,,active,medium
+1,DV-TGL-513,DELUGE VALVE T-TGL-100B,1,Tyco Fire Protection,TYCO DV-5 ,,,,,active,medium
+1,DV-TGL-517,DELUGE VALVE T-TGL-300,1,Tyco Fire Protection,TYCO DV-5 ,,,,,active,medium
+1,DV-TGL-514,DELUGE VALVE T-TGL-200A,1,Tyco Fire Protection,TYCO DV-5 ,,,,,active,medium
+1,DV-TGL-516,DELUGE VALVE T-TGL-200B,1,Tyco Fire Protection,TYCO DV-5 ,,,,,active,medium
+1,DV-TGL-518,DELUGE VALVE T-TGL-600,1,Tyco Fire Protection,TYCO DV-5 ,,,,,active,medium
+1,DV-TGL-520A,DELUGE VALVE T-TGL-100C,1,Tyco Fire Protection,TYCO DV-5 ,,,,,active,medium
+1,"6""-GV-512",GV INLET DV-512,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,"6""-GV-513",GV OUTLET DV-512,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,"6""-GV-514",GV BAYPASS DV-512,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,"6""-GV-515",GV INLET DV-513,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,"6""-GV-516",GV OUTLET DV-513,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,"6""-GV-517",GV BAYPASS DV-513,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,"6""-GV-518",GV INLET DV-517,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,"6""-GV-519",GV OUTLET DV-517,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,"6""-GV-520",GV BAYPASS DV-517,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,"6""-GV-521",GV INLET DV-514,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,"6""-GV-522",GV OUTLET DV-514,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,"6""-GV-523",GV BAYPASS DV-514,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,"6""-GV-524",GV INLET DV-516,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,"6""-GV-525",GV OUTLET DV-516,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,"6""-GV-526",GV BAYPASS DV-516,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,"6""-GV-527",GV INLET DV-518,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,"6""-GV-528",GV OUTLET DV-518,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,"6""-GV-529",GV BAYPASS DV-518,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,"6""-GV-530",GV INLET DV-519B,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,"6""-GV-531",GV OUTLET DV-519B,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,"6""-GV-532",GV BAYPASS DV-519B,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,"6""-GV-533",GV INLET DV-520,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,"6""-GV-534",GV OUTLET DV-520,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,"6""-GV-535",GV BAYPASS DV-520,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,"6""-GV-536",GV INLET DV-522,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,"6""-GV-537",GV OUTLET DV-522,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,"6""-GV-538",GV BAYPASS DV-522,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,"6""-GV-539",GV INLET DV-527,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,"6""-GV-540",GV OUTLET DV-527,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,"6""-GV-541",GV BAYPASS DV-527,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,"6""-GV-542",GV INLET DV-528,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,"6""-GV-543",GV OUTLET DV-528,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,"6""-GV-544",GV BAYPASS DV-528,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,"6""-GV-547",GV INLET DV-520A,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,"6""-GV-548",GV OUTLET DV-520A,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,"6""-GV-549",GV BAYPASS DV-520A,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,LG-01,MAIN AIR TERMINAL TANK FARM 1,1,PT. BARATA INDONESIA ,Kovensional,,,,,active,medium
+1,LG-02,MAIN AIR TERMINAL TANK FARM 2,1,PT. BARATA INDONESIA ,Kovensional,,,,,active,medium
+1,LG-03,MAIN AIR TERMINAL TANK FARM 3,1,PT. BARATA INDONESIA ,Kovensional,,,,,active,medium
+1,LG-04,MAIN AIR TERMINAL TANK FARM 4,1,PT. BARATA INDONESIA ,Kovensional,,,,,active,medium
+1,LG-05,MAIN AIR TERMINAL TANK FARM 5,1,PT. BARATA INDONESIA ,Kovensional,,,,,active,medium
+1,ER-94,EARTHING ROD INSP BOX MAIN TANK FARM 1,1,PT. BARATA INDONESIA ,KONVENSIONAL ,,,,,active,medium
+1,ER-95,EARTHING ROD INSP BOX MAIN TANK FARM 2,1,PT. BARATA INDONESIA ,KONVENSIONAL ,,,,,active,medium
+1,ER-96,EARTHING ROD INSP BOX MAIN TANK FARM 3,1,PT. BARATA INDONESIA ,KONVENSIONAL ,,,,,active,medium
+1,ER-97,EARTHING ROD INSP BOX MAIN TANK FARM 4,1,PT. BARATA INDONESIA ,KONVENSIONAL ,,,,,active,medium
+1,ER-98,EARTHING ROD INSP BOX MAIN TANK FARM 5,1,PT. BARATA INDONESIA ,KONVENSIONAL ,,,,,active,medium
+1,ER-93,EARTHING ROD INSP BOX MAIN TANK FARM 6,1,PT. BARATA INDONESIA ,KONVENSIONAL ,,,,,active,medium
+1,ER-19,EARTHING ROD INSP BOX MAIN TANK FARM 7,1,PT. BARATA INDONESIA ,KONVENSIONAL ,,,,,active,medium
+1,ER-20,EARTHING ROD INSP BOX MAIN TANK FARM 8,1,PT. BARATA INDONESIA ,KONVENSIONAL ,,,,,active,medium
+1,ER-21,EARTHING ROD INSP BOX MAIN TANK FARM 9,1,PT. BARATA INDONESIA ,KONVENSIONAL ,,,,,active,medium
+1,ER-22,EARTHING ROD INSP BOX MAIN TANK FARM 10,1,PT. BARATA INDONESIA ,KONVENSIONAL ,,,,,active,medium
+1,ER-23,EARTHING ROD INSP BOX MAIN TANK FARM 11,1,PT. BARATA INDONESIA ,KONVENSIONAL ,,,,,active,medium
+1,ER-24,EARTHING ROD INSP BOX MAIN TANK FARM 12,1,PT. BARATA INDONESIA ,KONVENSIONAL ,,,,,active,medium
+1,ER-25,EARTHING ROD INSP BOX MAIN TANK FARM 13,1,PT. BARATA INDONESIA ,KONVENSIONAL ,,,,,active,medium
+1,ER-26,EARTHING ROD INSP BOX MAIN TANK FARM 14,1,PT. BARATA INDONESIA ,KONVENSIONAL ,,,,,active,medium
+1,ER-27,EARTHING ROD INSP BOX MAIN TANK FARM 15,1,PT. BARATA INDONESIA ,KONVENSIONAL ,,,,,active,medium
+1,ER-28,EARTHING ROD INSP BOX MAIN TANK FARM 16,1,PT. BARATA INDONESIA ,KONVENSIONAL ,,,,,active,medium
+1,ER-29,EARTHING ROD INSP BOX MAIN TANK FARM 17,1,PT. BARATA INDONESIA ,KONVENSIONAL ,,,,,active,medium
+1,EM-022,MAIN GROUNDING MESH TANK FARM,1,PT. BARATA INDONESIA ,KONVENSIONAL ,,,,,active,medium
+1,Bundwall,BUNDWALL,1,0,0,,,,,active,medium
+1,FD-TGL-002,FLAME DETECTOR 1,1,Honeywell,FS24X,,,,,active,medium
+1,FD-TGL-003,FLAME DETECTOR 2,1,Honeywell,FS24X,,,,,active,medium
+1,FD-TGL-004,FLAME DETECTOR 1,1,Honeywell,FS24X,,,,,active,medium
+1,FD-TGL-005,FLAME DETECTOR 2,1,Honeywell,FS24X,,,,,active,medium
+1,FD-TGL-006,FLAME DETECTOR 1,1,Honeywell,FS24X,,,,,active,medium
+1,FD-TGL-007,FLAME DETECTOR 2,1,Honeywell,FS24X,,,,,active,medium
+1,MCP-TGL-004,OUTDOOR MCP 1,1,KIDDE Fire Systems Station,KIDDE - K-84-11,,,,,active,medium
+1,ER-01,EARTHING ROD INSP BOX MAIN TANK FARM,1,ERICO,ERITECH,,,,,active,medium
+1,ER-08,EARTHING ROD INSP BOX MAIN TANK FARM,1,ERICO,ERITECH,,,,,active,medium
+1,P-TGL-120A,CENTRIFUGAL LOADING PUMP 120A,1,KSB (1617 rpm),125-100-400 EC,,,,,active,medium
+1,PM-TGL-120A,ELECTRIC MOTOR LOADING PUMP 120A,1,ABB,M3KP 225 SMC 4,,,,,active,medium
+1,"8""-GV-023",GATE VALVE SUCTION LOADING PUMP 120A,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,"8""-STR-004",STRAINER SUCTION LOADING PUMP 120A,1,CRANE ,Y STRAINER ,,,,,active,medium
+1,PDIT-TGL-120A,PDT STRAINER SUCTION LOADING PUMP 120A,1,ROSEMOUNT,2051CD3A02A1AS5E1M5D,,,,,active,medium
+1,PSLL-TGL-120A,PSLL SUCTION LOADING PUMP 120A,1,ASHCROFT ,B7-68S,,,,,active,medium
+1,PG-TGL-121A,PG SUCTION LOADING PUMP 120A,1,ASHCROFT ,100-T5500-SL-04L,,,,,active,medium
+1,"4""-GV-252",VALVE PSV SUCTION LOADING PUMP 120A,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,PSV-TGL-120A,PSV LOADING PUMP 120A,1,BROADY VALVE,Covensional ,,,,,active,medium
+1,"4""-GV-251",VALVE PSV DISCH LOADING PUMP 120A,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,PG-TGL-122A,PG DISCH LOADING PUMP 120A,1,ASHCROFT ,100-T5500-SL-04L,,,,,active,medium
+1,PSHH-TGL-120A,PSHH DISCH LOADING PUMP 120A,1,ASHCROFT ,B7-68S,,,,,active,medium
+1,PIT-TGL-121A,PT DISCH LOADING PUMP 120A,1,ROSEMOUNT,Pressure Transmiter ,,,,,active,medium
+1,"6""-CKV-011",CHECK VALVE DISCH LOADING PUMP 120A,1,Standar Vendor list Pertamina,ASTMA 216 WCB,,,,,active,medium
+1,"6""-GV-024",GATE VALVE DISCH LOADING PUMP 120A,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,P-TGL-120B,CENTRIFUGAL LOADING PUMP 120B,1,KSB,125-100-400 EC,,,,,active,medium
+1,PM-TGL-120B,ELECTRIC MOTOR LOADING PUMP 120B,1,ABB,M3KP 225 SMC 4,,,,,active,medium
+1,"8""-GV-025",GATE VALVE SUCTION LOADING PUMP 120B,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,"8""-STR-005",STRAINER SUCTION LOADING PUMP 120B,1,CRANE ,Y STRAINER ,,,,,active,medium
+1,PDIT-TGL-120B,PDT STRAINER SUCTION LOADING PUMP 120B,1,ROSEMOUNT,2051CD3A02A1AS5E1M5D,,,,,active,medium
+1,PSLL-TGL-120B,PSLL SUCTION LOADING PUMP 120B,1,ASHCROFT ,B7-68S,,,,,active,medium
+1,PG-TGL-121B,PG SUCTION LOADING PUMP 120B,1,ASHCROFT ,100-T5500-SL-04L,,,,,active,medium
+1,"4""-GV-254",VALVE PSV SUCTION LOADING PUMP 120B,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,PSV-TGL-120B,PSV LOADING PUMP 120B,1,BROADY VALVE,Covensional ,,,,,active,medium
+1,"4""-GV-253",VALVE PSV DISCH LOADING PUMP 120B,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,PG-TGL-122B,PG DISCH LOADING PUMP 120B,1,ASHCROFT ,100-T5500-SL-04L,,,,,active,medium
+1,PSHH-TGL-120B,PSHH DISCH LOADING PUMP 120B,1,ASHCROFT ,B7-68S,,,,,active,medium
+1,PIT-TGL-121B,PT DISCH LOADING PUMP 120B,1,ROSEMOUNT,Pressure Transmiter ,,,,,active,medium
+1,"6""-CKV-012",CHECK VALVE DISCH LOADING PUMP 120B,1,Standar Vendor list Pertamina,ASTMA 216 WCB,,,,,active,medium
+1,"6""-GV-026",GATE VALVE DISCH LOADING PUMP 120B,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,P-TGL-120C,CENTRIFUGAL LOADING PUMP 120C,1,KSB,125-100-400 EC,,,,,active,medium
+1,PM-TGL-120C,ELECTRIC MOTOR LOADING PUMP 120C,1,ABB,M3KP 225 SMC 4,,,,,active,medium
+1,"8""-GV-027",GATE VALVE SUCTION LOADING PUMP 120C,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,"8""-STR-006",STRAINER SUCTION LOADING PUMP 120C,1,CRANE ,Y STRAINER ,,,,,active,medium
+1,PDIT-TGL-120C,PDT STRAINER SUCTION LOADING PUMP 120C,1,ROSEMOUNT,2051CD3A02A1AS5E1M5D,,,,,active,medium
+1,PSLL-TGL-120C,PSLL SUCTION LOADING PUMP 120C,1,ASHCROFT ,B7-68S,,,,,active,medium
+1,PG-TGL-121C,PG SUCTION LOADING PUMP 120C,1,ASHCROFT ,100-T5500-SL-04L,,,,,active,medium
+1,"4""-GV-256",VALVE PSV SUCTION LOADING PUMP 120C,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,PSV-TGL-120C,PSV LOADING PUMP 120C,1,BROADY VALVE,Covensional ,,,,,active,medium
+1,"4""-GV-255",VALVE PSV DISCH LOADING PUMP 120C,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,PG-TGL-122C,PG DISCH LOADING PUMP 120C,1,ASHCROFT ,100-T5500-SL-04L,,,,,active,medium
+1,PSHH-TGL-120C,PSHH DISCH LOADING PUMP 120C,1,ASHCROFT ,B7-68S,,,,,active,medium
+1,PIT-TGL-121C,PT DISCH LOADING PUMP 120C,1,ROSEMOUNT,Pressure Transmiter ,,,,,active,medium
+1,"6""-CKV-013",CHECK VALVE DISCH LOADING PUMP 120C,1,Standar Vendor list Pertamina,ASTMA 216 WCB,,,,,active,medium
+1,P-TGL-120D,CENTRIFUGAL LOADING PUMP 120D,1,KSB,125-100-400 EC,,,,,active,medium
+1,PM-TGL-120D,ELECTRIC MOTOR LOADING PUMP 120D,1,ABB,M3KP 225 SMC 4,,,,,active,medium
+1,"8""-GV-029",GATE VALVE SUCTION LOADING PUMP 120D,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,"8""-STR-007",STRAINER SUCTION LOADING PUMP 120D,1,CRANE ,Y STRAINER ,,,,,active,medium
+1,PDIT-TGL-120D,PDT STRAINER SUCTION LOADING PUMP 120D,1,ROSEMOUNT,2051CD3A02A1AS5E1M5D,,,,,active,medium
+1,PSLL-TGL-120D,PSLL SUCTION LOADING PUMP 120D,1,ASHCROFT ,B7-68S,,,,,active,medium
+1,PG-TGL-121D,PG SUCTION LOADING PUMP 120D,1,ASHCROFT ,100-T5500-SL-04L,,,,,active,medium
+1,"4""-GV-201",VALVE PSV SUCTION LOADING PUMP 120D,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,PSV-TGL-120D,PSV LOADING PUMP 120D,1,BROADY VALVE,Covensional ,,,,,active,medium
+1,"4""-GV-202",VALVE PSV DISCH LOADING PUMP 120D,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,PG-TGL-122D,PG DISCH LOADING PUMP 120D,1,ASHCROFT ,100-T5500-SL-04L,,,,,active,medium
+1,PSHH-TGL-120D,PSHH DISCH LOADING PUMP 120D,1,ASHCROFT ,B7-68S,,,,,active,medium
+1,PIT-TGL-121D,PT DISCH LOADING PUMP 120D,1,ROSEMOUNT,Pressure Transmiter ,,,,,active,medium
+1,"6""-CKV-014",CHECK VALVE DISCH LOADING PUMP 120D,1,Standar Vendor list Pertamina,ASTMA 216 WCB,,,,,active,medium
+1,"6""-GV-030",GATE VALVE DISCH LOADING PUMP 120D,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,P-TGL-120E,CENTRIFUGAL LOADING PUMP 120E,1,KSB,125-100-400 EC,,,,,active,medium
+1,PM-TGL-120E,ELECTRIC MOTOR LOADING PUMP 120E,1,ABB,M3KP 225 SMC 4,,,,,active,medium
+1,"8""-GV-031",GATE VALVE SUCTION LOADING PUMP 120E,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,"8""-STR-009",STRAINER SUCTION LOADING PUMP 120E,1,CRANE ,Y STRAINER ,,,,,active,medium
+1,PDIT-TGL-120E,PDT STRAINER SUCTION LOADING PUMP 120E,1,ROSEMOUNT,2051CD3A02A1AS5E1M5D,,,,,active,medium
+1,PSLL-TGL-120E,PSLL SUCTION LOADING PUMP 120E,1,ASHCROFT ,B7-68S,,,,,active,medium
+1,PG-TGL-121E,PG SUCTION LOADING PUMP 120E,1,ASHCROFT ,100-T5500-SL-04L,,,,,active,medium
+1,"4""-GV-203",VALVE PSV SUCTION LOADING PUMP 120E,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,PSV-TGL-120E,PSV LOADING PUMP 120E,1,BROADY VALVE,Covensional ,,,,,active,medium
+1,"4""-GV-204",VALVE PSV DISCH LOADING PUMP 120E,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,PG-TGL-122E,PG DISCH LOADING PUMP 120E,1,ASHCROFT ,100-T5500-SL-04L,,,,,active,medium
+1,PSHH-TGL-120E,PSHH DISCH LOADING PUMP 120E,1,ASHCROFT ,B7-68S,,,,,active,medium
+1,PIT-TGL-121E,PT DISCH LOADING PUMP 120E,1,ROSEMOUNT,Pressure Transmiter ,,,,,active,medium
+1,"6""-CKV-015",CHECK VALVE DISCH LOADING PUMP 120E,1,Standar Vendor list Pertamina,ASTMA 216 WCB,,,,,active,medium
+1,"6""-GV-032",GATE VALVE DISCH LOADING PUMP 120E,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,"16""-PRE-027",LINE HEADER SUCTION P120,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"8""-PRE-042",LINE SUCTION LOADING P120A,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"4""-PRE-082",LINE PSV SUCTION LOADING P120A,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"4""-PRE-081",LINE PSV DISCH LOADING P120A,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"6""-PRE-043",LINE DISCH LOADING P120A,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"8""-PRE-044",LINE SUCTION LOADING P120B,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"4""-PRE-084",LINE PSV SUCTION LOADING P120B,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"4""-PRE-083",LINE PSV DISCH LOADING P120B,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"6""-PRE-045",LINE DISCH LOADING P120B,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"8""-PRE-046",LINE SUCTION LOADING P120C,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"4""-PRE-086",LINE PSV SUCTION LOADING P120C,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"4""-PRE-085",LINE PSV DISCH LOADING P120C,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"6""-PRE-047",LINE DISCH LOADING P120C,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"4""-PRE-088",LINE PSV SUCTION LOADING P120D,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"4""-PRE-087",LINE PSV DISCH LOADING P120D,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"6""-PRE-063",LINE DISCH LOADING P120D,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"8""-PRE-064",LINE SUCTION LOADING P120E,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"4""-PRE-090",LINE PSV SUCTION LOADING P120E,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"4""-PRE-089",LINE PSV DISCH LOADING P120E,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"8""-PRE-065",LINE DISCH LOADING P120E,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"1""-PRE-075",LINE HEADER PSV SUCTION P120,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"3/4""-PRE-074",LINE HEADER PSV DISCH P120,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"10""-PRE-048",LINE HEADER DISCH P120,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"10""-PRE-149",LINE HEADER LOADING P120,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"8""-PRE-050",LINE LOADING P120 BAY 1,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"8""-PRE-062",LINE LOADING P120 BAY 2,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"8""-PRE-063",LINE LOADING P120 BAY 3,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"4""-DC-210",LINE CLOSED DRAIN PERTALITE P120A,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"4""-DC-211",LINE CLOSED DRAIN PERTALITE P120B,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"4""-DC-215",LINE CLOSED DRAIN PERTALITE P120C,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"4""-DC-213",LINE CLOSED DRAIN PERTALITE P120D,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"4""-DC-214",LINE CLOSED DRAIN PERTALITE P120E,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"10""-GV-049",GV HEADER LOADING P120,1,Standar Vendor list Pertamina,ASTMA 216 WCB,,,,,active,medium
+1,"8""-BV-046",GV LOADING P120 BAY 1,1,Standar Vendor list Pertamina,ASTMA 216 WCB,,,,,active,medium
+1,"8""-BV-047",GV LOADING P120 BAY 2,1,Standar Vendor list Pertamina,ASTMA 216 WCB,,,,,active,medium
+1,"8""-BV-049",GV LOADING P120 BAY 3,1,Standar Vendor list Pertamina,ASTMA 216 WCB,,,,,active,medium
+1,PSV-TGL-100C,PSV HEADER SUCTION-DISCH P120,1,BROADY VALVE,Balanced ,,,,,active,medium
+1,PIT-TGL-120,PT HEADER LOADING P120,1,ROSEMOUNT,Pressure Transmiter ,,,,,active,medium
+1,"6""-GV-032A",GV DISCH LOADING P120E P320,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,"6""-GV-114A",GV DISCH LOADING P320A P120,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,"8""-GV-031A",GV SUCTION LOADING P120E P320,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,"8""-GV-113A",GV SUCTION LOADING P320A P120,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,"6""-PER-067A",LINE DISCH LOADING P120E P320,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"6""-PRE-066A",LINE DISCH LOADING P320A P120,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"8""-PER-064A",LINE SUCTION LOADING P120E P320,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"8""-PER-065A",LINE SUCTION LOADING P320A P120,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,P-TGL-220A,CENTRIFUGAL LOADING PUMP 220A,1,KSB,125-100-400 EC,,,,,active,medium
+1,PM-TGL-220A,ELECTRIC MOTOR LOADING PUMP 220A,1,ABB,M3KP 225 SMC 4,,,,,active,medium
+1,"8""-GV-069",GATE VALVE INLET LOADING PUMP 220A,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,"8""-STR-010",STRAINER INLET LOADING PUMP 220A,1,CRANE ,Y STRAINER ,,,,,active,medium
+1,PDIT-TGL-220A,PDT STRAINER INLET LOADING PUMP 220A,1,ROSEMOUNT,2051CD3A02A1AS5E1M5D,,,,,active,medium
+1,PSLL-TGL-220A,PSLL INLET LOADING PUMP 220A,1,ASHCROFT ,B7-68S,,,,,active,medium
+1,PG-TGL-221A,PG INLET LOADING PUMP 220A,1,ASHCROFT ,100-T5500-SL-04L,,,,,active,medium
+1,"4""-GV-258",VALVE PSV INLET LOADING PUMP 220A,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,PSV-TGL-220A,PSV LOADING PUMP 220A,1,BROADY VALVE,Covensional ,,,,,active,medium
+1,"4""-GV-257",VALVE PSV OUTLET LOADING PUMP 220A,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,PG-TGL-222A,PG OUTLET LOADING PUMP 220A,1,ASHCROFT ,100-T5500-SL-04L,,,,,active,medium
+1,PSHH-TGL-220A,PSHH OUTLET LOADING PUMP 220A,1,ASHCROFT ,B7-68S,,,,,active,medium
+1,PIT-TGL-221A,PT OUTLET LOADING PUMP 220A,1,ROSEMOUNT,Pressure Transmiter ,,,,,active,medium
+1,"6""-CKV-031",CHECK VALVE OUTLET LOADING PUMP 220A,1,Standar Vendor list Pertamina,ASTMA 216 WCB,,,,,active,medium
+1,"6""-GV-079",GATE VALVE OUTLET LOADING PUMP 220A,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,P-TGL-220B,CENTRIFUGAL LOADING PUMP 220B,1,KSB,125-100-400 EC,,,,,active,medium
+1,PM-TGL-220B,ELECTRIC MOTOR LOADING PUMP 220B,1,ABB,M3KP 225 SMC 4,,,,,active,medium
+1,"8""-STR-011",STRAINER INLET LOADING PUMP 220B,1,CRANE ,Y STRAINER ,,,,,active,medium
+1,PDIT-TGL-220B,PDT STRAINER INLET LOADING PUMP 220B,1,ROSEMOUNT,2051CD3A02A1AS5E1M5D,,,,,active,medium
+1,PSLL-TGL-220B,PSLL INLET LOADING PUMP 220B,1,ASHCROFT ,B7-68S,,,,,active,medium
+1,PG-TGL-221B,PG INLET LOADING PUMP 220B,1,ASHCROFT ,100-T5500-SL-04L,,,,,active,medium
+1,"4""-GV-260",VALVE PSV INLET LOADING PUMP 220B,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,PSV-TGL-220B,PSV LOADING PUMP 220B,1,BROADY VALVE,Covensional ,,,,,active,medium
+1,"4""-GV-259",VALVE PSV OUTLET LOADING PUMP 220B,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,PG-TGL-222B,PG OUTLET LOADING PUMP 220B,1,ASHCROFT ,100-T5500-SL-04L,,,,,active,medium
+1,PSHH-TGL-220B,PSHH OUTLET LOADING PUMP 220B,1,ASHCROFT ,B7-68S,,,,,active,medium
+1,PIT-TGL-221B,PT OUTLET LOADING PUMP 220B,1,ROSEMOUNT,Pressure Transmiter ,,,,,active,medium
+1,"6""-CKV-032",CHECK VALVE OUTLET LOADING PUMP 220B,1,Standar Vendor list Pertamina,ASTMA 216 WCB,,,,,active,medium
+1,"6""-GV-081",GATE VALVE OUTLET LOADING PUMP 220B,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,P-TGL-220C,CENTRIFUGAL LOADING PUMP 220C,1,KSB,125-100-400 EC,,,,,active,medium
+1,PM-TGL-220C,ELECTRIC MOTOR LOADING PUMP 220C,1,ABB,M3KP 225 SMC 4,,,,,active,medium
+1,"8""-GV-082",GATE VALVE INLET LOADING PUMP 220C,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,"8""-STR-012",STRAINER INLET LOADING PUMP 220C,1,CRANE ,Y STRAINER ,,,,,active,medium
+1,PDIT-TGL-220C,PDT STRAINER INLET LOADING PUMP 220C,1,ROSEMOUNT,2051CD3A02A1AS5E1M5D,,,,,active,medium
+1,PSLL-TGL-220C,PSLL INLET LOADING PUMP 220C,1,ASHCROFT ,B7-68S,,,,,active,medium
+1,PG-TGL-221C,PG INLET LOADING PUMP 220C,1,ASHCROFT ,100-T5500-SL-04L,,,,,active,medium
+1,"4""-GV-262",VALVE PSV INLET LOADING PUMP 220C,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,PSV-TGL-220C,PSV LOADING PUMP 220C,1,BROADY VALVE,Covensional ,,,,,active,medium
+1,"4""-GV-261",VALVE PSV OUTLET LOADING PUMP 220C,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,PG-TGL-222C,PG OUTLET LOADING PUMP 220C,1,ASHCROFT ,100-T5500-SL-04L,,,,,active,medium
+1,PSHH-TGL-220C,PSHH OUTLET LOADING PUMP 220C,1,ASHCROFT ,B7-68S,,,,,active,medium
+1,PIT-TGL-221C,PT OUTLET LOADING PUMP 220C,1,ROSEMOUNT,Pressure Transmiter ,,,,,active,medium
+1,"6""-CKV-033",CHECK VALVE OUTLET LOADING PUMP 220C,1,Standar Vendor list Pertamina,ASTMA 216 WCB,,,,,active,medium
+1,"6""-GV-083",GATE VALVE OUTLET LOADING PUMP 220C,1,Standar Vendor list Pertamina,ASTMA 216 WCB,,,,,active,medium
+1,"""8-SLR-112",LINE SUCTION LOADING P220A,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"""4-SLR-152",LINE PSV SUCTION LOADING P220A,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"""4-SLR-151",LINE PSV DISCH LOADING P220A,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"""6-SLR-113",LINE DISCH LOADING P220A,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"""8-SLR-114",LINE SUCTION LOADING P220B,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"""4-SLR-154",LINE PSV SUCTION LOADING P220B,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"""4-SLR-153",LINE PSV DISCH LOADING P220B,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"""6-SLR-115",LINE DISCH LOADING P220B,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"""8-SLR-116",LINE SUCTION LOADING P220C,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"""4-SLR-156",LINE PSV SUCTION LOADING P220C,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"""4-SLR-155",LINE PSV DISCH LOADING P220C,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"""6-SLR-117",LINE DISCH LOADING P220C,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"1""-SLR-145",LINE HEADER PSV SUCTION P220,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"3/4""-SLR-144",LINE HEADER PSV DISCH P220,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"10""-SLR-092",LINE HEADER SUCTION P220,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"8""-SLR-120",LINE HEADER LOADING P220,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"8""-SLR-131",LINE LOADING P220 BAY 1,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"8""-SLR-132",LINE LOADING P220 BAY 2,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"4""-DC-220",LINE CLOSED DRAIN P220A,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"4""-DC-221",LINE CLOSED DRAIN P220B,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"4""-DC-222",LINE CLOSED DRAIN P220C,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"8""-GV-080",GV HEADER LOADING P220,1,Standar Vendor list Pertamina,ASTMA 216 WCB,,,,,active,medium
+1,"8""-BV-086",GV LOADING P220 BAY 1,1,Standar Vendor list Pertamina,ASTMA 216 WCB,,,,,active,medium
+1,"8""-BV-087",GV LOADING P220 BAY 2,1,Standar Vendor list Pertamina,ASTMA 216 WCB,,,,,active,medium
+1,PSV-TGL-200C,PSV HEADER SUCTION-DISCH P220,1,BROADY VALVE,Covensional ,,,,,active,medium
+1,PIT-TGL-220,PT HEADER LOADING P220,1,ROSEMOUNT,Pressure Transmiter ,,,,,active,medium
+1,P-TGL-320A,CENTRIFUGAL LOADING PUMP 320A,1,KSB,125-100-400 EC,,,,,active,medium
+1,PM-TGL-320A,ELECTRIC MOTOR LOADING PUMP 320A,1,ABB,M3KP 225 SMC 4,,,,,active,medium
+1,"8""-GV-113",GATE VALVE INLET LOADING PUMP 320A,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,"8""-STR-013",STRAINER INLET LOADING PUMP 320A,1,CRANE ,Y STRAINER ,,,,,active,medium
+1,PDIT-TGL-320A,PDT STRAINER INLET LOADING PUMP 320A,1,ROSEMOUNT,2051CD3A02A1AS5E1M5D,,,,,active,medium
+1,PSLL-TGL-320A,PSLL INLET LOADING PUMP 320A,1,ASHCROFT ,B7-68S,,,,,active,medium
+1,PG-TGL-321A,PG INLET LOADING PUMP 320A,1,ASHCROFT ,100-T5500-SL-04L,,,,,active,medium
+1,"4""-GV-267",VALVE PSV INLET LOADING PUMP 320A,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,PSV-TGL-320A,PSV LOADING PUMP 320A,1,BROADY VALVE,Covensional ,,,,,active,medium
+1,"4""-GV-266",VALVE PSV OUTLET LOADING PUMP 320A,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,PG-TGL-322A,PG OUTLET LOADING PUMP 320A,1,ASHCROFT ,100-T5500-SL-04L,,,,,active,medium
+1,PSHH-TGL-320A,PSHH OUTLET LOADING PUMP 320A,1,ASHCROFT ,B7-68S,,,,,active,medium
+1,PIT-TGL-321A,PT OUTLET LOADING PUMP 320A,1,ROSEMOUNT,Pressure Transmiter ,,,,,active,medium
+1,"6""-CKV-051",CHECK VALVE OUTLET LOADING PUMP 320A,1,Standar Vendor list Pertamina,ASTMA 216 WCB,,,,,active,medium
+1,"6""-GV-114",GATE VALVE OUTLET LOADING PUMP 320A,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,P-TGL-320B,CENTRIFUGAL LOADING PUMP 320B,1,KSB,125-100-400 EC,,,,,active,medium
+1,PM-TGL-320B,ELECTRIC MOTOR LOADING PUMP 320B,1,ABB,M3KP 225 SMC 4,,,,,active,medium
+1,"8""-GV-114",GATE VALVE INLET LOADING PUMP 320B,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,"8""-STR-015",STRAINER INLET LOADING PUMP 320B,1,CRANE ,Y STRAINER ,,,,,active,medium
+1,PDIT-TGL-320B,PDT STRAINER INLET LOADING PUMP 320B,1,ROSEMOUNT,2051CD3A02A1AS5E1M5D,,,,,active,medium
+1,PSLL-TGL-320B,PSLL INLET LOADING PUMP 320B,1,ASHCROFT ,B7-68S,,,,,active,medium
+1,PG-TGL-321B,PG INLET LOADING PUMP 320B,1,ASHCROFT ,100-T5500-SL-04L,,,,,active,medium
+1,"4""-GV-269",VALVE PSV INLET LOADING PUMP 320B,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,PSV-TGL-320B,PSV LOADING PUMP 320B,1,BROADY VALVE,Covensional ,,,,,active,medium
+1,"4""-GV-268",VALVE PSV OUTLET LOADING PUMP 320B,1,Standar Vendor list Pertamina,ASTMA 216 WCB,,,,,active,medium
+1,PG-TGL-322B,PG OUTLET LOADING PUMP 320B,1,ASHCROFT ,100-T5500-SL-04L,,,,,active,medium
+1,PSHH-TGL-320B,PSHH OUTLET LOADING PUMP 320B,1,ASHCROFT ,B7-68S,,,,,active,medium
+1,PIT-TGL-321B,PT OUTLET LOADING PUMP 320B,1,ROSEMOUNT,Pressure Transmiter ,,,,,active,medium
+1,"6""-CKV-053",CHECK VALVE OUTLET LOADING PUMP 320B,1,Standar Vendor list Pertamina,ASTMA 216 WCB,,,,,active,medium
+1,"6""-GV-115",GATE VALVE OUTLET LOADING PUMP 320B,1,Standar Vendor list Pertamina,ASTMA 216 WCB,,,,,active,medium
+1,P-TGL-320C,CENTRIFUGAL LOADING PUMP 320C,1,KSB,125-100-400 EC,,,,,active,medium
+1,PM-TGL-320C,ELECTRIC MOTOR LOADING PUMP 320C,1,ABB,M3KP 225 SMC 4,,,,,active,medium
+1,"8""-GV-115",GATE VALVE INLET LOADING PUMP 320C,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,"8""-STR-014",STRAINER INLET LOADING PUMP 320C,1,CRANE ,Y STRAINER ,,,,,active,medium
+1,PDIT-TGL-320C,PDT STRAINER INLET LOADING PUMP 320C,1,ROSEMOUNT,2051CD3A02A1AS5E1M5D,,,,,active,medium
+1,PSLL-TGL-320C,PSLL INLET LOADING PUMP 320C,1,ASHCROFT ,B7-68S,,,,,active,medium
+1,PG-TGL-321C,PG INLET LOADING PUMP 320C,1,ASHCROFT ,100-T5500-SL-04L,,,,,active,medium
+1,"4""-GV-271",VALVE PSV INLET LOADING PUMP 320C,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,PSV-TGL-320C,PSV LOADING PUMP 320C,1,BROADY VALVE,Covensional ,,,,,active,medium
+1,"4""-GV-270",VALVE PSV OUTLET LOADING PUMP 320C,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,PG-TGL-322C,PG OUTLET LOADING PUMP 320C,1,ASHCROFT ,100-T5500-SL-04L,,,,,active,medium
+1,PSHH-TGL-320C,PSHH OUTLET LOADING PUMP 320C,1,ASHCROFT ,B7-68S,,,,,active,medium
+1,PIT-TGL-321C,PT OUTLET LOADING PUMP 320C,1,ROSEMOUNT,Pressure Transmiter ,,,,,active,medium
+1,"6""-CKV-052",CHECK VALVE OUTLET LOADING PUMP 320C,1,Standar Vendor list Pertamina,ASTMA 216 WCB,,,,,active,medium
+1,"6""-GV-116",GATE VALVE OUTLET LOADING PUMP 320C,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,P-TGL-320D,CENTRIFUGAL LOADING PUMP 320D,1,KSB,125-100-400 EC,,,,,active,medium
+1,PM-TGL-320D,ELECTRIC MOTOR LOADING PUMP 320D,1,ABB,M3KP 225 SMC 4,,,,,active,medium
+1,"8""-GV-121",GATE VALVE INLET LOADING PUMP 320D,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,"8""-STR-016",STRAINER INLET LOADING PUMP 320D,1,CRANE ,Y STRAINER ,,,,,active,medium
+1,PDIT-TGL320D,PDT STRAINER INLET LOADING PUMP 320D,1,ROSEMOUNT,2051CD3A02A1AS5E1M5D,,,,,active,medium
+1,PSLL-TGL-320D,PSLL INLET LOADING PUMP 320D,1,ASHCROFT ,B7-68S,,,,,active,medium
+1,PG-TGL-321D,PG INLET LOADING PUMP 320D,1,ASHCROFT ,100-T5500-SL-04L,,,,,active,medium
+1,"4""-GV-273",VALVE PSV INLET LOADING PUMP 320D,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,PSV-TGL-320D,PSV LOADING PUMP 320D,1,BROADY VALVE,Covensional ,,,,,active,medium
+1,"4""-GV-272",VALVE PSV OUTLET LOADING PUMP 320D,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,PG-TGL-322D,PG OUTLET LOADING PUMP 320D,1,ASHCROFT ,100-T5500-SL-04L,,,,,active,medium
+1,PSHH-TGL-320D,PSHH OUTLET LOADING PUMP 320D,1,ASHCROFT ,B7-68S,,,,,active,medium
+1,PIT-TGL-321D,PT OUTLET LOADING PUMP 320D,1,ROSEMOUNT,Pressure Transmiter ,,,,,active,medium
+1,"6""-CKV-054",CHECK VALVE OUTLET LOADING PUMP 320D,1,Standar Vendor list Pertamina,ASTMA 216 WCB,,,,,active,medium
+1,"6""-GV-122",GATE VALVE OUTLET LOADING PUMP 320D,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,"16""-PER-027",LINE HEADER SUCTION P320,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"8""-PER-172",LINE SUCTION LOADING P320A,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"4""-PER-202",LINE PSV SUCTION LOADING P320A,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"4""-PER-201",LINE PSV DISCH LOADING P320A,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"6""-PER-173",LINE DISCH LOADING P320A,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"8""-PER-174",LINE SUCTION LOADING P320B,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"4""-PER-204",LINE PSV SUCTION LOADING P320B,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"4""-PER-203",LINE PSV DISCH LOADING P320B,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"6""-PER-175",LINE DISCH LOADING P320B,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"8""-PER-176",LINE SUCTION LOADING P320C,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"4""-PER-206",LINE PSV SUCTION LOADING P320C,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"4""-PER-205",LINE PSV DISCH LOADING P320C,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"6""-PER-177",LINE DISCH LOADING P320C,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"8""-PER-190",LINE SUCTION LOADING P320D,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"4""-PER-208",LINE PSV SUCTION LOADING P320D,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"4""-PER-207",LINE PSV DISCH LOADING P320D,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"6""-PER-191",LINE DISCH LOADING P320D,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"1""-PER-193",LINE HEADER PSV SUCTION P320,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"3/4""-PER-192",LINE HEADER PSV DISCH P320,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"10""-PER-178",LINE HEADER DISCH P320,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"8""-PER-180",LINE LOADING P320 BAY 1,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"8""-PER-181",LINE LOADING P320 BAY 2,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"8""-PER-182",LINE LOADING P320 BAY 3,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"16""-PRE-147",LINE OUTLET TANK 100A/B,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"3/4""-DC-001",LINE CLOSED DRAIN P320A,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"3/4""-DC-002",LINE CLOSED DRAIN P320B,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"3/4""-DC-003",LINE CLOSED DRAIN P320C,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"3/4""-DC-004",LINE CLOSED DRAIN P320D,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"10""-GV-120",GV HEADER LOADING P320,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,"8""-BV-218",GV LOADING P320 BAY 1,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,"8""-BV-217",GV LOADING P320 BAY 2,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,"8""-BV-219",GV LOADING P320 BAY 3,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,PSV-TGL-300C,PSV HEADER SUCTION-DISCH P320,1,BROADY VALVE,Balanced ,,,,,active,medium
+1,PIT-TGL-320,PT HEADER LOADING P320,1,ROSEMOUNT,Pressure Transmiter ,,,,,active,medium
+1,P-TGL-620,CENTRIFUGAL LOADING PUMP 620,1,KSB,125-100-400 EC,,,,,active,medium
+1,PM-TGL-620,ELECTRIC MOTOR LOADING PUMP 620,1,ABB,M3KP 225 SMC 4,,,,,active,medium
+1,"8""-GV-143",GATE VALVE INLET LOADING PUMP 620,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,"8""-STR-025",STRAINER INLET LOADING PUMP 620,1,CRANE ,Y STRAINER ,,,,,active,medium
+1,PDIT-TGL-620,PDT STRAINER INLET LOADING PUMP 620,1,ROSEMOUNT,2051CD3A02A1AS5E1M5D,,,,,active,medium
+1,PSLL-TGL-620,PSLL INLET LOADING PUMP 620,1,ASHCROFT ,B7-68S,,,,,active,medium
+1,PG-TGL-621,PG INLET LOADING PUMP 620,1,ASHCROFT ,100-T5500-SL-04L,,,,,active,medium
+1,"4""-GV-276",VALVE PSV INLET LOADING PUMP 620,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,PSV-TGL-620,PSV LOADING PUMP 620,1,BROADY VALVE,Covensional ,,,,,active,medium
+1,"4""-GV-275",VALVE PSV OUTLET LOADING PUMP 620,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,PG-TGL-622,PG OUTLET LOADING PUMP 620,1,ASHCROFT ,100-T5500-SL-04L,,,,,active,medium
+1,PSHH-TGL-620,PSHH OUTLET LOADING PUMP 620,1,ASHCROFT ,B7-68S,,,,,active,medium
+1,PIT-TGL-621,PT OUTLET LOADING PUMP 620,1,ROSEMOUNT,Pressure Transmiter ,,,,,active,medium
+1,"6""-CKV-071",CHECK VALVE OUTLET LOADING PUMP 620,1,Standar Vendor list Pertamina,ASTMA 216 WCB,,,,,active,medium
+1,"6""-GV-144",GATE VALVE OUTLET LOADING PUMP 620,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,"8""-Dex-207",LINE OUTLET TANK 600,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"8""-Dex-216",LINE HEADER SUCTION P620,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"8""-Dex-217",LINE SUCTION LOADING P620,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"3/4""-DC-005",LINE CLOSED DRAIN P620,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"4""-DC-040",LINE CLOSED DRAIN HEADER,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"6""-Dex-218",LINE DISCH LOADING P620,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"6""-Dex-221",LINE HEADER DISCH P620,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"6""-Dex-222",LINE HEADER DISCH LOADING P620,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"6""-DEX-180",LINE LOADING P620 BAY 1,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"4""-Dex-244",LINE PSV SUCTION LOADING P620,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"4""-Dex-243",LINE PSV DISCH LOADING P620,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"1""-DEX-241",LINE HEADER PSV SUCTION P620,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"3/4""-DEX-240",LINE HEADER PSV DISCH P620,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"6""-GV-145",GV HEADER LOADING P620,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,"6""-BV-149",GV LOADING P620 BAY 1,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,PSV-TGL-600A,PSV HEADER IN-OUT DEX,1,BROADY VALVE,Balanced ,,,,,active,medium
+1,PIT-TGL-620,PT HEADER DISCH DEX,1,ROSEMOUNT,Pressure Transmiter ,,,,,active,medium
+1,P-TGL-520A,CENTRIFUGAL LOADING PUMP 520A,1,KSB,125-100-400 EC,,,,,active,medium
+1,PM-TGL-520A,ELECTRIC MOTOR LOADING PUMP 520A,1,ABB,M3KP 225 SMC 4,,,,,active,medium
+1,"4""-GV-191",GATE VALVE INLET LOADING PUMP 520A,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,PDIT-TGL-520A,PDT STRAINER INLET LOADING PUMP 520A,1,ROSEMOUNT,2051CD3A02A1AS5E1M5D,,,,,active,medium
+1,PSLL-TGL-520A,PSLL INLET LOADING PUMP 520A,1,ASHCROFT ,B7-68S,,,,,active,medium
+1,PG-TGL-521A,PG INLET LOADING PUMP 520A,1,ASHCROFT ,100-T5500-SL-04L,,,,,active,medium
+1,"3""-GV-281",VALVE PSV INLET LOADING PUMP 520A,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,PSV-TGL-520A,PSV LOADING PUMP 520A,1,BROADY VALVE,Covensional ,,,,,active,medium
+1,"3""-GV-280",VALVE PSV OUTLET LOADING PUMP 520A,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,PG-TGL-522A,PG OUTLET LOADING PUMP 520A,1,ASHCROFT ,100-T5500-SL-04L,,,,,active,medium
+1,PSHH-TGL-520A,PSHH OUTLET LOADING PUMP 520A,1,ASHCROFT ,B7-68S,,,,,active,medium
+1,PIT-TGL-521A,PT OUTLET LOADING PUMP 520A,1,ROSEMOUNT,Pressure Transmiter ,,,,,active,medium
+1,"3""-CKV-096",CHECK VALVE OUTLET LOADING PUMP 520A,1,Standar Vendor list Pertamina,ASTMA 216 WCB,,,,,active,medium
+1,"3""-GV-192",GATE VALVE OUTLET LOADING PUMP 520A,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,P-TGL-520B,CENTRIFUGAL LOADING PUMP 520B,1,KSB,125-100-400 EC,,,,,active,medium
+1,PM-TGL-520B,ELECTRIC MOTOR LOADING PUMP 520B,1,ABB,M3KP 225 SMC 4,,,,,active,medium
+1,"4""-GV-193",GATE VALVE INLET LOADING PUMP 520B,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,PDIT-TGL-520B,PDT STRAINER INLET LOADING PUMP 520B,1,ROSEMOUNT,2051CD3A02A1AS5E1M5D,,,,,active,medium
+1,PSLL-TGL-520B,PSLL INLET LOADING PUMP 520B,1,ASHCROFT ,B7-68S,,,,,active,medium
+1,PG-TGL-521B,PG INLET LOADING PUMP 520B,1,ASHCROFT ,100-T5500-SL-04L,,,,,active,medium
+1,"3""-GV-283",VALVE PSV INLET LOADING PUMP 520B,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,PSV-TGL-520B,PSV LOADING PUMP 520B,1,BROADY VALVE,Covensional ,,,,,active,medium
+1,"3""-GV-282",VALVE PSV OUTLET LOADING PUMP 520B,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,PG-TGL-522B,PG OUTLET LOADING PUMP 520B,1,ASHCROFT ,100-T5500-SL-04L,,,,,active,medium
+1,PSHH-TGL-520B,PSHH OUTLET LOADING PUMP 520B,1,ASHCROFT ,B7-68S,,,,,active,medium
+1,PIT-TGL-521B,PT OUTLET LOADING PUMP 520B,1,ROSEMOUNT,Pressure Transmiter ,,,,,active,medium
+1,"3""-CKV-097",CHECK VALVE OUTLET LOADING PUMP 520B,1,Standar Vendor list Pertamina,ASTMA 216 WCB,,,,,active,medium
+1,"3""-GV-194",GATE VALVE OUTLET LOADING PUMP 520B,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,P-TGL-520C,CENTRIFUGAL LOADING PUMP 520C,1,KSB,125-100-400 EC,,,,,active,medium
+1,PM-TGL-520C,ELECTRIC MOTOR LOADING PUMP 520C,1,ABB,M3KP 225 SMC 4,,,,,active,medium
+1,"4""-GV-310",GATE VALVE INLET LOADING PUMP 520C,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,"4""-STR-038",STRAINER INLET LOADING PUMP 520C,1,CRANE ,Y STRAINER ,,,,,active,medium
+1,PDIT-TGL-520C,PDT STRAINER INLET LOADING PUMP 520C,1,ROSEMOUNT,2051CD3A02A1AS5E1M5D,,,,,active,medium
+1,PSLL-TGL-520C,PSLL INLET LOADING PUMP 520C,1,ASHCROFT ,B7-68S,,,,,active,medium
+1,PG-TGL-521C,PG INLET LOADING PUMP 520C,1,ASHCROFT ,100-T5500-SL-04L,,,,,active,medium
+1,"3""-GV-285",VALVE PSV INLET LOADING PUMP 520C,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,PSV-TGL-520C,PSV LOADING PUMP 520C,1,BROADY VALVE,Covensional ,,,,,active,medium
+1,"3""-GV-284",VALVE PSV OUTLET LOADING PUMP 520C,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,PG-TGL-522C,PG OUTLET LOADING PUMP 520C,1,ASHCROFT ,100-T5500-SL-04L,,,,,active,medium
+1,PSHH-TGL-520C,PSHH OUTLET LOADING PUMP 520C,1,ASHCROFT ,B7-68S,,,,,active,medium
+1,PIT-TGL-521C,PT OUTLET LOADING PUMP 520C,1,ROSEMOUNT,Pressure Transmiter ,,,,,active,medium
+1,"3""-CKV-057",CHECK VALVE OUTLET LOADING PUMP 520C,1,Standar Vendor list Pertamina,ASTMA 216 WCB,,,,,active,medium
+1,"3""-GV-311",GATE VALVE OUTLET LOADING PUMP 520C,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,"8""-FAM-292",LINE OUTLET TANK 500A/B,1,Standar Vendor list Pertamina,A312 TP403 - 10S,,,,,active,medium
+1,"8""-FAM-306",LINE HEADER SUCTION P520,1,Standar Vendor list Pertamina,A312 TP403 - 10S,,,,,active,medium
+1,"4""-FAM-307",LINE SUCTION LOADING P520A,1,Standar Vendor list Pertamina,A312 TP403 - 10S,,,,,active,medium
+1,"3""-FAM-241",LINE PSV SUCTION LOADING P520A,1,Standar Vendor list Pertamina,A312 TP403 - 10S,,,,,active,medium
+1,"3""-FAM-240",LINE PSV DISCHARGE LOADING P520A,1,Standar Vendor list Pertamina,A312 TP403 - 10S,,,,,active,medium
+1,"3""-FAM-308",LINE DISCHARGE LOADING P520A,1,Standar Vendor list Pertamina,A312 TP403 - 10S,,,,,active,medium
+1,"4""-FAM-309",LINE SUCTION LOADING P520B,1,Standar Vendor list Pertamina,A312 TP403 - 10S,,,,,active,medium
+1,"3""-FAM-243",LINE PSV SUCTION LOADING P520B,1,Standar Vendor list Pertamina,A312 TP403 - 10S,,,,,active,medium
+1,"3""-FAM-242",LINE PSV DISCHARGE LOADING P520B,1,Standar Vendor list Pertamina,A312 TP403 - 10S,,,,,active,medium
+1,"3""-FAM-310",LINE DISCHARGE LOADING P520B,1,Standar Vendor list Pertamina,A312 TP403 - 10S,,,,,active,medium
+1,"4""-FAM-365",LINE SUCTION LOADING P520C,1,Standar Vendor list Pertamina,A312 TP403 - 10S,,,,,active,medium
+1,"3""-FAM-245",LINE PSV SUCTION LOADING P520C,1,Standar Vendor list Pertamina,A312 TP403 - 10S,,,,,active,medium
+1,"3""-FAM-244",LINE PSV DISCHARGE LOADING P520C,1,Standar Vendor list Pertamina,A312 TP403 - 10S,,,,,active,medium
+1,"3""-FAM-366",LINE DISCHARGE LOADING P520C,1,Standar Vendor list Pertamina,A312 TP403 - 10S,,,,,active,medium
+1,"6""-FAM-311",LINE HEADER DISCH P520,1,Standar Vendor list Pertamina,A312 TP403 - 10S,,,,,active,medium
+1,"6""-FAM-312",LINE HEADER DISCH LOADING P520,1,Standar Vendor list Pertamina,A312 TP403 - 10S,,,,,active,medium
+1,"3""-FAM-321",LINE LOADING P520 BAY 1,1,Standar Vendor list Pertamina,A312 TP403 - 10S,,,,,active,medium
+1,"3""-FAM-322",LINE LOADING P520 BAY 2,1,Standar Vendor list Pertamina,A312 TP403 - 10S,,,,,active,medium
+1,"1""-FAM-331",LINE HEADER PSV SUCTION P520,1,Standar Vendor list Pertamina,A312 TP403 - 10S,,,,,active,medium
+1,"3/4""-FAM-330",LINE HEADER PSV DISCH P520,1,Standar Vendor list Pertamina,A312 TP403 - 10S,,,,,active,medium
+1,"3/4""-DC-006",LINE CLOSED DRAIN P520A,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"3/4""-DC-007",LINE CLOSED DRAIN P520B,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"3/4""-DC-008",LINE CLOSED DRAIN P520C,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"6""-GV-211",GV HEADER LOADING P520,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,"3""-BV-235",GV LOADING P520 BAY 1,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,"3""-BV-236",GV LOADING P520 BAY 2,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,PSV-TGL-500,PSV HEADER IN-OUT FAME,1,BROADY VALVE,Balanced ,,,,,active,medium
+1,PIT-TGL-520,PT HEADER DISCH DEX,1,ROSEMOUNT,Pressure Transmiter ,,,,,active,medium
+1,PIT-TGL-520A,PRESSURE TRANSMITTER,1,ROSEMOUNT,Pressure Transmiter ,,,,,active,medium
+1,ER-30,EARTHING ROD INSP BOX LOADING PMP SHLTR1,1,PT. BARATA INDONESIA ,KONVENSIONAL ,,,,,active,medium
+1,ER-31,EARTHING ROD INSP BOX LOADING PMP SHLTR2,1,PT. BARATA INDONESIA ,KONVENSIONAL ,,,,,active,medium
+1,ER-32,EARTHING ROD INSP BOX LOADING PMP SHLTR3,1,PT. BARATA INDONESIA ,KONVENSIONAL ,,,,,active,medium
+1,ER-33,EARTHING ROD INSP BOX LOADING PMP SHLTR4,1,PT. BARATA INDONESIA ,KONVENSIONAL ,,,,,active,medium
+1,ER-34,EARTHING ROD INSP BOX LOADING PMP SHLTR5,1,PT. BARATA INDONESIA ,KONVENSIONAL ,,,,,active,medium
+1,ER-35,EARTHING ROD INSP BOX LOADING PMP SHLTR6,1,PT. BARATA INDONESIA ,KONVENSIONAL ,,,,,active,medium
+1,EM-002,GROUNDING MESH LOADING PUMP SHELTER,1,PT. BARATA INDONESIA ,KONVENSIONAL ,,,,,active,medium
+1,FD-TGL-008,FLAME DETECTOR 1,1,Honeywell,FS24X,,,,,active,medium
+1,FD-TGL-009,FLAME DETECTOR 2,1,Honeywell,FS24X,,,,,active,medium
+1,FD-TGL-010,FLAME DETECTOR 3,1,Honeywell,FS24X,,,,,active,medium
+1,MCP-TGL-001,OUTDOOR MCP 1,1,KIDDE Fire Systems Station,KIDDE - K-84-11,,,,,active,medium
+1,ER-02,EARTHING ROD INSP BOX PUMP SHLTR LOADING,1,ERICO,ERITECH Lightning Ev,,,,,active,medium
+1,P-TGL-110A,SCREW LOADING PUMP 110A,1,3PPRINZ,II2GxhIIBGbTx,,,,,active,medium
+1,PM-TGL-110A,ELECTRIC MOTOR LOADING PUMP 110A,1,ABB,M3KP 180 MLB 4,,,,,active,medium
+1,"6""-GV-002",GATE VALVE SUCTION LOADING PUMP 110A,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,"6""-STR-001",STRAINER SUCTION LOADING PUMP 110A,1,CRANE ,Y STRAINER ,,,,,active,medium
+1,PDI-TGL-110A,PD STRAINER SUCTION LOADING PUMP 110A,1,ASHCROFT ,100-F5503-SL-51L-XNH,,,,,active,medium
+1,PSLL-TGL-110A,PSLL SUCTION LOADING PUMP 110A,1,ASHCROFT ,B7-68S,,,,,active,medium
+1,PG-TGL-111A,PG SUCTION LOADING PUMP 110A,1,ASHCROFT ,100-T5500-SL-04L,,,,,active,medium
+1,"3""-GV-003",VALVE PSV SUCTION LOADING PUMP 110A,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,PSV-TGL-110A,PSV LOADING PUMP 110A,1,BROADY VALVE,Covensional ,,,,,active,medium
+1,"3""-GV-013",VALVE PSV DISCH LOADING PUMP 110A,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,PG-TGL-112A,PG DISCH LOADING PUMP 110A,1,ASHCROFT ,100-T5500-SL-04L,,,,,active,medium
+1,PSHH-TGL-110A,PSHH DISCH LOADING PUMP 110A,1,ASHCROFT ,B7-68S,,,,,active,medium
+1,PIT-TGL-110A,PT DISCH LOADING PUMP 110A,1,ROSEMOUNT,Pressure Transmiter ,,,,,active,medium
+1,"4""-CKV-001",CHECK VALVE DISCH LOADING PUMP 110A,1,Standar Vendor list Pertamina,ASTMA 216 WCB,,,,,active,medium
+1,"4""-GV-014",GATE VALVE DISCH LOADING PUMP 110A,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,P-TGL-110B,SCREW LOADING PUMP 110B,1,3PPRINZ,II2GxhIIBGbTx,,,,,active,medium
+1,PM-TGL-110B,ELECTRIC MOTOR LOADING PUMP 110B,1,ABB,M3KP 225SBM 4,,,,,active,medium
+1,"6""-STR-002",STRAINER SUCTION LOADING PUMP 110B,1,CRANE ,Y STRAINER ,,,,,active,medium
+1,PDI-TGL-110B,PD STRAINER SUCTION LOADING PUMP 110B,1,ASHCROFT ,100-F5503-SL-51L-XNH,,,,,active,medium
+1,PSLL-TGL-110B,PSLL SUCTION LOADING PUMP 110B,1,ASHCROFT ,B7-68S,,,,,active,medium
+1,PG-TGL-111B,PG SUCTION LOADING PUMP 110B,1,ASHCROFT ,100-T5500-SL-04L,,,,,active,medium
+1,"3""-GV-017",VALVE PSV SUCTION LOADING PUMP 110B,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,PSV-TGL-110B,PSV LOADING PUMP 110B,1,BROADY VALVE,Covensional ,,,,,active,medium
+1,"3""-GV-018",VALVE PSV DISCH LOADING PUMP 110B,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,PG-TGL-112B,PG DISCH LOADING PUMP 110B,1,ASHCROFT ,100-T5500-SL-04L,,,,,active,medium
+1,PSHH-TGL-110B,PSHH DISCH LOADING PUMP 110B,1,ASHCROFT ,B7-68S,,,,,active,medium
+1,PIT-TGL-110B,PT DISCH LOADING PUMP 110B,1,ROSEMOUNT,Pressure Transmiter ,,,,,active,medium
+1,"4""-CKV-002",CHECK VALVE DISCH LOADING PUMP 110B,1,Standar Vendor list Pertamina,ASTMA 216 WCB,,,,,active,medium
+1,"4""-GV-010",GATE VALVE DISCH LOADING PUMP 110B,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,"12""-PRE-006",LINE HEADER RTW P110,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"6""-PRE-007",LINE SUCTION RTW P110A,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"3""-PRE-016",LINE PSV SUCTION RTW P110A,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"3""-PRE-015",LINE PSV DISCHARGE RTW P110A,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"4""-PRE-008",LINE DISCHARGE RTW P110A,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"6""-PRE-009",LINE SUCTION RTW P110B,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"3""-PRE-018",LINE PSV SUCTION RTW P110B,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"3""-PRE-017",LINE PSV DISCHARGE RTW P110B,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"4""-PRE-010",LINE DISCHARGE RTW P110B,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"6""-PRE-013",LINE DISCHARGE HEADER RTW P110,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"6""-PRE-014",LINE UNLOADING RTW TANK 100A/B,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"1""-PRE-073",LINE HEADER PSV SUCTION P110,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"3/4""-PRE-072",LINE HEADER PSV DISCH P110,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,PSV-TGL-100B,PSV HEADER SUCTION-DISCH P110,1,BROADY VALVE,Balanced ,,,,,active,medium
+1,MOV-TGL-112,MOV UNLOADING RTW P110,1,ROTORK,IQ3,,,,,active,medium
+1,"6""-GV-020",GV SUCTION RTW P110B P310B,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,"6""-GV-021",GV SUCTION RTW P110B P210B,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,"6""-GV-066",GV SUCTION RTW P210B P310B,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,"6""-GV-014",GV SUCTION RTW P310B P110B,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,"6""-GV-015",GV SUCTION RTW P310B P210B,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,"6""-PER-003",LINE SUCTION RTW P110B P310B,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"6""-SLR-003",LINE SUCTION RTW P110B P210B,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"6""-PRE-004",LINE SUCTION RTW P210B P110B,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"6""-PER-004",LINE SUCTION RTW P210B P310B,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"6""-PRE-003",LINE SUCTION RTW P310B P110B,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"6""-SLR-004",LINE SUCTION RTW P310B P210B,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"6""-GV-022",GV DISCH P110B TANK 300/100C,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,"6""-GV-023",GV DISCH P110B TANK 200A/B,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,"6""-GV-027",GV DISCH P210B TANK 100A/B,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,"6""-GV-028",GV DISCH P210B TANK 300/100C,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,"6""-GV-016",GV DISCH P310B TANK 100A/B,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,"6""-GV-017",GV DISCH P310B TANK 200A/B,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,"4""-PER-005",LINE DISCH P110B TANK 300/100C,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"4""-SLR-005",LINE DISCH P110B TANK 200A/B,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"4""-PRE-006",LINE DISCH P210B TANK 100A/B,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"4""-PER-006",LINE DISCH P210B TANK 300/100C,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"4""-PRE-005",LINE DISCH P310B TANK 100A/B,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"4""-SLR-006",LINE DISCH P310B TANK 200A/B,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,P-TGL-210A,SCREW LOADING PUMP 210B10A,1,3PPRINZ,II2GxhIIBGbTx,,,,,active,medium
+1,PM-TGL-210A,ELECTRIC MOTOR LOADING PUMP 210B10A,1,ABB,M3KP 200 MLB 4,,,,,active,medium
+1,"6""-GV-061",GATE VALVE INLET LOADING PUMP 210B10A,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,"6""-STR-007",STRAINER INLET LOADING PUMP 210B10A,1,CRANE ,Y STRAINER ,,,,,active,medium
+1,PDI-TGL-210A,PD STRAINER INLET LOADING PUMP 210B10A,1,ASHCROFT ,100-F5503-SL-51L-XNH,,,,,active,medium
+1,PSLL-TGL-210A,PSLL INLET LOADING PUMP 210B10A,1,ASHCROFT ,B7-68S,,,,,active,medium
+1,PG-TGL-211A,PG INLET LOADING PUMP 210B10A,1,ASHCROFT ,100-T5500-SL-04L,,,,,active,medium
+1,"3""-GV-047",VALVE PSV INLET LOADING PUMP 210B10A,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,PSV-TGL-210A,PSV LOADING PUMP 210B10A,1,BROADY VALVE,Covensional ,,,,,active,medium
+1,"3""-GV-048",VALVE PSV OUTLET LOADING PUMP 210B10A,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,PG-TGL-212A,PG OUTLET LOADING PUMP 210B10A,1,ASHCROFT ,100-T5500-SL-04L,,,,,active,medium
+1,PSHH-TGL-210A,PSHH OUTLET LOADING PUMP 210B10A,1,ASHCROFT ,B7-68S,,,,,active,medium
+1,PIT-TGL-210A,PT OUTLET LOADING PUMP 210B10A,1,ROSEMOUNT,Pressure Transmiter ,,,,,active,medium
+1,"4""-CKV-021",CHECK VALVE OUTLET LOADING PUMP 210B10A,1,Standar Vendor list Pertamina,ASTMA 216 WCB,,,,,active,medium
+1,"4""-GV-062",GATE VALVE OUTLET LOADING PUMP 210B10A,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,P-TGL-210B,SCREW LOADING PUMP 210B,1,3PPRINZ,II2GxhIIBGbTx,,,,,active,medium
+1,PM-TGL-210B,ELECTRIC MOTOR LOADING PUMP 210B,1,ABB,M3KP 225SBM 4,,,,,active,medium
+1,"6""-GV-063",GATE VALVE INLET LOADING PUMP 210B,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,"6""-STR-008",STRAINER INLET LOADING PUMP 210B,1,CRANE ,Y STRAINER ,,,,,active,medium
+1,PDI-TGL-210B,PD STRAINER INLET LOADING PUMP 210B,1,ASHCROFT ,100-F5503-SL-51L-XNH,,,,,active,medium
+1,PSLL-TGL-210B,PSLL INLET LOADING PUMP 210B,1,ASHCROFT ,B7-68S,,,,,active,medium
+1,PG-TGL-211B,PG INLET LOADING PUMP 210B,1,ASHCROFT ,100-T5500-SL-04L,,,,,active,medium
+1,"3""-GV-050",VALVE PSV INLET LOADING PUMP 210B,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,PSV-TGL-210B,PSV LOADING PUMP 210B,1,BROADY VALVE,Covensional ,,,,,active,medium
+1,"3""-GV-051",VALVE PSV OUTLET LOADING PUMP 210B,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,PG-TGL-212B,PG OUTLET LOADING PUMP 210B,1,ASHCROFT ,100-T5500-SL-04L,,,,,active,medium
+1,PSHH-TGL-210B,PSHH OUTLET LOADING PUMP 210B,1,ASHCROFT ,B7-68S,,,,,active,medium
+1,PIT-TGL-210B,PT OUTLET LOADING PUMP 210B,1,ROSEMOUNT,Pressure Transmiter ,,,,,active,medium
+1,"4""-CKV-022",CHECK VALVE OUTLET LOADING PUMP 210B,1,Standar Vendor list Pertamina,ASTMA 216 WCB,,,,,active,medium
+1,"4""-GV-064",GATE VALVE OUTLET LOADING PUMP 210B,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,"12""-SLR-066",LINE HEADER RTW P210,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"6""-SLR-067",LINE SUCTION RTW P210A,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"3""-SLR-076",LINE PSV SUCTION RTW P210A,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"3""-SLR-075",LINE PSV DISCHARGE RTW P210A,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"4""-SLR-068",LINE DISCHARGE RTW P210A,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"6""-SLR-069",LINE SUCTION RTW P210B,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"3""-SLR-078",LINE PSV SUCTION RTW P210B,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"3""-SLR-077",LINE PSV DISCHARGE RTW P210B,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"4""-SLR-070",LINE DISCHARGE RTW P210B,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"6""-SLR-073",LINE DISCHARGE HEADER RTW P210,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"6""-SLR-074",LINE UNLOADING RTW TANK 200A/B,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"1""-SLR-143",LINE HEADER PSV SUCTION P210,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"3/4""-SLR-142",LINE HEADER PSV DISCH P210,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,PSV-TGL-200B,PSV HEADER SUCTION-DISCH P210,1,BROADY VALVE,Covensional ,,,,,active,medium
+1,MOV-TGL-212,MOV UNLOADING RTW P210,1,ROTORK,IQ3,,,,,active,medium
+1,P-TGL-310A,SCREW LOADING 310A,1,3PPRINZ,II2GxhIIBGbTx,,,,,active,medium
+1,PM-TGL-310A,ELECTRIC MOTOR LOADING 310A,1,ABB,M3KP 225SBM 4,,,,,active,medium
+1,"6""-GV-065",GATE VALVE INLET LOADING 310A,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,"6""-STR-009",STRAINER INLET LOADING 310A,1,CRANE ,Y STRAINER ,,,,,active,medium
+1,PDI-TGL-310A,PD STRAINER INLET LOADING 310A,1,ASHCROFT ,100-F5503-SL-51L-XNH,,,,,active,medium
+1,PSLL-TGL-310A,PSLL INLET LOADING 310A,1,ASHCROFT ,B7-68S,,,,,active,medium
+1,PG-TGL-311A,PG INLET LOADING 310A,1,ASHCROFT ,100-T5500-SL-04L,,,,,active,medium
+1,"3""-GV-054",VALVE PSV INLET LOADING 310A,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,PSV-TGL-310A,PSV LOADING 310A,1,BROADY VALVE,Covensional ,,,,,active,medium
+1,"3""-GV-055",VALVE PSV OUTLET LOADING 310A,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,PG-TGL-312A,PG OUTLET LOADING 310A,1,ASHCROFT ,100-T5500-SL-04L,,,,,active,medium
+1,PSHH-TGL-310A,PSHH OUTLET LOADING 310A,1,ASHCROFT ,B7-68S,,,,,active,medium
+1,PIT-TGL-310A,PT OUTLET LOADING 310A,1,ROSEMOUNT,Pressure Transmiter ,,,,,active,medium
+1,"4""-CKV-023",CHECK VALVE OUTLET LOADING 310A,1,Standar Vendor list Pertamina,ASTMA 216 WCB,,,,,active,medium
+1,"4""-GV-066",GATE VALVE OUTLET LOADING 310A,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,P-TGL-310B,SCREW LOADING 310B,1,3PPRINZ,II2GxhIIBGbTx,,,,,active,medium
+1,PM-TGL-310B,ELECTRIC MOTOR LOADING 310B,1,ABB,M3KP 225SBM 4,,,,,active,medium
+1,"6""-GV-011",GATE VALVE INLET LOADING 310B,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,"6""-STR-003",STRAINER INLET LOADING 310B,1,CRANE ,Y STRAINER ,,,,,active,medium
+1,PDI-TGL-310B,PD STRAINER INLET LOADING 310B,1,ASHCROFT ,100-F5503-SL-51L-XNH,,,,,active,medium
+1,PSLL-TGL-310B,PSLL INLET LOADING 310B,1,ASHCROFT ,B7-68S,,,,,active,medium
+1,PG-TGL-311B,PG INLET LOADING 310B,1,ASHCROFT ,100-T5500-SL-04L,,,,,active,medium
+1,"3""-GV-040",VALVE PSV INLET LOADING 310B,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,PSV-TGL-310B,PSV LOADING 310B,1,BROADY VALVE,Covensional ,,,,,active,medium
+1,"3""-GV-041",VALVE PSV OUTLET LOADING 310B,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,PG-TGL-312B,PG OUTLET LOADING 310B,1,ASHCROFT ,100-T5500-SL-04L,,,,,active,medium
+1,PSHH-TGL-310B,PSHH OUTLET LOADING 310B,1,ASHCROFT ,B7-68S,,,,,active,medium
+1,PIT-TGL-310B,PT OUTLET LOADING 310B,1,ROSEMOUNT,Pressure Transmiter ,,,,,active,medium
+1,"4""-CKV-003",CHECK VALVE OUTLET LOADING 310B,1,Standar Vendor list Pertamina,ASTMA 216 WCB,,,,,active,medium
+1,"4""-GV-012",GATE VALVE OUTLET LOADING 310B,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,"12""-PER-066",LINE HEADER RTW P310,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"6""-PER-007",LINE SUCTION RTW P310A,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"3""-PER-016",LINE PSV SUCTION RTW P310A,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"3""-PER-015",LINE PSV DISCHARGE RTW P310A,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"4""-PER-008",LINE DISCHARGE RTW P310A,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"6""-PER-009",LINE SUCTION RTW P310B,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"3""-PER-018",LINE PSV SUCTION RTW P310B,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"3""-PER-017",LINE PSV DISCHARGE RTW P310B,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"4""-PER-010",LINE DISCHARGE RTW P310B,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"6""-PER-142",LINE DISCHARGE HEADER RTW P310,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"6""-PER-143",LINE UNLOADING RTW TANK 300/100C,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"6""-PER-144",LINE UNLOADING RTW TANK 100A/B,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"3/4""-PER-050",LINE HEADER PSV SUCTION P310,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"1""-PER-051",LINE HEADER PSV DISCH P310,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,PSV-TGL-300B,PSV HEADER SUCTION-DISCH P310,1,BROADY VALVE,Covensional ,,,,,active,medium
+1,MOV-TGL-312,MOV UNLOADING RTW P310,1,ROTORK,IQ3,,,,,active,medium
+1,VEN-TGL-001,RTW HEADER LS VENT BAY 1,1,ADCA ,AE16SSE,,,,,active,medium
+1,VEN-TGL-002,RTW HEADER RS VENT BAY 1,1,ADCA,AE16SSE,,,,,active,medium
+1,"8""-GV-001",GV LS RTW HEADER BAY 1,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,"8""-GV-002",GV RS RTW HEADER BAY 1,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,LT-TGL-110A,LT LS RTW HEADER BAY 1,1,ROSEMOUNT,5031,,,,,active,medium
+1,LT-TGL-110B,LT RS RTW HEADER BAY 1,1,ROSEMOUNT,5031,,,,,active,medium
+1,"2""-CKV-001",CV HOSE RTW BAY 1,1,KITZ,API 600 / API 6D - A,,,,,active,medium
+1,"2""-GV-001",GV HOSE RTW BAY 1,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,"4""-DDC-001",DDC BAY 1 CON LS 1,1,MANN-TEK,Dry Disconect Coupli,,,,,active,medium
+1,"4""-DDC-002",DDC BAY 1 CON LS 2,1,MANN-TEK,Dry Disconect Coupli,,,,,active,medium
+1,"4""-DDC-003",DDC BAY 1 CON LS 3,1,MANN-TEK,Dry Disconect Coupli,,,,,active,medium
+1,"4""-DDC-004",DDC BAY 1 CON LS 4,1,MANN-TEK,Dry Disconect Coupli,,,,,active,medium
+1,"4""-DDC-005",DDC BAY 1 CON LS 5,1,MANN-TEK,Dry Disconect Coupli,,,,,active,medium
+1,"4""-DDC-006",DDC BAY 1 CON LS 6,1,MANN-TEK,Dry Disconect Coupli,,,,,active,medium
+1,"4""-DDC-007",DDC BAY 1 CON LS 7,1,MANN-TEK,Dry Disconect Coupli,,,,,active,medium
+1,"4""-DDC-008",DDC BAY 1 CON LS 8,1,MANN-TEK,Dry Disconect Coupli,,,,,active,medium
+1,"4""-DDC-009",DDC BAY 1 CON LS 9,1,MANN-TEK,Dry Disconect Coupli,,,,,active,medium
+1,"4""-DDC-010",DDC BAY 1 CON LS 10,1,MANN-TEK,Dry Disconect Coupli,,,,,active,medium
+1,"4""-DDC-011",DDC BAY 1 CON RS 1,1,MANN-TEK,Dry Disconect Coupli,,,,,active,medium
+1,"4""-DDC-012",DDC BAY 1 CON RS 2,1,MANN-TEK,Dry Disconect Coupli,,,,,active,medium
+1,"4""-DDC-013",DDC BAY 1 CON RS 3,1,MANN-TEK,Dry Disconect Coupli,,,,,active,medium
+1,"4""-DDC-014",DDC BAY 1 CON RS 4,1,MANN-TEK,Dry Disconect Coupli,,,,,active,medium
+1,"4""-DDC-015",DDC BAY 1 CON RS 5,1,MANN-TEK,Dry Disconect Coupli,,,,,active,medium
+1,"4""-DDC-016",DDC BAY 1 CON RS 6,1,MANN-TEK,Dry Disconect Coupli,,,,,active,medium
+1,"4""-DDC-017",DDC BAY 1 CON RS 7,1,MANN-TEK,Dry Disconect Coupli,,,,,active,medium
+1,"4""-DDC-018",DDC BAY 1 CON RS 8,1,MANN-TEK,Dry Disconect Coupli,,,,,active,medium
+1,"4""-DDC-019",DDC BAY 1 CON RS 9,1,MANN-TEK,Dry Disconect Coupli,,,,,active,medium
+1,"4""-DDC-020",DDC BAY 1 CON RS 10,1,MANN-TEK,Dry Disconect Coupli,,,,,active,medium
+1,PSV-TGL-100A,PSV SUCTION-DISCH RTW BAY 1,1,BROADY VALVE,Balanced ,,,,,active,medium
+1,VEN-TGL-003,RTW HEADER LS VENT BAY 2,1,ADCA,AE16SSE,,,,,active,medium
+1,VEN-TGL-004,RTW HEADER RS VENT BAY 2,1,ADCA,AE16SSE,,,,,active,medium
+1,"12""-GV-003",GV LS RTW HEADER BAY 2,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,"12""-GV-004",GV RS RTW HEADER BAY 2,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,LT-TGL-310A,LT LS RTW HEADER BAY 2,1,ROSEMOUNT,5031,,,,,active,medium
+1,LT-TGL-310B,LT RS RTW HEADER BAY 2,1,ROSEMOUNT,5031,,,,,active,medium
+1,"2""-CKV-002",CV HOSE RTW BAY 2,1,KITZ,API 600 / API 6D - A,,,,,active,medium
+1,"2""-GV-002",GV HOSE RTW BAY 2,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,"4""-DDC-021",DDC BAY 2 CON LS 1,1,MANN-TEK,Dry Disconect Coupli,,,,,active,medium
+1,"4""-DDC-022",DDC BAY 2 CON LS 2,1,MANN-TEK,Dry Disconect Coupli,,,,,active,medium
+1,"4""-DDC-023",DDC BAY 2 CON LS 3,1,MANN-TEK,Dry Disconect Coupli,,,,,active,medium
+1,"4""-DDC-024",DDC BAY 2 CON LS 4,1,MANN-TEK,Dry Disconect Coupli,,,,,active,medium
+1,"4""-DDC-025",DDC BAY 2 CON LS 5,1,MANN-TEK,Dry Disconect Coupli,,,,,active,medium
+1,"4""-DDC-026",DDC BAY 2 CON LS 6,1,MANN-TEK,Dry Disconect Coupli,,,,,active,medium
+1,"4""-DDC-027",DDC BAY 2 CON LS 7,1,MANN-TEK,Dry Disconect Coupli,,,,,active,medium
+1,"4""-DDC-028",DDC BAY 2 CON LS 8,1,MANN-TEK,Dry Disconect Coupli,,,,,active,medium
+1,"4""-DDC-029",DDC BAY 2 CON LS 9,1,MANN-TEK,Dry Disconect Coupli,,,,,active,medium
+1,"4""-DDC-030",DDC BAY 2 CON LS 10,1,MANN-TEK,Dry Disconect Coupli,,,,,active,medium
+1,"4""-DDC-031",DDC BAY 2 CON RS 1,1,MANN-TEK,Dry Disconect Coupli,,,,,active,medium
+1,"4""-DDC-032",DDC BAY 2 CON RS 2,1,MANN-TEK,Dry Disconect Coupli,,,,,active,medium
+1,"4""-DDC-033",DDC BAY 2 CON RS 3,1,MANN-TEK,Dry Disconect Coupli,,,,,active,medium
+1,"4""-DDC-034",DDC BAY 2 CON RS 4,1,MANN-TEK,Dry Disconect Coupli,,,,,active,medium
+1,"4""-DDC-035",DDC BAY 2 CON RS 5,1,MANN-TEK,Dry Disconect Coupli,,,,,active,medium
+1,"4""-DDC-036",DDC BAY 2 CON RS 6,1,MANN-TEK,Dry Disconect Coupli,,,,,active,medium
+1,"4""-DDC-037",DDC BAY 2 CON RS 7,1,MANN-TEK,Dry Disconect Coupli,,,,,active,medium
+1,"4""-DDC-038",DDC BAY 2 CON RS 8,1,MANN-TEK,Dry Disconect Coupli,,,,,active,medium
+1,"4""-DDC-039",DDC BAY 2 CON RS 9,1,MANN-TEK,Dry Disconect Coupli,,,,,active,medium
+1,"4""-DDC-040",DDC BAY 2 CON RS 10,1,MANN-TEK,Dry Disconect Coupli,,,,,active,medium
+1,PSV-TGL-300A,PSV SUCTION-DISCH RTW BAY 2,1,BROADY VALVE,Balanced ,,,,,active,medium
+1,VEN-TGL-005,RTW HEADER LS VENT BAY 3,1,ADCA,AE16SSE,,,,,active,medium
+1,VEN-TGL-006,RTW HEADER RS VENT BAY 3,1,ADCA,AE16SSE,,,,,active,medium
+1,"8""-GV-005",GV LS RTW HEADER BAY 3,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,"8""-GV-006",GV RS RTW HEADER BAY 3,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,LT-TGL-210A,LT LS RTW HEADER BAY 3,1,ROSEMOUNT,5031,,,,,active,medium
+1,LT-TGL-210B,LT RS RTW HEADER BAY 3,1,ROSEMOUNT,5031,,,,,active,medium
+1,"2""-CKV-003",CV HOSE RTW BAY 3,1,KITZ,API 600 / API 6D - A,,,,,active,medium
+1,"2""-GV-003",GV HOSE RTW BAY 3,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,"4""-DDC-041",DDC BAY 3 CON LS 1,1,MANN-TEK,Dry Disconect Coupli,,,,,active,medium
+1,"4""-DDC-042",DDC BAY 3 CON LS 2,1,MANN-TEK,Dry Disconect Coupli,,,,,active,medium
+1,"4""-DDC-043",DDC BAY 3 CON LS 3,1,MANN-TEK,Dry Disconect Coupli,,,,,active,medium
+1,"4""-DDC-044",DDC BAY 3 CON LS 4,1,MANN-TEK,Dry Disconect Coupli,,,,,active,medium
+1,"4""-DDC-045",DDC BAY 3 CON LS 5,1,MANN-TEK,Dry Disconect Coupli,,,,,active,medium
+1,"4""-DDC-046",DDC BAY 3 CON LS 6,1,MANN-TEK,Dry Disconect Coupli,,,,,active,medium
+1,"4""-DDC-047",DDC BAY 3 CON LS 7,1,MANN-TEK,Dry Disconect Coupli,,,,,active,medium
+1,"4""-DDC-048",DDC BAY 3 CON LS 8,1,MANN-TEK,Dry Disconect Coupli,,,,,active,medium
+1,"4""-DDC-049",DDC BAY 3 CON LS 9,1,MANN-TEK,Dry Disconect Coupli,,,,,active,medium
+1,"4""-DDC-050",DDC BAY 3 CON LS 10,1,MANN-TEK,Dry Disconect Coupli,,,,,active,medium
+1,"4""-DDC-051",DDC BAY 3 CON RS 1,1,MANN-TEK,Dry Disconect Coupli,,,,,active,medium
+1,"4""-DDC-052",DDC BAY 3 CON RS 2,1,MANN-TEK,Dry Disconect Coupli,,,,,active,medium
+1,"4""-DDC-053",DDC BAY 3 CON RS 3,1,MANN-TEK,Dry Disconect Coupli,,,,,active,medium
+1,"4""-DDC-054",DDC BAY 3 CON RS 4,1,MANN-TEK,Dry Disconect Coupli,,,,,active,medium
+1,"4""-DDC-055",DDC BAY 3 CON RS 5,1,MANN-TEK,Dry Disconect Coupli,,,,,active,medium
+1,"4""-DDC-056",DDC BAY 3 CON RS 6,1,MANN-TEK,Dry Disconect Coupli,,,,,active,medium
+1,"4""-DDC-057",DDC BAY 3 CON RS 7,1,MANN-TEK,Dry Disconect Coupli,,,,,active,medium
+1,"4""-DDC-058",DDC BAY 3 CON RS 8,1,MANN-TEK,Dry Disconect Coupli,,,,,active,medium
+1,"4""-DDC-059",DDC BAY 3 CON RS 9,1,MANN-TEK,Dry Disconect Coupli,,,,,active,medium
+1,"4""-DDC-060",DDC BAY 3 CON RS 10,1,MANN-TEK,Dry Disconect Coupli,,,,,active,medium
+1,PSV-TGL-200A,PSV SUCTION-DISCH RTW BAY 3,1,BROADY VALVE,Balanced ,,,,,active,medium
+1,"8""-PRE-001",LINE RTW HEADER BAY 1,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"8""-PRE-002",LINE RTW OUTLET BAY 1,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"3/4""-PRE-070",LINE PSV SUCTION RTW BAY 1,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"1""-PRE-071",LINE PSV DISCHARGE RTW BAY 1,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"12""-PER-001",LINE RTW HEADER BAY 2,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"12""-PER-002",LINE RTW OUTLET BAY 2,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"3/4""-PER-048",LINE PSV SUCTION RTW BAY 2,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"1""-PER-049",LINE PSV DISCHARGE RTW BAY 2,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"8""-SLR-001",LINE RTW HEADER BAY 3,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"8""-SLR-002",LINE RTW OUTLET BAY 3,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"3/4""-SLR-140",LINE PSV SUCTION RTW BAY 3,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"1""-SLR-040",LINE PSV DISCHARGE RTW BAY 3,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"8""-GV-010",GV INLET STRAINER RTW HEADER P110,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,"8""-GV-011",GV OUTLET STRAINER RTW HEADER P110,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,"8""-STR-001",STRAINER RTW UNLOADING HEADER P110,1,CRANE ,Y STRAINER ,,,,,active,medium
+1,"8""-GV-020",GV INLET STRAINER RTW HEADER P210,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,"8""-GV-021",GV OUTLET STRAINER RTW HEADER P210,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,"8""-STR-002",STRAINER RTW UNLOADING HEADER P210,1,CRANE ,Y STRAINER ,,,,,active,medium
+1,"12""-GV-030",GV INLET STRAINER RTW HEADER P310,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,"12""-GV-031",GV OUTLET STRAINER RTW HEADER P310,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,"8""-STR-003",STRAINER RTW UNLOADING HEADER P310,1,CRANE ,Y STRAINER ,,,,,active,medium
+1,PDI-TGL-100,PD STRAINER RTW UNLOADING HEADER P110,1,ASHCROFT ,100-F5503-SL-51L-XNH,,,,,active,medium
+1,MOV-TGL-111,MOV RTW SUCTION UNLOADING P110,1,ROTORK,IQ3,,,,,active,medium
+1,PDI-TGL-200,PD STRAINER RTW UNLOADING HEADER P210,1,ASHCROFT ,100-F5503-SL-51L-XNH,,,,,active,medium
+1,MOV-TGL-211,MOV RTW SUCTION UNLOADING P210,1,ROTORK,IQ3,,,,,active,medium
+1,PDI-TGL-300,PD STRAINER RTW UNLOADING HEADER P310,1,ASHCROFT ,100-F5503-SL-51L-XNH,,,,,active,medium
+1,MOV-TGL-311,MOV RTW SUCTION UNLOADING P310,1,ROTORK,IQ3,,,,,active,medium
+1,"10""-FW-543",LINE FW RTW,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,FH-021,HYDRANT PILLAR 21,1,NEWAGE,FEMALE INSTANTANEOUS,,,,,active,medium
+1,FH-022,HYDRANT PILLAR 22,1,NEWAGE,FEMALE INSTANTANEOUS,,,,,active,medium
+1,FH-023,HYDRANT PILLAR 23,1,NEWAGE,FEMALE INSTANTANEOUS,,,,,active,medium
+1,FH-024,HYDRANT PILLAR 24,1,NEWAGE,FEMALE INSTANTANEOUS,,,,,active,medium
+1,"10""-GV-538",VALVE HEADER HYDRANT PILLAR 21,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,"10""-GV-539",VALVE HEADER HYDRANT PILLAR 22,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,"10""-GV-540",VALVE HEADER HYDRANT PILLAR 23,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,"10""-GV-541",VALVE HEADER HYDRANT PILLAR 24,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,"4""-GV-534",VALVE HYDRANT PILLAR 21,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,"4""-GV-535",VALVE HYDRANT PILLAR 22,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,"4""-GV-536",VALVE HYDRANT PILLAR 23,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,LG-150,AIR TERMINAL RTW SHELTER 1,1,PT. BARATA INDONESIA ,Kovensional,,,,,active,medium
+1,LG-151,AIR TERMINAL RTW SHELTER 2,1,PT. BARATA INDONESIA ,Kovensional,,,,,active,medium
+1,LG-152,AIR TERMINAL RTW SHELTER 3,1,PT. BARATA INDONESIA ,Kovensional,,,,,active,medium
+1,LG-153,AIR TERMINAL RTW SHELTER 4,1,PT. BARATA INDONESIA ,Kovensional,,,,,active,medium
+1,LG-154,AIR TERMINAL RTW SHELTER 5,1,PT. BARATA INDONESIA ,Kovensional,,,,,active,medium
+1,LG-155,AIR TERMINAL RTW SHELTER 6,1,PT. BARATA INDONESIA ,Kovensional,,,,,active,medium
+1,LG-156,AIR TERMINAL RTW SHELTER 7,1,PT. BARATA INDONESIA ,Kovensional,,,,,active,medium
+1,LG-157,AIR TERMINAL RTW SHELTER 8,1,PT. BARATA INDONESIA ,Kovensional,,,,,active,medium
+1,LG-158,AIR TERMINAL RTW SHELTER 9,1,PT. BARATA INDONESIA ,Kovensional,,,,,active,medium
+1,LG-159,AIR TERMINAL RTW SHELTER 10,1,PT. BARATA INDONESIA ,Kovensional,,,,,active,medium
+1,ER-99,EARTHING ROD INSP BOX RTW SHELTER 1,1,PT. BARATA INDONESIA ,KONVENSIONAL ,,,,,active,medium
+1,ER-100,EARTHING ROD INSP BOX RTW SHELTER 2,1,PT. BARATA INDONESIA ,KONVENSIONAL ,,,,,active,medium
+1,ER-101,EARTHING ROD INSP BOX RTW SHELTER 3,1,PT. BARATA INDONESIA ,KONVENSIONAL ,,,,,active,medium
+1,ER-102,EARTHING ROD INSP BOX RTW SHELTER 4,1,PT. BARATA INDONESIA ,KONVENSIONAL ,,,,,active,medium
+1,EM-016,GROUNDING MESH RTW SHELTER,1,PT. BARATA INDONESIA ,KONVENSIONAL ,,,,,active,medium
+1,FD-TGL-015,FLAME DETECTOR 1,1,Honeywell,FS24X,,,,,active,medium
+1,MCP-TGL-003,OUTDOOR MCP 1,1,KIDDE Fire Systems Station,KIDDE - K-84-11,,,,,active,medium
+1,ER-05,EARTH ROD INSP BOX PUMP SHELTER RTW,1,ERICO,ERITECH Lightning Ev,,,,,active,medium
+1,P-TGL-610,SCREW LOADING PUMP 610,1,3PPRINZ,II2GxhIIBGbTx,,,,,active,medium
+1,PM-TGL-610,ELECTRIC MOTOR LOADING PUMP 610,1,ABB,M3KP 160 MLE 4,,,,,active,medium
+1,"6""-GV-159",GATE VALVE SUCTION LOADING PUMP 610,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,"6""-STR-017",STRAINER SUCTION LOADING PUMP 610,1,CRANE ,Y STRAINER ,,,,,active,medium
+1,PDI-TGL-611,PD STRAINER SUCTION LOADING PUMP 610,1,ASHCROFT ,100-F5503-SL-51L-XNH,,,,,active,medium
+1,PSLL-TGL-610,PSLL SUCTION LOADING PUMP 610,1,ASHCROFT ,B7-68S,,,,,active,medium
+1,PG-TGL-631,PG SUCTION LOADING PUMP 610,1,ASHCROFT ,100-T5500-SL-04L,,,,,active,medium
+1,"3""-GV-075",VALVE PSV SUCTION LOADING PUMP 610,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,PSV-TGL-610,PSV LOADING PUMP 610,1,BROADY VALVE,Covensional ,,,,,active,medium
+1,"3""-GV-074",VALVE PSV DISCH LOADING PUMP 610,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,PG-TGL-632,PG DISCH LOADING PUMP 610,1,ASHCROFT ,100-T5500-SL-04L,,,,,active,medium
+1,PSHH-TGL-610,PSHH DISCH LOADING PUMP 610,1,ASHCROFT ,B7-68S,,,,,active,medium
+1,PIT-TGL-610,PT DISCH LOADING PUMP 610,1,ROSEMOUNT,Pressure Transmiter ,,,,,active,medium
+1,"4""-CKV-076",CHECK VALVE DISCH LOADING PUMP 610,1,Standar Vendor list Pertamina,ASTMA 216 WCB,,,,,active,medium
+1,"4""-GV-159",GATE VALVE DISCH LOADING PUMP 610,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,P-TGL-330,SCREW LOADING PUMP 330,1,3PPRINZ,II2GxhIIBGbTx,,,,,active,medium
+1,PM-TGL-330,ELECTRIC MOTOR LOADING PUMP 330,1,ABB,M3KP 160 MLE 4,,,,,active,medium
+1,"6""-GV-157",GATE VALVE SUCTION LOADING PUMP 330,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,"6""-STR-018",STRAINER SUCTION LOADING PUMP 330,1,CRANE ,Y STRAINER ,,,,,active,medium
+1,PDI-TGL-331,PD STRAINER SUCTION LOADING PUMP 330,1,ASHCROFT ,100-F5503-SL-51L-XNH,,,,,active,medium
+1,PSLL-TGL-330,PSLL SUCTION LOADING PUMP 330,1,ASHCROFT ,B7-68S,,,,,active,medium
+1,PG-TGL-330,PG SUCTION LOADING PUMP 330,1,ASHCROFT ,100-T5500-SL-04L,,,,,active,medium
+1,"3""-GV-073",VALVE PSV SUCTION LOADING PUMP 330,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,PSV-TGL-330,PSV LOADING PUMP 330,1,BROADY VALVE,Covensional ,,,,,active,medium
+1,"3""-GV-072",VALVE PSV DISCH LOADING PUMP 330,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,PG-TGL-331,PG DISCH LOADING PUMP 330,1,ASHCROFT ,100-T5500-SL-04L,,,,,active,medium
+1,PSHH-TGL-330,PSHH DISCH LOADING PUMP 330,1,ASHCROFT ,B7-68S,,,,,active,medium
+1,PIT-TGL-330,PT DISCH LOADING PUMP 330,1,ROSEMOUNT,Pressure Transmiter ,,,,,active,medium
+1,"4""-CKV-075",CHECK VALVE DISCH LOADING PUMP 330,1,Standar Vendor list Pertamina,ASTMA 216 WCB,,,,,active,medium
+1,"4""-GV-158",GATE VALVE DISCH LOADING PUMP 330,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,P-TGL-510A,SCREW LOADING PUMP 510A,1,3PPRINZ,II2GxhIIBGbTx,,,,,active,medium
+1,PM-TGL-510A,ELECTRIC MOTOR LOADING PUMP 510A,1,ABB,M3KP 160 MLE 4,,,,,active,medium
+1,"6""-GV-182",GATE VALVE SUCTION LOADING PUMP 510A,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,"6""-STR-022",STRAINER SUCTION LOADING PUMP 510A,1,CRANE ,Y STRAINER ,,,,,active,medium
+1,PDI-TGL-511A,PD STRAINER SUCTION LOADING PUMP 510A,1,ASHCROFT ,100-F5503-SL-51L-XNH,,,,,active,medium
+1,PSLL-TGL-510A,PSLL SUCTION LOADING PUMP 510A,1,ASHCROFT ,B7-68S,,,,,active,medium
+1,PG-TGL-511A,PG SUCTION LOADING PUMP 510A,1,ASHCROFT ,100-T5500-SL-04L,,,,,active,medium
+1,"3""-GV-122",VALVE PSV SUCTION LOADING PUMP 510A,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,PSV-TGL-510A,PSV LOADING PUMP 510A,1,BROADY VALVE,Covensional ,,,,,active,medium
+1,"3""-GV-126",VALVE PSV DISCH LOADING PUMP 510A,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,PG-TGL-512A,PG DISCH LOADING PUMP 510A,1,ASHCROFT ,100-T5500-SL-04L,,,,,active,medium
+1,PSHH-TGL-510A,PSHH DISCH LOADING PUMP 510A,1,ASHCROFT ,B7-68S,,,,,active,medium
+1,PIT-TGL-510A,PT DISCH LOADING PUMP 510A,1,ROSEMOUNT,Pressure Transmiter ,,,,,active,medium
+1,"4""-CKV-086",CHECK VALVE DISCH LOADING PUMP 510A,1,Standar Vendor list Pertamina,ASTMA 216 WCB,,,,,active,medium
+1,"4""-GV-183",GATE VALVE DISCH LOADING PUMP 510A,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,P-TGL-510B,SCREW LOADING PUMP 510B,1,3PPRINZ,II2GxhIIBGbTx,,,,,active,medium
+1,PM-TGL-510B,ELECTRIC MOTOR LOADING PUMP 510B,1,ABB,M3KP 160 MLE 4,,,,,active,medium
+1,"6""-GV-184",GATE VALVE SUCTION LOADING PUMP 510B,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,"6""-STR-023",STRAINER SUCTION LOADING PUMP 510B,1,CRANE ,Y STRAINER ,,,,,active,medium
+1,PDI-TGL-511B,PD STRAINER SUCTION LOADING PUMP 510B,1,ASHCROFT ,100-F5503-SL-51L-XNH,,,,,active,medium
+1,PSLL-TGL-510B,PSLL SUCTION LOADING PUMP 510B,1,ASHCROFT ,B7-68S,,,,,active,medium
+1,PG-TGL-511B,PG SUCTION LOADING PUMP 510B,1,ASHCROFT ,100-T5500-SL-04L,,,,,active,medium
+1,"3""-GV-127",VALVE PSV SUCTION LOADING PUMP 510B,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,PSV-TGL-510B,PSV LOADING PUMP 510B,1,BROADY VALVE,Covensional ,,,,,active,medium
+1,"3""-GV-128",VALVE PSV DISCH LOADING PUMP 510B,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,PG-TGL-512B,PG DISCH LOADING PUMP 510B,1,ASHCROFT ,100-T5500-SL-04L,,,,,active,medium
+1,PSHH-TGL-510B,PSHH DISCH LOADING PUMP 510B,1,ASHCROFT ,B7-68S,,,,,active,medium
+1,PIT-TGL-510B,PT DISCH LOADING PUMP 510B,1,ROSEMOUNT,Pressure Transmiter ,,,,,active,medium
+1,"4""-CKV-087",CHECK VALVE DISCH LOADING PUMP 510B,1,Standar Vendor list Pertamina,ASTMA 216 WCB,,,,,active,medium
+1,"4""-GV-185",GATE VALVE DISCH LOADING PUMP 510B,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,"6""-DEX-191",LINE SUCTION HEADER UNLOADING MT P610,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"3/4""-DEX-242",LINE PSV SUCTION HDR UNLOADING MT P610,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"1""-DEX-243",LINE PSV DISCH HEADER UNLOADING MT P610,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"3""-DEX-230",LINE PSV SUCTION UNLOADING MT P610,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"3""-DEX-229",LINE PSV DISCH UNLOADING MT P610,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"4""-DEX-198",LINE UNLOADING MT TANK 600,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"8""-SLR-118",LINE HEADER DISCH 200A/B,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"4""-SLR-130",LINE UNLOADING MT TANK 200A/B,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"4""-DEX-193",LINE DISCHARGE HEADER UNLOADING MT,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"6""-PRE-136",LINE SUCTION HEADER UNLOADING MT P330,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"3/4""-PRE-076",LINE PSV SUCTION HDR UNLOADING MT P330,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"1""-PRE-243",LINE PSV DISCH HEADER UNLOADING MT P330,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"3""-PRE-228",LINE PSV SUCTION UNLOADING MT P330,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"3""-PRE-227",LINE PSV DISCH UNLOADING MT P330,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"4""-PRE-130",LINE UNLOADING MT  TANK 100A/B,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"4""-PER-149",LINE UNLOADING MT TANK 300,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"6""-FAM-271",LINE SUCTION HEADER P510,1,Standar Vendor list Pertamina,A312 TP403 - 10S,,,,,active,medium
+1,"6""-FAM-272",LINE SUCTION HEADER UNLOADING MT P510,1,Standar Vendor list Pertamina,A312 TP403 - 10S,,,,,active,medium
+1,"6""-FAM-273",LINE SUCTION UNLOADING MT P510A,1,Standar Vendor list Pertamina,A312 TP403 - 10S,,,,,active,medium
+1,"3""-FAM-280",LINE PSV SUCTION UNLOADING MT P510A,1,Standar Vendor list Pertamina,A312 TP403 - 10S,,,,,active,medium
+1,"3""-FAM-273",LINE PSV DISCH UNLOADING MT P510A,1,Standar Vendor list Pertamina,A312 TP403 - 10S,,,,,active,medium
+1,"4""-FAM-274",LINE DISCH UNLOADING MT P510A,1,Standar Vendor list Pertamina,A312 TP403 - 10S,,,,,active,medium
+1,"4""-FAM-277",LINE DISCHARGE HEADER UNLOADING MT P510,1,Standar Vendor list Pertamina,A312 TP403 - 10S,,,,,active,medium
+1,"6""-FAM-275",LINE SUCTION UNLOADING MT P510B,1,Standar Vendor list Pertamina,A312 TP403 - 10S,,,,,active,medium
+1,"3""-FAM-282",LINE PSV SUCTION UNLOADING MT P510B,1,Standar Vendor list Pertamina,A312 TP403 - 10S,,,,,active,medium
+1,"3""-FAM-281",LINE PSV DISCH UNLOADING MT P510B,1,Standar Vendor list Pertamina,A312 TP403 - 10S,,,,,active,medium
+1,"4""-FAM-276",LINE DISCH UNLOADING MT P510B,1,Standar Vendor list Pertamina,A312 TP403 - 10S,,,,,active,medium
+1,"4""-FAM-278",LINE UNLOADING MT TANK 500A/B,1,Standar Vendor list Pertamina,A312 TP403 - 10S,,,,,active,medium
+1,"4""-BV-101",BV UNLOADING MT BAY 1 ARM 1,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,"4""-BV-102",BV UNLOADING MT BAY 2 ARM 1,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,"4""-BV-131",BV UNLOADING MT BAY 2 ARM 2,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,"4""-BV-180",BV UNLOADING MT BAY 1 ARM 3,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,"4""-BV-181",BV UNLOADING MT BAY 2 ARM 3,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,"4""-BV-160",BV DISHCARGE HDR UNLOADING MT P610 P310,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,"4""-BV-103",BV UNLOADING MT BAY 3 ARM 1,1,0,0,,,,,active,medium
+1,"4""-BV-132",BV UNLOADING MT BAY 3 ARM 2,1,0,0,,,,,active,medium
+1,"4""-BV-182",BV UNLOADING MT BAY 3 ARM 3,1,0,0,,,,,active,medium
+1,LT-TGL-610,LT SUCTION UNLOADING MT P610,1,ROSEMOUNT,5031,,,,,active,medium
+1,PSV-TGL-600B,PSV UNLOADING MT HEADER P610,1,BROADY VALVE,Balanced ,,,,,active,medium
+1,MOV-TGL-611,MOV SUCTION UNLOADING MT P610,1,ROTORK,IQ3,,,,,active,medium
+1,MOV-TGL-612,MOV DISCHARGE UNLOADING MT TANK 600,1,ROTORK,IQ3,,,,,active,medium
+1,MOV-TGL-613,MOV DISCHARGE UNLOADING MT TANK 200A/B,1,ROTORK,IQ3,,,,,active,medium
+1,LT-TGL-330,LT SUCTION UNLOADING MT P330,1,ROSEMOUNT,5031,,,,,active,medium
+1,PSV-TGL-331,PSV UNLOADING MT HEADER P330,1,BROADY VALVE,Balanced ,,,,,active,medium
+1,MOV-TGL-331,MOV SUCTION UNLOADING MT P330,1,ROTORK,IQ3,,,,,active,medium
+1,MOV-TGL-332,MOV DISCHARGE UNLOADING MT TANK 100A/B,1,ROTORK,IQ3,,,,,active,medium
+1,MOV-TGL-333,MOV DISCHARGE UNLOADING MT TANK 300,1,ROTORK,IQ3,,,,,active,medium
+1,MCP-TGL-005,OUTDOOR MCP 1,1,KIDDE Fire Systems Station,KIDDE - K-84-11,,,,,active,medium
+1,LG-41,AIR TERMINAL UNLOADING MT PUMP SHELTER 1,1,PT. BARATA INDONESIA ,Kovensional,,,,,active,medium
+1,LG-42,AIR TERMINAL UNLOADING MT PUMP SHELTER 2,1,PT. BARATA INDONESIA ,Kovensional,,,,,active,medium
+1,LG-43,AIR TERMINAL UNLOADING MT PUMP SHELTER 3,1,PT. BARATA INDONESIA ,Kovensional,,,,,active,medium
+1,LG-44,AIR TERMINAL UNLOADING MT PUMP SHELTER 4,1,PT. BARATA INDONESIA ,Kovensional,,,,,active,medium
+1,LG-45,AIR TERMINAL UNLOADING MT PUMP SHELTER 5,1,PT. BARATA INDONESIA ,Kovensional,,,,,active,medium
+1,LG-46,AIR TERMINAL UNLOADING MT PUMP SHELTER 6,1,PT. BARATA INDONESIA ,Kovensional,,,,,active,medium
+1,ER-36,EARTH ROD INSP BOX MT PUMP SHELTER 1,1,PT. BARATA INDONESIA ,KONVENSIONAL ,,,,,active,medium
+1,ER-37,EARTH ROD INSP BOX MT PUMP SHELTER 2,1,PT. BARATA INDONESIA ,KONVENSIONAL ,,,,,active,medium
+1,ER-38,EARTH ROD INSP BOX MT PUMP SHELTER 3,1,PT. BARATA INDONESIA ,KONVENSIONAL ,,,,,active,medium
+1,ER-39,EARTH ROD INSP BOX MT PUMP SHELTER 4,1,PT. BARATA INDONESIA ,KONVENSIONAL ,,,,,active,medium
+1,EM-003,GROUNDING MESH UNLOADING MT PUMP SHELTER,1,PT. BARATA INDONESIA ,KONVENSIONAL ,,,,,active,medium
+1,BCU-TGL-001,BCU BAY 1,1,0,0,,,,,active,medium
+1,"4""-BV-044",GV BAY 1 ARM 1,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,"4""-PRE-051",LINE BAY 1 ARM 1,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,SDV-TGL-130A,SDV BAY 1 ARM 1,1,ROTORK,CP/S-045-180A/DA,,,,,active,medium
+1,PSV-TGL-130A,PSV SDV BAY 1 ARM 1,1,IMI BOPP & REUTHER ,Covensional ,,,,,active,medium
+1,"4""-STR-130A",STRAINER BAY 1 ARM 1,1,FMC Technologies,E -40A-40-B-0-0-00 ,,,,,active,medium
+1,PDIT-TGL-130A,PDT STRAINER BAY 1 ARM 1,1,Siemen,7MF4433-1GA02-1PC6-Z,,,,,active,medium
+1,FT-TGL-130A,FT BAY 1 ARM 1,1,FMC Technologies,G LSJ-H GENESIS METE,,,,,active,medium
+1,TIT-TGL-130A,TT BAY 1 ARM 1,1,SIEMENT,SITRANS TS500,,,,,active,medium
+1,PIT-TGL-130A,PT BAY 1 ARM 1,1,SIEMEN,Pressure Transmiter ,,,,,active,medium
+1,DCV-TGL-130A,DCV BAY 1 ARM 1,1,Technip FMC,210 Digital ,,,,,active,medium
+1,"4""-VR-335",LINE VAPOR BAY 1,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,FA-BAY-001,FLAME ARRESTOR VR BAY 1,1,KSPC Tank Tech,KFD,,,,,active,medium
+1,"4""-CKV-031",CHECK VALVE VR BAY 1,1,KITZ,API 600 / API 6D - A,,,,,active,medium
+1,"4""-BV-034",BV HEADER VENT STACK BAY 1,1,FMC Technologies,ASTMA 216 WCB,,,,,active,medium
+1,"1""-DC-120A",LINE CLOSED DRAIN BAY 1 ARM 1,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"4""-BV-029",GV BAY 1 ARM 2.1,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,"4""-PRE-052",LINE BAY 1 ARM 2.1,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,SDV-TGL-130B,SDV BAY 1 ARM 2.1,1,ROTORK,CP/S-045-180A/DA,,,,,active,medium
+1,PSV-TGL-130B,PSV SDV BAY 1 ARM 2.1,1,IMI BOPP & REUTHER ,Covensional ,,,,,active,medium
+1,"4""-STR-130B",STRAINER BAY 1 ARM 2.1,1,FMC Technologies,E -40A-40-B-0-0-00 ,,,,,active,medium
+1,PDIT-TGL-130B,PDT STRAINER BAY 1 ARM 2.1,1,Siemen,7MF4433-1GA02-1PC6-Z,,,,,active,medium
+1,FT-TGL-130B,FT BAY 1 ARM 2.1,1,FMC Technologies,G LSJ-H GENESIS METE,,,,,active,medium
+1,TIT-TGL-130B,TT BAY 1 ARM 2.1,1,SIEMENT,SITRANS TS500,,,,,active,medium
+1,PIT-TGL-130B,PT BAY 1 ARM 2.1,1,SIEMEN,Pressure Transmiter ,,,,,active,medium
+1,DCV-TGL-130B,DCV BAY 1 ARM 2.1,1,Technip FMC,210 Digital ,,,,,active,medium
+1,"4""-CKV-032",CHECK VALVE BAY 1 ARM 2.1,1,KITZ,API 600 / API 6D - A,,,,,active,medium
+1,"4""-BV-116",GV BAY 1 ARM 2.2,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,"4""-PER-183",LINE BAY 1 ARM 2.2,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,SDV-TGL-350,SDV BAY 1 ARM 2.2,1,ROTORK,CP/S-045-180A/DA,,,,,active,medium
+1,PSV-TGL-350,PSV SDV BAY 1 ARM 2.2,1,IMI BOPP & REUTHER ,Covensional ,,,,,active,medium
+1,"4""-STR-350",STRAINER BAY 1 ARM 2.2,1,FMC Technologies,E -40A-40-B-0-0-00 ,,,,,active,medium
+1,PDIT-TGL-350,PDT STRAINER BAY 1 ARM 2.2,1,Siemen,7MF4433-1GA02-1PC6-Z,,,,,active,medium
+1,FT-TGL-350,FT BAY 1 ARM 2.2,1,FMC Technologies,G LSJ-H GENESIS METE,,,,,active,medium
+1,TIT-TGL-350,TT BAY 1 ARM 2.2,1,SIEMENT,SITRANS TS500,,,,,active,medium
+1,PIT-TGL-350,PT BAY 1 ARM 2.2,1,SIEMEN,Pressure Transmiter ,,,,,active,medium
+1,DCV-TGL-350,DCV BAY 1 ARM 2.2,1,Technip FMC,210 Digital ,,,,,active,medium
+1,"4""-SMX-301",STATIC MIXER BAY 1 ARM 2,1,SAMHWA Mixing Tec. Ltd,Type S1,,,,,active,medium
+1,BL-TGL-350,BOTTOM LOADER BAY 1 ARM 2,1,LIQUIP,LYNX Series Coupler,,,,,active,medium
+1,"1""-DC-183A",LINE CLOSED DRAIN BAY 1 ARM 2,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"2""-BV-196",GV BAY 1 ARM 3.1,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,"2""-FAM-313",LINE BAY 1 ARM 3.1,1,Standar Vendor list Pertamina,A312 TP403 - 10S,,,,,active,medium
+1,SDV-TGL-530A,SDV BAY 1 ARM 3.1,1,ROTORK,CP/S-035-130A/DA,,,,,active,medium
+1,PSV-TGL-530A,PSV SDV BAY 1 ARM 3.1,1,IMI BOPP & REUTHER ,Covensional ,,,,,active,medium
+1,"2""-STR-530A",STRAINER BAY 1 ARM 3.1,1,FMC Technologies,E Type Strainer ,,,,,active,medium
+1,PDIT-TGL-530A,PDT STRAINER BAY 1 ARM 3.1,1,Siemen,7MF4433-1GA02-1PC6-Z,,,,,active,medium
+1,FT-TGL-530A,FT BAY 1 ARM 3.1,1,FMC Technologies,GSC-2-ST GENESIS MET,,,,,active,medium
+1,TIT-TGL-530A,TT BAY 1 ARM 3.1,1,0,0,,,,,active,medium
+1,PIT-TGL-530A,PT BAY 1 ARM 3.1,1,SIEMEN,Pressure Transmiter ,,,,,active,medium
+1,DCV-TGL-530A,DCV BAY 1 ARM 3.1,1,Technip FMC,210 Digital ,,,,,active,medium
+1,"2""-CKV-012",CHECK VALVE BAY 1 ARM 3.1,1,KITZ,API 600 / API 6D - A,,,,,active,medium
+1,"4""-BV-084",GV BAY 1 ARM 3.2,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,"4""-SLR-121",LINE BAY 1 ARM 3.2,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,SDV-TGL-230A,SDV BAY 1 ARM 3.2,1,ROTORK,CP/S-045-180A/DA,,,,,active,medium
+1,PSV-TGL-230A,PSV SDV BAY 1 ARM 3.2,1,IMI BOPP & REUTHER ,Covensional ,,,,,active,medium
+1,"4""-STR-230A",STRAINER BAY 1 ARM 3.2,1,FMC Technologies,E -40A-40-B-0-0-00 ,,,,,active,medium
+1,PDIT-TGL-230A,PDT STRAINER BAY 1 ARM 3.2,1,Siemen,7MF4433-1GA02-1PC6-Z,,,,,active,medium
+1,FT-TGL-230A,FT BAY 1 ARM 3.2,1,FMC Technologies,G LSJ-H GENESIS METE,,,,,active,medium
+1,TIT-TGL-230A,TT BAY 1 ARM 3.2,1,0,0,,,,,active,medium
+1,PIT-TGL-230A,PT BAY 1 ARM 3.2,1,SIEMEN,Pressure Transmiter ,,,,,active,medium
+1,DCV-TGL-230A,DCV BAY 1 ARM 3.2,1,Technip FMC,210 Digital ,,,,,active,medium
+1,"4""-SMX-302",STATIC MIXER BAY 1 ARM 3,1,SAMHWA Mixing Tec. Ltd,Type S1,,,,,active,medium
+1,BL-TGL-230A,BOTTOM LOADER BAY 1 ARM 3,1,LIQUIP,LYNX Series Coupler,,,,,active,medium
+1,"1""-DC-121A",LINE CLOSED DRAIN BAY 1 ARM 3,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,BCU-TGL-002,BCU BAY 2,1,0,0,,,,,active,medium
+1,"4""-BV-130",GV BAY 2 ARM 1,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,"4""-PRE-053",LINE BAY 2 ARM 1,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,SDV-TGL-130C,SDV BAY 2 ARM 1,1,ROTORK,CP/S-045-180A/DA,,,,,active,medium
+1,PSV-TGL-130C,PSV SDV BAY 2 ARM 1,1,IMI BOPP & REUTHER ,Covensional ,,,,,active,medium
+1,ST-TGL-130C,STRAINER BAY 2 ARM 1,1,FMC Technologies,E -40A-40-B-0-0-00 ,,,,,active,medium
+1,PDIT-TGL-130C,PDT STRAINER BAY 2 ARM 1,1,Siemen,7MF4433-1GA02-1PC6-Z,,,,,active,medium
+1,FT-TGL-130C,FT BAY 2 ARM 1,1,FMC Technologies,G LSJ-H GENESIS METE,,,,,active,medium
+1,TIT-TGL-130C,TT BAY 2 ARM 1,1,SIEMENT,SITRANS TS500,,,,,active,medium
+1,PIT-TGL-130C,PT BAY 2 ARM 1,1,SIEMEN,Pressure Transmiter ,,,,,active,medium
+1,DCV-TGL-130C,DCV BAY 2 ARM 1,1,Technip FMC,210 Digital ,,,,,active,medium
+1,BL-TGL-130C,BOTTOM LOADER BAY 2 ARM 1,1,LIQUIP,LYNX Series Coupler,,,,,active,medium
+1,"4""-VR-333",LINE VAPOR BAY 2,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,FA-BAY-002,FLAME ARRESTOR VR BAY 2,1,KSPC Tank Tech,KFD,,,,,active,medium
+1,"4""-CKV-033",CHECK VALVE VR BAY 2,1,KITZ,API 600 / API 6D - A,,,,,active,medium
+1,"1""-DC-123A",LINE CLOSED DRAIN BAY 2 ARM 1,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"8""-BV-031",GV BAY 2 ARM 2.1,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,"4""-PRE-054",LINE BAY 2 ARM 2.1,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,SDV-TGL-130D,SDV BAY 2 ARM 2.1,1,ROTORK,CP/S-045-180A/DA,,,,,active,medium
+1,PSV-TGL-130D,PSV SDV BAY 2 ARM 2.1,1,IMI BOPP & REUTHER ,Covensional ,,,,,active,medium
+1,ST-TGL-130D,STRAINER BAY 2 ARM 2.1,1,FMC Technologies,E -40A-40-B-0-0-00 ,,,,,active,medium
+1,PDIT-TGL-130D,PDT STRAINER BAY 2 ARM 2.1,1,Siemen,7MF4433-1GA02-1PC6-Z,,,,,active,medium
+1,FT-TGL-130D,FT BAY 2 ARM 2.1,1,FMC Technologies,G LSJ-H GENESIS METE,,,,,active,medium
+1,TIT-TGL-130D,TT BAY 2 ARM 2.1,1,SIEMENT,SITRANS TS500,,,,,active,medium
+1,PIT-TGL-130D,PT BAY 2 ARM 2.1,1,SIEMEN,Pressure Transmiter ,,,,,active,medium
+1,DCV-TGL-130D,DCV BAY 2 ARM 2.1,1,Technip FMC,210 Digital ,,,,,active,medium
+1,"4""-CKV-034",CHECK VALVE BAY 2 ARM 2.1,1,KITZ,API 600 / API 6D - A,,,,,active,medium
+1,"4""-BV-118",GV BAY 2 ARM 2.2,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,"4""-PER-184",LINE BAY 2 ARM 2.2,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,SDV-TGL-360,SDV BAY 2 ARM 2.2,1,ROTORK,CP/S-045-180A/DA,,,,,active,medium
+1,PSV-TGL-360,PSV SDV BAY 2 ARM 2.2,1,IMI BOPP & REUTHER ,Covensional ,,,,,active,medium
+1,ST-TGL-360,STRAINER BAY 2 ARM 2.2,1,FMC Technologies,E -40A-40-B-0-0-00 ,,,,,active,medium
+1,PDIT-TGL-360,PDT STRAINER BAY 2 ARM 2.2,1,Siemen,7MF4433-1GA02-1PC6-Z,,,,,active,medium
+1,FT-TGL-360,FT BAY 2 ARM 2.2,1,FMC Technologies,G LSJ-H GENESIS METE,,,,,active,medium
+1,TIT-TGL-360,TT BAY 2 ARM 2.2,1,0,0,,,,,active,medium
+1,PIT-TGL-360,PT BAY 2 ARM 2.2,1,SIEMEN,Pressure Transmiter ,,,,,active,medium
+1,DCV-TGL-360,DCV BAY 2 ARM 2.2,1,Technip FMC,210 Digital ,,,,,active,medium
+1,"4""-SMX-303",STATIC MIXER BAY 2 ARM 2,1,SAMHWA Mixing Tec. Ltd,Type S1,,,,,active,medium
+1,BL-TGL-360,BOTTOM LOADER BAY 2 ARM 2,1,LIQUIP,LYNX Series Coupler,,,,,active,medium
+1,"1""-DC-184A",LINE CLOSED DRAIN BAY 2 ARM 2,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"2""-BV-197",GV BAY 2 ARM 3.1,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,"2""-FAM-314",LINE BAY 2 ARM 3.1,1,Standar Vendor list Pertamina,A312 TP403 - 10S,,,,,active,medium
+1,SDV-TGL-530B,SDV BAY 2 ARM 3.1,1,ROTORK,CP/S-045-180A/DA,,,,,active,medium
+1,PSV-TGL-530B,PSV SDV BAY 2 ARM 3.1,1,IMI BOPP & REUTHER ,Covensional ,,,,,active,medium
+1,ST-TGL-530B,STRAINER BAY 2 ARM 3.1,1,FMC Technologies,E Type Strainer ,,,,,active,medium
+1,PDIT-TGL-530B,PDT STRAINER BAY 2 ARM 3.1,1,Siemen,7MF4433-1GA02-1PC6-Z,,,,,active,medium
+1,FT-TGL-530B,FT BAY 2 ARM 3.1,1,FMC Technologies,PD Meter GSC-2-ST,,,,,active,medium
+1,FT-TGL-530,FLOW TRANSMITTER,1,FMC Technologies,PD Meter GSC-2-ST,,,,,active,medium
+1,TIT-TGL-530B,TT BAY 2 ARM 3.1,1,SIEMENT,SITRANS TS500,,,,,active,medium
+1,PIT-TGL-530B,PT BAY 2 ARM 3.1,1,SIEMEN,Pressure Transmiter ,,,,,active,medium
+1,DCV-TGL-530B,DCV BAY 2 ARM 3.1,1,Technip FMC,210 Digital ,,,,,active,medium
+1,"2""-CKV-011",CHECK VALVE BAY 2 ARM 3.1,1,KITZ,API 600 / API 6D - A,,,,,active,medium
+1,"4""-BV-085",GV BAY 2 ARM 3.2,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,"4""-SLR-122",LINE BAY 2 ARM 3.2,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,SDV-TGL-230B,SDV BAY 2 ARM 3.2,1,ROTORK,CP/S-045-180A/DA,,,,,active,medium
+1,PSV-TGL-230B,PSV SDV BAY 2 ARM 3.2,1,IMI BOPP & REUTHER ,Covensional ,,,,,active,medium
+1,ST-TGL-230B,STRAINER BAY 2 ARM 3.2,1,FMC Technologies,E -40A-40-B-0-0-00 ,,,,,active,medium
+1,PDIT-TGL-230B,PDT STRAINER BAY 2 ARM 3.2,1,Siemen,7MF4433-1GA02-1PC6-Z,,,,,active,medium
+1,FT-TGL-230B,FT BAY 2 ARM 3.2,1,FMC Technologies,G LSJ-H GENESIS METE,,,,,active,medium
+1,TIT-TGL-230B,TT BAY 2 ARM 3.2,1,SIEMENT,SITRANS TS500,,,,,active,medium
+1,PIT-TGL-230B,PT BAY 2 ARM 3.2,1,SIEMEN,Pressure Transmiter ,,,,,active,medium
+1,DCV-TGL-230B,DCV BAY 2 ARM 3.2,1,Technip FMC,210 Digital ,,,,,active,medium
+1,"4""-SMX-304",STATIC MIXER BAY 2 ARM 3,1,SAMHWA Mixing Tec. Ltd,Type S1,,,,,active,medium
+1,BL-TGL-130A,BOTTOM LOADER BAY 2 ARM 3,1,LIQUIP,LYNX Series Coupler,,,,,active,medium
+1,"1""-DC-122A",LINE CLOSED DRAIN BAY 2 ARM 3,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,BCU-TGL-003,BCU BAY 3,1,0,0,,,,,active,medium
+1,"4""-BV-120",GV BAY 3 ARM 1,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,"4""-PER-185A",LINE BAY 3 ARM 1,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,SDV-TGL-380,SDV BAY 3 ARM 1,1,ROTORK,CP/S-045-180A/DA,,,,,active,medium
+1,PSV-TGL-380,PSV SDV BAY 3 ARM 1,1,IMI BOPP & REUTHER ,Covensional ,,,,,active,medium
+1,"4""-STR-380",STRAINER BAY 3 ARM 1,1,FMC Technologies,E -40A-40-B-0-0-00 ,,,,,active,medium
+1,PDIT-TGL-380,PDT STRAINER BAY 3 ARM 1,1,Siemen,7MF4433-1GA02-1PC6-Z,,,,,active,medium
+1,FT-TGL-380,FT BAY 3 ARM 1,1,FMC Technologies,G LSJ-H GENESIS METE,,,,,active,medium
+1,TIT-TGL-380,TT BAY 3 ARM 1,1,SIEMENT,SITRANS TS500,,,,,active,medium
+1,PIT-TGL-380,PT BAY 3 ARM 1,1,SIEMEN,Pressure Transmiter ,,,,,active,medium
+1,DCV-TGL-380,DCV BAY 3 ARM 1,1,Technip FMC,210 Digital ,,,,,active,medium
+1,BL-TGL-380,BOTTOM LOADER BAY 3 ARM 1,1,0,0,,,,,active,medium
+1,"4""-VR-331",LINE VAPOR BAY 3,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,FA-BAY-003,FLAME ARRESTOR VR BAY 3,1,KSPC Tank Tech,KFD,,,,,active,medium
+1,"4""-BV-030",BV HEADER VENT STACK BAY 3,1,FMC Technologies,ASTMA 216 WCB,,,,,active,medium
+1,"4""-CKV-035",CHECK VALVE VR BAY 3,1,KITZ,API 600 / API 6D - A,,,,,active,medium
+1,"1""-DC-051A",LINE CLOSED DRAIN BAY 3 ARM 1,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"8""-BV-033",GV BAY 3 ARM 2.1,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,"4""-PRE-061",LINE BAY 3 ARM 2.1,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,SDV-TGL-130E,SDV BAY 3 ARM 2.1,1,ROTORK,CP/S-045-180A/DA,,,,,active,medium
+1,PSV-TGL-130E,PSV SDV BAY 3 ARM 2.1,1,IMI BOPP & REUTHER ,Covensional ,,,,,active,medium
+1,"4""-STR-130E",STRAINER BAY 3 ARM 2.1,1,FMC Technologies,E -40A-40-B-0-0-00 ,,,,,active,medium
+1,PDIT-TGL-130E,PDT STRAINER BAY 3 ARM 2.1,1,Siemen,7MF4433-1GA02-1PC6-Z,,,,,active,medium
+1,FT-TGL-130E,FT BAY 3 ARM 2.1,1,FMC Technologies,PD Meter GSC-2-ST,,,,,active,medium
+1,TIT-TGL-130E,TT BAY 3 ARM 2.1,1,0,0,,,,,active,medium
+1,PIT-TGL-130E,PT BAY 3 ARM 2.1,1,SIEMEN,Pressure Transmiter ,,,,,active,medium
+1,DCV-TGL-130E,DCV BAY 3 ARM 2.1,1,Technip FMC,210 Digital ,,,,,active,medium
+1,"4""-CKV-036",CHECK VALVE BAY 3 ARM 2.1,1,KITZ,API 600 / API 6D - A,,,,,active,medium
+1,"4""-BV-119",GV BAY 3 ARM 2.2,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,"4""-PER-185",LINE BAY 3 ARM 2.2,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,SDV-TGL-370,SDV BAY 3 ARM 2.2,1,ROTORK,CP/S-045-180A/DA,,,,,active,medium
+1,PSV-TGL-370,PSV SDV BAY 3 ARM 2.2,1,IMI BOPP & REUTHER ,Covensional ,,,,,active,medium
+1,ST-TGL-370,STRAINER BAY 3 ARM 2.2,1,FMC Technologies,E -40A-40-B-0-0-00 ,,,,,active,medium
+1,PDIT-TGL-370,PDT STRAINER BAY 3 ARM 2.2,1,Siemen,7MF4433-1GA02-1PC6-Z,,,,,active,medium
+1,FT-TGL-370,FT BAY 3 ARM 2.2,1,FMC Technologies,G LSJ-H GENESIS METE,,,,,active,medium
+1,TIT-TGL-370,TT BAY 3 ARM 2.2,1,SIEMENT,SITRANS TS500,,,,,active,medium
+1,PIT-TGL-370,PT BAY 3 ARM 2.2,1,SIEMEN,Pressure Transmiter ,,,,,active,medium
+1,DCV-TGL-370,DCV BAY 3 ARM 2.2,1,Technip FMC,210 Digital ,,,,,active,medium
+1,"4""-SMX-305",STATIC MIXER BAY 3 ARM 2,1,SAMHWA Mixing Tec. Ltd,Type S1,,,,,active,medium
+1,BL-TGL-370,BOTTOM LOADER BAY 3 ARM 2,1,LIQUIP,LYNX Series Coupler,,,,,active,medium
+1,"1""-DC-051B",LINE CLOSED DRAIN BAY 3 ARM 2,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"4""-BV-117",GV BAY 3 ARM 3,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,"4""-DEX-223",LINE BAY 3 ARM 3,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,SDV-TGL-630,SDV BAY 3 ARM 3,1,ROTORK,CP/S-045-180A/DA,,,,,active,medium
+1,PSV-TGL-630,PSV SDV BAY 3 ARM 3,1,IMI BOPP & REUTHER ,Covensional ,,,,,active,medium
+1,ST-TGL-630,STRAINER BAY 3 ARM 3,1,FMC Technologies,E -40A-40-B-0-0-00 ,,,,,active,medium
+1,PDIT-TGL-630,PDT STRAINER BAY 3 ARM 3,1,Siemen,7MF4433-1GA02-1PC6-Z,,,,,active,medium
+1,FT-TGL-630,FT BAY 3 ARM 3,1,FMC Technologies,G LSJ-H GENESIS METE,,,,,active,medium
+1,TIT-TGL-630,TT BAY 3 ARM 3,1,SIEMENT,SITRANS TS500,,,,,active,medium
+1,PIT-FSU-630,PT BAY 3 ARM 3,1,SIEMEN,Pressure Transmiter ,,,,,active,medium
+1,DCV-FSU-630,DCV BAY 3 ARM 3,1,Technip FMC,210 Digital ,,,,,active,medium
+1,BL-TGL-630,BOTTOM LOADER BAY 3 ARM 3,1,0,0,,,,,active,medium
+1,"1""-DC-051C",LINE CLOSED DRAIN BAY 3 ARM 3,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"6""-VR-340",LINE VENT STACK HEADER,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"6""-FA-004",FLAME ARRESTOR VENT STACK,1,KSPC Tank Tech,KFD,,,,,active,medium
+1,"4""-BV-033",BV VAPOR RETURN FILLING SHED BAY 1,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,"4""-BV-032",BV VAPOR RETURN FILLING SHED BAY 2,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,"4""-BV-031",BV VAPOR RETURN FILLING SHED BAY 3,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,"10""-FW-531",LINE FW FILLING SHED & TRUCK PARKING,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,FH-013, HYDRANT PILLAR 13,1,NEWAGE,FEMALE INSTANTANEOUS,,,,,active,medium
+1,FH-014, HYDRANT PILLAR 14,1,NEWAGE,FEMALE INSTANTANEOUS,,,,,active,medium
+1,FH-015, HYDRANT PILLAR 15,1,NEWAGE,FEMALE INSTANTANEOUS,,,,,active,medium
+1,FH-016, HYDRANT PILLAR 16,1,NEWAGE,FEMALE INSTANTANEOUS,,,,,active,medium
+1,FH-017, HYDRANT PILLAR 17,1,NEWAGE,FEMALE INSTANTANEOUS,,,,,active,medium
+1,FH-019, HYDRANT PILLAR 19,1,NEWAGE,FEMALE INSTANTANEOUS,,,,,active,medium
+1,FH-020, HYDRANT PILLAR 20,1,NEWAGE,FEMALE INSTANTANEOUS,,,,,active,medium
+1,"10""-GV-512",VALVE FW RING FS 1,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,"10""-GV-514",VALVE FW RING FS 2,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,"10""-GV-515",VALVE FW RING FS 3,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,"10""-GV-516",VALVE FW RING FS 4,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,"10""-GV-517",VALVE FW RING FS 5,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,"10""-GV-518",VALVE FW RING FS 6,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,"10""-GV-519",VALVE FW RING FS 7,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,"10""-GV-520",VALVE FW RING FS 8,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,"10""-GV-513",VALVE FW RING TP 1,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,"10""-GV-521",VALVE FW RING TP 2,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,"10""-GV-522",VALVE FW RING TP 3,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,"10""-GV-523",VALVE FW RING TP 4,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,"10""-GV-524",VALVE FW RING TP 5,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,"4""-GV-525",VALVE HYDRANT PILLAR 13,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,"4""-GV-526",VALVE HYDRANT PILLAR 14,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,"4""-GV-528",VALVE HYDRANT PILLAR 16,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,"4""-GV-533",VALVE HYDRANT PILLAR 17,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,"4""-GV-538",VALVE HYDRANT PILLAR 19,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,"6""-FO-577",LINE FOAM UNLOADING MT BAY 1,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"6""-FO-578",LINE FOAM UNLOADING MT BAY 2,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"6""-FO-581",LINE FOAM FILLING SHED BAY 1,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"6""-FO-582",LINE FOAM FILLING SHED BAY 2,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"6""-FO-583",LINE FOAM FILLING SHED BAY 3,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,DV-TGL-519,DELUGE VALVE UNLOADING MT BAY 1,1,Tyco Fire Protection,TYCO DV-5 ,,,,,active,medium
+1,DV-TGL-520,DELUGE VALVE UNLOADING MT BAY 2,1,Tyco Fire Protection,TYCO DV-5 ,,,,,active,medium
+1,DV-TGL-522,DELUGE VALVE FILLING SHED BAY 1,1,Tyco Fire Protection,TYCO DV-5 ,,,,,active,medium
+1,DV-TGL-527,DELUGE VALVE FILLING SHED BAY 2,1,Tyco Fire Protection,TYCO DV-5 ,,,,,active,medium
+1,DV-TGL-528,DELUGE VALVE FILLING SHED BAY 3,1,Tyco Fire Protection,TYCO DV-5 ,,,,,active,medium
+1,FS-TGL-500,FOAM SPRAY NOZZLE UNLOADING MT BAY 1,1,TYCO, TYCO B-1,,,,,active,medium
+1,FS-TGL-501,FOAM SPRAY NOZZLE UNLOADING MT BAY 2,1,TYCO, TYCO B-1,,,,,active,medium
+1,FS-TGL-502,FOAM SPRAY NOZZLE FILLING SHED BAY 1,1,TYCO, TYCO B-1,,,,,active,medium
+1,FS-TGL-503,FOAM SPRAY NOZZLE FILLING SHED BAY 2,1,TYCO, TYCO B-1,,,,,active,medium
+1,FS-TGL-504,FOAM SPRAY NOZZLE FILLING SHED BAY 3,1,TYCO, TYCO B-1,,,,,active,medium
+1,"3""-GV-530",GV INLET DV-519,1,0,0,,,,,active,medium
+1,"3""-GV-529",GV OUTLET DV-519,1,0,0,,,,,active,medium
+1,"3""-GV-532",GV BAYPASS DV-519,1,0,0,,,,,active,medium
+1,"3""-GV-533",GV INLET DV-520,1,0,0,,,,,active,medium
+1,"3""-GV-534",GV OUTLET DV-520,1,0,0,,,,,active,medium
+1,"3""-GV-535",GV BAYPASS DV-520,1,0,0,,,,,active,medium
+1,"3""-GV-536",GV INLET DV-522,1,0,0,,,,,active,medium
+1,"3""-GV-537",GV OUTLET DV-522,1,0,0,,,,,active,medium
+1,"3""-GV-538",GV BAYPASS DV-522,1,0,0,,,,,active,medium
+1,"3""-GV-539",GV INLET DV-527,1,0,0,,,,,active,medium
+1,"3""-GV-540",GV OUTLET DV-527,1,0,0,,,,,active,medium
+1,"3""-GV-541",GV BAYPASS DV-527,1,0,0,,,,,active,medium
+1,"3""-GV-542",GV INLET DV-528,1,0,0,,,,,active,medium
+1,"3""-GV-543",GV OUTLET DV-528,1,0,0,,,,,active,medium
+1,"3""-GV-544",GV BAYPASS DV-528,1,0,0,,,,,active,medium
+1,FD-TGL-011,FLAME DETECTOR 1,1,Honeywell,FS24X,,,,,active,medium
+1,FD-TGL-012,FLAME DETECTOR 2,1,Honeywell,FS24X,,,,,active,medium
+1,FD-TGL-013,FLAME DETECTOR 3,1,Honeywell,FS24X,,,,,active,medium
+1,FD-TGL-014,FLAME DETECTOR 4,1,Honeywell,FS24X,,,,,active,medium
+1,FD-TGL-016,FLAME DETECTOR 5,1,Honeywell,FS24X,,,,,active,medium
+1,MCP-TGL-002,OUTDOOR MCP 1,1,KIDDE Fire Systems Station,KIDDE - K-84-11,,,,,active,medium
+1,LG-47,AIR TERMINAL FILLING SHED SHELTER 1,1,PT. BARATA INDONESIA ,Kovensional,,,,,active,medium
+1,LG-48,AIR TERMINAL FILLING SHED SHELTER 2,1,PT. BARATA INDONESIA ,Kovensional,,,,,active,medium
+1,LG-49,AIR TERMINAL FILLING SHED SHELTER 3,1,PT. BARATA INDONESIA ,Kovensional,,,,,active,medium
+1,LG-50,AIR TERMINAL FILLING SHED SHELTER 4,1,PT. BARATA INDONESIA ,Kovensional,,,,,active,medium
+1,LG-51,AIR TERMINAL FILLING SHED SHELTER 5,1,PT. BARATA INDONESIA ,Kovensional,,,,,active,medium
+1,LG-52,AIR TERMINAL FILLING SHED SHELTER 6,1,PT. BARATA INDONESIA ,Kovensional,,,,,active,medium
+1,LG-53,AIR TERMINAL FILLING SHED SHELTER 7,1,PT. BARATA INDONESIA ,Kovensional,,,,,active,medium
+1,LG-54,AIR TERMINAL FILLING SHED SHELTER 8,1,PT. BARATA INDONESIA ,Kovensional,,,,,active,medium
+1,LG-55,AIR TERMINAL FILLING SHED SHELTER 9,1,PT. BARATA INDONESIA ,Kovensional,,,,,active,medium
+1,LG-56,AIR TERMINAL FILLING SHED SHELTER 10,1,PT. BARATA INDONESIA ,Kovensional,,,,,active,medium
+1,LG-57,AIR TERMINAL FILLING SHED SHELTER 11,1,PT. BARATA INDONESIA ,Kovensional,,,,,active,medium
+1,LG-58,AIR TERMINAL FILLING SHED SHELTER 12,1,PT. BARATA INDONESIA ,Kovensional,,,,,active,medium
+1,LG-59,AIR TERMINAL FILLING SHED SHELTER 13,1,PT. BARATA INDONESIA ,Kovensional,,,,,active,medium
+1,LG-60,AIR TERMINAL FILLING SHED SHELTER 14,1,PT. BARATA INDONESIA ,Kovensional,,,,,active,medium
+1,LG-61,AIR TERMINAL FILLING SHED SHELTER 15,1,PT. BARATA INDONESIA ,Kovensional,,,,,active,medium
+1,LG-62,AIR TERMINAL FILLING SHED SHELTER 16,1,PT. BARATA INDONESIA ,Kovensional,,,,,active,medium
+1,LG-63,AIR TERMINAL FILLING SHED SHELTER 17,1,PT. BARATA INDONESIA ,Kovensional,,,,,active,medium
+1,LG-64,AIR TERMINAL FILLING SHED SHELTER 18,1,PT. BARATA INDONESIA ,Kovensional,,,,,active,medium
+1,LG-65,AIR TERMINAL FILLING SHED SHELTER 19,1,PT. BARATA INDONESIA ,Kovensional,,,,,active,medium
+1,LG-66,AIR TERMINAL FILLING SHED SHELTER 20,1,PT. BARATA INDONESIA ,Kovensional,,,,,active,medium
+1,ER-40,EARTH ROD INSP BOX FILLING SHED SHLTER 1,1,PT. BARATA INDONESIA ,KONVENSIONAL ,,,,,active,medium
+1,ER-41,EARTH ROD INSP BOX FILLING SHED SHLTER 2,1,PT. BARATA INDONESIA ,KONVENSIONAL ,,,,,active,medium
+1,ER-42,EARTH ROD INSP BOX FILLING SHED SHLTER 3,1,PT. BARATA INDONESIA ,KONVENSIONAL ,,,,,active,medium
+1,ER-43,EARTH ROD INSP BOX FILLING SHED SHETER 4,1,PT. BARATA INDONESIA ,KONVENSIONAL ,,,,,active,medium
+1,EM-004,GROUNDING MESH FILLING SHED SHELTER,1,PT. BARATA INDONESIA ,KONVENSIONAL ,,,,,active,medium
+1,ER-03,EARTH ROD INSP BOX FILLING SHED,1,ERICO,ERITECH Lightning Ev,,,,,active,medium
+1,ER-04,EARTH ROD INSP BOX FILLING SHED,1,ERICO,ERITECH Lightning Ev,,,,,active,medium
+1,T-TGL-045,FW TANK  045,1,PT. BARATA INDONESIA ,Cylindrical Tank (ve,,,,,active,medium
+1,LSHH-TGL-045,LSHH FW TANK 045,1,SOR ,ELCT-651K9 / PROB-CB,,,,,active,medium
+1,LSLL-TGL-045,LSLL FW TANK 045,1,SOR ,ELCT-651K9 / PROB-CB,,,,,active,medium
+1,"2""-GV-589",GV LG 1 FW TANK 045,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,LG-TGL-045,LG FW TANK 045,1,MAGTECH,LG6-C-2,,,,,active,medium
+1,"2""-GV-590",GV LG 2 FW TANK 045,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,"4""-GV-537",GV INLET FW TANK 045,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,"16""-GV-538",GV OUTLET FW TANK 045,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,"2""-GV-541",GV DRAIN FW TANK 045,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,P-TGL-040A,CENTRIFUGAL FW TRANSFER PUMP 040A,1,GRUNFSO COMPANY,PACO Pumps LF 14705,,,,,active,medium
+1,PM-TGL-040A,ELECTRIC MOTOR FW TRANSFER PUMP 040A,1,TECO ,AESV1S020005FU,,,,,active,medium
+1,"4""-GV-530",GV SUCTION FW TRANSFER PUMP 040A,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,"4""-STR-024",STRAINER SUCTION FW TRANSFER PUMP 040A,1,ALFA,Y STRAINER ,,,,,active,medium
+1,PG-TGL-040A,PG DISCH FW TRANSFER PUMP 040A,1,ASHCROFT ,100-T5500-SL-04L,,,,,active,medium
+1,"4""-CKV-506",CHECK VALVE DISCH FW TRANSFER PUMP 040A,1,Standar Vendor list Pertamina,ASTMA 216 WCB,,,,,active,medium
+1,"4""-GV-531",GV DISCH FW TRANSFER PUMP 040A,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,P-TGL-040B,CENTRIFUGAL FW TRANSFER PUMP 040B,1,GRUNFSO COMPANY,PACO Pumps LF 14705,,,,,active,medium
+1,PM-TGL-040B,ELECTRIC MOTOR FW TRANSFER PUMP 040B,1,TECO ,AESV1S020005FU,,,,,active,medium
+1,"4""-GV-529",GV SUCTION FW TRANSFER PUMP 040B,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,"4""-STR-025",STRAINER SUCTION FW TRANSFER PUMP 040B,1,ALFA,Y STRAINER ,,,,,active,medium
+1,PG-TGL-040B,PG DISCH FW TRANSFER PUMP 040B,1,ASHCROFT ,100-T5500-SL-04L,,,,,active,medium
+1,"4""-CKV-507",CHECK VALVE DISCH FW TRANSFER PUMP 040B,1,Standar Vendor list Pertamina,ASTMA 216 WCB,,,,,active,medium
+1,"4""-GV-532",GV DISCH FW TRANSFER PUMP 040B,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,P-TGL-060A,CENTRIFUGAL FW PUMP 060A,1,PENTAIR,"8""1824BF",,,,,active,medium
+1,PM-TGL-060A,DIESEL ENGINE FW PUMP 060A,1,CLARKE,JW68-UFADJ0,,,,,active,medium
+1,"16""-GV-542",GV SUCTION FW PUMP 060A,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,"16""-STR-026",STRAINER SUCTION FW PUMP 060A,1,ALFA,Y STRAINER ,,,,,active,medium
+1,"6""-GV-537C",GV PRV DISCH FW PUMP 060A,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,PRV-TGL-060A,PRV DISCH FW PUMP 060A,1,CLA-VAL,3410.AR166.3,,,,,active,medium
+1,"10""-CKV-506A",CHECK VALVE PRV DISCH FW PUMP 060A,1,Standar Vendor list Pertamina,ASTMA 216 WCB,,,,,active,medium
+1,PG-TGL-060A,PG DISCH FW PUMP 060A,1,ASHCROFT ,100-T5500-SL-04L,,,,,active,medium
+1,"10""-CKV-508",CHECK VALVE DISCH FW PUMP 060A,1,Standar Vendor list Pertamina,ASTMA 216 WCB,,,,,active,medium
+1,"10""-GV-543",GV DISCH FW PUMP 060A,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,P-TGL-060B,CENTRIFUGAL FW PUMP 060B,1,AURORA,"6-481-20
+",,,,,active,medium
+1,PM-TGL-060B,DIESEL ENGINE FW PUMP 060B,1,DEUTZ,DFP6-1013-C20,,,,,active,medium
+1,"16""-GV-544",GV SUCTION FW PUMP 060B,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,"16""-STR-027",STRAINER SUCTION FW PUMP 060B,1,ALFA,Y STRAINER ,,,,,active,medium
+1,"6""-GV-537B",GV PRV DISCH FW PUMP 060B,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,PRV-TGL-060B,PRV DISCH FW PUMP 060B,1,Val-MATIC,15A,,,,,active,medium
+1,"10""-CKV-506B",CHECK VALVE PRV DISCH FW PUMP 060B,1,Standar Vendor list Pertamina,ASTMA 216 WCB,,,,,active,medium
+1,PG-TGL-060B,PG DISCH FW PUMP 060B,1,ASHCROFT ,100-T5500-SL-04L,,,,,active,medium
+1,"10""-CKV-509",CHECK VALVE DISCH FW PUMP 060B,1,Standar Vendor list Pertamina,ASTMA 216 WCB,,,,,active,medium
+1,"10""-GV-545",GV DISCH FW PUMP 060B,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,P-TGL-060C,CENTRIFUGAL FW PUMP 060C,1,AURORA,"6-481-20
+",,,,,active,medium
+1,PM-TGL-060C,DIESEL ENGINE FW PUMP 060C,1,DEUTZ,DFP6-1013-C20,,,,,active,medium
+1,"16""-GV-546",GV SUCTION FW PUMP 060C,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,"16""-STR-028",STRAINER SUCTION FW PUMP 060C,1,ALFA,Y STRAINER ,,,,,active,medium
+1,"6""-GV-537A",GV PRV DISCH FW PUMP 060C,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,PRV-TGL-060C,PRV DISCH FW PUMP 060C,1,Val-MATIC,15A,,,,,active,medium
+1,"10""-CKV-506C",CHECK VALVE PRV DISCH FW PUMP 060C,1,Standar Vendor list Pertamina,ASTMA 216 WCB,,,,,active,medium
+1,PG-TGL-060C,PG DISCH FW PUMP 060C,1,ASHCROFT ,100-T5500-SL-04L,,,,,active,medium
+1,"10""-CKV-510",CHECK VALVE DISCH FW PUMP 060C,1,Standar Vendor list Pertamina,ASTMA 216 WCB,,,,,active,medium
+1,"10""-GV-547",GV DISCH FW PUMP 060C,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,P-TGL-070,CENTRIFUGAL FW JOCKEY PUMP 070,1,SOUTHERN CROSS,PRGB2A,,,,,active,medium
+1,PM-TGL-070,ELECTRIC MOTOR FW JOCKEY PUMP 070,1,WEG,EFF E2 IEC 60034,,,,,active,medium
+1,"3""-GV-546",GV SUCTION FW JOCKEY PUMP 070,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,"3""-STR-028",STRAINER SUCTION FW JOCKEY PUMP 070,1,ALFA,Y STRAINER ,,,,,active,medium
+1,PG-TGL-070,PG DISCH FW JOCKEY PUMP 070,1,ASHCROFT ,100-T5500-SL-04L,,,,,active,medium
+1,"2""-CKV-510",CHECK VALVE DISCH FW JOCKEY PUMP 070,1,Standar Vendor list Pertamina,ASTMA 216 WCB,,,,,active,medium
+1,"2""-GV-547",GV DISCH FW JOCKEY PUMP 070,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,"4""-FW-536",LINE FW TRANSFER 1,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"4""-FW-537",LINE FW TRANSFER 2,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"4""-FW-538",LINE FW TRANSFER HEADER,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"4""-FW-532",LINE SUCTION FW TRANSFER P040A,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"4""-FW-531",LINE SUCTION FW TRANSFER P040B,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"4""-FW-533",LINE DISCH FW TRANSFER P040A,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"4""-FW-534",LINE DISCH FW TRANSFER P040B,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"4""-FW-535",LINE INLET FW TANK 045,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"2""-FW-538",LINE OVERFLOW FW TANK 045,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"2""-FW-539",LINE DRAIN FW TANK 045,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"16""-FW-540",LINE HEADER OUTLET FW TANK 045,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"16""-FW-529",LINE SUCTION FW P060A,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"16""-FW-548",LINE SUCTION FW P060B,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"3""-FW-545",LINE SUCTION FW JOCKEY P070,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"10""-FW-530",LINE DISCH FW P060A,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"10""-FW-549",LINE DISCH FW P060B,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"2""-FW-545",LINE DISCH FW JOCKEY P070,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"6""-FW-552",LINE PRV DISCH FW P060A,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"10""-FW-553",LINE PRV CIRC FW P060A,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"6""-FW-554",LINE PRV DISCH FW P060B,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"10""-FW-550",LINE PRV CIRC FW P060B,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"10""-FW-551",LINE HEADER PSV CIC FW P060,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"10""-FW-336",LINE DISCH CIRC FW P060A,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"10""-FW-337",LINE DISCH CIRC FW P060B,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"16""-FW-555",LINE SUCTION FW P060C,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"10""-FW-556",LINE DISCH FW P060C,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"6""-FW-557",LINE PRV DISCH FW P060C,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"10""-FW-558",LINE PRV CIRC FW P060C,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"10""-FW-338",LINE DISCH CIRC FW P060C,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"10""-FW-536",LINE FIRE WATER,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"10""-FW-537",LINE FIRE WATER,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"10""-FW-532",LINE HEADER CIRC FW TANK 045,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"10""-FW-533",LINE BYPASS HEADER CIRC FW TANK 045,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"4""-FW-542",LINE PSV DISCH HEADER FW P060,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"4""-FW-547",LINE PSV DISCH HEADER FW CIRC,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"10""-FW-541",LINE INLET FW MAIN RING,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"4""-GV-550",GV INLET FW TRANSFER 1,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,"4""-GV-551",GV INLET FW TRANSFER 2,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,"10""-GV-537A",GV PRV CIRC FW P060,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,"10""-GV-056",GV DISCH CIRC FW P060A,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,"10""-GV-057",GV DISCH CIRC FW P060B,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,"10""-GV-058",GV DISCH CIRC FW P060C,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,"10""-GV-575",GV OUTLET FT CIRC FW TANK 045,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,"10""-GV-576",GV INLET FT CIRC FW TANK 045,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,"10""-GV-577",GV BYPASS FT CIRC FW TANK 045,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,"4""-GV-548",GV PSV DISCH FW PUMP - CIRC,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,FIT-TGL-050B,FT CIRC FW TANK 045,1,Rosemont,Integrated LCD,,,,,active,medium
+1,PSV-TGL-045,PSV DISCH HEADER FW PUMP - CIRC,1,BROADY VALVE,Covensional ,,,,,active,medium
+1,PIT-TGL-060,PIT INLET FW MAIN RING,1,ROSEMOUNT,Pressure Transmiter ,,,,,active,medium
+1,MM-TGL-090,FOAM BLADDER TANK 090,1,ANSUL BLADDER,Model AFC6B,,,,,active,medium
+1,CV-TGL-090,CV FOAM PROPORTIONER,1,CRANE ,ASTMA 216 WCB,,,,,active,medium
+1,FP-TGL-001,FOAM PROPORTIONER,1,ANSUL,Air Foam Proportione,,,,,active,medium
+1,"6""-BV-561",GV INLET FOAM PROPORTIONER,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,"6""-BV-562",GV OUTLET FOAM PROPORTIONER,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,"4""-BV-564",GV FO 1,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,"4""-BV-565",GV FO 2,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,"6""-FW-561",LINE FROM FW MAIN RING,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"6""-FW-564",LINE OUTLET FOAM PROPORTIONER,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"4""-FO-562",LINE FO 1,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"4""-FO-563",LINE FO 2,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"12""-FO-565",LINE HEADER FOAM,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,SD-TGL-001,SMOKE DETECTOR 1,1,ESSER By Honeywell,Optical Smoke Detect,,,,,active,medium
+1,SD-TGL-002,SMOKE DETECTOR 2,1,ESSER By Honeywell,Optical Smoke Detect,,,,,active,medium
+1,SD-TGL-003,SMOKE DETECTOR 3,1,ESSER By Honeywell,Optical Smoke Detect,,,,,active,medium
+1,SD-TGL-004,SMOKE DETECTOR 4,1,ESSER By Honeywell,Optical Smoke Detect,,,,,active,medium
+1,SD-TGL-005,SMOKE DETECTOR 5,1,ESSER By Honeywell,Optical Smoke Detect,,,,,active,medium
+1,SD-TGL-006,SMOKE DETECTOR 6,1,ESSER By Honeywell,Optical Smoke Detect,,,,,active,medium
+1,SD-TGL-007,SMOKE DETECTOR 7,1,ESSER By Honeywell,Optical Smoke Detect,,,,,active,medium
+1,SD-TGL-008,SMOKE DETECTOR 8,1,ESSER By Honeywell,Optical Smoke Detect,,,,,active,medium
+1,SD-TGL-009,SMOKE DETECTOR 9,1,ESSER By Honeywell,Optical Smoke Detect,,,,,active,medium
+1,SD-TGL-010,SMOKE DETECTOR 10,1,ESSER By Honeywell,Optical Smoke Detect,,,,,active,medium
+1,SD-TGL-011,SMOKE DETECTOR 11,1,ESSER By Honeywell,Optical Smoke Detect,,,,,active,medium
+1,SD-TGL-012,SMOKE DETECTOR 12,1,ESSER By Honeywell,Optical Smoke Detect,,,,,active,medium
+1,MCP-TGL-007,INDOOR MCP 1,1,KIDDE Fire Systems Station,KIDDE - K-84-11,,,,,active,medium
+1,MCP-TGL-008,INDOOR MCP 2,1,KIDDE Fire Systems Station,KIDDE - K-84-11,,,,,active,medium
+1,LG-67,AIR TERMINAL FIRE WATER PUMP SHELTER 1,1,PT. BARATA INDONESIA ,Kovensional,,,,,active,medium
+1,LG-68,AIR TERMINAL FIRE WATER PUMP SHELTER 2,1,PT. BARATA INDONESIA ,Kovensional,,,,,active,medium
+1,LG-69,AIR TERMINAL FIRE WATER PUMP SHELTER 3,1,PT. BARATA INDONESIA ,Kovensional,,,,,active,medium
+1,LG-70,AIR TERMINAL FIRE WATER PUMP SHELTER 4,1,PT. BARATA INDONESIA ,Kovensional,,,,,active,medium
+1,LG-71,AIR TERMINAL FIRE WATER PUMP SHELTER 5,1,PT. BARATA INDONESIA ,Kovensional,,,,,active,medium
+1,LG-72,AIR TERMINAL FIRE WATER PUMP SHELTER 6,1,PT. BARATA INDONESIA ,Kovensional,,,,,active,medium
+1,LG-73,AIR TERMINAL FIRE WATER PUMP SHELTER 7,1,PT. BARATA INDONESIA ,Kovensional,,,,,active,medium
+1,LG-74,AIR TERMINAL FIRE WATER PUMP SHELTER 8,1,PT. BARATA INDONESIA ,Kovensional,,,,,active,medium
+1,ER-50,EARTH ROD INSP BOX FWP SHELTER 1,1,PT. BARATA INDONESIA ,KONVENSIONAL ,,,,,active,medium
+1,ER-51,EARTH ROD INSP BOX FWP SHELTER 2,1,PT. BARATA INDONESIA ,KONVENSIONAL ,,,,,active,medium
+1,EM-006,GROUNDING MESH FIRE WATER PUMP SHELTER,1,PT. BARATA INDONESIA ,KONVENSIONAL ,,,,,active,medium
+1,ER-06,EARTH ROD INSP BOX PMP SHLTR FW,1,ERICO,ERITECH Lightning Ev,,,,,active,medium
+1,Z-TGL-800A,INST AIR COMPRESSOR 800A,1,Ingersoll Rand (IR),A S H 5,,,,,active,medium
+1,Z-TGL-800B,INST AIR COMPRESSOR 800B,1,Ingersoll Rand (IR),A S H 5,,,,,active,medium
+1,V-TGL-820,INST AIR RECEIVER 820,1,ALPHA ZAMASTO,Air Receiver Tank ,,,,,active,medium
+1,Z-TGL-810,INST AIR DRYER 810,1,Ingersoll Rand (IR),D54IM,,,,,active,medium
+1,PSV-TGL-800,PSV AIR INSTRUMEN ,1,YOSITAKE ,Covensional ,,,,,active,medium
+1,"2""-AI-013",LINE HEADER OUTLET PCV-TGL-820,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"2""-AI-012",LINE HEADER INLET PCV-TGL-820,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"2""-AI-011",LINE BYPASS PCV-TGL-820,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"2""-AI-010",LINE HEADER BYPASS V-TGL-820,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"1""-AI-001",LINE INSTRUMENT AIR BAY 1,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"1""-AI-002",LINE INSTRUMENT AIR BAY 2,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"1""-AI-003",LINE INSTRUMENT AIR BAY 3,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,PG-TGL-801A,PG HEADER OUTLET PCV-TGL-820,1,ASHCROFT ,100-T5500-SL-04L,,,,,active,medium
+1,PSLL-TGL-820,PSLL HEADER OUTLET PCV-TGL-820,1,ASHCROFT ,B7-68S,,,,,active,medium
+1,PCV-TGL-820,PCV OUTLET INST AIR,1,0,0,,,,,active,medium
+1,PG-TGL-801B,PG HEADER INLET PCV-TGL-820,1,ASHCROFT ,100-T5500-SL-04L,,,,,active,medium
+1,LG-160,AIR TERMINAL AIR INSTRUMENT SHELTER 1,1,PT. BARATA INDONESIA ,Kovensional,,,,,active,medium
+1,LG-161,AIR TERMINAL AIR INSTRUMENT SHELTER 2,1,PT. BARATA INDONESIA ,Kovensional,,,,,active,medium
+1,LG-162,AIR TERMINAL AIR INSTRUMENT SHELTER 3,1,PT. BARATA INDONESIA ,Kovensional,,,,,active,medium
+1,LG-163,AIR TERMINAL AIR INSTRUMENT SHELTER 4,1,PT. BARATA INDONESIA ,Kovensional,,,,,active,medium
+1,ER-120,EARTH ROD INSP BOX AIR INST SHELTER 1,1,PT. BARATA INDONESIA ,KONVENSIONAL ,,,,,active,medium
+1,ER-121,EARTH ROD INSP BOX AIR INST SHELTER 2,1,PT. BARATA INDONESIA ,KONVENSIONAL ,,,,,active,medium
+1,EM-017,GROUNDING MESH AIR INSTRUMENT SHELTER,1,PT. BARATA INDONESIA ,KONVENSIONAL ,,,,,active,medium
+1,T-TGL-030,SUMP TANK,1,PT. BARATA INDONESIA ,Horisontal Tank,,,,,active,medium
+1,LIT-TGL-030,LIT SUMP TANK,1,ROSEMOUNT,Series 5301,,,,,active,medium
+1,"4""-FA-10",FLAME ARRESTER SUMP TANK,1,KSPC Tank Tech,KFD,,,,,active,medium
+1,SDD-TGL-010 ,SLOT DIPPING DEVICE SUMP TANK,1,KSPC-TANK TECH,"KSGH-4""",,,,,active,medium
+1,PG-TGL-030,PG DISCH SUMP PUMP,1,ASHCROFT ,100-T5500-SL-04L,,,,,active,medium
+1,"3""-CKV-005",CHECK VALVE DISCH SUMP PUMP,1,Standar Vendor list Pertamina,ASTMA 216 WCB,,,,,active,medium
+1,P-TGL-030,VERTICAL CENTRIFUGAL SUMP PUMP,1,0,0,,,,,active,medium
+1,PM-TGL-030,ELECTRIC MOTOR SUMP PUMP,1,ABB, M3JP 132SMB 2,,,,,active,medium
+1,"6""-DC-321",LINE INLET HEADER SUMP TANK,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"3""-DC-065",LINE OUTLET HEADER SUMP TANK 100A/B,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"3""-DC-066",LINE OUTLET HEADER SUMP TANK 200A/B,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"2""-GV-010",GV MANUAL DRAIN SUMP TANK,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,"2""-CKV-010",CHECK VALVE MANUAL DRAIN SUMP TANK,1,Standar Vendor list Pertamina,ASTMA 216 WCB,,,,,active,medium
+1,"3""-GV-151",GV SUMP TANK INLET T-TGL-100A/B,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,"3""-GV-152",GV SUMP TANK INLET T-TGL-200A/B,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,LG-174,AIR TERMINAL SUMP TANK FILLING SHED 1,1,PT. BARATA INDONESIA ,Kovensional,,,,,active,medium
+1,LG-175,AIR TERMINAL SUMP TANK FILLING SHED 2,1,PT. BARATA INDONESIA ,Kovensional,,,,,active,medium
+1,LG-176,AIR TERMINAL SUMP TANK FILLING SHED 3,1,PT. BARATA INDONESIA ,Kovensional,,,,,active,medium
+1,LG-177,AIR TERMINAL SUMP TANK FILLING SHED 4,1,PT. BARATA INDONESIA ,Kovensional,,,,,active,medium
+1,LG-178,AIR TERMINAL SUMP TANK FILLING SHED 5,1,PT. BARATA INDONESIA ,Kovensional,,,,,active,medium
+1,LG-179,AIR TERMINAL SUMP TANK FILLING SHED 6,1,PT. BARATA INDONESIA ,Kovensional,,,,,active,medium
+1,T-TGL-050,SUMP TANK RTW,1,PT. BARATA INDONESIA ,Horisontal Tank,,,,,active,medium
+1,LIT-TGL-050,LIT SUMP TANK RTW,1,ROSEMOUNT,Series 5301,,,,,active,medium
+1,"4""-FA-15",FLAME ARRESTER SUMP TANK RTW,1,KSPC Tank Tech,KFD,,,,,active,medium
+1,SDD-TGL-020,SLOT DIPPING DEVICE SUMP TANK RTW,1,KSPC-TANK TECH,KSPC-TANKTECK,,,,,active,medium
+1,PG-TGL-050,PG DISCH SUMP PUMP RTW,1,ASHCROFT ,100-T5500-SL-04L,,,,,active,medium
+1,"3""-CKV-105",CHECK VALVE DISCH SUMP PUMP RTW,1,Standar Vendor list Pertamina,ASTMA 216 WCB,,,,,active,medium
+1,P-TGL-050,VERTICAL CENTRIFUGAL SUMP PUMP RTW,1,0,0,,,,,active,medium
+1,PM-TGL-050,ELECTRIC MOTOR SUMP PUMP RTW,1,ABB, M3JP 132SMB 2,,,,,active,medium
+1,"2""-DC-110",LINE INLET HEADER SUMP TANK RTW,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"3""-DC-111",LINE OUTLET HEADER SUMP TANK RTW 100A/B,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"3""-DC-112",LINE OUTLET HEADER SUMP TANK RTW 200A/B,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"3""-GV-251",GV SUMP TANK RTW INLET T-TGL-100A/B,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,"3""-GV-252",GV SUMP TANK RTW INLET T-TGL-200A/B,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,LG-180,AIR TERMINAL SUMP TANK RTW 1,1,PT. BARATA INDONESIA ,Kovensional,,,,,active,medium
+1,LG-181,AIR TERMINAL SUMP TANK RTW 2,1,PT. BARATA INDONESIA ,Kovensional,,,,,active,medium
+1,LG-182,AIR TERMINAL SUMP TANK RTW 3,1,PT. BARATA INDONESIA ,Kovensional,,,,,active,medium
+1,LG-183,AIR TERMINAL SUMP TANK RTW 4,1,PT. BARATA INDONESIA ,Kovensional,,,,,active,medium
+1,LG-184,AIR TERMINAL SUMP TANK RTW 5,1,PT. BARATA INDONESIA ,Kovensional,,,,,active,medium
+1,LG-185,AIR TERMINAL SUMP TANK RTW 6,1,PT. BARATA INDONESIA ,Kovensional,,,,,active,medium
+1,ER-112,EARTHING ROD INSP BOX SUMP TANK RTW 1,1,PT. BARATA INDONESIA ,KONVENSIONAL ,,,,,active,medium
+1,ER-113,EARTHING ROD INSP BOX SUMP TANK RTW 2,1,PT. BARATA INDONESIA ,KONVENSIONAL ,,,,,active,medium
+1,EM-021,GROUNDING MESH SUMP TANK RTW,1,PT. BARATA INDONESIA ,KONVENSIONAL ,,,,,active,medium
+1,TTB-SVR-001,SERVER PANEL,1,By TAS Vendor ,INDOOR FREE STANDING,,,,,active,medium
+1,TTB-PCS-001,PROCESS CONTROL SYSTEM PANEL,1,By TAS Vendor ,INDOOR FREE STANDING,,,,,active,medium
+1,TTB-MCPCS-001,PCS MARSHALLING PANEL,1,By TAS Vendor ,INDOOR FREE STANDING,,,,,active,medium
+1,TTB-SIS-001,SIS/ESD PANEL,1,By TAS Vendor ,INDOOR FREE STANDING,,,,,active,medium
+1,TTB-MCSIS-001,SIS/ESD MARSHALLING PANEL,1,By TAS Vendor ,INDOOR FREE STANDING,,,,,active,medium
+1,TTB-F&G-001,F&G PANEL,1,By TAS Vendor ,INDOOR FREE STANDING,,,,,active,medium
+1,TTB-MCF&G-001,F&G MARSHALLING PANEL,1,By TAS Vendor ,INDOOR FREE STANDING,,,,,active,medium
+1,TTB-CCTV-001,CCTV PANEL,1,By TAS Vendor ,INDOOR FREE STANDING,,,,,active,medium
+1,TTB-PAGA-001,PUBLIC ADDRESS GENERAL ALARM PANEL,1,By TAS Vendor ,INDOOR FREE STANDING,,,,,active,medium
+1,TTB-EWS-001,ENGEINEERING WORKS STATION,1,Kiddde Fire Systems,Kidde Fenwall,,,,,active,medium
+1,TTB-OWS-001,OPERATOR WORKS STATION 1,1,Kiddde Fire Systems,Kidde Fenwall,,,,,active,medium
+1,TTB-OWS-002,OPERATOR WORKS STATION 2,1,Kiddde Fire Systems,Kidde Fenwall,,,,,active,medium
+1,TTB-MIMIC-001,MIMIC PANEL,1,Kiddde Fire Systems,Kidde Fenwall,,,,,active,medium
+1,ESD-TGL-000,EMERGENCY SHUTDOWN PANEL,1,By  PT. SIEMEN,0,,,,,active,medium
+1,UPS-TGL-001,UPS,1,AEG POWER SOLUSION ,"PROTECT 8,31 / 30 Kv",,,,,active,medium
+1,BYPASS-TGL-001,BYPASS & DB CUBICLE,1,AEG POWER SOLUSION ,0,,,,,active,medium
+1,BAT-TGL-001,BATTERY,1,FIAMM,FIAMM 12 SLA110L,,,,,active,medium
+1,SD-TGL-013,SMOKE DETECTOR 1,1,ESSER By Honeywell,Optical Smoke Detect,,,,,active,medium
+1,SD-TGL-014,SMOKE DETECTOR 2,1,ESSER By Honeywell,Optical Smoke Detect,,,,,active,medium
+1,SD-TGL-015,SMOKE DETECTOR 3,1,ESSER By Honeywell,Optical Smoke Detect,,,,,active,medium
+1,SD-TGL-016,SMOKE DETECTOR 4,1,ESSER By Honeywell,Optical Smoke Detect,,,,,active,medium
+1,SD-TGL-017,SMOKE DETECTOR 5,1,ESSER By Honeywell,Optical Smoke Detect,,,,,active,medium
+1,SD-TGL-018,SMOKE DETECTOR 6,1,ESSER By Honeywell,Optical Smoke Detect,,,,,active,medium
+1,SD-TGL-019,SMOKE DETECTOR 7,1,ESSER By Honeywell,Optical Smoke Detect,,,,,active,medium
+1,SD-TGL-020,SMOKE DETECTOR 8,1,ESSER By Honeywell,Optical Smoke Detect,,,,,active,medium
+1,SD-TGL-021,SMOKE DETECTOR 9,1,ESSER By Honeywell,Optical Smoke Detect,,,,,active,medium
+1,SD-TGL-022,SMOKE DETECTOR 10,1,ESSER By Honeywell,Optical Smoke Detect,,,,,active,medium
+1,SD-TGL-023,SMOKE DETECTOR 11,1,ESSER By Honeywell,Optical Smoke Detect,,,,,active,medium
+1,SD-TGL-024,SMOKE DETECTOR 12,1,ESSER By Honeywell,Optical Smoke Detect,,,,,active,medium
+1,SD-TGL-025,SMOKE DETECTOR 13,1,ESSER By Honeywell,Optical Smoke Detect,,,,,active,medium
+1,HD-TGL-002,HEAT DETECTOR 1,1,ESSER By Honeywell,803271 EX,,,,,active,medium
+1,HD-TGL-003,HEAT DETECTOR 2,1,ESSER By Honeywell,803271 EX,,,,,active,medium
+1,MCP-TGL-009,INDOOR MCP 1,1,KIDDE Fire Systems Station,KIDDE - K-84-11,,,,,active,medium
+1,MCP-TGL-010,INDOOR MCP 2,1,KIDDE Fire Systems Station,KIDDE - K-84-11,,,,,active,medium
+1,MCP-TGL-011,INDOOR MCP 3,1,KIDDE Fire Systems Station,KIDDE - K-84-11,,,,,active,medium
+1,SD-TGL-026,SMOKE DETECTOR 1,1,ESSER By Honeywell,Optical Smoke Detect,,,,,active,medium
+1,SD-TGL-027,SMOKE DETECTOR 2,1,ESSER By Honeywell,Optical Smoke Detect,,,,,active,medium
+1,SD-TGL-028,SMOKE DETECTOR 3,1,ESSER By Honeywell,Optical Smoke Detect,,,,,active,medium
+1,SD-TGL-029,SMOKE DETECTOR 4,1,ESSER By Honeywell,Optical Smoke Detect,,,,,active,medium
+1,SD-TGL-030,SMOKE DETECTOR 5,1,ESSER By Honeywell,Optical Smoke Detect,,,,,active,medium
+1,SD-TGL-031,SMOKE DETECTOR 6,1,ESSER By Honeywell,Optical Smoke Detect,,,,,active,medium
+1,SD-TGL-032,SMOKE DETECTOR 7,1,ESSER By Honeywell,Optical Smoke Detect,,,,,active,medium
+1,SD-TGL-033,SMOKE DETECTOR 8,1,ESSER By Honeywell,Optical Smoke Detect,,,,,active,medium
+1,SDA-TGL-003,SMOKE DETECTOR ADDRESSABLE 1,1,By  PT. SIEMEN,MATRIX Program,,,,,active,medium
+1,SDA-TGL-004,SMOKE DETECTOR ADDRESSABLE 2,1,By  PT. SIEMEN,MATRIX Program,,,,,active,medium
+1,SDA-TGL-005,SMOKE DETECTOR ADDRESSABLE 3,1,By  PT. SIEMEN,MATRIX Program,,,,,active,medium
+1,HDA-TGL-003,HEAT DETECTOR ADDRESSABLE 1,1,By  PT. SIEMEN,MATRIX Program,,,,,active,medium
+1,HDA-TGL-004,HEAT DETECTOR ADDRESSABLE 2,1,By  PT. SIEMEN,MATRIX Program,,,,,active,medium
+1,TTB-FAP-001,FIRE ALARM PANEL,1,0,0,,,,,active,medium
+1,MCP-TGL-012,INDOOR MCP 1,1,KIDDE Fire Systems Station,KIDDE - K-84-11,,,,,active,medium
+1,MCP-TGL-013,INDOOR MCP 2,1,KIDDE Fire Systems Station,KIDDE - K-84-11,,,,,active,medium
+1,"10""-FW-542",LINE FW OFFICE & WORKSHOP,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,FH-008,HYDRANT PILLAR 8,1,NEWAGE,FEMALE INSTANTANEOUS,,,,,active,medium
+1,FH-009,HYDRANT PILLAR 9,1,NEWAGE,FEMALE INSTANTANEOUS,,,,,active,medium
+1,FH-010,HYDRANT PILLAR 10,1,NEWAGE,FEMALE INSTANTANEOUS,,,,,active,medium
+1,FH-011,HYDRANT PILLAR 11,1,NEWAGE,FEMALE INSTANTANEOUS,,,,,active,medium
+1,FH-012,HYDRANT PILLAR 12,1,NEWAGE,FEMALE INSTANTANEOUS,,,,,active,medium
+1,"10""-GV-507",VALVE FW RING OFFICE 1,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,"10""-GV-508",VALVE FW RING OFFICE 2,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,"10""-GV-509",VALVE FW RING OFFICE 3,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,"10""-GV-510",VALVE FW RING OFFICE 4,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,"10""-GV-511",VALVE FW RING OFFICE 5,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,"4""-GV-520",VALVE HYDRANT PILLAR 8,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,"4""-GV-521",VALVE HYDRANT PILLAR 9,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,"4""-GV-522",VALVE HYDRANT PILLAR 10,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,"4""-GV-523",VALVE HYDRANT PILLAR 11,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,"4""-GV-524",VALVE HYDRANT PILLAR 12,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,LG-127,AIR TERMINAL OFFICE & CONTROL ROOM 1,1,PT. BARATA INDONESIA ,Kovensional,,,,,active,medium
+1,LG-128,AIR TERMINAL OFFICE & CONTROL ROOM 2,1,PT. BARATA INDONESIA ,Kovensional,,,,,active,medium
+1,LG-129,AIR TERMINAL OFFICE & CONTROL ROOM 3,1,PT. BARATA INDONESIA ,Kovensional,,,,,active,medium
+1,LG-130,AIR TERMINAL OFFICE & CONTROL ROOM 4,1,PT. BARATA INDONESIA ,Kovensional,,,,,active,medium
+1,LG-131,AIR TERMINAL OFFICE & CONTROL ROOM 5,1,PT. BARATA INDONESIA ,Kovensional,,,,,active,medium
+1,LG-132,AIR TERMINAL OFFICE & CONTROL ROOM 6,1,PT. BARATA INDONESIA ,Kovensional,,,,,active,medium
+1,LG-133,AIR TERMINAL OFFICE & CONTROL ROOM 7,1,PT. BARATA INDONESIA ,Kovensional,,,,,active,medium
+1,LG-134,AIR TERMINAL OFFICE & CONTROL ROOM 8,1,PT. BARATA INDONESIA ,Kovensional,,,,,active,medium
+1,LG-135,AIR TERMINAL OFFICE & CONTROL ROOM 9,1,PT. BARATA INDONESIA ,Kovensional,,,,,active,medium
+1,LG-136,AIR TERMINAL OFFICE & CONTROL ROOM 10,1,PT. BARATA INDONESIA ,Kovensional,,,,,active,medium
+1,LG-137,AIR TERMINAL OFFICE & CONTROL ROOM 11,1,PT. BARATA INDONESIA ,Kovensional,,,,,active,medium
+1,LG-138,AIR TERMINAL OFFICE & CONTROL ROOM 12,1,PT. BARATA INDONESIA ,Kovensional,,,,,active,medium
+1,LG-139,AIR TERMINAL OFFICE & CONTROL ROOM 13,1,PT. BARATA INDONESIA ,Kovensional,,,,,active,medium
+1,LG-140,AIR TERMINAL OFFICE & CONTROL ROOM 14,1,PT. BARATA INDONESIA ,Kovensional,,,,,active,medium
+1,LG-141,AIR TERMINAL OFFICE & CONTROL ROOM 15,1,PT. BARATA INDONESIA ,Kovensional,,,,,active,medium
+1,LG-142,AIR TERMINAL OFFICE & CONTROL ROOM 16,1,PT. BARATA INDONESIA ,Kovensional,,,,,active,medium
+1,LG-143,AIR TERMINAL OFFICE & CONTROL ROOM 17,1,PT. BARATA INDONESIA ,Kovensional,,,,,active,medium
+1,ER-89,EARTH ROD INSP BOX OFFICE & CTR ROOM 1,1,PT. BARATA INDONESIA ,KONVENSIONAL ,,,,,active,medium
+1,ER-90,EARTH ROD INSP BOX OFFICE & CTR ROOM 2,1,PT. BARATA INDONESIA ,KONVENSIONAL ,,,,,active,medium
+1,ER-91,EARTH ROD INSP BOX OFFICE & CTR ROOM 3,1,PT. BARATA INDONESIA ,KONVENSIONAL ,,,,,active,medium
+1,ER-92,EARTH ROD INSP BOX OFFICE & CTR ROOM 4,1,PT. BARATA INDONESIA ,KONVENSIONAL ,,,,,active,medium
+1,ER-129,EARTH ROD INSP BOX OFFICE & CTR ROOM 5,1,PT. BARATA INDONESIA ,KONVENSIONAL ,,,,,active,medium
+1,ER-130,EARTH ROD INSP BOX OFFICE & CTR ROOM 6,1,PT. BARATA INDONESIA ,KONVENSIONAL ,,,,,active,medium
+1,EM-014,GROUNDING MESH OFFICE & CONTROL ROOM,1,PT. BARATA INDONESIA ,KONVENSIONAL ,,,,,active,medium
+1,IE Busbar,BUSBAR COPPER 10MM,1,Siement,0,,,,,active,medium
+1,IPE Busbar,BUSBAR COPPER 10MM,1,Siement,0,,,,,active,medium
+1,Main Busbar,BUSBAR COPPER 10MM,1,Siement,0,,,,,active,medium
+1,ER-07,EARTH ROD INSP BOX CONTROL ROOM,1,PT. BARATA INDONESIA ,KONVENSIONAL ,,,,,active,medium
+1,SWG-TGL-010,INCOMING MV SWG,1,Siement,Flus Semi Flus Mount,,,,,active,medium
+1,LP-TGL-001,OUTGOING LP-TGL-001 15KW,1,ABB - By TAMCO,"MCCB XT2 160S, 3 POL",,,,,active,medium
+1,LP-TGL-002,OUTGOING LP-TGL-002 20KW,1,ABB - By TAMCO,"MCCBXT2 160S, 4 POLE",,,,,active,medium
+1,LP-TGL-003,OUTGOING LP-TGL-003 50KW,1,ABB - By TAMCO,"MCCBXT2 160S, 4 POLE",,,,,active,medium
+1,LP-TGL-004,OUTGOING LP-TGL-004 50KW,1,ABB - By TAMCO,"MCCBXT2 160S, 4 POLE",,,,,active,medium
+1,DP-TGL-001,OUTGOING MOV DP-TGL-001 45KW,1,ABB - By TAMCO,"MCCB XT2 160S, 3 POL",,,,,active,medium
+1,LP-TGL-005,OUTGOING LP-TGL-005 15KW,1,ABB - By TAMCO,"MCCB XT2 160S, 3 POL",,,,,active,medium
+1,LP-TGL-006,OUTGOING LP-TGL-006 30KW,1,ABB - By TAMCO,"MCCBXT2 160S, 3 POLE",,,,,active,medium
+1,LP-TGL-007,OUTGOING LP-TGL-007 25KW,1,ABB - By TAMCO,"MCCBXT2 160S, 4 POLE",,,,,active,medium
+1,LP-TGL-008,OUTGOING LP-TGL-008 10KW,1,ABB - By TAMCO,"MCCBXT2 160S, 4 POLE",,,,,active,medium
+1,LP-TGL-009,OUTGOING LP-TGL-009 15KW,1,ABB - By TAMCO,"MCCB XT2 160S, 3 POL",,,,,active,medium
+1,Capacitor  Bank,OUTGOING CAPACITOR BANK 100KVAR,1,ABB - By TAMCO,"MCCBXT4 250S, 4 POLE",,,,,active,medium
+1,MCC-TGL-010,OUTGOING P-TGL-110A 22KW,1,ABB - By TAMCO,"MCCB XT2 160S, 3 POL",,,,,active,medium
+1,MCC-TGL-110B,OUTGOING P-TGL-110B 37KW,1,ABB - By TAMCO,"MCCB XT2 160S, 3 POL",,,,,active,medium
+1,MCC-TGL-210A,OUTGOING P-TGL-210A 30KW,1,ABB - By TAMCO,"MCCB XT2 160S, 3 POL",,,,,active,medium
+1,MCC-TGL-210B,OUTGOING P-TGL-210B 37KW,1,ABB - By TAMCO,"MCCB XT2 160S, 3 POL",,,,,active,medium
+1,MCC-TGL-310A,OUTGOING P-TGL-310A 37KW,1,ABB - By TAMCO,"MCCB XT2 160S, 3 POL",,,,,active,medium
+1,MCC-TGL-310B,OUTGOING P-TGL-310B 37KW,1,ABB - By TAMCO,"MCCB XT2 160S, 3 POL",,,,,active,medium
+1,MCC-TGL-610,OUTGOING P-TGL-610 15KW,1,ABB - By TAMCO,"MCCB XT2 160S, 3 POL",,,,,active,medium
+1,MCC-TGL-330,OUTGOING P-TGL-330 15KW,1,ABB - By TAMCO,"MCCB XT2 160S, 3 POL",,,,,active,medium
+1,MCC-TGL-510A,OUTGOING P-TGL-510A 15KW,1,ABB - By TAMCO,"MCCB XT2 160S, 3 POL",,,,,active,medium
+1,MCC-TGL-510B,OUTGOING P-TGL-510B 15KW,1,ABB - By TAMCO,"MCCB XT2 160S, 3 POL",,,,,active,medium
+1,MCC-TGL-120A,OUTGOING P-TGL-120A 45KW,1,ABB - By TAMCO,"MCCB XT2 160S, 3 POL",,,,,active,medium
+1,MCC-TGL-120B,OUTGOING P-TGL-120B 45KW,1,ABB - By TAMCO,"MCCB XT2 160S, 3 POL",,,,,active,medium
+1,MCC-TGL-120C,OUTGOING P-TGL-120C 45KW,1,ABB - By TAMCO,"MCCB XT2 160S, 3 POL",,,,,active,medium
+1,MCC-TGL-120D,OUTGOING P-TGL-120D 45KW,1,ABB - By TAMCO,"MCCB XT2 160S, 3 POL",,,,,active,medium
+1,MCC-TGL-120E,OUTGOING P-TGL-120E 45KW,1,ABB - By TAMCO,"MCCB XT2 160S, 3 POL",,,,,active,medium
+1,MCC-TGL-220A,OUTGOING P-TGL-220A 45KW,1,ABB - By TAMCO,"MCCB XT2 160S, 3 POL",,,,,active,medium
+1,MCC-TGL-220B,OUTGOING P-TGL-220B 45KW,1,ABB - By TAMCO,"MCCB XT2 160S, 3 POL",,,,,active,medium
+1,MCC-TGL-220C,OUTGOING P-TGL-220C 45KW,1,ABB - By TAMCO,"MCCB XT2 160S, 3 POL",,,,,active,medium
+1,MCC-TGL-320A,OUTGOING P-TGL-320A 37KW,1,ABB - By TAMCO,"MCCB XT2 160S, 3 POL",,,,,active,medium
+1,MCC-TGL-320B,OUTGOING P-TGL-320B 37KW,1,ABB - By TAMCO,"MCCB XT2 160S, 3 POL",,,,,active,medium
+1,MCC-TGL-320C,OUTGOING P-TGL-320C 37KW,1,ABB - By TAMCO,"MCCB XT2 160S, 3 POL",,,,,active,medium
+1,MCC-TGL-320D,OUTGOING P-TGL-320D 37KW,1,ABB - By TAMCO,"MCCB XT2 160S, 3 POL",,,,,active,medium
+1,MCC-TGL-620,OUTGOING P-TGL-620 37KW,1,ABB - By TAMCO,"MCCB XT2 160S, 3 POL",,,,,active,medium
+1,MCC-TGL-520A,OUTGOING P-TGL-520A 15KW,1,ABB - By TAMCO,"MCCB XT2 160S, 3 POL",,,,,active,medium
+1,MCC-TGL-520B,OUTGOING P-TGL-520B 15KW,1,ABB - By TAMCO,"MCCB XT2 160S, 3 POL",,,,,active,medium
+1,MCC-TGL-520C,OUTGOING P-TGL-520C 15KW,1,ABB - By TAMCO,"MCCB XT2 160S, 3 POL",,,,,active,medium
+1,MCC-TGL-010A,OUTGOING P-TGL-010A 0.55KW,1,ABB - By TAMCO,"MCCB XT2 160S, 3 POL",,,,,active,medium
+1,MCC-TGL-010B,OUTGOING P-TGL-010B 0.55KW,1,ABB - By TAMCO,"MCCB XT2 160S, 3 POL",,,,,active,medium
+1,MCC-TGL-020A,OUTGOING P-TGL-020A 0.75KW,1,ABB - By TAMCO,"MCCB XT2 160S, 3 POL",,,,,active,medium
+1,MCC-TGL-020B,OUTGOING P-TGL-020B 0.75KW,1,ABB - By TAMCO,"MCCB XT2 160S, 3 POL",,,,,active,medium
+1,MCC-TGL-040A,OUTGOING P-TGL-040A 3.7KW,1,ABB - By TAMCO,"MCCB XT2 160S, 3 POL",,,,,active,medium
+1,MCC-TGL-040B,OUTGOING P-TGL-040B 3.7KW,1,ABB - By TAMCO,"MCCB XT2 160S, 3 POL",,,,,active,medium
+1,MCC-TGL-070,OUTGOING P-TGL-070 11KW,1,ABB - By TAMCO,"MCCB XT2 160S, 3 POL",,,,,active,medium
+1,MCC-TGL-075,OUTGOING P-TGL-075 1.5KW,1,ABB - By TAMCO,"MCCB XT2 160S, 3 POL",,,,,active,medium
+1,MCC-TGL-030,OUTGOING P-TGL-030 3.7KW,1,ABB - By TAMCO,"MCCB XT2 160S, 3 POL",,,,,active,medium
+1,MCC-TGL-050,OUTGOING P-TGL-050 3.7KW,1,ABB - By TAMCO,"MCCB XT2 160S, 3 POL",,,,,active,medium
+1,MCC-TGL-090,OUTGOING P-TGL-090 10KW,1,ABB - By TAMCO,"MCCB XT2 160S, 3 POL",,,,,active,medium
+1,MCC-TGL-800A,OUTGOING P-TGL-800A 5.5KW,1,ABB - By TAMCO,"MCCBXT2 160S, 4 POLE",,,,,active,medium
+1,MCC-TGL-800B,OUTGOING P-TGL-800B 5.5KW,1,ABB - By TAMCO,"MCCBXT2 160S, 4 POLE",,,,,active,medium
+1,GUCP-TGL-001A,GENERATOR UNIT PANEL 1,1,DEEP SEA,DSE 8610 MKII,,,,,active,medium
+1,GUCP-TGL-001B,GENERATOR UNIT PANEL 2,1,DEEP SEA,DSE 8610 MKII,,,,,active,medium
+1,SDA-TGL-001,SMOKE DETECTOR ADDRESSABLE 1,1,By  PT. SIEMEN,MATRIX Program,,,,,active,medium
+1,SDA-TGL-002,SMOKE DETECTOR ADDRESSABLE 2,1,By  PT. SIEMEN,MATRIX Program,,,,,active,medium
+1,HDA-TGL-001,HEAT DETECTOR ADDRESSABLE 1,1,By  PT. SIEMEN,MATRIX Program,,,,,active,medium
+1,HDA-TGL-002,HEAT DETECTOR ADDRESSABLE 2,1,By  PT. SIEMEN,MATRIX Program,,,,,active,medium
+1,MCP-TGL-006,INDOOR MCP 1,1,KIDDE Fire Systems Station,KIDDE - K-84-11,,,,,active,medium
+1,LG-92,AIR TERMINAL MCC & SWITCHGEAR ROOM 1,1,PT. BARATA INDONESIA ,Kovensional,,,,,active,medium
+1,LG-93,AIR TERMINAL MCC & SWITCHGEAR ROOM 2,1,PT. BARATA INDONESIA ,Kovensional,,,,,active,medium
+1,LG-94,AIR TERMINAL MCC & SWITCHGEAR ROOM 3,1,PT. BARATA INDONESIA ,Kovensional,,,,,active,medium
+1,LG-95,AIR TERMINAL MCC & SWITCHGEAR ROOM 4,1,PT. BARATA INDONESIA ,Kovensional,,,,,active,medium
+1,LG-96,AIR TERMINAL MCC & SWITCHGEAR ROOM 5,1,PT. BARATA INDONESIA ,Kovensional,,,,,active,medium
+1,LG-97,AIR TERMINAL MCC & SWITCHGEAR ROOM 6,1,PT. BARATA INDONESIA ,Kovensional,,,,,active,medium
+1,LG-98,AIR TERMINAL MCC & SWITCHGEAR ROOM 7,1,PT. BARATA INDONESIA ,Kovensional,,,,,active,medium
+1,LG-99,AIR TERMINAL MCC & SWITCHGEAR ROOM 8,1,PT. BARATA INDONESIA ,Kovensional,,,,,active,medium
+1,ER-60,EARTH ROD INSP BOX MCC & SWGR ROOM 1,1,PT. BARATA INDONESIA ,KONVENSIONAL ,,,,,active,medium
+1,ER-61,EARTH ROD INSP BOX MCC & SWGR ROOM 2,1,PT. BARATA INDONESIA ,KONVENSIONAL ,,,,,active,medium
+1,ER-62,EARTH ROD INSP BOX MCC & SWGR ROOM 3,1,PT. BARATA INDONESIA ,KONVENSIONAL ,,,,,active,medium
+1,ER-63,EARTH ROD INSP BOX MCC & SWGR ROOM 4,1,PT. BARATA INDONESIA ,KONVENSIONAL ,,,,,active,medium
+1,ER-139,EARTH ROD INSP BOX MCC & SWGR ROOM 5,1,PT. BARATA INDONESIA ,KONVENSIONAL ,,,,,active,medium
+1,EM-009,GROUNDING MESH MCC & SWITCHGEAR,1,PT. BARATA INDONESIA ,KONVENSIONAL ,,,,,active,medium
+1,SWG-TGL-001,MV SWITCHGEAR INCOMING OUTGOING,1,Siement,Flus Semi Flus Mount,,,,,active,medium
+1,TR-TGL-001,TRANSFORMER MV SWITCHGEAR,1,0,0,,,,,active,medium
+1,DE-TGL-001A,DIESEL ENGINE 001A,1,DEUTZ,BF6M1015C G2,,,,,active,medium
+1,EG-TGL-001A,ELECTRIC GENERATOR 001A,1,STAMFORD,Clas H,,,,,active,medium
+1,ST-TGL-001A,DIESEL MOTOR STARTER 001A,1,STAMFORD,S4L1S-F4,,,,,active,medium
+1,CB-TGL-001A,CIRCUIT BREAKER DEG 001A,1,ABB - By TAMCO,4 POLE - ACB I/C-3,,,,,active,medium
+1,DE-TGL-001B,DIESEL ENGINE 001B,1,DEUTZ,BF6M1015C G2,,,,,active,medium
+1,EG-TGL-001B,ELECTRIC GENERATOR 001B,1,STAMFORD,Clas H,,,,,active,medium
+1,ST-TGL-001B,DIESEL MOTOR STARTER 001B,1,STAMFORD,S4L1S-F4,,,,,active,medium
+1,CB-TGL-001B,CIRCUIT BREAKER DEG 001B,1,ABB - By TAMCO,4 POLE - ACB I/C-3,,,,,active,medium
+1,T-TGL-075,DIESEL FUEL STORAGE TANK 075,1,PT. BARATA INDONESIA,Horisontal Tank,,,,,active,medium
+1,"2""-FA-075",FA DIESEL FUEL STORAGE TANK 075,1,not installed,not installed,,,,,active,medium
+1,LG-TGL-075,LG DIESEL FUEL STORAGE TANK 075,1,TOKYO KEISO ,FM-1226-3,,,,,active,medium
+1,LIT-TGL-075,LT DIESEL FUEL STORAGE TANK 075,1,ROSEMOUNT,Series 5301,,,,,active,medium
+1,P-TGL-075,CENTRIFUGAL DF TRANSFER P075,1,Gould Pump,3196,,,,,active,medium
+1,PM-TGL-075,ELECTRIC MOTOR DF TRANSFER P075,1,ABB,M3JP 80MB 2,,,,,active,medium
+1,"3""-STR-511",STRAINER DF TRANSFER P075,1,ALFA,Y STRAINER ,,,,,active,medium
+1,"3""-GV-531",GV SUCTION DF TRANSFER P075,1,ALFA,ASTMA 216 WCB,,,,,active,medium
+1,PG-TGL-075,PG DISCH DF TRANSFER P075,1,WIKAI,233.50.160,,,,,active,medium
+1,"2""-GV-581",GV INLET F-TGL-085A,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,STR-TGL-085A,FILTER 1 DF TRANSFER P075,1,CRANE ,Basket Strainer ,,,,,active,medium
+1,"2""-GV-582",GV OUTLET F-TGL-085A,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,PDI-TGL-085A,PD FILTER 1 DF TRANSFER P075,1,ASHCROFT ,2051CD3A02A1AS5E1M5D,,,,,active,medium
+1,"2""-GV-583",GV INLET F-TGL-085B,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,STR-TGL-085B,FILTER 2 DF TRANSFER P075,1,CRANE ,Basket Strainer ,,,,,active,medium
+1,"2""-GV-584",GV OUTLET F-TGL-085B,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,PDI-TGL-085B,PD FILTER 2 DF TRANSFER P075,1,ASHCROFT ,2051CD3A02A1AS5E1M5D,,,,,active,medium
+1,"3""-DF-650",LINE SUCTION DF TRANSFER P075,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"2""-DF-651",LINE INLET DF TANK 075,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"2""-DO-653",LINE DF OVERFLOW,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"2""-DO-654",LINE DRAIN DF TANK 075,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"2""-DF-360",LINE BYPASS DF TANK 075,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"2""-DF-652",LINE OUTLET DF TANK 075,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"2""-DF-654",LINE INLET DF FW P060,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"2""-GV-571",GV INLET DF TANK 075,1,ALFA,ASTMA 216 WCB,,,,,active,medium
+1,"2""-GV-218",GV BYPASS DF TANK 075,1,ALFA,ASTMA 216 WCB,,,,,active,medium
+1,"2""-GV-575",GV DRAIN DF TANK 075,1,ALFA,ASTMA 216 WCB,,,,,active,medium
+1,"2""-GV-572",GV OUTLET DF TANK 075,1,ALFA,ASTMA 216 WCB,,,,,active,medium
+1,"2""-GV-573",GV INLET DF DAILY TANK,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,"2""-GV-574",GV INLET FW P060,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,FIT-TGL-075,FIT OUTLET DF TANK 075,1,Tokyo Keiso,AM 7000,,,,,active,medium
+1,FD-TGL-001,FLAME DETECTOR 1,1,Honeywell,FS24X,,,,,active,medium
+1,HD-TGL-001,HEAT DETECTOR 1,1,ESSER By Honeywell,803271 EX,,,,,active,medium
+1,LG-83,AIR TERMINAL DEG SHELTER 1,1,PT. BARATA INDONESIA ,Kovensional,,,,,active,medium
+1,LG-84,AIR TERMINAL DEG SHELTER 2,1,PT. BARATA INDONESIA ,Kovensional,,,,,active,medium
+1,LG-85,AIR TERMINAL DEG SHELTER 3,1,PT. BARATA INDONESIA ,Kovensional,,,,,active,medium
+1,LG-86,AIR TERMINAL DEG SHELTER 4,1,PT. BARATA INDONESIA ,Kovensional,,,,,active,medium
+1,LG-87,AIR TERMINAL DEG SHELTER 5,1,PT. BARATA INDONESIA ,Kovensional,,,,,active,medium
+1,LG-88,AIR TERMINAL DEG SHELTER 6,1,PT. BARATA INDONESIA ,Kovensional,,,,,active,medium
+1,LG-89,AIR TERMINAL DEG SHELTER 7,1,PT. BARATA INDONESIA ,Kovensional,,,,,active,medium
+1,LG-90,AIR TERMINAL DEG SHELTER 8,1,PT. BARATA INDONESIA ,Kovensional,,,,,active,medium
+1,LG-91,AIR TERMINAL DEG SHELTER 9,1,PT. BARATA INDONESIA ,Kovensional,,,,,active,medium
+1,ER-56,EARTHING ROD INSP BOX DEG SHELTER 1,1,PT. BARATA INDONESIA ,KONVENSIONAL ,,,,,active,medium
+1,ER-57,EARTHING ROD INSP BOX DEG SHELTER 2,1,PT. BARATA INDONESIA ,KONVENSIONAL ,,,,,active,medium
+1,ER-58,EARTHING ROD INSP BOX DEG SHELTER 3,1,PT. BARATA INDONESIA ,KONVENSIONAL ,,,,,active,medium
+1,ER-59,EARTHING ROD INSP BOX DEG SHELTER 4,1,PT. BARATA INDONESIA ,KONVENSIONAL ,,,,,active,medium
+1,ER-140,EARTHING ROD INSP BOX DEG SHELTER 5,1,PT. BARATA INDONESIA ,KONVENSIONAL ,,,,,active,medium
+1,ER-141,EARTHING ROD INSP BOX DEG SHELTER 6,1,PT. BARATA INDONESIA ,KONVENSIONAL ,,,,,active,medium
+1,EM-008,GROUNDING MESH DEG SHELTER,1,PT. BARATA INDONESIA ,KONVENSIONAL ,,,,,active,medium
+1,T-TGL-010,WATER RESERVOIR TANK,1,0,Horisontal Tank,,,,,active,medium
+1,FIT-TGL-010,FT SERVICE WATER PDAM,1,Tokyo Keiso,AM 7000,,,,,active,medium
+1,"1.5""-GV-501",GV OUTLET SERVICE WATER PDAM,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,"1.5""-GV-502",GV INLET WATER RESERVOIR TANK,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,LT-TGL-010,LT WATER RESERVOIR TANK,1,-,Level Swich,,,,,active,medium
+1,T-TGL-035A,ELEVATED TANK SW 035A,1,PT. Pinguin Indonesia ,TB 200,,,,,active,medium
+1,LT-TGL-035A,LT SW 035A,1,not installed,not installed,,,,,active,medium
+1,"1.5""-GV-507",GV INLET SW TANK 035A,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,"1""-GV-509",GV DRAIN SW TANK 035A,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,T-TGL-035B,ELEVATED TANK SW 035B,1,PT. Pinguin Indonesia ,TB 200,,,,,active,medium
+1,LT-TGL-035B,LT SW 035B,1,not installed,not installed,,,,,active,medium
+1,"1.5""-GV-508",GV INLET SW TANK 035B,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,"1""-GV-510",GV DRAIN SW TANK 035B,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,P-TGL-010A,CENTRIFUGAL SW PUMP 010A,1,GRUNDFOS,JPA4-54 PT-V,,,,,active,medium
+1,PM-TGL-010A,ELECTRIC MOTOR SW PUMP 010A,1,GRUNDFOS,P51920,,,,,active,medium
+1,"1.5""-GV-503",GV SUCTION SERVICE WATER PUMP 010A,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,"1.5""-GV-504",GV DISCH SERVICE WATER PUMP 010A,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,"1.5""-CKV-501",CHECK VALVE SERVICE WATER PUMP 010A,1,Standar Vendor list Pertamina,ASTMA 216 WCB,,,,,active,medium
+1,PG-TGL-010A,PG DISCH SERVICE WATER PUMP 010A,1,ASHCROFT ,100-T5500-SL-04L,,,,,active,medium
+1,P-TGL-010B,CENTRIFUGAL SW PUMP 010B,1,GRUNDFOS,JPA4-54 PT-V,,,,,active,medium
+1,PM-TGL-010B,ELECTRIC MOTOR SW PUMP 010B,1,GRUNDFOS,P51920,,,,,active,medium
+1,"1.5""-GV-505",GV SUCTION SERVICE WATER PUMP 010B,1,ALFA,Gate - Clas 800,,,,,active,medium
+1,"1.5""-GV-506",GV DISCH SERVICE WATER PUMP 010B,1,ALFA,Gate - Clas 800,,,,,active,medium
+1,"1.5""-CKV-502",CHECK VALVE SERVICE WATER PUMP 010B,1,ALFA,Swing - Clas 800,,,,,active,medium
+1,PG-TGL-010B,PG DISCH SERVICE WATER PUMP 010B,1,ASHCROFT ,100-T5500-SL-04L,,,,,active,medium
+1,P-TGL-020A,CENTRIFUGAL SW BOOSTER PUMP 020A,1,GRUNDFOS,CM3-5,,,,,active,medium
+1,PM-TGL-020A,ELECTRIC MOTOR SW BOOSTER PUMP 020A,1,GRUNDFOS,MG71B-F-B-CMS1D,,,,,active,medium
+1,PG-TGL-020A,PG SW BOOSTER PUMP 020A,1,WIKAI,233.50.160,,,,,active,medium
+1,"1""-GV-511",GV SUCTION SW BOOSTER PUMP 020A,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,"1""-GV-512",GV DISCH SW BOOSTER PUMP 020A,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,"1""-CKV-503",CHECK VALVE SW BOOSTER PUMP 020A,1,AlFA,SWING,,,,,active,medium
+1,P-TGL-020B,CENTRIFUGAL SW BOOSTER PUMP 020B,1,GRUNDFOS,CM3-5,,,,,active,medium
+1,PM-TGL-020B,ELECTRIC MOTOR SW BOOSTER PUMP 020B,1,GRUNDFOS,MG71B-F-B-CMS1D,,,,,active,medium
+1,PG-TGL-020B,PG SW BOOSTER PUMP 020B,1,WIKAI,233.50.160,,,,,active,medium
+1,"1""-GV-513",GV SUCTION SW BOOSTER PUMP 020B,1,ALFA,Gate -  Class 800,,,,,active,medium
+1,"1""-GV-514",GV DISCH SW BOOSTER PUMP 020B,1,ALFA,Gate -  Class 800,,,,,active,medium
+1,"1""-CKV-504",CHECK VALVE SW BOOSTER PUMP 020B,1,ALFA,Swing -  Class 800,,,,,active,medium
+1,"1.5""-SW-501",LINE INLET WATER RESERVOIR TANK 010,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"1.5""-SW-502",LINE SUCTION SW P010A,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"1.5""-SW-503",LINE SUCTION SW P010B,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"1.5""-SW-505",LINE DISCH SW P010B,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"1.5""-SW-504",LINE INLET SW TANK 035,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"1""-SW-508",LINE OVERFLOW SW TANK 035A,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"1""-SW-509",LINE DRAIN OPEN DITCH SW TANK 035A,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"1""-SW-512",LINE OUTLET SW TANK 035A,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"1""-SW-516",LINE DISCHARGE SW BOOSTER P020A,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"1""-SW-514",LINE HEADER SUCTION SW BOOSTER P020,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"1""-SW-510",LINE OVERFLOW SW TANK 035B,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"1""-SW-511",LINE DRAIN OPEN DITCH SW TANK 035B,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"1""-SW-513",LINE OUTLET SW TANK 035B,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"1""-SW-515",LINE DISCHARGE SW BOOSTER P020B,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"1""-SW-523",LINE HEADER DISCH SW BOOSTER P020,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"1""-SW-524",LINE SW TO WAREHOUSE AREA,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"1""-SW-525",LINE SW TO WAREHOUSE LK3 & FIRE HOUSE,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"1""-SW-526",LINE SW TO WORKSHOP AREA,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"1""-SW-527",LINE SW TO OFFICE & CONTROL ROOM,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"1""-SW-528",LINE SW TO LABORATORY,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"1""-SW-529",LINE SW TO MASJID,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"1""-SW-530",LINE SW TO HOUSE DINAS 1,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"1""-SW-531",LINE SW TO HOUSE DINAS 2,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"1""-SW-532",LINE SW TO POS SECURITY,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"1""-SW-533",LINE SW TO TAMAN,1,Standar Vendor list Pertamina,API5L/ASTM A106 Gr B,,,,,active,medium
+1,"1""-GV-515",GV SW TO WAREHOUSE AREA,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,"1""-GV-516",GV SW TO WAREHOUSE LK3 & FIRE HOUSE,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,"1""-GV-517",GV SW TO WORKSHOP AREA,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,"1""-GV-518",GV SW TO OFFICE & CONTROL ROOM,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,"1""-GV-519",GV SW TO LABORATORY,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,"1""-GV-520",GV SW TO MASJID,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,"1""-GV-521",GV SW TO HOUSE DINAS 1,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,"1""-GV-522",GV SW TO HOUSE DINAS 2,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,"1""-GV-523",GV SW TO POS SECURITY,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,"1""-GV-524",GV SW TO TAMAN,1,TBA,ASTMA 216 WCB,,,,,active,medium
+1,SD-TGL-040,SMOKE DETECTOR 2,1,0,0,,,,,active,medium
+1,SD-TGL-039,SMOKE DETECTOR 1,1,ESSER By Honeywell,Optical Smoke Detect,,,,,active,medium
+1,OC-01,OIL CATCHER 1,1,0,0,,,,,active,medium
+1,OC-02,OIL CATCHER 2,1,0,0,,,,,active,medium
+1,Over Head Crane,OVER HEAD CRANE,1,0,0,,,,,active,medium
+1,Density 15⁰C Tester,DENSITY 15⁰C TESTER,1,0,0,,,,,active,medium
+1,Distillation Tester,DISTILLATION TESTER,1,0,0,,,,,active,medium
+1,Flash Point Tester,FLASH POINT TESTER,1,0,0,,,,,active,medium
+1,Water Content Tester,WATER CONTENT TESTER,1,0,0,,,,,active,medium
+1,RVP Tester,RVP TESTER,1,0,0,,,,,active,medium
+1,Viscosity Tester,VISCOSITY TESTER,1,0,0,,,,,active,medium
+1,Total Acid Number Tester,TOTAL ACID NUMBER TESTER,1,0,0,,,,,active,medium
+1,ASTM Color Tester,ASTM COLOR TESTER,1,0,0,,,,,active,medium
+1,Fire Truck,FIRE TRUCK,1,0,0,,,,,active,medium
+1,Forklift,FORKLIFT,1,0,0,,,,,active,medium

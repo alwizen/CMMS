@@ -15,19 +15,14 @@ class EquipmentImporter extends Importer
     public static function getColumns(): array
     {
         return [
-            ImportColumn::make('area')
+            ImportColumn::make('area_id')
                 ->requiredMapping()
-                ->relationship()
                 ->rules(['required']),
             ImportColumn::make('tag_number')
                 ->requiredMapping()
                 ->rules(['required', 'max:50']),
-            ImportColumn::make('name')
-                ->requiredMapping()
-                ->rules(['required', 'max:150']),
             ImportColumn::make('description'),
             ImportColumn::make('equipment_type_id')
-                ->relationship()
                 ->rules(['max:100']),
             ImportColumn::make('manufacturer')
                 ->rules(['max:100']),
@@ -36,7 +31,7 @@ class EquipmentImporter extends Importer
             ImportColumn::make('serial_number')
                 ->rules(['max:100']),
             ImportColumn::make('installation_date')
-                ->rules(['date']),
+                ->rules(['nullable', 'date']),
             ImportColumn::make('operational_unit')
                 ->rules(['max:20']),
             ImportColumn::make('photo')
@@ -53,6 +48,16 @@ class EquipmentImporter extends Importer
     public function resolveRecord(): Equipment
     {
         return new Equipment();
+    }
+
+    public function mutateBeforeCreate(): array
+    {
+        $data = $this->data;
+
+        $data['area_id'] = $data['area'] ?? null;
+        unset($data['area']);
+
+        return $data;
     }
 
     public static function getCompletedNotificationBody(Import $import): string

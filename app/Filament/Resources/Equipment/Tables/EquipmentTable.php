@@ -21,9 +21,10 @@ class EquipmentTable
                 TextColumn::make('tag_number')
                     ->label('Tag Number')
                     ->searchable(),
-                TextColumn::make('name')
-                    ->label('Name')
-                    ->searchable(),
+                TextColumn::make('description')
+                    ->label('Description')
+                    ->limit(50)
+                    ->tooltip(fn ($state): string => $state ?? '-'),
                 TextColumn::make('area.name')
                     ->label('Area'),
                 TextColumn::make('equipmentType.name')

@@ -31,7 +31,7 @@ class RecentWorkOrdersWidget extends BaseWidget
                 Tables\Columns\TextColumn::make('work_order_number')
                     ->label('WO Number')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('equipment.name')
+                Tables\Columns\TextColumn::make('equipment.equipmentType.name')
                     ->label('Equipment'),
                 Tables\Columns\TextColumn::make('classification')
                     ->badge()

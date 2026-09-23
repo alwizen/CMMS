@@ -12,7 +12,6 @@ class EquipmentResource extends JsonResource
         return [
             'id' => $this->id,
             'tag_number' => $this->tag_number,
-            'name' => $this->name,
             'description' => $this->description,
             'equipment_type' => $this->equipmentType?->name,
             'manufacturer' => $this->manufacturer,

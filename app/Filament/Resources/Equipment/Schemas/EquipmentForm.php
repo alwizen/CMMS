@@ -32,10 +32,6 @@ class EquipmentForm
                             ->required()
                             ->unique(ignoreRecord: true)
                             ->placeholder('e.g., P-101, T-001'),
-                        TextInput::make('name')
-                            ->label('Name')
-                            ->required()
-                            ->placeholder('e.g., Pump, Storage Tank'),
                         Textarea::make('description')
                             ->label('Description')
                             ->nullable()

@@ -25,8 +25,7 @@ class EquipmentController extends Controller
         if ($request->filled('search')) {
             $search = $request->search;
             $query->where(function ($q) use ($search) {
-                $q->where('name', 'like', "%{$search}%")
-                    ->orWhere('tag_number', 'like', "%{$search}%")
+                $q->where('tag_number', 'like', "%{$search}%")
                     ->orWhere('equipment_type_id', 'like', "%{$search}%");
             });
         }

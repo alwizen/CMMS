@@ -41,6 +41,34 @@ class ActivitiesTable
                 SelectFilter::make('equipment_type_id')
                     ->label('Equipment Type')
                     ->relationship('equipmentType', 'name'),
+                SelectFilter::make('type')
+                    ->label('Type')
+                    ->options([
+                        'Maintenance' => 'Maintenance',
+                        'Inspection' => 'Inspection',
+                        'Replacement' => 'Replacement',
+                        'Cleaning' => 'Cleaning',
+                        'Testing' => 'Testing',
+                    ]),
+                SelectFilter::make('maintenance_classification')
+                    ->label('Classification')
+                    ->options([
+                        'Preventive' => 'Preventive',
+                        'Corrective' => 'Corrective',
+                    ]),
+                SelectFilter::make('interval')
+                    ->label('Interval')
+                    ->options([
+                        'Daily' => 'Daily',
+                        'Weekly' => 'Weekly',
+                        'Monthly' => 'Monthly',
+                        'Quarterly' => 'Quarterly',
+                        'Semi-annually' => 'Semi-annually',
+                        'Yearly' => 'Yearly',
+                        'As needed' => 'As needed',
+                        'Every 250 hours' => 'Every 250 hours',
+                        'Every 500 hours' => 'Every 500 hours',
+                    ]),
                 TernaryFilter::make('status')
                     ->label('Status'),
             ])

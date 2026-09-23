@@ -15,7 +15,7 @@ class MaintenanceHistoriesTable
     {
         return $table
             ->columns([
-                TextColumn::make('equipment.name')
+                TextColumn::make('equipment.equipmentType.name')
                     ->label('Equipment')
                     ->sortable(),
                 TextColumn::make('maintenance_type')
@@ -41,7 +41,7 @@ class MaintenanceHistoriesTable
             ->filters([
                 SelectFilter::make('equipment_id')
                     ->label('Equipment')
-                    ->relationship('equipment', 'name'),
+                    ->relationship('equipment', 'tag_number'),
                 SelectFilter::make('classification')
                     ->label('Classification')
                     ->options([
