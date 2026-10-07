@@ -13,11 +13,15 @@ class Area extends Model
         'code',
         'name',
         'description',
+        'latitude',
+        'longitude',
         'is_active',
     ];
 
     protected $casts = [
         'is_active' => 'boolean',
+        'latitude' => 'float',
+        'longitude' => 'float',
     ];
 
     public function company(): BelongsTo

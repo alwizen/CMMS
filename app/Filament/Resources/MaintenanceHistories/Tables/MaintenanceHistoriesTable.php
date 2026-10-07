@@ -2,12 +2,14 @@
 
 namespace App\Filament\Resources\MaintenanceHistories\Tables;
 
+use App\Models\Area;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
 
 class MaintenanceHistoriesTable
 {
@@ -46,6 +48,20 @@ class MaintenanceHistoriesTable
                     ->sortable(),
             ])
             ->filters([
+                SelectFilter::make('area_id')
+                    ->label('Area')
+                    ->options(fn (): array => Area::query()
+                        ->where('is_active', true)
+                        ->orderBy('name')
+                        ->pluck('name', 'id')
+                        ->all())
+                    ->query(fn (Builder $query, array $data): Builder => $query->when(
+                        filled($data['value']),
+                        fn (Builder $query) => $query->whereHas(
+                            'equipment',
+                            fn (Builder $equipmentQuery) => $equipmentQuery->where('area_id', $data['value']),
+                        ),
+                    )),
                 SelectFilter::make('equipment_id')
                     ->label('Equipment')
                     ->relationship('equipment', 'tag_number'),

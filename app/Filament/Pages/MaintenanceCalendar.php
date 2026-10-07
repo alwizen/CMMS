@@ -2,16 +2,12 @@
 
 namespace App\Filament\Pages;
 
-use App\Models\MaintenanceSchedule;
 use App\Models\MaintenancePlan;
+use App\Models\MaintenanceSchedule;
 use App\Models\WorkOrder;
-use App\Filament\Resources\WorkOrders\WorkOrderResource;
-use App\Filament\Resources\MaintenancePlans\MaintenancePlanResource;
-use App\Filament\Resources\MaintenanceSchedules\MaintenanceScheduleResource;
+use BackedEnum;
 use Filament\Pages\Page;
 use Filament\Support\Icons\Heroicon;
-use UnitEnum;
-use BackedEnum;
 
 class MaintenanceCalendar extends Page
 {
@@ -19,9 +15,7 @@ class MaintenanceCalendar extends Page
 
     protected static ?string $navigationLabel = 'Kalender Maintenance';
 
-    // protected static string|UnitEnum|null $navigationGroup = 'Maintenance';
-
-    // protected static ?int $navigationSort = 6;
+    protected static ?int $navigationSort = 2;
 
     protected string $view = 'filament.pages.maintenance-calendar';
 
@@ -45,15 +39,15 @@ class MaintenanceCalendar extends Page
                 $tag = $wo->equipment->tag_number;
 
                 $events[] = [
-                    'id' => 'wo-' . $wo->id,
-                    'title' => $woNumber . ' — ' . $tag,
+                    'id' => 'wo-'.$wo->id,
+                    'title' => $woNumber.' — '.$tag,
                     'start' => $wo->start_at->toDateTimeString(),
                     'end' => $wo->finish_at?->toDateTimeString(),
                     'color' => $color,
                     'extendedProps' => [
                         'type' => 'work_order',
                         'status' => $wo->status,
-                        'equipment' => $wo->equipment->equipmentType?->name . ' (' . $tag . ')',
+                        'equipment' => $wo->equipment->equipmentType?->name.' ('.$tag.')',
                         'area' => $wo->equipment->area->name ?? '-',
                         'classification' => $wo->classification,
                         'issuedBy' => $wo->issuedBy?->name ?? '-',
@@ -70,8 +64,8 @@ class MaintenanceCalendar extends Page
                 $tag = $mp->equipment->tag_number;
 
                 $events[] = [
-                    'id' => 'plan-' . $mp->id,
-                    'title' => 'Plan: ' . $tag,
+                    'id' => 'plan-'.$mp->id,
+                    'title' => 'Plan: '.$tag,
                     'start' => $mp->start_date->toDateString(),
                     'end' => $mp->end_date?->copy()->addDay()->toDateString(),
                     'color' => '#7c3aed',
@@ -79,7 +73,7 @@ class MaintenanceCalendar extends Page
                     'extendedProps' => [
                         'type' => 'plan',
                         'status' => $mp->status,
-                        'equipment' => $mp->equipment->equipmentType?->name . ' (' . $tag . ')',
+                        'equipment' => $mp->equipment->equipmentType?->name.' ('.$tag.')',
                         'area' => $mp->equipment->area->name ?? '-',
                         'classification' => $mp->maintenance_classification,
                         'interval' => $mp->interval,
@@ -106,18 +100,18 @@ class MaintenanceCalendar extends Page
                 $tag = $ms->equipment->tag_number;
 
                 $events[] = [
-                    'id' => 'schedule-' . $ms->id,
-                    'title' => $tag . ' — ' . $ms->status,
+                    'id' => 'schedule-'.$ms->id,
+                    'title' => $tag.' — '.$ms->status,
                     'start' => $ms->scheduled_date->toDateString(),
                     'color' => $color,
                     'extendedProps' => [
                         'type' => 'schedule',
                         'status' => $ms->status,
-                        'equipment' => $ms->equipment->equipmentType?->name . ' (' . $tag . ')',
+                        'equipment' => $ms->equipment->equipmentType?->name.' ('.$tag.')',
                         'area' => $ms->equipment->area->name ?? '-',
                         'description' => $ms->description,
                         'planName' => $ms->maintenancePlan
-                            ? ($ms->maintenancePlan->equipment->tag_number ?? '-') . ' — ' . $ms->maintenancePlan->interval
+                            ? ($ms->maintenancePlan->equipment->tag_number ?? '-').' — '.$ms->maintenancePlan->interval
                             : '-',
                         'rescheduledFrom' => $ms->rescheduled_from?->format('d M Y'),
                         'recordId' => $ms->id,

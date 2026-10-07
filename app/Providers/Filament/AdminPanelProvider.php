@@ -4,6 +4,7 @@ namespace App\Providers\Filament;
 
 use App\Filament\Pages\Dashboard;
 use BezhanSalleh\FilamentShield\FilamentShieldPlugin;
+use Elemind\PressFilamentTheme\Enums\PressVariant;
 use Elemind\PressFilamentTheme\PressFilamentTheme;
 use Filament\Enums\DatabaseNotificationsPosition;
 use Filament\Enums\GlobalSearchPosition;
@@ -16,20 +17,17 @@ use Filament\Panel;
 use Filament\PanelProvider;
 use Filament\Support\Colors\Color;
 use Filament\Support\Enums\Width;
+use Filament\View\PanelsRenderHook;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
 use Illuminate\Cookie\Middleware\EncryptCookies;
 use Illuminate\Foundation\Http\Middleware\PreventRequestForgery;
 use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
-use Filament\View\PanelsRenderHook;
-use JohnRivera7\FilamentMia\MiaTheme;
-use Noreviq\FilamentTheme\NoreviqThemePlugin;
 use Noreviq\FilamentTheme\Enums\AuthStyle;
 use Noreviq\FilamentTheme\Enums\CornerStyle;
 use Noreviq\FilamentTheme\Enums\ShadowStyle;
-use Elemind\PressFilamentTheme\Enums\PressVariant;
-
+use Noreviq\FilamentTheme\NoreviqThemePlugin;
 
 class AdminPanelProvider extends PanelProvider
 {
@@ -43,6 +41,7 @@ class AdminPanelProvider extends PanelProvider
             ->userMenu(position: UserMenuPosition::Sidebar)
             ->globalSearchKeyBindings(['command+k', 'ctrl+k'])
             ->databaseNotifications()
+            // ->sidebarFullyCollapsibleOnDesktop()
             ->sidebarFullyCollapsibleOnDesktop()
             ->id('admin')
             ->path('admin')
@@ -70,6 +69,12 @@ class AdminPanelProvider extends PanelProvider
             ->pages([
                 Dashboard::class,
             ])
+            ->navigationGroups([
+                'Maintenance',
+                'Riwayat & Monitoring',
+                'Master Data',
+                'User & Permission',
+            ])
             ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\Filament\Widgets')
             ->middleware([
                 EncryptCookies::class,
@@ -88,7 +93,7 @@ class AdminPanelProvider extends PanelProvider
             ])
             ->renderHook(
                 PanelsRenderHook::SIMPLE_LAYOUT_END,
-                fn() => view('filament.auth.login-footer'),
+                fn () => view('filament.auth.login-footer'),
             )
             ->authMiddleware([
                 Authenticate::class,
