@@ -29,6 +29,11 @@ class MaintenanceHistoryForm
                             ->options(WorkOrder::pluck('work_order_number', 'id'))
                             ->nullable()
                             ->placeholder('Select work order'),
+                        TextInput::make('work_order_number')
+                            ->label('Work Order Number')
+                            ->disabled()
+                            ->dehydrated()
+                            ->placeholder('Auto-filled from Work Order'),
                         TextInput::make('maintenance_type')
                             ->label('Maintenance Type')
                             ->required()

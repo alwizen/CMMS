@@ -15,6 +15,13 @@ class MaintenanceHistoriesTable
     {
         return $table
             ->columns([
+                TextColumn::make('work_order_number')
+                    ->label('WO Number')
+                    ->sortable()
+                    ->searchable(),
+                TextColumn::make('equipment.tag_number')
+                    ->label('Tag Number')
+                    ->sortable(),
                 TextColumn::make('equipment.equipmentType.name')
                     ->label('Equipment')
                     ->sortable(),

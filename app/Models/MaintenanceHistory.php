@@ -10,6 +10,7 @@ class MaintenanceHistory extends Model
     protected $fillable = [
         'equipment_id',
         'work_order_id',
+        'work_order_number',
         'maintenance_type',
         'classification',
         'description',

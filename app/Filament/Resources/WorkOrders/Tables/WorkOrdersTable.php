@@ -19,6 +19,9 @@ class WorkOrdersTable
                     ->label('WO Number')
                     ->searchable()
                     ->sortable(),
+                TextColumn::make('equipment.tag_number')
+                    ->label('Tag Number')
+                    ->sortable(),
                 TextColumn::make('equipment.equipmentType.name')
                     ->label('Equipment')
                     ->sortable(),
