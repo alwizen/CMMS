@@ -19,11 +19,13 @@ class ActivityResource extends Resource
 {
     protected static ?string $model = Activity::class;
 
+    protected static ?string $navigationLabel = 'Maintenance Activities';
+
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedClipboardDocumentCheck;
 
     protected static string|UnitEnum|null $navigationGroup = 'Master Data';
 
-    protected static ?int $navigationSort = 4;
+    protected static ?int $navigationSort = 6;
 
     public static function form(Schema $schema): Schema
     {

@@ -19,6 +19,7 @@ class DatabaseSeeder extends Seeder
             EquipmentTypeSeeder::class,
             EquipmentSeeder::class,
             ActivitySeeder::class,
+            MeterLogSeeder::class,
             MaintenanceHistorySeeder::class,
             MaintenanceRequestSeeder::class,
             MaintenancePlanSeeder::class,

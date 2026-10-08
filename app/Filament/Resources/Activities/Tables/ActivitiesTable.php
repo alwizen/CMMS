@@ -2,11 +2,12 @@
 
 namespace App\Filament\Resources\Activities\Tables;
 
+use App\Models\Activity;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
-use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Columns\BooleanColumn;
+use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Filters\TernaryFilter;
 use Filament\Tables\Table;
@@ -26,12 +27,36 @@ class ActivitiesTable
                     ->sortable(),
                 TextColumn::make('type')
                     ->label('Type')
+                    ->badge()
+                    ->color(fn (string $state): string => match ($state) {
+                        'maintenance' => 'primary',
+                        'inspection' => 'info',
+                        'testing' => 'warning',
+                        'visual_check' => 'gray',
+                        'measurement' => 'success',
+                        'lubrication' => 'warning',
+                        'cleaning' => 'info',
+                        'calibration' => 'danger',
+                        'replacement' => 'primary',
+                        default => 'gray',
+                    })
+                    ->formatStateUsing(fn (string $state): string => Activity::TYPES[$state] ?? ucfirst(str_replace('_', ' ', $state)))
                     ->sortable(),
                 TextColumn::make('maintenance_classification')
                     ->label('Classification')
+                    ->badge()
+                    ->color(fn (string $state): string => match ($state) {
+                        'preventive' => 'success',
+                        'corrective' => 'danger',
+                        'predictive' => 'info',
+                        'condition_based' => 'warning',
+                        default => 'gray',
+                    })
+                    ->formatStateUsing(fn (string $state): string => Activity::CLASSIFICATIONS[$state] ?? ucfirst(str_replace('_', ' ', $state)))
                     ->sortable(),
                 TextColumn::make('interval')
                     ->label('Interval')
+                    ->formatStateUsing(fn (?string $state): string => $state ? (Activity::INTERVALS[$state] ?? ucfirst(str_replace('_', ' ', $state))) : '-')
                     ->sortable(),
                 BooleanColumn::make('status')
                     ->label('Active')
@@ -43,32 +68,13 @@ class ActivitiesTable
                     ->relationship('equipmentType', 'name'),
                 SelectFilter::make('type')
                     ->label('Type')
-                    ->options([
-                        'Maintenance' => 'Maintenance',
-                        'Inspection' => 'Inspection',
-                        'Replacement' => 'Replacement',
-                        'Cleaning' => 'Cleaning',
-                        'Testing' => 'Testing',
-                    ]),
+                    ->options(Activity::TYPES),
                 SelectFilter::make('maintenance_classification')
                     ->label('Classification')
-                    ->options([
-                        'Preventive' => 'Preventive',
-                        'Corrective' => 'Corrective',
-                    ]),
+                    ->options(Activity::CLASSIFICATIONS),
                 SelectFilter::make('interval')
                     ->label('Interval')
-                    ->options([
-                        'Daily' => 'Daily',
-                        'Weekly' => 'Weekly',
-                        'Monthly' => 'Monthly',
-                        'Quarterly' => 'Quarterly',
-                        'Semi-annually' => 'Semi-annually',
-                        'Yearly' => 'Yearly',
-                        'As needed' => 'As needed',
-                        'Every 250 hours' => 'Every 250 hours',
-                        'Every 500 hours' => 'Every 500 hours',
-                    ]),
+                    ->options(Activity::INTERVALS),
                 TernaryFilter::make('status')
                     ->label('Status'),
             ])

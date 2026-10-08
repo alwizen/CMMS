@@ -2,10 +2,11 @@
 
 namespace App\Filament\Resources\Activities\Schemas;
 
+use App\Models\Activity;
 use App\Models\EquipmentType;
 use Filament\Forms\Components\Select;
-use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Textarea;
+use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
@@ -30,33 +31,17 @@ class ActivityForm
                         Select::make('type')
                             ->label('Type')
                             ->required()
-                            ->options([
-                                'maintenance' => 'Maintenance',
-                                'inspection' => 'Inspection',
-                                'testing' => 'Testing',
-                            ])
+                            ->options(Activity::TYPES)
                             ->placeholder('Select type'),
                         Select::make('maintenance_classification')
                             ->label('Maintenance Classification')
                             ->required()
-                            ->options([
-                                'preventive' => 'Preventive',
-                                'corrective' => 'Corrective',
-                                'predictive' => 'Predictive',
-                                'condition_based' => 'Condition-Based',
-                            ])
+                            ->options(Activity::CLASSIFICATIONS)
                             ->placeholder('Select classification'),
                         Select::make('interval')
                             ->label('Interval')
                             ->nullable()
-                            ->options([
-                                'daily' => 'Daily',
-                                'weekly' => 'Weekly',
-                                'monthly' => 'Monthly',
-                                'quarterly' => 'Quarterly',
-                                'semi_annual' => 'Semi-Annual',
-                                'yearly' => 'Yearly',
-                            ])
+                            ->options(Activity::INTERVALS)
                             ->placeholder('Select interval'),
                         TextInput::make('answer_type')
                             ->label('Answer Type')

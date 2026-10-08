@@ -6,6 +6,8 @@ use App\Http\Controllers\Api\EquipmentController;
 use App\Http\Controllers\Api\MaintenancePlanController;
 use App\Http\Controllers\Api\MaintenanceRequestController;
 use App\Http\Controllers\Api\MaintenanceScheduleController;
+use App\Http\Controllers\Api\MeterLogController;
+use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\WorkOrderController;
 use Illuminate\Support\Facades\Route;
 
@@ -37,4 +39,11 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/maintenance-requests', [MaintenanceRequestController::class, 'store']);
     Route::put('/maintenance-requests/{id}', [MaintenanceRequestController::class, 'update']);
     Route::delete('/maintenance-requests/{id}', [MaintenanceRequestController::class, 'destroy']);
+
+    Route::get('/meter-logs', [MeterLogController::class, 'index']);
+    Route::get('/meter-logs/{id}', [MeterLogController::class, 'show']);
+    Route::post('/meter-logs', [MeterLogController::class, 'store']);
+    Route::get('/equipment/{equipmentId}/meter-logs', [MeterLogController::class, 'byEquipment']);
+
+    Route::get('/users/{id}', [UserController::class, 'show']);
 });
