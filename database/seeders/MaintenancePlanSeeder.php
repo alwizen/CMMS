@@ -2,10 +2,9 @@
 
 namespace Database\Seeders;
 
-use App\Models\MaintenancePlan;
 use App\Models\Equipment;
+use App\Models\MaintenancePlan;
 use App\Models\User;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 class MaintenancePlanSeeder extends Seeder
@@ -45,7 +44,7 @@ class MaintenancePlanSeeder extends Seeder
                 'end_date' => $endDate,
                 'created_by' => $users->random()->id,
                 'technician_coordinator_id' => $users->random()->id,
-                'description' => $descriptions[array_rand($descriptions)] . ' - Plan ' . $i,
+                'description' => $descriptions[array_rand($descriptions)].' - Plan '.$i,
                 'status' => $statuses[array_rand($statuses)],
             ]);
         }

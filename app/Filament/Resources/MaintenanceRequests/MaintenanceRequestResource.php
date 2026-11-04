@@ -11,18 +11,18 @@ use App\Filament\Resources\MaintenanceRequests\Schemas\MaintenanceRequestInfolis
 use App\Filament\Resources\MaintenanceRequests\Tables\MaintenanceRequestsTable;
 use App\Models\MaintenanceRequest;
 use BackedEnum;
-use UnitEnum;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
+use UnitEnum;
 
 class MaintenanceRequestResource extends Resource
 {
     protected static ?string $model = MaintenanceRequest::class;
 
-    protected static ?string $navigationLabel = 'Maintenance Requests (Corrective)';
-    
+    protected static ?string $navigationLabel = 'Maintenance Requests';
+
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedExclamationTriangle;
 
     protected static string|UnitEnum|null $navigationGroup = 'Maintenance';

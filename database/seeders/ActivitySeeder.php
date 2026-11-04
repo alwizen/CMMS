@@ -4,7 +4,6 @@ namespace Database\Seeders;
 
 use App\Models\Activity;
 use App\Models\EquipmentType;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 class ActivitySeeder extends Seeder

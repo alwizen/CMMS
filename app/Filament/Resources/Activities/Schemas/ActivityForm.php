@@ -43,10 +43,11 @@ class ActivityForm
                             ->nullable()
                             ->options(Activity::INTERVALS)
                             ->placeholder('Select interval'),
-                        TextInput::make('answer_type')
+                        Select::make('answer_type')
                             ->label('Answer Type')
+                            ->options(Activity::ANSWER_TYPES)
                             ->required()
-                            ->placeholder('e.g., Qualitative, Quantitative'),
+                            ->placeholder('Select answer type'),
                         Textarea::make('reference')
                             ->label('Reference')
                             ->nullable()

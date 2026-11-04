@@ -4,9 +4,10 @@ namespace App\Filament\Resources\MaintenancePlans\Schemas;
 
 use App\Models\Equipment;
 use App\Models\EquipmentType;
+use App\Models\User;
 use Filament\Forms\Components\Select;
-use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Textarea;
+use Filament\Forms\Components\TextInput;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
 
@@ -41,14 +42,14 @@ class MaintenancePlanForm
                         Select::make('interval')
                             ->label('Maintenance Interval')
                             ->options([
-                               'Daily' => 'Daily',
+                                'Daily' => 'Daily',
                                 'Weekly' => 'Weekly',
                                 'Monthly' => 'Monthly',
                                 'Quarterly' => 'Quarterly',
                                 'Yearly' => 'Yearly',
                             ])
                             ->required(),
-                       
+
                         Select::make('status')
                             ->label('Status')
                             ->options([
@@ -79,7 +80,7 @@ class MaintenancePlanForm
                     ->schema([
                         Select::make('technician_coordinator_id')
                             ->label('Technician Coordinator')
-                            ->options(\App\Models\User::pluck('name', 'id'))
+                            ->options(User::pluck('name', 'id'))
                             ->nullable()
                             ->placeholder('Select coordinator'),
                         Textarea::make('description')

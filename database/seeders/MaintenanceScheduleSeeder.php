@@ -2,10 +2,9 @@
 
 namespace Database\Seeders;
 
-use App\Models\MaintenanceSchedule;
-use App\Models\MaintenancePlan;
 use App\Models\Equipment;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Models\MaintenancePlan;
+use App\Models\MaintenanceSchedule;
 use Illuminate\Database\Seeder;
 
 class MaintenanceScheduleSeeder extends Seeder
@@ -30,7 +29,7 @@ class MaintenanceScheduleSeeder extends Seeder
                 'equipment_id' => $equipment->id,
                 'scheduled_date' => $scheduledDate,
                 'status' => $statuses[array_rand($statuses)],
-                'description' => 'Scheduled maintenance for ' . $equipment->name . ' - Schedule ' . $i,
+                'description' => 'Scheduled maintenance for '.$equipment->name.' - Schedule '.$i,
                 'rescheduled_from' => $rescheduledFrom,
             ]);
         }

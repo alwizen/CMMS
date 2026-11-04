@@ -60,7 +60,9 @@ class MaintenanceRequestsTable
             ->filters([
                 SelectFilter::make('equipment_id')
                     ->label('Equipment')
-                    ->relationship('equipment', 'tag_number'),
+                    ->relationship('equipment', 'tag_number')
+                    ->searchable()
+                    ->preload(),
                 SelectFilter::make('status')
                     ->label('Status')
                     ->options([

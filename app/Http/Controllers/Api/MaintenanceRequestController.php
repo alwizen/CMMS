@@ -85,7 +85,7 @@ class MaintenanceRequestController extends Controller
             'photo.*' => 'image|mimes:jpeg,png,jpg,gif|max:5120',
         ]);
 
-        $requestNumber = 'MR-' . now()->format('Ymd') . '-' . str_pad(
+        $requestNumber = 'MR-'.now()->format('Ymd').'-'.str_pad(
             MaintenanceRequest::whereDate('created_at', today())->count() + 1,
             4,
             '0',

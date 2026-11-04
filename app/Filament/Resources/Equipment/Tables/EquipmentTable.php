@@ -33,7 +33,7 @@ class EquipmentTable
                 TextColumn::make('status')
                     ->label('Status')
                     ->badge()
-                    ->color(fn(string $state): string => match ($state) {
+                    ->color(fn (string $state): string => match ($state) {
                         'active' => 'success',
                         'inactive' => 'gray',
                         'retired' => 'danger',
@@ -41,7 +41,7 @@ class EquipmentTable
                 TextColumn::make('criticality')
                     ->label('Criticality')
                     ->badge()
-                    ->color(fn(string $state): string => match ($state) {
+                    ->color(fn (string $state): string => match ($state) {
                         'low' => 'gray',
                         'medium' => 'warning',
                         'high' => 'danger',

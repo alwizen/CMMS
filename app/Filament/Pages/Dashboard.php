@@ -4,13 +4,33 @@ namespace App\Filament\Pages;
 
 use App\Filament\Widgets;
 use Filament\Forms;
-use Filament\Pages\Dashboard as BaseDashboard;
+use Illuminate\Contracts\Support\Htmlable;
 use Filament\Pages\Dashboard\Actions\FilterAction;
+use Filament\Pages\Dashboard as BaseDashboard;
 use Filament\Pages\Dashboard\Concerns\HasFiltersAction;
 
 class Dashboard extends BaseDashboard
 {
     use HasFiltersAction;
+
+    protected static ?string $title = 'Dashboard';
+
+    protected static ?string $navigationLabel = 'Dashboard';
+
+    public function getTitle(): string | Htmlable
+    {
+        return 'Dashboard';
+    }
+
+    public function getHeading(): string | Htmlable
+    {
+        return 'Dashboard';
+    }
+
+    public function getSubheading(): string | Htmlable | null
+    {
+        return 'Selamat datang, ' . (auth()->user()?->name ?? 'Pengguna');
+    }
 
     public function getHeaderActions(): array
     {
@@ -20,12 +40,12 @@ class Dashboard extends BaseDashboard
                     Forms\Components\Select::make('dateRange')
                         ->label('Periode')
                         ->options([
-                            'all'      => 'Semua Waktu',
-                            'today'    => 'Hari Ini',
-                            'yesterday'=> 'Kemarin',
-                            'week'     => '7 Hari Terakhir',
-                            'month'    => '1 Bulan Terakhir',
-                            'custom'   => 'Pilih Range',
+                            'all' => 'Semua Waktu',
+                            'today' => 'Hari Ini',
+                            'yesterday' => 'Kemarin',
+                            'week' => '7 Hari Terakhir',
+                            'month' => '1 Bulan Terakhir',
+                            'custom' => 'Pilih Range',
                         ])
                         ->default('all')
                         ->live()

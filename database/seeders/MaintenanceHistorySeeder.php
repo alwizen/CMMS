@@ -2,10 +2,9 @@
 
 namespace Database\Seeders;
 
-use App\Models\MaintenanceHistory;
 use App\Models\Equipment;
+use App\Models\MaintenanceHistory;
 use App\Models\User;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 class MaintenanceHistorySeeder extends Seeder
@@ -48,7 +47,7 @@ class MaintenanceHistorySeeder extends Seeder
                     'equipment_id' => $equipment->id,
                     'maintenance_type' => $maintenanceTypes[array_rand($maintenanceTypes)],
                     'classification' => rand(0, 1) ? 'Preventive' : 'Corrective',
-                    'description' => 'Pemeliharaan rutin untuk ' . $equipment->name,
+                    'description' => 'Pemeliharaan rutin untuk '.$equipment->name,
                     'maintenance_date' => now()->subDays(rand(1, 90)),
                     'performed_by' => $users->random()->id,
                     'findings' => $findings[array_rand($findings)],

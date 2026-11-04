@@ -28,4 +28,3 @@ class EquipmentType extends Model
         return $this->hasMany(Activity::class);
     }
 }
-

@@ -5,8 +5,10 @@ namespace Database\Seeders;
 use App\Models\Activity;
 use App\Models\Equipment;
 use App\Models\EquipmentType;
+use App\Models\MaintenanceHistory;
 use App\Models\MaintenancePlan;
 use App\Models\MaintenancePlanActivity;
+use App\Models\MaintenanceRequest;
 use App\Models\MaintenanceSchedule;
 use App\Models\User;
 use App\Models\WorkOrder;
@@ -22,7 +24,7 @@ class DemoSampleSeeder extends Seeder
         WorkOrderActivity::query()->delete();
         MaintenanceSchedule::query()->delete();
         WorkOrder::query()->delete();
-        \App\Models\MaintenanceHistory::query()->delete();
+        MaintenanceHistory::query()->delete();
 
         $user = User::firstOrFail();
         $pompaType = EquipmentType::where('name', 'pompa')->firstOrFail();
@@ -102,7 +104,7 @@ class DemoSampleSeeder extends Seeder
             ]);
         }
 
-        \App\Models\MaintenanceRequest::firstOrCreate(
+        MaintenanceRequest::firstOrCreate(
             ['description' => 'Demo: Kebocoran seal pompa'],
             [
                 'equipment_id' => $equipment->id,

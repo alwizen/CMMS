@@ -33,4 +33,3 @@ class WorkOrderActivity extends Model
         return $this->belongsTo(Activity::class);
     }
 }
-

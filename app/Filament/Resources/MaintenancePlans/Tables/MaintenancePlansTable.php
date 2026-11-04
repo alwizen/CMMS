@@ -52,12 +52,16 @@ class MaintenancePlansTable
             ->filters([
                 SelectFilter::make('equipment_id')
                     ->label('Equipment')
-                    ->relationship('equipment', 'tag_number'),
+                    ->relationship('equipment', 'tag_number')
+                    ->searchable()
+                    ->preload(),
                 SelectFilter::make('maintenance_classification')
                     ->label('Classification')
                     ->options([
                         'preventive' => 'Preventive',
                         'corrective' => 'Corrective',
+                        'predictive' => 'Predictive',
+                        'condition_based' => 'Condition-Based',
                     ]),
             ])
             ->recordActions([

@@ -9,11 +9,11 @@ use App\Filament\Resources\MaintenanceSchedules\Schemas\MaintenanceScheduleForm;
 use App\Filament\Resources\MaintenanceSchedules\Tables\MaintenanceSchedulesTable;
 use App\Models\MaintenanceSchedule;
 use BackedEnum;
-use UnitEnum;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
+use UnitEnum;
 
 class MaintenanceScheduleResource extends Resource
 {

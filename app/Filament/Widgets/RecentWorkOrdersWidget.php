@@ -14,7 +14,7 @@ class RecentWorkOrdersWidget extends BaseWidget
 
     protected static ?string $heading = 'Work Order Terbaru';
 
-    protected int | string | array $columnSpan = 'full';
+    protected int|string|array $columnSpan = 'full';
 
     protected static ?int $sort = 4;
 

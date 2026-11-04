@@ -3,11 +3,11 @@
 namespace App\Filament\Resources\MaintenanceHistories\Schemas;
 
 use App\Models\Equipment;
-use App\Models\WorkOrder;
 use App\Models\User;
+use App\Models\WorkOrder;
 use Filament\Forms\Components\Select;
-use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Textarea;
+use Filament\Forms\Components\TextInput;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
 

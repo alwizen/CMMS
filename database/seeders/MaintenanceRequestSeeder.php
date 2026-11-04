@@ -2,10 +2,9 @@
 
 namespace Database\Seeders;
 
-use App\Models\MaintenanceRequest;
 use App\Models\Equipment;
+use App\Models\MaintenanceRequest;
 use App\Models\User;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 class MaintenanceRequestSeeder extends Seeder
@@ -57,7 +56,7 @@ class MaintenanceRequestSeeder extends Seeder
 
             MaintenanceRequest::create([
                 'equipment_id' => $equipments->random()->id,
-                'request_number' => 'MR-' . date('Ymd') . '-' . str_pad($i, 4, '0', STR_PAD_LEFT),
+                'request_number' => 'MR-'.date('Ymd').'-'.str_pad($i, 4, '0', STR_PAD_LEFT),
                 'reported_by' => $users->random()->id,
                 'operation_status' => $operationStatuses[array_rand($operationStatuses)],
                 'description' => $descriptions[array_rand($descriptions)],

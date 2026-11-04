@@ -36,12 +36,13 @@ class AdminPanelProvider extends PanelProvider
         return $panel
             ->default()
             ->maxContentWidth(Width::Full)
-            // ->globalSearch(position: GlobalSearchPosition::Sidebar)
-            // ->databaseNotifications(position: DatabaseNotificationsPosition::Sidebar)
+            ->globalSearch(position: GlobalSearchPosition::Sidebar)
+            ->databaseNotifications(position: DatabaseNotificationsPosition::Sidebar)
+            ->topbar(false)
             ->userMenu(position: UserMenuPosition::Sidebar)
             ->globalSearchKeyBindings(['command+k', 'ctrl+k'])
             ->databaseNotifications()
-            // ->sidebarFullyCollapsibleOnDesktop()
+            ->sidebarFullyCollapsibleOnDesktop()
             ->sidebarFullyCollapsibleOnDesktop()
             ->id('admin')
             ->path('admin')
@@ -53,14 +54,7 @@ class AdminPanelProvider extends PanelProvider
                 'primary' => Color::Amber,
             ])
             ->plugin(
-                // PressFilamentTheme::make()->variant(PressVariant::Telex)
                 PressFilamentTheme::make()->telex()->rail(false)
-
-                // NoreviqThemePlugin::make()
-                //     ->corners(CornerStyle::Sharp)
-                //     ->shadows(ShadowStyle::Balanced)
-                //     ->authStyle(AuthStyle::Noreviq)
-
             )
 
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\Filament\Resources')

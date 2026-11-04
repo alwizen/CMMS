@@ -2,13 +2,13 @@
 
 namespace App\Filament\Resources\Areas;
 
-use App\Filament\Resources\Companies\CompanyResource;
 use App\Filament\Resources\Areas\Pages\CreateArea;
 use App\Filament\Resources\Areas\Pages\EditArea;
 use App\Filament\Resources\Areas\Pages\ListAreas;
 use App\Filament\Resources\Areas\Pages\ManageAreaEquipment;
 use App\Filament\Resources\Areas\Schemas\AreaForm;
 use App\Filament\Resources\Areas\Tables\AreasTable;
+use App\Filament\Resources\Companies\CompanyResource;
 use App\Models\Area;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;

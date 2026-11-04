@@ -2,9 +2,8 @@
 
 namespace Database\Seeders;
 
-use App\Models\Company;
 use App\Models\Area;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Models\Company;
 use Illuminate\Database\Seeder;
 
 class AreaSeeder extends Seeder

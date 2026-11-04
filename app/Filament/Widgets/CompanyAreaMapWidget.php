@@ -13,7 +13,7 @@ class CompanyAreaMapWidget extends Widget
 
     protected static ?string $heading = 'Peta Area';
 
-    protected static ?int $sort = 1;
+    protected static ?int $sort = 0;
 
     protected int|string|array $columnSpan = 'full';
 

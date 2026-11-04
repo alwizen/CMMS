@@ -2,9 +2,9 @@
 
 namespace Database\Seeders;
 
+use App\Models\Area;
 use App\Models\Equipment;
 use App\Models\EquipmentType;
-use App\Models\Area;
 use Illuminate\Database\Seeder;
 
 class EquipmentSeeder extends Seeder

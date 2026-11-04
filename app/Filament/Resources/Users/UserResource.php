@@ -123,7 +123,7 @@ class UserResource extends Resource
                             ->searchable()
                             ->preload()
                             ->optionsLimit(10)
-                            ->getOptionLabelFromRecordUsing(fn($record) => $record->name),
+                            ->getOptionLabelFromRecordUsing(fn ($record) => $record->name),
                     ]),
                 ViewAction::make(),
                 EditAction::make(),

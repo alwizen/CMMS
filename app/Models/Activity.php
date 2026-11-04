@@ -45,6 +45,11 @@ class Activity extends Model
         'yearly' => 'Yearly',
     ];
 
+    public const ANSWER_TYPES = [
+        'qualitative' => 'Qualitative',
+        'quantitative' => 'Quantitative',
+    ];
+
     protected $fillable = [
         'equipment_type_id',
         'name',

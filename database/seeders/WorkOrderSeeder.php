@@ -2,13 +2,12 @@
 
 namespace Database\Seeders;
 
-use App\Models\WorkOrder;
 use App\Models\Equipment;
 use App\Models\MaintenancePlan;
-use App\Models\MaintenanceSchedule;
 use App\Models\MaintenanceRequest;
+use App\Models\MaintenanceSchedule;
 use App\Models\User;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Models\WorkOrder;
 use Illuminate\Database\Seeder;
 
 class WorkOrderSeeder extends Seeder
@@ -36,7 +35,7 @@ class WorkOrderSeeder extends Seeder
             $finishDate = $startDate->copy()->addDays(rand(1, 7));
 
             WorkOrder::create([
-                'work_order_number' => 'WO-' . date('Ymd') . '-' . str_pad($i, 4, '0', STR_PAD_LEFT),
+                'work_order_number' => 'WO-'.date('Ymd').'-'.str_pad($i, 4, '0', STR_PAD_LEFT),
                 'equipment_id' => $equipment->id,
                 'maintenance_plan_id' => $plan?->id,
                 'maintenance_schedule_id' => $schedule?->id,
@@ -47,7 +46,7 @@ class WorkOrderSeeder extends Seeder
                 'interval' => $intervals[array_rand($intervals)],
                 'start_at' => $startDate,
                 'finish_at' => $finishDate,
-                'note' => 'Maintenance work order for ' . $equipment->name . ' - Task ' . $i,
+                'note' => 'Maintenance work order for '.$equipment->name.' - Task '.$i,
                 'status' => $statuses[array_rand($statuses)],
             ]);
         }

@@ -7,8 +7,8 @@ use Filament\Actions\Action;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
-use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Columns\IconColumn;
+use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\TernaryFilter;
 use Filament\Tables\Table;
 
@@ -29,6 +29,11 @@ class CompaniesTable
                 TextColumn::make('description')
                     ->label('Description')
                     ->limit(50),
+                // IconColumn::make('geofence')
+                //     ->label('Geofence')
+                //     ->icon(fn ($state) => $state ? 'heroicon-m-map-pin' : 'heroicon-o-exclamation-triangle')
+                //     ->color(fn ($state) => $state ? 'success' : 'warning')
+                //     ->tooltip(fn ($state) => $state ? 'Geofence terpasang' : 'Belum ada geofence — widget peta tidak tampil'),
                 IconColumn::make('is_active')
                     ->label('Active')
                     ->boolean()

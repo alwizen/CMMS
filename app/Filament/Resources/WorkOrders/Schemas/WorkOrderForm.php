@@ -2,14 +2,17 @@
 
 namespace App\Filament\Resources\WorkOrders\Schemas;
 
+use App\Models\Activity;
 use App\Models\Equipment;
 use App\Models\MaintenancePlan;
-use App\Models\MaintenanceSchedule;
 use App\Models\MaintenanceRequest;
+use App\Models\MaintenanceSchedule;
 use App\Models\User;
+use App\Models\WorkOrder;
+use Filament\Forms\Components\DateTimePicker;
 use Filament\Forms\Components\Select;
-use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Textarea;
+use Filament\Forms\Components\TextInput;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
 
@@ -30,18 +33,21 @@ class WorkOrderForm
                             ->options(Equipment::pluck('tag_number', 'id'))
                             ->required()
                             ->placeholder('Select equipment'),
-                        TextInput::make('classification')
+                        Select::make('classification')
                             ->label('Classification')
+                            ->options(WorkOrder::CLASSIFICATIONS)
                             ->required()
-                            ->placeholder('e.g., Preventive, Corrective'),
-                        TextInput::make('interval')
+                            ->placeholder('Select classification'),
+                        Select::make('interval')
                             ->label('Interval')
+                            ->options(Activity::INTERVALS)
                             ->nullable()
-                            ->placeholder('e.g., Monthly, Quarterly'),
-                        TextInput::make('status')
+                            ->placeholder('Select interval'),
+                        Select::make('status')
                             ->label('Status')
+                            ->options(WorkOrder::STATUSES)
                             ->required()
-                            ->placeholder('e.g., Pending, In Progress, Completed'),
+                            ->placeholder('Select status'),
                     ])
                     ->columns(2),
 
@@ -77,13 +83,11 @@ class WorkOrderForm
                             ->options(User::pluck('name', 'id'))
                             ->nullable()
                             ->placeholder('Select coordinator'),
-                        TextInput::make('start_at')
+                        DateTimePicker::make('start_at')
                             ->label('Start At')
-                            ->type('datetime-local')
                             ->required(),
-                        TextInput::make('finish_at')
+                        DateTimePicker::make('finish_at')
                             ->label('Finish At')
-                            ->type('datetime-local')
                             ->nullable(),
                         Textarea::make('note')
                             ->label('Note')

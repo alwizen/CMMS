@@ -14,12 +14,12 @@ class StatsOverviewWidget extends BaseWidget
 {
     use FiltersByDate;
 
-    protected static ?int $sort = 0;
+    protected static ?int $sort = 1;
 
     protected function getStats(): array
     {
         $woCount = WorkOrder::query()->tap(fn ($q) => $this->applyDateFilter($q))->count();
-        $woDone  = WorkOrder::query()->where('status', 'Completed')->tap(fn ($q) => $this->applyDateFilter($q))->count();
+        $woDone = WorkOrder::query()->where('status', 'Completed')->tap(fn ($q) => $this->applyDateFilter($q))->count();
         $mrCount = MaintenanceRequest::query()->tap(fn ($q) => $this->applyDateFilter($q))->count();
         $mhCount = MaintenanceHistory::query()->tap(fn ($q) => $this->applyDateFilter($q))->count();
 

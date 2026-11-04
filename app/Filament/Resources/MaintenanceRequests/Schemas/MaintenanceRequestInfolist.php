@@ -99,7 +99,7 @@ class MaintenanceRequestInfolist
                             ->size(400)
                             ->placeholder('Tidak ada foto'),
                     ])
-                    ->visible(fn (MaintenanceRequest $record): bool => !empty($record->photo)),
+                    ->visible(fn (MaintenanceRequest $record): bool => ! empty($record->photo)),
 
                 Section::make('Approval')
                     ->icon(Heroicon::OutlinedCheckBadge)

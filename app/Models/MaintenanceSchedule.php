@@ -37,4 +37,3 @@ class MaintenanceSchedule extends Model
         return $this->hasMany(WorkOrder::class);
     }
 }
-

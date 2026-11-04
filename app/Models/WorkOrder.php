@@ -3,14 +3,27 @@
 namespace App\Models;
 
 use App\Observers\WorkOrderObserver;
+use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 
 #[ObservedBy([WorkOrderObserver::class])]
 class WorkOrder extends Model
 {
+    public const STATUSES = [
+        'Pending' => 'Pending',
+        'In Progress' => 'In Progress',
+        'On Hold' => 'On Hold',
+        'Completed' => 'Completed',
+        'Cancelled' => 'Cancelled',
+    ];
+
+    public const CLASSIFICATIONS = [
+        'Preventive' => 'Preventive',
+        'Corrective' => 'Corrective',
+    ];
+
     protected $fillable = [
         'work_order_number',
         'equipment_id',
@@ -72,4 +85,3 @@ class WorkOrder extends Model
         return $this->hasMany(WorkOrderWorker::class);
     }
 }
-

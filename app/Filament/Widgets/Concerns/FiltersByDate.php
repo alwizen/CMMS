@@ -11,14 +11,14 @@ trait FiltersByDate
         $range = request()->query('dateRange', 'all');
 
         return match ($range) {
-            'today'     => now()->startOfDay(),
+            'today' => now()->startOfDay(),
             'yesterday' => now()->subDay()->startOfDay(),
-            'week'      => now()->subDays(7)->startOfDay(),
-            'month'     => now()->subMonth()->startOfDay(),
-            'custom'    => request()->query('dateFrom')
+            'week' => now()->subDays(7)->startOfDay(),
+            'month' => now()->subMonth()->startOfDay(),
+            'custom' => request()->query('dateFrom')
                 ? Carbon::parse(request()->query('dateFrom'))->startOfDay()
                 : null,
-            default     => null,
+            default => null,
         };
     }
 
@@ -27,21 +27,21 @@ trait FiltersByDate
         $range = request()->query('dateRange', 'all');
 
         return match ($range) {
-            'today'     => now()->endOfDay(),
+            'today' => now()->endOfDay(),
             'yesterday' => now()->subDay()->endOfDay(),
             'week',
-            'month'     => now()->endOfDay(),
-            'custom'    => request()->query('dateTo')
+            'month' => now()->endOfDay(),
+            'custom' => request()->query('dateTo')
                 ? Carbon::parse(request()->query('dateTo'))->endOfDay()
                 : now()->endOfDay(),
-            default     => null,
+            default => null,
         };
     }
 
     private function applyDateFilter($query, string $column = 'created_at'): void
     {
         $from = $this->dateFilterFrom();
-        $to   = $this->dateFilterTo();
+        $to = $this->dateFilterTo();
 
         if ($from && $to) {
             $query->whereBetween($column, [$from, $to]);

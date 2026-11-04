@@ -23,4 +23,3 @@ class MaintenancePlanActivity extends Model
         return $this->belongsTo(Activity::class);
     }
 }
-

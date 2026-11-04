@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\WorkOrders\Tables;
 
+use App\Models\WorkOrder;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
@@ -39,20 +40,15 @@ class WorkOrdersTable
             ->filters([
                 SelectFilter::make('equipment_id')
                     ->label('Equipment')
-                    ->relationship('equipment', 'tag_number'),
+                    ->relationship('equipment', 'tag_number')
+                    ->searchable()
+                    ->preload(),
                 SelectFilter::make('classification')
                     ->label('Classification')
-                    ->options([
-                        'preventive' => 'Preventive',
-                        'corrective' => 'Corrective',
-                    ]),
+                    ->options(WorkOrder::CLASSIFICATIONS),
                 SelectFilter::make('status')
                     ->label('Status')
-                    ->options([
-                        'pending' => 'Pending',
-                        'in_progress' => 'In Progress',
-                        'completed' => 'Completed',
-                    ]),
+                    ->options(WorkOrder::STATUSES),
             ])
             ->recordActions([
                 EditAction::make(),

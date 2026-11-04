@@ -55,4 +55,3 @@ class MaintenancePlan extends Model
         return $this->hasMany(WorkOrder::class);
     }
 }
-
