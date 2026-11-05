@@ -17,6 +17,11 @@ class EquipmentTable
     public static function configure(Table $table): Table
     {
         return $table
+            ->paginated([
+                25,
+                50,
+                100,
+            ])
             ->columns([
                 TextColumn::make('tag_number')
                     ->label('Tag Number')

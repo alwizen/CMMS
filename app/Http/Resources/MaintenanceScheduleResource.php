@@ -11,6 +11,7 @@ class MaintenanceScheduleResource extends JsonResource
     {
         return [
             'id' => $this->id,
+            'schedule_number' => $this->schedule_number,
             'scheduled_date' => $this->scheduled_date?->format('Y-m-d'),
             'status' => $this->status,
             'description' => $this->description,

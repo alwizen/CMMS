@@ -16,6 +16,10 @@ class EquipmentTypesTable
     {
         return $table
             ->columns([
+                TextColumn::make('id')
+                    ->label('id')
+                    ->searchable()
+                    ->sortable(),
                 TextColumn::make('code')
                     ->label('Code')
                     ->searchable()

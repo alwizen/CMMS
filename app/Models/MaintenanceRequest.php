@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Support\DocumentNumber;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -11,12 +12,13 @@ class MaintenanceRequest extends Model
     protected static function booted(): void
     {
         static::creating(function (MaintenanceRequest $record) {
-            $today = now()->format('Ymd');
-            $lastNumber = static::where('request_number', 'like', "MR-{$today}-%")
-                ->pluck('request_number')
-                ->map(fn ($rn) => (int) substr($rn, -4))
-                ->max() ?? 0;
-            $record->request_number = 'MR-'.$today.'-'.str_pad($lastNumber + 1, 4, '0', STR_PAD_LEFT);
+            if (blank($record->request_number)) {
+                $record->request_number = DocumentNumber::generate(
+                    'maintenance_request',
+                    static::class,
+                    'request_number',
+                );
+            }
         });
     }
 

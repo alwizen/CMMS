@@ -48,7 +48,11 @@ class CompaniesTable
                 Action::make('view_areas')
                     ->label('Lihat Area')
                     ->icon('heroicon-m-map-pin')
-                    ->url(fn ($record) => AreaResource::getUrl('index', ['company' => $record])),
+                    ->url(fn ($record) => AreaResource::getUrl('index', [
+                        'tableFilters' => [
+                            'company_id' => ['value' => $record->id],
+                        ],
+                    ])),
             ])
             ->toolbarActions([
                 BulkActionGroup::make([

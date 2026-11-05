@@ -8,19 +8,25 @@ use App\Filament\Resources\Areas\Pages\ListAreas;
 use App\Filament\Resources\Areas\Pages\ManageAreaEquipment;
 use App\Filament\Resources\Areas\Schemas\AreaForm;
 use App\Filament\Resources\Areas\Tables\AreasTable;
-use App\Filament\Resources\Companies\CompanyResource;
 use App\Models\Area;
+use BackedEnum;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
+use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
+use UnitEnum;
 
 class AreaResource extends Resource
 {
     protected static ?string $model = Area::class;
 
-    protected static ?string $parentResource = CompanyResource::class;
+    protected static ?string $navigationLabel = 'Company Area';
 
-    protected static bool $shouldRegisterNavigation = false;
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedMapPin;
+
+    protected static string|UnitEnum|null $navigationGroup = 'Master Data';
+
+    protected static ?int $navigationSort = 1;
 
     public static function form(Schema $schema): Schema
     {

@@ -3,20 +3,23 @@
 namespace App\Filament\Widgets\Concerns;
 
 use Carbon\Carbon;
+use Filament\Widgets\Concerns\InteractsWithPageFilters;
 
 trait FiltersByDate
 {
+    use InteractsWithPageFilters;
+
     private function dateFilterFrom(): ?Carbon
     {
-        $range = request()->query('dateRange', 'all');
+        $range = $this->dateFilterRange();
 
         return match ($range) {
             'today' => now()->startOfDay(),
             'yesterday' => now()->subDay()->startOfDay(),
             'week' => now()->subDays(7)->startOfDay(),
             'month' => now()->subMonth()->startOfDay(),
-            'custom' => request()->query('dateFrom')
-                ? Carbon::parse(request()->query('dateFrom'))->startOfDay()
+            'custom' => filled($this->dateFilterValue('dateFrom'))
+                ? Carbon::parse($this->dateFilterValue('dateFrom'))->startOfDay()
                 : null,
             default => null,
         };
@@ -24,15 +27,15 @@ trait FiltersByDate
 
     private function dateFilterTo(): ?Carbon
     {
-        $range = request()->query('dateRange', 'all');
+        $range = $this->dateFilterRange();
 
         return match ($range) {
             'today' => now()->endOfDay(),
             'yesterday' => now()->subDay()->endOfDay(),
             'week',
             'month' => now()->endOfDay(),
-            'custom' => request()->query('dateTo')
-                ? Carbon::parse(request()->query('dateTo'))->endOfDay()
+            'custom' => filled($this->dateFilterValue('dateTo'))
+                ? Carbon::parse($this->dateFilterValue('dateTo'))->endOfDay()
                 : now()->endOfDay(),
             default => null,
         };
@@ -46,5 +49,21 @@ trait FiltersByDate
         if ($from && $to) {
             $query->whereBetween($column, [$from, $to]);
         }
+    }
+
+    private function dateFilterRange(): string
+    {
+        return (string) ($this->dateFilterValue('dateRange') ?? 'all');
+    }
+
+    private function dateFilterValue(string $key): mixed
+    {
+        $filters = $this->pageFilters ?? request()->query('filters');
+
+        if (is_array($filters)) {
+            return $filters[$key] ?? null;
+        }
+
+        return request()->query($key);
     }
 }

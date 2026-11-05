@@ -19,7 +19,7 @@ class GenerateSchedules extends Command
         $created = 0;
 
         $plans = MaintenancePlan::query()
-            ->where('status', 'Active')
+            ->whereRaw('LOWER(status) = ?', ['active'])
             ->get();
 
         foreach ($plans as $plan) {
@@ -38,7 +38,7 @@ class GenerateSchedules extends Command
                     'maintenance_plan_id' => $plan->id,
                     'equipment_id' => $plan->equipment_id,
                     'scheduled_date' => $date->toDateString(),
-                    'status' => 'Scheduled',
+                    'status' => MaintenanceSchedule::STATUSES['Scheduled'],
                     'description' => $plan->description,
                 ]);
 
@@ -85,13 +85,16 @@ class GenerateSchedules extends Command
      */
     protected function stepForInterval(?string $interval): ?\Closure
     {
-        return match ($interval) {
+        $normalized = strtolower(trim((string) $interval));
+        $normalized = str_replace([' ', '-'], '_', $normalized);
+
+        return match ($normalized) {
             'daily' => fn (Carbon $d) => $d->copy()->addDay(),
             'weekly' => fn (Carbon $d) => $d->copy()->addWeek(),
             'monthly' => fn (Carbon $d) => $d->copy()->addMonth(),
             'quarterly' => fn (Carbon $d) => $d->copy()->addMonths(3),
-            'semi_annual' => fn (Carbon $d) => $d->copy()->addMonths(6),
-            'yearly' => fn (Carbon $d) => $d->copy()->addYear(),
+            'semi_annual', 'semiannual', 'bi_annual', 'biannual', 'bi_annually', 'biannually' => fn (Carbon $d) => $d->copy()->addMonths(6),
+            'yearly', 'annual', 'annually' => fn (Carbon $d) => $d->copy()->addYear(),
             default => null,
         };
     }

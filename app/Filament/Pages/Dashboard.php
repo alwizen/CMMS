@@ -4,10 +4,10 @@ namespace App\Filament\Pages;
 
 use App\Filament\Widgets;
 use Filament\Forms;
-use Illuminate\Contracts\Support\Htmlable;
 use Filament\Pages\Dashboard\Actions\FilterAction;
 use Filament\Pages\Dashboard as BaseDashboard;
 use Filament\Pages\Dashboard\Concerns\HasFiltersAction;
+use Illuminate\Contracts\Support\Htmlable;
 
 class Dashboard extends BaseDashboard
 {
@@ -17,19 +17,19 @@ class Dashboard extends BaseDashboard
 
     protected static ?string $navigationLabel = 'Dashboard';
 
-    public function getTitle(): string | Htmlable
+    public function getTitle(): string|Htmlable
     {
         return 'Dashboard';
     }
 
-    public function getHeading(): string | Htmlable
+    public function getHeading(): string|Htmlable
     {
         return 'Dashboard';
     }
 
-    public function getSubheading(): string | Htmlable | null
+    public function getSubheading(): string|Htmlable|null
     {
-        return 'Selamat datang, ' . (auth()->user()?->name ?? 'Pengguna');
+        return 'Selamat datang, '.(auth()->user()?->name ?? 'Pengguna');
     }
 
     public function getHeaderActions(): array
@@ -65,11 +65,11 @@ class Dashboard extends BaseDashboard
         return [
             // Widgets\StatsOverviewWidget::class,
             Widgets\CompanyAreaMapWidget::class,
-            Widgets\WorkOrderClassificationChart::class,
-            // Widgets\EquipmentByLocationChart::class,
+            Widgets\DueScheduleWidget::class,
+            // Widgets\WorkOrderClassificationChart::class,
+            Widgets\WorkOrderStatusChart::class,
             Widgets\MaintenanceTrendChart::class,
             Widgets\RecentWorkOrdersWidget::class,
-            Widgets\EquipmentHealthWidget::class,
         ];
     }
 

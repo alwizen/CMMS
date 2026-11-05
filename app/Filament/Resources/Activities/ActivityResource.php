@@ -19,7 +19,7 @@ class ActivityResource extends Resource
 {
     protected static ?string $model = Activity::class;
 
-    protected static ?string $navigationLabel = 'Maintenance Activities';
+    protected static ?string $navigationLabel = 'Maintenance Checklist';
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedClipboardDocumentCheck;
 

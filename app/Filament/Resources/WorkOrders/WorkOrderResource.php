@@ -37,7 +37,10 @@ class WorkOrderResource extends Resource
 
     public static function getRelations(): array
     {
-        return [];
+        return [
+            RelationManagers\ActivitiesRelationManager::class,
+            RelationManagers\WorkersRelationManager::class,
+        ];
     }
 
     public static function getPages(): array
