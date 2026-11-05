@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\MaintenancePlans\Schemas;
 
+use App\Models\Activity;
 use App\Models\Equipment;
 use App\Models\EquipmentType;
 use App\Models\User;
@@ -19,6 +20,11 @@ class MaintenancePlanForm
             ->components([
                 Section::make('General Information')
                     ->schema([
+                        TextInput::make('plan_number')
+                            ->label('Plan Number')
+                            ->disabled()
+                            ->dehydrated(false)
+                            ->placeholder('Dibuat otomatis saat disimpan'),
                         Select::make('equipment_type_id')
                             ->label('Equipment Type')
                             ->options(EquipmentType::pluck('name', 'id'))
@@ -41,13 +47,7 @@ class MaintenancePlanForm
                             ->required(),
                         Select::make('interval')
                             ->label('Maintenance Interval')
-                            ->options([
-                                'Daily' => 'Daily',
-                                'Weekly' => 'Weekly',
-                                'Monthly' => 'Monthly',
-                                'Quarterly' => 'Quarterly',
-                                'Yearly' => 'Yearly',
-                            ])
+                            ->options(Activity::INTERVALS)
                             ->required(),
 
                         Select::make('status')

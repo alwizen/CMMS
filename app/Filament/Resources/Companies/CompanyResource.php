@@ -2,7 +2,6 @@
 
 namespace App\Filament\Resources\Companies;
 
-use App\Filament\Resources\Areas\AreaResource;
 use App\Filament\Resources\Companies\Pages\CreateCompany;
 use App\Filament\Resources\Companies\Pages\EditCompany;
 use App\Filament\Resources\Companies\Pages\ListCompanies;
@@ -24,7 +23,7 @@ class CompanyResource extends Resource
 
     protected static string|UnitEnum|null $navigationGroup = 'Master Data';
 
-    protected static ?int $navigationSort = 1;
+    protected static ?int $navigationSort = 0;
 
     public static function form(Schema $schema): Schema
     {
@@ -34,13 +33,6 @@ class CompanyResource extends Resource
     public static function table(Table $table): Table
     {
         return CompaniesTable::configure($table);
-    }
-
-    public static function getChildResources(): array
-    {
-        return [
-            AreaResource::class,
-        ];
     }
 
     public static function getRelations(): array

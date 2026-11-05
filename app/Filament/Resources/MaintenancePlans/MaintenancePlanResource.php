@@ -39,7 +39,9 @@ class MaintenancePlanResource extends Resource
 
     public static function getRelations(): array
     {
-        return [];
+        return [
+            RelationManagers\ActivitiesRelationManager::class,
+        ];
     }
 
     public static function getPages(): array

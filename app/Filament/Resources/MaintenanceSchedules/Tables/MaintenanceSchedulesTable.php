@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\MaintenanceSchedules\Tables;
 
+use App\Models\MaintenanceSchedule;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
@@ -15,11 +16,16 @@ class MaintenanceSchedulesTable
     {
         return $table
             ->columns([
+                TextColumn::make('schedule_number')
+                    ->label('Schedule Number')
+                    ->searchable()
+                    ->sortable(),
                 TextColumn::make('equipment.equipmentType.name')
                     ->label('Equipment')
                     ->sortable(),
-                TextColumn::make('maintenance_plan_id')
-                    ->label('Plan ID')
+                TextColumn::make('maintenancePlan.plan_number')
+                    ->label('Plan')
+                    ->placeholder('-')
                     ->sortable(),
                 TextColumn::make('scheduled_date')
                     ->label('Scheduled Date')
@@ -27,6 +33,16 @@ class MaintenanceSchedulesTable
                     ->sortable(),
                 TextColumn::make('status')
                     ->label('Status')
+                    ->badge()
+                    ->color(fn (?string $state): string => match ($state) {
+                        'Scheduled' => 'warning',
+                        'In Progress' => 'info',
+                        'Completed' => 'success',
+                        'Delayed' => 'danger',
+                        'Rescheduled' => 'primary',
+                        'Cancelled' => 'gray',
+                        default => 'gray',
+                    })
                     ->sortable(),
                 TextColumn::make('rescheduled_from')
                     ->label('Rescheduled From')
@@ -39,11 +55,7 @@ class MaintenanceSchedulesTable
                     ->relationship('equipment', 'tag_number'),
                 SelectFilter::make('status')
                     ->label('Status')
-                    ->options([
-                        'pending' => 'Pending',
-                        'rescheduled' => 'Rescheduled',
-                        'done' => 'Done',
-                    ]),
+                    ->options(MaintenanceSchedule::STATUSES),
             ])
             ->recordActions([
                 EditAction::make(),

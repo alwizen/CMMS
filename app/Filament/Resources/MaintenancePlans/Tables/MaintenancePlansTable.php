@@ -15,6 +15,10 @@ class MaintenancePlansTable
     {
         return $table
             ->columns([
+                TextColumn::make('plan_number')
+                    ->label('Plan Number')
+                    ->searchable()
+                    ->sortable(),
                 TextColumn::make('equipment.equipmentType.name')
                     ->label('Equipment Type')
                     ->sortable(),

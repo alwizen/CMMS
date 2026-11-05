@@ -11,6 +11,7 @@ class MaintenancePlanResource extends JsonResource
     {
         return [
             'id' => $this->id,
+            'plan_number' => $this->plan_number,
             'maintenance_classification' => $this->maintenance_classification,
             'interval' => $this->interval,
             'start_date' => $this->start_date?->format('Y-m-d'),

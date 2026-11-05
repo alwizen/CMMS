@@ -55,12 +55,29 @@ class WorkOrderForm
                     ->schema([
                         Select::make('maintenance_plan_id')
                             ->label('Maintenance Plan')
-                            ->options(MaintenancePlan::pluck('id', 'id'))
+                            ->options(fn (): array => MaintenancePlan::query()
+                                ->with('equipment')
+                                ->orderByDesc('id')
+                                ->get()
+                                ->mapWithKeys(fn (MaintenancePlan $plan): array => [
+                                    $plan->id => ($plan->plan_number ?? '#'.$plan->id)
+                                        .' — '.($plan->equipment?->tag_number ?? '-'),
+                                ])
+                                ->all())
+                            ->searchable()
                             ->nullable()
                             ->placeholder('Select maintenance plan'),
                         Select::make('maintenance_schedule_id')
                             ->label('Maintenance Schedule')
-                            ->options(MaintenanceSchedule::pluck('id', 'id'))
+                            ->options(fn (): array => MaintenanceSchedule::query()
+                                ->orderByDesc('id')
+                                ->get()
+                                ->mapWithKeys(fn (MaintenanceSchedule $schedule): array => [
+                                    $schedule->id => ($schedule->schedule_number ?? '#'.$schedule->id)
+                                        .' — '.$schedule->scheduled_date?->format('d M Y'),
+                                ])
+                                ->all())
+                            ->searchable()
                             ->nullable()
                             ->placeholder('Select maintenance schedule'),
                         Select::make('maintenance_request_id')

@@ -68,6 +68,7 @@ class AdminPanelProvider extends PanelProvider
                 'Riwayat & Monitoring',
                 'Master Data',
                 'User & Permission',
+                'Pengaturan',
             ])
             ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\Filament\Widgets')
             ->middleware([
