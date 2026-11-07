@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\DashboardController;
+use App\Http\Controllers\Api\DocumentController;
+use App\Http\Controllers\Api\DowntimeController;
 use App\Http\Controllers\Api\EquipmentController;
 use App\Http\Controllers\Api\MaintenanceCalendarController;
 use App\Http\Controllers\Api\MaintenancePlanController;
@@ -48,6 +50,11 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/meter-logs/{id}', [MeterLogController::class, 'show']);
     Route::post('/meter-logs', [MeterLogController::class, 'store']);
     Route::get('/equipment/{equipmentId}/meter-logs', [MeterLogController::class, 'byEquipment']);
+
+    Route::get('/downtime', [DowntimeController::class, 'index']);
+
+    Route::get('/documents', [DocumentController::class, 'index']);
+    Route::get('/documents/{id}', [DocumentController::class, 'show']);
 
     Route::get('/users/{id}', [UserController::class, 'show']);
 });

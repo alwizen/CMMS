@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Support\DocumentNumber;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
@@ -76,6 +77,21 @@ class Document extends Model
     public function uploadedBy(): BelongsTo
     {
         return $this->belongsTo(User::class, 'uploaded_by');
+    }
+
+    public function scopeOfExpiryStatus(Builder $query, string $status): Builder
+    {
+        $soon = today()->addDays(self::EXPIRING_SOON_DAYS);
+
+        return match ($status) {
+            'expired' => $query->whereNotNull('expiry_date')->whereDate('expiry_date', '<', today()),
+            'expiring_soon' => $query->whereNotNull('expiry_date')
+                ->whereDate('expiry_date', '>=', today())
+                ->whereDate('expiry_date', '<=', $soon),
+            'valid' => $query->whereNotNull('expiry_date')->whereDate('expiry_date', '>', $soon),
+            'no_expiry' => $query->whereNull('expiry_date'),
+            default => $query,
+        };
     }
 
     public function expiryStatus(): string
