@@ -18,6 +18,7 @@ class WorkOrderActivityResource extends JsonResource
             'unit' => $this->unit,
             'executed' => $this->executed,
             'note' => $this->note,
+            'photos' => $this->photos ?? [],
             'activity' => $this->whenLoaded('activity', fn () => [
                 'id' => $this->activity->id,
                 'name' => $this->activity->name,

@@ -29,6 +29,15 @@ class MeterLogController extends Controller
             $query->whereDate('reading_date', '<=', $request->date_to);
         }
 
+        if ($request->filled('search')) {
+            $search = $request->search;
+
+            $query->whereHas('equipment', function ($q) use ($search) {
+                $q->where('tag_number', 'like', "%{$search}%")
+                    ->orWhere('description', 'like', "%{$search}%");
+            });
+        }
+
         $logs = $query->paginate($request->get('per_page', 15));
 
         return response()->json([

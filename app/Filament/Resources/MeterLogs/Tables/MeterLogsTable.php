@@ -19,7 +19,14 @@ class MeterLogsTable
     public static function configure(Table $table): Table
     {
         return $table
+            ->paginated([25, 50, 100])
             ->columns([
+                TextColumn::make('no')
+                    ->label('No')
+                    ->rowIndex()
+                    ->alignCenter()
+                    ->width(1)
+                    ->grow(false),
                 TextColumn::make('equipment.tag_number')
                     ->label('Tag Number')
                     ->searchable()

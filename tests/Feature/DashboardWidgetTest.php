@@ -15,6 +15,7 @@ use App\Models\Equipment;
 use App\Models\EquipmentType;
 use App\Models\MaintenancePlan;
 use App\Models\MaintenanceSchedule;
+use App\Models\Setting;
 use App\Models\User;
 use App\Models\WorkOrder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -33,6 +34,8 @@ class DashboardWidgetTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
+
+        Setting::flushCache();
 
         config(['app.env' => 'local']);
         Gate::before(fn (): bool => true);

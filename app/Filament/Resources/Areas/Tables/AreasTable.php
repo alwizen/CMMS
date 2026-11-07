@@ -18,7 +18,14 @@ class AreasTable
     public static function configure(Table $table): Table
     {
         return $table
+            ->paginated([25, 50, 100])
             ->columns([
+                TextColumn::make('no')
+                    ->label('No')
+                    ->rowIndex()
+                    ->alignCenter()
+                    ->width(1)
+                    ->grow(false),
                 TextColumn::make('code')
                     ->label('Code')
                     ->searchable()
@@ -49,12 +56,7 @@ class AreasTable
                 Action::make('view_equipment')
                     ->label('Lihat Equipment')
                     ->icon('heroicon-m-wrench-screwdriver')
-                    ->url(fn ($record) => AreaResource::getUrl('equipment', ['record' => $record], shouldGuessMissingParameters: true)),
-            ])
-            ->toolbarActions([
-                BulkActionGroup::make([
-                    DeleteBulkAction::make(),
-                ]),
+                    ->url(fn($record) => AreaResource::getUrl('equipment', ['record' => $record], shouldGuessMissingParameters: true)),
             ]);
     }
 }

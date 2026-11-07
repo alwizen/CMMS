@@ -8,6 +8,7 @@ use Filament\Actions\CreateAction;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
+use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
@@ -72,6 +73,16 @@ class ActivitiesRelationManager extends RelationManager
                             ->label('Note')
                             ->nullable()
                             ->columnSpanFull(),
+                        FileUpload::make('photos')
+                            ->label('Foto Dokumentasi (opsional, maks. 3)')
+                            ->multiple()
+                            ->maxFiles(3)
+                            ->image()
+                            ->disk('public')
+                            ->directory('work-order-activities')
+                            ->visibility('public')
+                            ->reorderable()
+                            ->columnSpanFull(),
                     ])
                     ->columns(2),
             ]);
@@ -101,6 +112,11 @@ class ActivitiesRelationManager extends RelationManager
                     ->label('Executed')
                     ->boolean()
                     ->sortable(),
+                TextColumn::make('photos')
+                    ->label('Foto')
+                    ->badge()
+                    ->formatStateUsing(fn ($state): string => is_array($state) ? count($state).' foto' : '0 foto')
+                    ->color(fn ($state): string => is_array($state) && count($state) > 0 ? 'success' : 'gray'),
             ])
             ->headerActions([
                 CreateAction::make(),

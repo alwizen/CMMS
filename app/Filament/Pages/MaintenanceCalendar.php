@@ -6,6 +6,7 @@ use App\Models\MaintenancePlan;
 use App\Models\MaintenanceSchedule;
 use App\Models\WorkOrder;
 use BackedEnum;
+use Carbon\CarbonInterface;
 use Filament\Pages\Page;
 use Filament\Support\Icons\Heroicon;
 
@@ -19,12 +20,28 @@ class MaintenanceCalendar extends Page
 
     protected string $view = 'filament.pages.maintenance-calendar';
 
+    /**
+     * Rentang tampilan kalender: 3 bulan ke belakang sampai 6 bulan ke depan.
+     *
+     * @return array{0: CarbonInterface, 1: CarbonInterface}
+     */
+    protected function calendarWindow(): array
+    {
+        return [
+            now()->subMonths(3)->startOfDay(),
+            now()->addMonths(6)->endOfDay(),
+        ];
+    }
+
     public function getCalendarEvents(): array
     {
         $events = [];
 
-        WorkOrder::with(['equipment', 'equipment.area'])
+        [$from, $until] = $this->calendarWindow();
+
+        WorkOrder::with(['equipment.equipmentType', 'equipment.area', 'issuedBy'])
             ->whereNotNull('start_at')
+            ->whereBetween('start_at', [$from, $until])
             ->get()
             ->each(function (WorkOrder $wo) use (&$events) {
                 $color = match ($wo->status) {
@@ -57,8 +74,10 @@ class MaintenanceCalendar extends Page
                 ];
             });
 
-        MaintenancePlan::with(['equipment', 'equipment.area'])
+        MaintenancePlan::with(['equipment.equipmentType', 'equipment.area', 'createdBy'])
             ->where('status', 'Active')
+            ->where(fn ($q) => $q->whereNull('end_date')->orWhereDate('end_date', '>=', $from->toDateString()))
+            ->whereDate('start_date', '<=', $until->toDateString())
             ->get()
             ->each(function (MaintenancePlan $mp) use (&$events) {
                 $tag = $mp->equipment->tag_number;
@@ -84,7 +103,8 @@ class MaintenanceCalendar extends Page
                 ];
             });
 
-        MaintenanceSchedule::with(['equipment', 'equipment.area', 'maintenancePlan'])
+        MaintenanceSchedule::with(['equipment.equipmentType', 'equipment.area', 'maintenancePlan.equipment'])
+            ->whereBetween('scheduled_date', [$from->toDateString(), $until->toDateString()])
             ->get()
             ->each(function (MaintenanceSchedule $ms) use (&$events) {
                 $color = match ($ms->status) {

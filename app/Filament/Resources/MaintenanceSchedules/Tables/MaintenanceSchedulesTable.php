@@ -15,7 +15,15 @@ class MaintenanceSchedulesTable
     public static function configure(Table $table): Table
     {
         return $table
+            ->defaultSort('scheduled_date', 'desc')
+            ->paginated([25, 50, 100])
             ->columns([
+                TextColumn::make('no')
+                    ->label('No')
+                    ->rowIndex()
+                    ->alignCenter()
+                    ->width(1)
+                    ->grow(false),
                 TextColumn::make('schedule_number')
                     ->label('Schedule Number')
                     ->searchable()
@@ -59,11 +67,11 @@ class MaintenanceSchedulesTable
             ])
             ->recordActions([
                 EditAction::make(),
-            ])
-            ->toolbarActions([
-                BulkActionGroup::make([
-                    DeleteBulkAction::make(),
-                ]),
             ]);
+        // ->toolbarActions([
+        //     BulkActionGroup::make([
+        //         DeleteBulkAction::make(),
+        //     ]),
+        // ]);
     }
 }

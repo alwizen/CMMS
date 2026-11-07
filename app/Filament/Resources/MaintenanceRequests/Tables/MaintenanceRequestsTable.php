@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\MaintenanceRequests\Tables;
 
+use App\Models\MaintenanceRequest;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
@@ -15,7 +16,14 @@ class MaintenanceRequestsTable
     public static function configure(Table $table): Table
     {
         return $table
+            ->defaultSort('damage_date', 'desc')
             ->columns([
+                TextColumn::make('no')
+                    ->label('No')
+                    ->rowIndex()
+                    ->alignCenter()
+                    ->width(1)
+                    ->grow(false),
                 TextColumn::make('request_number')
                     ->label('Request Number')
                     ->searchable()
@@ -65,21 +73,16 @@ class MaintenanceRequestsTable
                     ->preload(),
                 SelectFilter::make('status')
                     ->label('Status')
-                    ->options([
-                        'pending' => 'Pending',
-                        'approved' => 'Approved',
-                        'rejected' => 'Rejected',
-                        'completed' => 'Completed',
-                    ]),
+                    ->options(MaintenanceRequest::STATUSES),
             ])
             ->recordActions([
                 ViewAction::make(),
                 EditAction::make(),
-            ])
-            ->toolbarActions([
-                BulkActionGroup::make([
-                    DeleteBulkAction::make(),
-                ]),
             ]);
+        // ->toolbarActions([
+        //     BulkActionGroup::make([
+        //         DeleteBulkAction::make(),
+        //     ]),
+        // ]);
     }
 }

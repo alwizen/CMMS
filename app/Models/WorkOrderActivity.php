@@ -17,10 +17,12 @@ class WorkOrderActivity extends Model
         'unit',
         'executed',
         'note',
+        'photos',
     ];
 
     protected $casts = [
         'executed' => 'boolean',
+        'photos' => 'array',
     ];
 
     public function workOrder(): BelongsTo

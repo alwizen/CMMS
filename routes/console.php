@@ -9,4 +9,5 @@ Artisan::command('inspire', function () {
 })->purpose('Display an inspiring quote');
 
 Schedule::command('maintenance:generate-schedules')->dailyAt('01:00');
+Schedule::command('maintenance:generate-work-orders')->dailyAt('01:05');
 Schedule::command('maintenance:notify')->dailyAt('07:00');

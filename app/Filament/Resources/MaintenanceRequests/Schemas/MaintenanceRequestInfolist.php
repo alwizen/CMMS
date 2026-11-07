@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\MaintenanceRequests\Schemas;
 
 use App\Models\MaintenanceRequest;
+use App\Support\Downtime;
 use Filament\Infolists\Components\ImageEntry;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Schemas\Components\Section;
@@ -100,6 +101,32 @@ class MaintenanceRequestInfolist
                             ->placeholder('Tidak ada foto'),
                     ])
                     ->visible(fn (MaintenanceRequest $record): bool => ! empty($record->photo)),
+
+                Section::make('Downtime')
+                    ->icon(Heroicon::OutlinedClock)
+                    ->description('Dihitung otomatis dari waktu kerusakan sampai work order selesai.')
+                    ->schema([
+                        TextEntry::make('downtime_start')
+                            ->label('Mulai')
+                            ->state(fn (MaintenanceRequest $record): ?string => $record->downtimeStart()?->format('d M Y H:i'))
+                            ->placeholder('-'),
+                        TextEntry::make('downtime_end')
+                            ->label('Selesai')
+                            ->state(fn (MaintenanceRequest $record): ?string => $record->downtimeEnd()?->format('d M Y H:i'))
+                            ->placeholder('Masih berlangsung'),
+                        TextEntry::make('downtime_minutes')
+                            ->label('Durasi')
+                            ->state(fn (MaintenanceRequest $record): string => Downtime::formatMinutes($record->downtimeMinutes()))
+                            ->badge()
+                            ->color(fn (MaintenanceRequest $record): string => $record->downtimeOngoing() ? 'warning' : 'danger'),
+                        TextEntry::make('downtime_state')
+                            ->label('Status Downtime')
+                            ->state(fn (MaintenanceRequest $record): string => $record->downtimeOngoing() ? 'Masih berlangsung' : 'Selesai')
+                            ->badge()
+                            ->color(fn (MaintenanceRequest $record): string => $record->downtimeOngoing() ? 'warning' : 'success'),
+                    ])
+                    ->columns(4)
+                    ->visible(fn (MaintenanceRequest $record): bool => $record->isUnplannedDowntime()),
 
                 Section::make('Approval')
                     ->icon(Heroicon::OutlinedCheckBadge)

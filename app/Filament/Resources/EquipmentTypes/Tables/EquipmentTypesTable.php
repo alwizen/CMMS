@@ -15,11 +15,14 @@ class EquipmentTypesTable
     public static function configure(Table $table): Table
     {
         return $table
+            ->paginated([25, 50, 100])
             ->columns([
-                TextColumn::make('id')
-                    ->label('id')
-                    ->searchable()
-                    ->sortable(),
+                TextColumn::make('no')
+                    ->label('No')
+                    ->rowIndex()
+                    ->alignCenter()
+                    ->width(1)
+                    ->grow(false),
                 TextColumn::make('code')
                     ->label('Code')
                     ->searchable()

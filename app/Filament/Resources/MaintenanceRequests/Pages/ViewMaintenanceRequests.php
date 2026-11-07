@@ -4,9 +4,11 @@ namespace App\Filament\Resources\MaintenanceRequests\Pages;
 
 use App\Filament\Resources\MaintenanceRequests\MaintenanceRequestResource;
 use App\Filament\Resources\MaintenanceRequests\Schemas\MaintenanceRequestInfolist;
+use App\Models\Activity;
 use App\Models\MaintenanceRequest;
 use App\Models\User;
 use App\Models\WorkOrder;
+use App\Models\WorkOrderActivity;
 use Filament\Actions\Action;
 use Filament\Actions\EditAction;
 use Filament\Forms\Components\DatePicker;
@@ -25,6 +27,27 @@ class ViewMaintenanceRequests extends ViewRecord
         return MaintenanceRequestInfolist::configure($schema);
     }
 
+    /**
+     * Aktivitas aktif untuk tipe equipment dari request ini.
+     *
+     * @return array<int, string>
+     */
+    public function activityOptions(): array
+    {
+        $equipmentTypeId = $this->getRecord()?->equipment?->equipment_type_id;
+
+        if (! $equipmentTypeId) {
+            return [];
+        }
+
+        return Activity::query()
+            ->where('equipment_type_id', $equipmentTypeId)
+            ->where('status', true)
+            ->orderBy('name')
+            ->pluck('name', 'id')
+            ->all();
+    }
+
     protected function getHeaderActions(): array
     {
         return [
@@ -38,14 +61,21 @@ class ViewMaintenanceRequests extends ViewRecord
                         ->label('Start Date')
                         ->required()
                         ->default(now()),
-                    DatePicker::make('end_date')
-                        ->label('End Date')
-                        ->nullable(),
+                    Select::make('activity_ids')
+                        ->label('Aktivitas Pemeriksaan')
+                        ->options(fn ($livewire): array => $livewire->activityOptions())
+                        ->default(fn ($livewire): array => array_keys($livewire->activityOptions()))
+                        ->multiple()
+                        ->searchable()
+                        ->preload()
+                        ->helperText('Checklist yang akan dikerjakan teknisi. Kosongkan bila memang tidak ada item pemeriksaan.')
+                        ->columnSpanFull(),
                     Select::make('technician_coordinator_id')
-                        ->label('Technician Coordinator')
+                        ->label('Penanggung Jawab')
                         ->options(User::pluck('name', 'id'))
-                        ->nullable()
-                        ->placeholder('Select coordinator'),
+                        ->required()
+                        ->searchable()
+                        ->placeholder('Pilih 1 penanggung jawab'),
                     Select::make('classification')
                         ->label('Classification')
                         ->options([
@@ -64,23 +94,48 @@ class ViewMaintenanceRequests extends ViewRecord
                     $record = $this->getRecord();
 
                     $record->update([
-                        'status' => 'Approved',
+                        'status' => MaintenanceRequest::STATUSES['Approved'],
                         'approval_notes' => $data['approval_notes'],
                         'approved_by' => auth()->id(),
                         'approved_at' => now(),
                     ]);
 
-                    WorkOrder::create([
+                    $workOrder = WorkOrder::create([
                         'equipment_id' => $record->equipment_id,
                         'maintenance_request_id' => $record->id,
                         'issued_by' => auth()->id(),
                         'technician_coordinator_id' => $data['technician_coordinator_id'],
                         'classification' => $data['classification'],
                         'start_at' => $data['start_date'],
-                        'finish_at' => $data['end_date'],
+                        'finish_at' => null,
                         'note' => $data['approval_notes'],
-                        'status' => 'Open',
+                        'status' => WorkOrder::STATUSES['Pending'],
                     ]);
+
+                    $activityIds = array_filter($data['activity_ids'] ?? []);
+
+                    if ($activityIds !== []) {
+                        $activities = Activity::query()
+                            ->whereIn('id', $activityIds)
+                            ->get()
+                            ->keyBy('id');
+
+                        foreach ($activityIds as $activityId) {
+                            $activity = $activities->get($activityId);
+
+                            if (! $activity) {
+                                continue;
+                            }
+
+                            WorkOrderActivity::create([
+                                'work_order_id' => $workOrder->id,
+                                'activity_id' => $activity->id,
+                                'reference' => $activity->reference,
+                                'unit' => $activity->unit,
+                                'executed' => false,
+                            ]);
+                        }
+                    }
 
                     Notification::make()
                         ->title('Berhasil')
@@ -94,7 +149,7 @@ class ViewMaintenanceRequests extends ViewRecord
                 ->requiresConfirmation()
                 ->modalHeading('Approve Maintenance Request')
                 ->modalSubmitActionLabel('Approve')
-                ->visible(fn (): bool => $this->record->status === 'Open'),
+                ->visible(fn (): bool => $this->record->status === MaintenanceRequest::STATUSES['Open']),
             Action::make('reject')
                 ->label('Reject')
                 ->icon('heroicon-o-x-circle')
@@ -127,7 +182,7 @@ class ViewMaintenanceRequests extends ViewRecord
                 ->requiresConfirmation()
                 ->modalHeading('Reject Maintenance Request')
                 ->modalSubmitActionLabel('Reject')
-                ->visible(fn (): bool => $this->record->status === 'Open'),
+                ->visible(fn (): bool => $this->record->status === MaintenanceRequest::STATUSES['Open']),
         ];
     }
 }

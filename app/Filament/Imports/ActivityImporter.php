@@ -2,6 +2,7 @@
 
 namespace App\Filament\Imports;
 
+use App\Filament\Imports\Concerns\ResolvesImportValues;
 use App\Models\Activity;
 use App\Models\EquipmentType;
 use Filament\Actions\Imports\ImportColumn;
@@ -11,111 +12,101 @@ use Illuminate\Support\Number;
 
 class ActivityImporter extends Importer
 {
+    use ResolvesImportValues;
+
     protected static ?string $model = Activity::class;
 
     public static function getColumns(): array
     {
         return [
             ImportColumn::make('equipment_type_id')
-                ->label('Equipment Type (nama)')
+                ->label('Equipment Type')
                 ->requiredMapping()
-                ->relationship(
-                    name: 'equipmentType',
-                    resolveUsing: function (mixed $state): ?EquipmentType {
-                        return EquipmentType::query()
-                            ->whereRaw('LOWER(name) = ?', [mb_strtolower(trim((string) $state))])
-                            ->first();
-                    },
-                )
-                ->rules(['required'])
-                ->helperText('Nama equipment type persis seperti di master data (case-insensitive).'),
+                ->castStateUsing(fn (mixed $state): int|string|null => static::resolveModelId(EquipmentType::class, $state, ['name', 'code']))
+                ->rules(['required', 'integer', 'exists:equipment_types,id'])
+                ->helperText('ID, nama, atau kode equipment type. Contoh: 1, Pompa, pump.')
+                ->example('pump'),
             ImportColumn::make('name')
                 ->requiredMapping()
-                ->rules(['required', 'string', 'max:150']),
+                ->castStateUsing(fn (mixed $state): ?string => static::normalizeImportText($state))
+                ->rules(['required', 'string', 'max:150'])
+                ->helperText('Nama aktivitas. Kombinasi dengan equipment type dipakai sebagai kunci update.')
+                ->example('Oil Change'),
             ImportColumn::make('type')
                 ->requiredMapping()
-                ->castStateUsing(fn (mixed $state): string => self::normalizeKey($state))
+                ->castStateUsing(fn (mixed $state): ?string => static::normalizeImportKey($state))
                 ->rules(['required', 'in:'.implode(',', array_keys(Activity::TYPES))])
-                ->helperText(implode(' | ', array_keys(Activity::TYPES))),
+                ->helperText(implode(' | ', array_keys(Activity::TYPES)))
+                ->example('maintenance'),
             ImportColumn::make('maintenance_classification')
                 ->requiredMapping()
-                ->castStateUsing(fn (mixed $state): string => self::normalizeKey($state))
+                ->castStateUsing(fn (mixed $state): ?string => static::normalizeImportKey($state))
                 ->rules(['required', 'in:'.implode(',', array_keys(Activity::CLASSIFICATIONS))])
-                ->helperText(implode(' | ', array_keys(Activity::CLASSIFICATIONS))),
+                ->helperText(implode(' | ', array_keys(Activity::CLASSIFICATIONS)))
+                ->example('preventive'),
             ImportColumn::make('interval')
-                ->castStateUsing(fn (mixed $state): ?string => filled($state) ? self::normalizeKey($state) : null)
+                ->castStateUsing(fn (mixed $state): ?string => static::normalizeImportKey($state))
+                ->ignoreBlankState()
                 ->rules(['nullable', 'in:'.implode(',', array_keys(Activity::INTERVALS))])
-                ->helperText(implode(' | ', array_keys(Activity::INTERVALS)).' (boleh kosong)'),
+                ->helperText(implode(' | ', array_keys(Activity::INTERVALS)).' (boleh kosong)')
+                ->example('monthly'),
             ImportColumn::make('answer_type')
                 ->requiredMapping()
-                ->castStateUsing(fn (mixed $state): string => ucfirst(mb_strtolower(trim((string) $state))))
-                ->rules(['required', 'string', 'max:30'])
-                ->helperText('qualitative | quantitative'),
+                ->castStateUsing(fn (mixed $state): ?string => static::normalizeImportKey($state))
+                ->rules(['required', 'in:'.implode(',', array_keys(Activity::ANSWER_TYPES))])
+                ->helperText(implode(' | ', array_keys(Activity::ANSWER_TYPES)))
+                ->example('qualitative'),
             ImportColumn::make('reference')
+                ->castStateUsing(fn (mixed $state): ?string => static::normalizeImportText($state))
+                ->ignoreBlankState()
                 ->rules(['nullable', 'string']),
             ImportColumn::make('optimum')
                 ->numeric()
+                ->ignoreBlankState()
                 ->rules(['nullable', 'numeric']),
             ImportColumn::make('minimum')
                 ->numeric()
+                ->ignoreBlankState()
                 ->rules(['nullable', 'numeric']),
             ImportColumn::make('maximum')
                 ->numeric()
+                ->ignoreBlankState()
                 ->rules(['nullable', 'numeric']),
             ImportColumn::make('unit')
-                ->rules(['nullable', 'string', 'max:30']),
+                ->castStateUsing(fn (mixed $state): ?string => static::normalizeImportText($state))
+                ->ignoreBlankState()
+                ->rules(['nullable', 'string', 'max:30'])
+                ->example('mm/s'),
             ImportColumn::make('status')
-                ->boolean()
+                ->castStateUsing(fn (mixed $state): ?bool => $state === null ? null : static::parseImportBoolean($state))
+                ->ignoreBlankState()
                 ->rules(['nullable', 'boolean'])
-                ->helperText('1/0, true/false, active/inactive (default: aktif)'),
+                ->helperText('1/0, true/false, active/inactive, aktif/nonaktif (default: aktif).')
+                ->example('active'),
         ];
     }
 
     public function resolveRecord(): Activity
     {
-        return new Activity;
-    }
+        $equipmentTypeId = $this->data['equipment_type_id'] ?? null;
+        $name = $this->data['name'] ?? null;
 
-    public function mutateBeforeCreate(): array
-    {
-        $data = $this->data;
-
-        $data['status'] = $this->normalizeStatus($data['status'] ?? null);
-
-        return $data;
-    }
-
-    protected function normalizeStatus(mixed $value): bool
-    {
-        if ($value === null || $value === '') {
-            return true;
+        if (blank($equipmentTypeId) || blank($name)) {
+            return new Activity;
         }
 
-        if (is_bool($value)) {
-            return $value;
-        }
-
-        $value = mb_strtolower(trim((string) $value));
-
-        return in_array($value, ['1', 'true', 'yes', 'ya', 'active', 'aktif', 'on'], true);
-    }
-
-    /**
-     * Normalisasi input seperti "Visual Check" / "visual check" menjadi "visual_check".
-     */
-    protected static function normalizeKey(mixed $state): string
-    {
-        $value = mb_strtolower(trim((string) $state));
-
-        return str_replace([' ', '-'], '_', $value);
+        return Activity::query()
+            ->where('equipment_type_id', $equipmentTypeId)
+            ->whereRaw('LOWER(name) = ?', [mb_strtolower((string) $name)])
+            ->first() ?? new Activity;
     }
 
     public static function getCompletedNotificationBody(Import $import): string
     {
-        $body = 'Activity import selesai: '.Number::format($import->successful_rows).' baris berhasil diimport.';
+        $body = 'Import activity selesai: '.Number::format($import->successful_rows).' baris berhasil diproses.';
 
         if ($failedRowsCount = $import->getFailedRowsCount()) {
-            $body .= ' '.Number::format($failedRowsCount).' baris gagal diimport.';
+            $body .= ' '.Number::format($failedRowsCount).' baris gagal diproses.';
         }
 
         return $body;

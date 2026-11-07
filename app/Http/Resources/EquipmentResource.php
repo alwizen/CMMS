@@ -25,10 +25,15 @@ class EquipmentResource extends JsonResource
                 'id' => $this->area->id,
                 'name' => $this->area->name,
                 'code' => $this->area->code,
-                'company' => $this->whenLoaded('area.company', fn () => [
+                'company' => $this->when($this->area?->relationLoaded('company'), fn () => [
                     'id' => $this->area->company->id,
                     'name' => $this->area->company->name,
                 ]),
+            ]),
+            'latest_meter_log' => $this->whenLoaded('latestMeterLog', fn () => $this->latestMeterLog === null ? null : [
+                'id' => $this->latestMeterLog->id,
+                'reading_date' => $this->latestMeterLog->reading_date?->format('Y-m-d'),
+                'value' => (float) $this->latestMeterLog->value,
             ]),
             'maintenance_plans' => MaintenancePlanResource::collection($this->whenLoaded('maintenancePlans')),
             'schedules' => MaintenanceScheduleResource::collection($this->whenLoaded('maintenanceSchedules')),

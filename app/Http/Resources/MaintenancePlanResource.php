@@ -22,11 +22,11 @@ class MaintenancePlanResource extends JsonResource
             'equipment' => $this->whenLoaded('equipment', fn () => [
                 'id' => $this->equipment->id,
                 'tag_number' => $this->equipment->tag_number,
-                'name' => $this->equipment->name,
-                'area' => $this->whenLoaded('equipment.area', fn () => [
+                'name' => $this->equipment->description,
+                'area' => $this->when($this->equipment?->relationLoaded('area'), fn () => [
                     'id' => $this->equipment->area->id,
                     'name' => $this->equipment->area->name,
-                    'company' => $this->whenLoaded('equipment.area.company', fn () => [
+                    'company' => $this->when($this->equipment?->area?->relationLoaded('company'), fn () => [
                         'id' => $this->equipment->area->company->id,
                         'name' => $this->equipment->area->company->name,
                     ]),
