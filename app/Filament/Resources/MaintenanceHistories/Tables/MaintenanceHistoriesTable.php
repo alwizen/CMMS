@@ -3,9 +3,11 @@
 namespace App\Filament\Resources\MaintenanceHistories\Tables;
 
 use App\Models\Area;
+use App\Support\Downtime;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
+use Filament\Actions\ViewAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
@@ -16,7 +18,14 @@ class MaintenanceHistoriesTable
     public static function configure(Table $table): Table
     {
         return $table
+            ->paginated([25, 50, 100])
             ->columns([
+                TextColumn::make('no')
+                    ->label('No')
+                    ->rowIndex()
+                    ->alignCenter()
+                    ->width(1)
+                    ->grow(false),
                 TextColumn::make('work_order_number')
                     ->label('WO Number')
                     ->sortable()
@@ -46,6 +55,14 @@ class MaintenanceHistoriesTable
                 TextColumn::make('duration_minutes')
                     ->label('Duration (min)')
                     ->sortable(),
+                TextColumn::make('downtime_minutes')
+                    ->label('Downtime')
+                    ->state(fn ($record): ?int => $record->downtimeMinutes())
+                    ->formatStateUsing(fn ($state): string => Downtime::formatMinutes($state === null ? null : (int) $state))
+                    ->placeholder('-')
+                    ->tooltip(fn ($record): ?string => $record->downtimeStart() && $record->downtimeEnd()
+                        ? $record->downtimeStart()->format('d M Y H:i').' → '.$record->downtimeEnd()->format('d M Y H:i')
+                        : null),
             ])
             ->filters([
                 SelectFilter::make('area_id')
@@ -80,12 +97,13 @@ class MaintenanceHistoriesTable
                     ]),
             ])
             ->recordActions([
-                EditAction::make(),
-            ])
-            ->toolbarActions([
-                BulkActionGroup::make([
-                    DeleteBulkAction::make(),
-                ]),
+                ViewAction::make(),
+                // EditAction::make(),
             ]);
+        // ->toolbarActions([
+        //     BulkActionGroup::make([
+        //         DeleteBulkAction::make(),
+        //     ]),
+        // ]);
     }
 }

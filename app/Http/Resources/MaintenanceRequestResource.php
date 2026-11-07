@@ -29,7 +29,7 @@ class MaintenanceRequestResource extends JsonResource
                 'id' => $this->equipment->id,
                 'tag_number' => $this->equipment->tag_number,
                 'equipment_type' => $this->equipment->equipmentType?->name,
-                'area' => $this->whenLoaded('equipment.area', fn () => [
+                'area' => $this->when($this->equipment?->relationLoaded('area'), fn () => [
                     'id' => $this->equipment->area->id,
                     'name' => $this->equipment->area->name,
                 ]),

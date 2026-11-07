@@ -7,6 +7,7 @@ use App\Models\Equipment;
 use App\Models\MaintenanceRequest;
 use App\Models\MaintenanceSchedule;
 use App\Models\WorkOrder;
+use App\Support\Downtime;
 use Filament\Widgets\StatsOverviewWidget as BaseWidget;
 use Filament\Widgets\StatsOverviewWidget\Stat;
 
@@ -35,6 +36,15 @@ class StatsOverviewWidget extends BaseWidget
 
         $completionRate = $woCount > 0 ? round(($woDone / $woCount) * 100) : 0;
 
+        $downtimeRequests = MaintenanceRequest::query()
+            ->where('status', '!=', MaintenanceRequest::STATUSES['Rejected'])
+            ->tap(fn ($q) => $this->applyDateFilter($q, 'damage_date'))
+            ->with('workOrders')
+            ->get();
+
+        $downtimeMinutes = Downtime::totalMinutes($downtimeRequests);
+        $downtimeEvents = Downtime::eventCount($downtimeRequests);
+
         return [
             Stat::make('Total Equipment', Equipment::count())
                 ->description('Aset terdaftar')
@@ -56,6 +66,10 @@ class StatsOverviewWidget extends BaseWidget
                 ->description($overdueSchedules > 0 ? 'Perlu tindak lanjut' : 'Semua sesuai jadwal')
                 ->descriptionIcon('heroicon-o-exclamation-triangle')
                 ->color($overdueSchedules > 0 ? 'danger' : 'success'),
+            Stat::make('Unplanned Downtime', Downtime::formatHours($downtimeMinutes))
+                ->description($downtimeEvents.' kejadian')
+                ->descriptionIcon('heroicon-o-clock')
+                ->color($downtimeMinutes > 0 ? 'danger' : 'success'),
         ];
     }
 }

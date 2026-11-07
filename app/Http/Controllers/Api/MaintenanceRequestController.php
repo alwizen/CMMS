@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\MaintenanceRequestResource;
 use App\Models\MaintenanceRequest;
+use App\Support\DocumentNumber;
+use App\Support\UserVisibility;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -16,9 +18,7 @@ class MaintenanceRequestController extends Controller
         $query = MaintenanceRequest::with(['equipment.area', 'reportedBy'])
             ->orderByDesc('created_at');
 
-        if ($request->user()->hasRole('technician')) {
-            $query->where('reported_by', $request->user()->id);
-        }
+        UserVisibility::scopeRequests($query, $request->user());
 
         if ($request->filled('status')) {
             $query->where('status', $request->status);
@@ -34,8 +34,8 @@ class MaintenanceRequestController extends Controller
                 $q->where('request_number', 'like', "%{$search}%")
                     ->orWhere('description', 'like', "%{$search}%")
                     ->orWhereHas('equipment', function ($eq) use ($search) {
-                        $eq->where('name', 'like', "%{$search}%")
-                            ->orWhere('tag_number', 'like', "%{$search}%");
+                        $eq->where('tag_number', 'like', "%{$search}%")
+                            ->orWhere('description', 'like', "%{$search}%");
                     });
             });
         }
@@ -80,17 +80,12 @@ class MaintenanceRequestController extends Controller
             'equipment_condition' => 'nullable|string|max:5000',
             'impact' => 'nullable|string|max:5000',
             'early_action' => 'nullable|string|max:5000',
-            'status' => 'required|string|in:Open,Assigned,In Progress,Completed,Rejected',
+            'status' => 'required|string|in:'.implode(',', array_keys(MaintenanceRequest::STATUSES)),
             'photo' => 'nullable|array',
             'photo.*' => 'image|mimes:jpeg,png,jpg,gif|max:5120',
         ]);
 
-        $requestNumber = 'MR-'.now()->format('Ymd').'-'.str_pad(
-            MaintenanceRequest::whereDate('created_at', today())->count() + 1,
-            4,
-            '0',
-            STR_PAD_LEFT
-        );
+        $requestNumber = DocumentNumber::generate('maintenance_request', MaintenanceRequest::class, 'request_number');
 
         $photoPaths = [];
         if ($request->hasFile('photo')) {
@@ -134,7 +129,7 @@ class MaintenanceRequestController extends Controller
             'equipment_condition' => 'nullable|string|max:5000',
             'impact' => 'nullable|string|max:5000',
             'early_action' => 'nullable|string|max:5000',
-            'status' => 'sometimes|string|in:Open,Assigned,In Progress,Completed,Rejected',
+            'status' => 'sometimes|string|in:'.implode(',', array_keys(MaintenanceRequest::STATUSES)),
             'photo' => 'nullable|array',
             'photo.*' => 'image|mimes:jpeg,png,jpg,gif|max:5120',
         ]);

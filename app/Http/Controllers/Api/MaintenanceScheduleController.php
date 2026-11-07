@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\MaintenanceScheduleResource;
 use App\Models\MaintenanceSchedule;
+use App\Support\UserVisibility;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
@@ -15,11 +16,7 @@ class MaintenanceScheduleController extends Controller
         $query = MaintenanceSchedule::with(['equipment.area', 'maintenancePlan'])
             ->orderByDesc('scheduled_date');
 
-        if ($request->user()->hasRole('technician')) {
-            $query->whereHas('maintenancePlan', function ($q) use ($request) {
-                $q->where('technician_coordinator_id', $request->user()->id);
-            });
-        }
+        UserVisibility::scopeSchedules($query, $request->user());
 
         if ($request->filled('status')) {
             $query->where('status', $request->status);
@@ -36,8 +33,8 @@ class MaintenanceScheduleController extends Controller
         if ($request->filled('search')) {
             $search = $request->search;
             $query->whereHas('equipment', function ($q) use ($search) {
-                $q->where('name', 'like', "%{$search}%")
-                    ->orWhere('tag_number', 'like', "%{$search}%");
+                $q->where('tag_number', 'like', "%{$search}%")
+                    ->orWhere('description', 'like', "%{$search}%");
             });
         }
 

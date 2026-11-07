@@ -14,7 +14,14 @@ class MaintenancePlansTable
     public static function configure(Table $table): Table
     {
         return $table
+            ->defaultSort('start_date', 'desc')
             ->columns([
+                TextColumn::make('no')
+                    ->label('No')
+                    ->rowIndex()
+                    ->alignCenter()
+                    ->width(1)
+                    ->grow(false),
                 TextColumn::make('plan_number')
                     ->label('Plan Number')
                     ->searchable()
@@ -70,11 +77,11 @@ class MaintenancePlansTable
             ])
             ->recordActions([
                 EditAction::make(),
-            ])
-            ->toolbarActions([
-                BulkActionGroup::make([
-                    DeleteBulkAction::make(),
-                ]),
             ]);
+            // ->toolbarActions([
+            //     BulkActionGroup::make([
+            //         DeleteBulkAction::make(),
+            //     ]),
+            // ]);
     }
 }

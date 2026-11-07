@@ -2,10 +2,12 @@
 
 namespace App\Support;
 
+use App\Models\DocumentSequence;
 use App\Models\Setting;
 use Carbon\CarbonInterface;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\DB;
 
 class DocumentNumber
 {
@@ -21,6 +23,7 @@ class DocumentNumber
         'maintenance_plan' => 'MP-{YYYY}{MM}-{SEQ}',
         'maintenance_schedule' => 'MS-{YYYY}{MM}-{SEQ}',
         'maintenance_request' => 'MR-{YYYY}{MM}{DD}-{SEQ}',
+        'document' => 'DOC-{YYYY}{MM}-{SEQ}',
     ];
 
     /**
@@ -31,6 +34,7 @@ class DocumentNumber
         'maintenance_plan' => 'Maintenance Plan',
         'maintenance_schedule' => 'Maintenance Schedule',
         'maintenance_request' => 'Maintenance Request',
+        'document' => 'Document',
     ];
 
     public static function format(string $type): string
@@ -60,15 +64,21 @@ class DocumentNumber
     }
 
     /**
+     * Ambil nomor berikutnya secara atomik per prefix (aman untuk request bersamaan).
+     *
      * @param  class-string<Model>  $modelClass
      */
     public static function generate(string $type, string $modelClass, string $column): string
     {
-        [$prefix, $sequence, $suffix] = static::split(static::format($type));
+        [$prefix, $width, $suffix] = static::split(static::format($type));
 
-        $next = static::nextSequence($modelClass, $column, $prefix) + 1;
+        $next = static::nextAtomic($prefix);
 
-        return $prefix.str_pad((string) $next, $sequence, '0', STR_PAD_LEFT).$suffix;
+        if ($next <= static::legacyMax($modelClass, $column, $prefix)) {
+            $next = static::bumpSequence($prefix, static::legacyMax($modelClass, $column, $prefix));
+        }
+
+        return $prefix.str_pad((string) $next, $width, '0', STR_PAD_LEFT).$suffix;
     }
 
     /**
@@ -124,19 +134,53 @@ class DocumentNumber
     }
 
     /**
+     * Increment counter per prefix di dalam transaksi dengan baris terkunci.
+     */
+    protected static function nextAtomic(string $prefix): int
+    {
+        return DB::transaction(function () use ($prefix): int {
+            $row = DocumentSequence::query()->lockForUpdate()->firstOrCreate(
+                ['prefix' => $prefix],
+                ['last_number' => 0],
+            );
+
+            $row->last_number++;
+            $row->save();
+
+            return $row->last_number;
+        });
+    }
+
+    /**
+     * Sinkronisasi counter bila data lama sudah melampaui counter tersimpan.
+     */
+    protected static function bumpSequence(string $prefix, int $floor): int
+    {
+        return DB::transaction(function () use ($prefix, $floor): int {
+            $row = DocumentSequence::query()->lockForUpdate()->firstOrCreate(
+                ['prefix' => $prefix],
+                ['last_number' => 0],
+            );
+
+            $row->last_number = max($row->last_number, $floor) + 1;
+            $row->save();
+
+            return $row->last_number;
+        });
+    }
+
+    /**
+     * Nilai tertinggi dari data yang sudah ada, untuk kompatibilitas nomor lama.
+     *
      * @param  class-string<Model>  $modelClass
      */
-    protected static function nextSequence(string $modelClass, string $column, string $prefix): int
+    protected static function legacyMax(string $modelClass, string $column, string $prefix): int
     {
         $pattern = str_replace(['\\', '%', '_'], ['\\\\', '\\%', '\\_'], $prefix).'%';
 
-        $numbers = $modelClass::query()
-            ->where($column, 'like', $pattern)
-            ->pluck($column);
-
         $max = 0;
 
-        foreach ($numbers as $number) {
+        foreach ($modelClass::query()->where($column, 'like', $pattern)->pluck($column) as $number) {
             $remainder = substr((string) $number, strlen($prefix));
 
             if (preg_match('/^(\d+)/', $remainder, $matches) === 1) {

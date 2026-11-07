@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\MaintenancePlanResource;
 use App\Models\MaintenancePlan;
+use App\Support\UserVisibility;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
@@ -15,9 +16,7 @@ class MaintenancePlanController extends Controller
         $query = MaintenancePlan::with(['equipment.area', 'createdBy', 'technicianCoordinator'])
             ->orderByDesc('created_at');
 
-        if ($request->user()->hasRole('technician')) {
-            $query->where('technician_coordinator_id', $request->user()->id);
-        }
+        UserVisibility::scopePlans($query, $request->user());
 
         if ($request->filled('status')) {
             $query->where('status', $request->status);
@@ -26,8 +25,8 @@ class MaintenancePlanController extends Controller
         if ($request->filled('search')) {
             $search = $request->search;
             $query->whereHas('equipment', function ($q) use ($search) {
-                $q->where('name', 'like', "%{$search}%")
-                    ->orWhere('tag_number', 'like', "%{$search}%");
+                $q->where('tag_number', 'like', "%{$search}%")
+                    ->orWhere('description', 'like', "%{$search}%");
             });
         }
 

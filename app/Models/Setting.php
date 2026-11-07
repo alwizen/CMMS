@@ -51,6 +51,11 @@ class Setting extends Model
         unset(static::$cache[$key]);
     }
 
+    public static function flushCache(): void
+    {
+        static::$cache = [];
+    }
+
     protected static function encode(mixed $value): string
     {
         return json_encode($value, JSON_THROW_ON_ERROR);

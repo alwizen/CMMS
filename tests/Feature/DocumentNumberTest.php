@@ -31,6 +31,8 @@ class DocumentNumberTest extends TestCase
     {
         parent::setUp();
 
+        Setting::flushCache();
+
         $this->user = User::factory()->create();
 
         $company = Company::create(['code' => 'CO', 'name' => 'Demo Company']);

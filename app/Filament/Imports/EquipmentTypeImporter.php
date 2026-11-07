@@ -2,6 +2,7 @@
 
 namespace App\Filament\Imports;
 
+use App\Filament\Imports\Concerns\ResolvesImportValues;
 use App\Models\EquipmentType;
 use Filament\Actions\Imports\ImportColumn;
 use Filament\Actions\Imports\Importer;
@@ -10,6 +11,8 @@ use Illuminate\Support\Number;
 
 class EquipmentTypeImporter extends Importer
 {
+    use ResolvesImportValues;
+
     protected static ?string $model = EquipmentType::class;
 
     public static function getColumns(): array
@@ -17,39 +20,47 @@ class EquipmentTypeImporter extends Importer
         return [
             ImportColumn::make('code')
                 ->requiredMapping()
-                ->rules(['required', 'max:50']),
+                ->castStateUsing(fn (mixed $state): ?string => static::normalizeImportText($state))
+                ->rules(['required', 'string', 'max:50'])
+                ->helperText('Unik. Dipakai sebagai kunci update saat import ulang. Contoh: pump, tank.')
+                ->example('pump'),
             ImportColumn::make('name')
                 ->requiredMapping()
-                ->rules(['required', 'max:100']),
+                ->castStateUsing(fn (mixed $state): ?string => static::normalizeImportText($state))
+                ->rules(['required', 'string', 'max:100'])
+                ->example('Pompa'),
             ImportColumn::make('description')
-                ->rules(['nullable']),
+                ->castStateUsing(fn (mixed $state): ?string => static::normalizeImportText($state))
+                ->ignoreBlankState()
+                ->rules(['nullable', 'string']),
             ImportColumn::make('status')
-                ->rules(['nullable', 'boolean']),
+                ->castStateUsing(fn (mixed $state): ?bool => $state === null ? null : static::parseImportBoolean($state))
+                ->ignoreBlankState()
+                ->rules(['nullable', 'boolean'])
+                ->helperText('1/0, true/false, active/inactive, aktif/nonaktif (default: aktif).')
+                ->example('active'),
         ];
     }
 
-    public function resolveRecord(): ?EquipmentType
+    public function resolveRecord(): EquipmentType
     {
-        return new EquipmentType;
-    }
+        $code = $this->data['code'] ?? null;
 
-    public function mutateBeforeCreate(): array
-    {
-        $data = $this->data;
-
-        if (isset($data['status'])) {
-            $data['status'] = filter_var($data['status'], FILTER_VALIDATE_BOOLEAN);
+        if (blank($code)) {
+            return new EquipmentType;
         }
 
-        return $data;
+        return EquipmentType::query()
+            ->whereRaw('LOWER(code) = ?', [mb_strtolower((string) $code)])
+            ->first() ?? new EquipmentType;
     }
 
     public static function getCompletedNotificationBody(Import $import): string
     {
-        $body = 'Your equipment type import has completed and '.Number::format($import->successful_rows).' '.str('row')->plural($import->successful_rows).' imported.';
+        $body = 'Import equipment type selesai: '.Number::format($import->successful_rows).' baris berhasil diproses.';
 
         if ($failedRowsCount = $import->getFailedRowsCount()) {
-            $body .= ' '.Number::format($failedRowsCount).' '.str('row')->plural($failedRowsCount).' failed to import.';
+            $body .= ' '.Number::format($failedRowsCount).' baris gagal diproses.';
         }
 
         return $body;

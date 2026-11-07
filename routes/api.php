@@ -3,6 +3,7 @@
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\DashboardController;
 use App\Http\Controllers\Api\EquipmentController;
+use App\Http\Controllers\Api\MaintenanceCalendarController;
 use App\Http\Controllers\Api\MaintenancePlanController;
 use App\Http\Controllers\Api\MaintenanceRequestController;
 use App\Http\Controllers\Api\MaintenanceScheduleController;
@@ -23,6 +24,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/maintenance-plans', [MaintenancePlanController::class, 'index']);
     Route::get('/maintenance-plans/{id}', [MaintenancePlanController::class, 'show']);
 
+    Route::get('/maintenance-calendar', [MaintenanceCalendarController::class, 'index']);
     Route::get('/maintenance-schedules', [MaintenanceScheduleController::class, 'index']);
     Route::get('/maintenance-schedules/{id}', [MaintenanceScheduleController::class, 'show']);
 
@@ -30,6 +32,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/work-orders/{id}', [WorkOrderController::class, 'show']);
     Route::put('/work-orders/{id}', [WorkOrderController::class, 'update']);
     Route::put('/work-orders/{workOrderId}/activities/{activityId}', [WorkOrderController::class, 'updateActivity']);
+    Route::post('/work-orders/{workOrderId}/activities/{activityId}/photos', [WorkOrderController::class, 'uploadActivityPhotos']);
+    Route::delete('/work-orders/{workOrderId}/activities/{activityId}/photos', [WorkOrderController::class, 'deleteActivityPhoto']);
 
     Route::get('/equipment', [EquipmentController::class, 'index']);
     Route::get('/equipment/{id}', [EquipmentController::class, 'show']);

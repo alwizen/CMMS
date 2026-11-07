@@ -4,6 +4,7 @@ namespace App\Filament\Resources\MaintenanceRequests\Schemas;
 
 use App\Models\Equipment;
 use App\Models\EquipmentType;
+use App\Models\MaintenanceRequest;
 use App\Models\User;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
@@ -54,13 +55,7 @@ class MaintenanceRequestForm
                             ->placeholder('Select operation status'),
                         Select::make('status')
                             ->label('Status')
-                            ->options([
-                                'Open' => 'Open',
-                                'Assigned' => 'Assigned',
-                                'In Progress' => 'In Progress',
-                                'Completed' => 'Completed',
-                                'Rejected' => 'Rejected',
-                            ])
+                            ->options(MaintenanceRequest::STATUSES)
                             ->default('Open')
                             ->required()
                             ->placeholder('Select status'),

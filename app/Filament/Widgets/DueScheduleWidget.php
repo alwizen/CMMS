@@ -22,7 +22,7 @@ class DueScheduleWidget extends BaseWidget
         return $table
             ->query(
                 MaintenanceSchedule::query()
-                    ->with(['equipment.area', 'maintenancePlan'])
+                    ->with(['equipment.area', 'maintenancePlan', 'workOrders'])
                     ->whereIn('status', [
                         MaintenanceSchedule::STATUSES['Scheduled'],
                         MaintenanceSchedule::STATUSES['Rescheduled'],
@@ -39,6 +39,10 @@ class DueScheduleWidget extends BaseWidget
                 Tables\Columns\TextColumn::make('schedule_number')
                     ->label('No. Jadwal')
                     ->searchable(),
+                Tables\Columns\TextColumn::make('workOrders.work_order_number')
+                    ->label('No. WO')
+                    ->placeholder('Belum dibuat')
+                    ->badge(),
                 Tables\Columns\TextColumn::make('equipment.tag_number')
                     ->label('Equipment'),
                 Tables\Columns\TextColumn::make('equipment.area.name')
