@@ -35,12 +35,20 @@ class UpcomingScheduleNotification extends Notification implements ShouldQueue
         $schedule = $this->schedule;
 
         return [
+            'format' => 'filament',
+            'duration' => 'persistent',
             'type' => 'upcoming_schedule',
             'schedule_id' => $schedule->id,
             'equipment_id' => $schedule->equipment_id,
             'scheduled_date' => $schedule->scheduled_date?->format('Y-m-d'),
             'title' => 'Jadwal H-3',
             'message' => sprintf(
+                'Schedule #%s (%s) jatuh pada %s.',
+                $schedule->id,
+                $schedule->equipment?->tag_number ?? '-',
+                $schedule->scheduled_date?->format('d M Y') ?? '-'
+            ),
+            'body' => sprintf(
                 'Schedule #%s (%s) jatuh pada %s.',
                 $schedule->id,
                 $schedule->equipment?->tag_number ?? '-',

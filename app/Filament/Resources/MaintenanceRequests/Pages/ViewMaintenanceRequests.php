@@ -9,6 +9,8 @@ use App\Models\MaintenanceRequest;
 use App\Models\User;
 use App\Models\WorkOrder;
 use App\Models\WorkOrderActivity;
+use App\Notifications\MaintenanceRequestApprovedNotification;
+use App\Notifications\MaintenanceRequestRejectedNotification;
 use Filament\Actions\Action;
 use Filament\Actions\EditAction;
 use Filament\Forms\Components\DatePicker;
@@ -17,6 +19,8 @@ use Filament\Forms\Components\Textarea;
 use Filament\Notifications\Notification;
 use Filament\Resources\Pages\ViewRecord;
 use Filament\Schemas\Schema;
+use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Notification as NotificationFacade;
 
 class ViewMaintenanceRequests extends ViewRecord
 {
@@ -137,6 +141,8 @@ class ViewMaintenanceRequests extends ViewRecord
                         }
                     }
 
+                    $this->notifyApproval($record->fresh(['equipment', 'reportedBy']), $workOrder);
+
                     Notification::make()
                         ->title('Berhasil')
                         ->body('Maintenance request telah disetujui dan Work Order telah dibuat.')
@@ -170,6 +176,8 @@ class ViewMaintenanceRequests extends ViewRecord
                         'approved_by' => auth()->id(),
                         'approved_at' => now(),
                     ]);
+                    $this->notifyRejection($record->fresh(['equipment', 'reportedBy']));
+
                     Notification::make()
                         ->title('Berhasil')
                         ->body('Maintenance request telah ditolak.')
@@ -184,5 +192,46 @@ class ViewMaintenanceRequests extends ViewRecord
                 ->modalSubmitActionLabel('Reject')
                 ->visible(fn (): bool => $this->record->status === MaintenanceRequest::STATUSES['Open']),
         ];
+    }
+
+    /**
+     * Kirim notifikasi approve ke teknisi penanggung jawab dan pelapor.
+     */
+    protected function notifyApproval(MaintenanceRequest $request, WorkOrder $workOrder): void
+    {
+        $recipients = $this->approvalRecipients($request, $workOrder->technician_coordinator_id);
+
+        if ($recipients->isEmpty()) {
+            return;
+        }
+
+        NotificationFacade::send($recipients, new MaintenanceRequestApprovedNotification($request, $workOrder));
+    }
+
+    /**
+     * Kirim notifikasi reject ke pelapor dan teknisi terkait request sebelumnya.
+     */
+    protected function notifyRejection(MaintenanceRequest $request): void
+    {
+        $coordinatorId = $request->workOrders()->value('technician_coordinator_id');
+
+        $recipients = $this->approvalRecipients($request, $coordinatorId);
+
+        if ($recipients->isEmpty()) {
+            return;
+        }
+
+        NotificationFacade::send($recipients, new MaintenanceRequestRejectedNotification($request));
+    }
+
+    /**
+     * @return Collection<int, User>
+     */
+    protected function approvalRecipients(MaintenanceRequest $request, ?int $coordinatorId): Collection
+    {
+        return User::query()
+            ->whereIn('id', array_filter([$request->reported_by, $coordinatorId]))
+            ->where('status', true)
+            ->get();
     }
 }

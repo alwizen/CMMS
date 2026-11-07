@@ -35,6 +35,8 @@ class OverdueWorkOrderNotification extends Notification implements ShouldQueue
         $wo = $this->workOrder;
 
         return [
+            'format' => 'filament',
+            'duration' => 'persistent',
             'type' => 'overdue_work_order',
             'work_order_id' => $wo->id,
             'work_order_number' => $wo->work_order_number,
@@ -42,6 +44,12 @@ class OverdueWorkOrderNotification extends Notification implements ShouldQueue
             'status' => $wo->status,
             'title' => 'WO Overdue',
             'message' => sprintf(
+                'WO %s (%s) status %s sudah melewati jadwal.',
+                $wo->work_order_number ?? "#{$wo->id}",
+                $wo->equipment?->tag_number ?? '-',
+                $wo->status
+            ),
+            'body' => sprintf(
                 'WO %s (%s) status %s sudah melewati jadwal.',
                 $wo->work_order_number ?? "#{$wo->id}",
                 $wo->equipment?->tag_number ?? '-',
