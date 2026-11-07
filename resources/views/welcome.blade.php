@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>{{ config('app.name', 'MaintenX') }} — Platform Pemeliharaan & Manajemen Aset</title>
-
+    <link rel="icon" href="{{ asset('img/logo.svg') }}">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
@@ -522,7 +522,7 @@
                     <p class="text-sm text-slate-300 leading-relaxed max-w-sm">
                         Platform Enterprise Manajemen Pemeliharaan & Aset Industri. Membantu penjadwalan preventif, pemetaan geo-area, serta penugasan work order teknisi secara akurat dan transparan.
                     </p>
-                    <div class="flex items-center gap-2 text-xs text-[#9CB080] font-medium pt-1">
+                    <div class="flex items-center gap-2 text-xs text-white font-medium pt-1">
                         <span class="w-2 h-2 rounded-full bg-[#9CB080]"></span>
                         <span>Sistem Operasional Aktif & Siap Digunakan</span>
                     </div>
