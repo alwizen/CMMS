@@ -38,6 +38,8 @@ class MaintenanceRequestPendingNotification extends Notification implements Shou
         $request = $this->request;
 
         return [
+            'format' => 'filament',
+            'duration' => 'persistent',
             'type' => 'maintenance_request_pending',
             'request_id' => $request->id,
             'request_number' => $request->request_number,
@@ -45,6 +47,11 @@ class MaintenanceRequestPendingNotification extends Notification implements Shou
             'title' => 'Request Menunggu Approval',
             'message' => sprintf(
                 'Request %s (%s) menunggu approval.',
+                $request->request_number ?? "#{$request->id}",
+                $request->equipment?->tag_number ?? '-'
+            ),
+            'body' => sprintf(
+                '%s (%s)',
                 $request->request_number ?? "#{$request->id}",
                 $request->equipment?->tag_number ?? '-'
             ),

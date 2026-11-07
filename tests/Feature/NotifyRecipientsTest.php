@@ -2,8 +2,8 @@
 
 namespace Tests\Feature;
 
-use App\Models\Company;
 use App\Models\Area;
+use App\Models\Company;
 use App\Models\Equipment;
 use App\Models\EquipmentType;
 use App\Models\User;
@@ -90,5 +90,36 @@ class NotifyRecipientsTest extends TestCase
 
         $this->assertSame([], $ids);
         $this->assertNotContains($stranger->id, $ids);
+    }
+
+    public function test_supervisors_fall_back_to_super_admin_when_spv_role_is_missing(): void
+    {
+        Role::findOrCreate('super_admin', 'web');
+
+        $admin = User::factory()->create();
+        $admin->assignRole('super_admin');
+
+        User::factory()->create();
+
+        $ids = Notify::supervisors()->pluck('id')->all();
+
+        $this->assertSame([$admin->id], $ids);
+    }
+
+    public function test_supervisors_prefer_spv_mos_over_super_admin(): void
+    {
+        Role::findOrCreate('super_admin', 'web');
+        Role::findOrCreate('spv_mos', 'web');
+
+        $admin = User::factory()->create();
+        $admin->assignRole('super_admin');
+
+        $spv = User::factory()->create();
+        $spv->assignRole('spv_mos');
+
+        $ids = Notify::supervisors()->pluck('id')->all();
+
+        $this->assertSame([$spv->id], $ids);
+        $this->assertNotContains($admin->id, $ids);
     }
 }

@@ -12,18 +12,37 @@ class Notify
 {
     public const SUPERVISOR_ROLE = 'spv_mos';
 
+    public const FALLBACK_ROLE = 'super_admin';
+
     /**
      * Supervisor yang menerima notifikasi request baru.
+     *
+     * Jika role supervisor belum dibuat atau belum ada pemegangnya,
+     * notifikasi dialihkan ke super admin agar tidak ada request yang terlewat.
      *
      * @return Collection<int, User>
      */
     public static function supervisors(): Collection
     {
-        if (! Role::where('name', self::SUPERVISOR_ROLE)->exists()) {
+        $users = static::usersWithRole(self::SUPERVISOR_ROLE);
+
+        if ($users->isNotEmpty()) {
+            return $users;
+        }
+
+        return static::usersWithRole(self::FALLBACK_ROLE);
+    }
+
+    /**
+     * @return Collection<int, User>
+     */
+    protected static function usersWithRole(string $role): Collection
+    {
+        if (! Role::where('name', $role)->exists()) {
             return collect();
         }
 
-        return User::role(self::SUPERVISOR_ROLE)
+        return User::role($role)
             ->where('status', true)
             ->get();
     }
