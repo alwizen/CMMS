@@ -4,9 +4,11 @@ namespace App\Notifications;
 
 use App\Models\WorkOrder;
 use Illuminate\Bus\Queueable;
+use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
-class OverdueWorkOrderNotification extends Notification
+class OverdueWorkOrderNotification extends Notification implements ShouldQueue
 {
     use Queueable;
 
@@ -14,7 +16,18 @@ class OverdueWorkOrderNotification extends Notification
 
     public function via(object $notifiable): array
     {
-        return ['database'];
+        return ['database', 'mail'];
+    }
+
+    public function toMail(object $notifiable): MailMessage
+    {
+        $wo = $this->workOrder->loadMissing('equipment');
+
+        return (new MailMessage)
+            ->subject('WO overdue: '.($wo->work_order_number ?? '#'.$wo->id))
+            ->greeting('Halo '.$notifiable->name.',')
+            ->line('WO '.($wo->work_order_number ?? '#'.$wo->id).' untuk equipment '.($wo->equipment?->tag_number ?? '-').' masih berstatus '.$wo->status.' dan sudah melewati jadwal.')
+            ->line('Mohon segera ditindaklanjuti.');
     }
 
     public function toArray(object $notifiable): array

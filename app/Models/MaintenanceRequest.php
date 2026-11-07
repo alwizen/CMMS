@@ -2,13 +2,16 @@
 
 namespace App\Models;
 
+use App\Observers\MaintenanceRequestObserver;
 use App\Support\DocumentNumber;
+use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Carbon\CarbonInterface;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Carbon;
 
+#[ObservedBy([MaintenanceRequestObserver::class])]
 class MaintenanceRequest extends Model
 {
     public const STATUSES = [
