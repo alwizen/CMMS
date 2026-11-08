@@ -46,9 +46,10 @@ class AdminPanelProvider extends PanelProvider
             ->sidebarFullyCollapsibleOnDesktop()
             ->id('admin')
             ->path('admin')
-            ->brandLogo(asset('img/rumat.png'))
+            ->brandLogo(asset('img/logo.png'))
+            ->darkModeBrandLogo(asset('img/dark.png'))
             ->favicon(asset('img/logo.svg'))
-            ->brandLogoHeight('3rem')
+            ->brandLogoHeight('3.5rem')
             ->login()
             ->colors([
                 'primary' => Color::Amber,
