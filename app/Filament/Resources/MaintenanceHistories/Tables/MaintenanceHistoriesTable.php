@@ -54,9 +54,10 @@ class MaintenanceHistoriesTable
                     ->sortable(),
                 TextColumn::make('duration_minutes')
                     ->label('Duration (min)')
-                    ->sortable(),
+                    ->toggleable(),
                 TextColumn::make('downtime_minutes')
                     ->label('Downtime')
+                    ->toggleable()
                     ->state(fn ($record): ?int => $record->downtimeMinutes())
                     ->formatStateUsing(fn ($state): string => Downtime::formatMinutes($state === null ? null : (int) $state))
                     ->placeholder('-')

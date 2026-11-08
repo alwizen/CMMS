@@ -50,49 +50,52 @@ class DowntimeReport extends Page implements HasTable
     public function table(Table $table): Table
     {
         return $table
-            ->query(fn (): Builder => MaintenanceRequest::query()
+            ->query(fn(): Builder => MaintenanceRequest::query()
                 ->with(['equipment.area', 'reportedBy', 'workOrders'])
                 ->where('status', '!=', MaintenanceRequest::STATUSES['Rejected']))
             ->defaultSort('damage_date', 'desc')
             ->columns([
+                TextColumn::make('no')
+                    ->label('No')
+                    ->rowIndex()
+                    ->alignCenter()
+                    ->width(1)
+                    ->grow(false),
                 TextColumn::make('request_number')
                     ->label('Request Number')
                     ->searchable()
-                    ->sortable()
                     ->copyable(),
                 TextColumn::make('equipment.tag_number')
                     ->label('Tag Number')
-                    ->searchable()
-                    ->sortable(),
+                    ->searchable(),
                 TextColumn::make('equipment.area.name')
                     ->label('Area')
-                    ->sortable()
                     ->placeholder('-'),
                 TextColumn::make('description')
                     ->label('Masalah')
                     ->searchable()
                     ->limit(40)
-                    ->tooltip(fn ($state): ?string => $state),
+                    ->tooltip(fn($state): ?string => $state),
                 TextColumn::make('downtime_start')
                     ->label('Mulai')
-                    ->state(fn (MaintenanceRequest $record) => $record->downtimeStart())
+                    ->state(fn(MaintenanceRequest $record) => $record->downtimeStart())
                     ->dateTime('d M Y H:i')
                     ->placeholder('-'),
                 TextColumn::make('downtime_end')
                     ->label('Selesai')
-                    ->state(fn (MaintenanceRequest $record) => $record->downtimeEnd())
+                    ->state(fn(MaintenanceRequest $record) => $record->downtimeEnd())
                     ->dateTime('d M Y H:i')
                     ->placeholder('Masih berlangsung'),
                 TextColumn::make('downtime_minutes')
                     ->label('Durasi')
-                    ->state(fn (MaintenanceRequest $record): ?int => $record->downtimeMinutes())
-                    ->formatStateUsing(fn ($state): string => Downtime::formatMinutes($state === null ? null : (int) $state))
+                    ->state(fn(MaintenanceRequest $record): ?int => $record->downtimeMinutes())
+                    ->formatStateUsing(fn($state): string => Downtime::formatMinutes($state === null ? null : (int) $state))
                     ->placeholder('-')
                     ->weight(FontWeight::Bold),
                 TextColumn::make('status')
                     ->label('Status')
                     ->badge()
-                    ->color(fn (?string $state): string => match ($state) {
+                    ->color(fn(?string $state): string => match ($state) {
                         MaintenanceRequest::STATUSES['Open'] => 'info',
                         MaintenanceRequest::STATUSES['Approved'] => 'success',
                         MaintenanceRequest::STATUSES['Assigned'] => 'primary',
@@ -110,14 +113,14 @@ class DowntimeReport extends Page implements HasTable
                         DatePicker::make('until')
                             ->label('Sampai Tanggal'),
                     ])
-                    ->query(fn (Builder $query, array $data): Builder => $query
+                    ->query(fn(Builder $query, array $data): Builder => $query
                         ->when(
                             $data['from'] ?? null,
-                            fn (Builder $query, $date) => $query->whereDate('damage_date', '>=', $date),
+                            fn(Builder $query, $date) => $query->whereDate('damage_date', '>=', $date),
                         )
                         ->when(
                             $data['until'] ?? null,
-                            fn (Builder $query, $date) => $query->whereDate('damage_date', '<=', $date),
+                            fn(Builder $query, $date) => $query->whereDate('damage_date', '<=', $date),
                         )),
                 SelectFilter::make('equipment_id')
                     ->label('Equipment')
@@ -126,16 +129,16 @@ class DowntimeReport extends Page implements HasTable
                     ->preload(),
                 SelectFilter::make('area_id')
                     ->label('Area')
-                    ->options(fn (): array => Area::query()
+                    ->options(fn(): array => Area::query()
                         ->where('is_active', true)
                         ->orderBy('name')
                         ->pluck('name', 'id')
                         ->all())
-                    ->query(fn (Builder $query, array $data): Builder => $query->when(
+                    ->query(fn(Builder $query, array $data): Builder => $query->when(
                         filled($data['value'] ?? null),
-                        fn (Builder $query) => $query->whereHas(
+                        fn(Builder $query) => $query->whereHas(
                             'equipment',
-                            fn (Builder $equipmentQuery) => $equipmentQuery->where('area_id', $data['value']),
+                            fn(Builder $equipmentQuery) => $equipmentQuery->where('area_id', $data['value']),
                         ),
                     )),
                 SelectFilter::make('status')
@@ -144,25 +147,25 @@ class DowntimeReport extends Page implements HasTable
                 Filter::make('ongoing')
                     ->label('Masih Berlangsung')
                     ->toggle()
-                    ->query(fn (Builder $query, array $data): Builder => ($data['isActive'] ?? false)
+                    ->query(fn(Builder $query, array $data): Builder => ($data['isActive'] ?? false)
                         ? $query
-                            ->whereNotIn('status', [
-                                MaintenanceRequest::STATUSES['Completed'],
-                                MaintenanceRequest::STATUSES['Rejected'],
-                            ])
-                            ->whereDoesntHave(
-                                'workOrders',
-                                fn (Builder $workOrderQuery) => $workOrderQuery
-                                    ->where('status', '!=', WorkOrder::STATUSES['Cancelled'])
-                                    ->whereNotNull('finish_at'),
-                            )
+                        ->whereNotIn('status', [
+                            MaintenanceRequest::STATUSES['Completed'],
+                            MaintenanceRequest::STATUSES['Rejected'],
+                        ])
+                        ->whereDoesntHave(
+                            'workOrders',
+                            fn(Builder $workOrderQuery) => $workOrderQuery
+                                ->where('status', '!=', WorkOrder::STATUSES['Cancelled'])
+                                ->whereNotNull('finish_at'),
+                        )
                         : $query),
             ])
             ->recordActions([
                 Action::make('view')
                     ->label('Lihat Request')
                     ->icon(Heroicon::OutlinedEye)
-                    ->url(fn (MaintenanceRequest $record): string => MaintenanceRequestResource::getUrl('view', ['record' => $record])),
+                    ->url(fn(MaintenanceRequest $record): string => MaintenanceRequestResource::getUrl('view', ['record' => $record])),
             ])
             ->emptyStateHeading('Belum ada downtime tercatat')
             ->emptyStateDescription('Downtime muncul otomatis dari maintenance request yang ditindaklanjuti work order.');
@@ -228,7 +231,7 @@ class DowntimeReport extends Page implements HasTable
 
         $totalMinutes = Downtime::totalMinutes($requests);
         $events = Downtime::eventCount($requests);
-        $ongoing = $requests->filter(fn (MaintenanceRequest $record): bool => $record->downtimeOngoing())->count();
+        $ongoing = $requests->filter(fn(MaintenanceRequest $record): bool => $record->downtimeOngoing())->count();
 
         return [
             'total' => Downtime::formatHours($totalMinutes),

@@ -24,10 +24,6 @@ use Illuminate\Foundation\Http\Middleware\PreventRequestForgery;
 use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
-use Noreviq\FilamentTheme\Enums\AuthStyle;
-use Noreviq\FilamentTheme\Enums\CornerStyle;
-use Noreviq\FilamentTheme\Enums\ShadowStyle;
-use Noreviq\FilamentTheme\NoreviqThemePlugin;
 
 class AdminPanelProvider extends PanelProvider
 {
@@ -43,7 +39,7 @@ class AdminPanelProvider extends PanelProvider
             ->globalSearchKeyBindings(['command+k', 'ctrl+k'])
             ->databaseNotifications()
             ->sidebarFullyCollapsibleOnDesktop()
-            ->sidebarFullyCollapsibleOnDesktop()
+            ->profile()
             ->id('admin')
             ->path('admin')
             ->brandLogo(asset('img/logo.png'))

@@ -23,6 +23,12 @@ class EquipmentTable
                 100,
             ])
             ->columns([
+                TextColumn::make('no')
+                    ->label('No')
+                    ->rowIndex()
+                    ->alignCenter()
+                    ->width(1)
+                    ->grow(false),
                 TextColumn::make('tag_number')
                     ->label('Tag Number')
                     ->searchable(),
@@ -83,11 +89,11 @@ class EquipmentTable
                     ->compact()
                     ->relationManager(MaintenanceHistoriesRelationManager::class),
                 EditAction::make(),
-            ])
-            ->toolbarActions([
-                BulkActionGroup::make([
-                    DeleteBulkAction::make(),
-                ]),
             ]);
+            // ->toolbarActions([
+            //     BulkActionGroup::make([
+            //         DeleteBulkAction::make(),
+            //     ]),
+            // ]);
     }
 }

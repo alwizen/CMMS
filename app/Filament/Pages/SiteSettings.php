@@ -30,7 +30,7 @@ class SiteSettings extends Page
 
     protected static ?string $title = 'Site Setting';
 
-    protected static string|UnitEnum|null $navigationGroup = 'Pengaturan';
+    protected static string|UnitEnum|null $navigationGroup = 'User & Permission';
 
     protected static ?int $navigationSort = 1;
 

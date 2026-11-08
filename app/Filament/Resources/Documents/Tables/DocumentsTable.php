@@ -21,21 +21,25 @@ class DocumentsTable
         return $table
             ->defaultSort('created_at', 'desc')
             ->columns([
+                TextColumn::make('no')
+                    ->label('No')
+                    ->rowIndex()
+                    ->alignCenter()
+                    ->width(1)
+                    ->grow(false),
                 TextColumn::make('document_number')
                     ->label('Document Number')
-                    ->searchable()
-                    ->sortable(),
+                    ->searchable(),
                 TextColumn::make('title')
                     ->label('Title')
                     ->searchable()
-                    ->sortable()
                     ->limit(40)
-                    ->tooltip(fn ($state): string => $state ?? '-'),
+                    ->tooltip(fn($state): string => $state ?? '-'),
                 TextColumn::make('document_type')
                     ->label('Type')
                     ->badge()
-                    ->formatStateUsing(fn (string $state): string => Document::TYPES[$state] ?? $state)
-                    ->color(fn (string $state): string => match ($state) {
+                    ->formatStateUsing(fn(string $state): string => Document::TYPES[$state] ?? $state)
+                    ->color(fn(string $state): string => match ($state) {
                         'certification' => 'success',
                         'pnid' => 'info',
                         'user_manual' => 'primary',
@@ -43,12 +47,10 @@ class DocumentsTable
                         'procedure' => 'gray',
                         'inspection_report' => 'danger',
                         default => 'gray',
-                    })
-                    ->sortable(),
+                    }),
                 TextColumn::make('equipment.tag_number')
                     ->label('Equipment')
                     ->searchable()
-                    ->sortable()
                     ->placeholder('-'),
                 TextColumn::make('revision')
                     ->label('Revision')
@@ -60,19 +62,17 @@ class DocumentsTable
                 TextColumn::make('issue_date')
                     ->label('Issue Date')
                     ->date()
-                    ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('expiry_date')
                     ->label('Expiry Date')
                     ->date()
-                    ->sortable()
                     ->placeholder('-'),
                 TextColumn::make('expiry_status')
                     ->label('Expiry Status')
-                    ->state(fn (Document $record): string => $record->expiryStatus())
-                    ->formatStateUsing(fn (string $state): string => Document::EXPIRY_STATUSES[$state] ?? $state)
+                    ->state(fn(Document $record): string => $record->expiryStatus())
+                    ->formatStateUsing(fn(string $state): string => Document::EXPIRY_STATUSES[$state] ?? $state)
                     ->badge()
-                    ->color(fn (string $state): string => match ($state) {
+                    ->color(fn(string $state): string => match ($state) {
                         'valid' => 'success',
                         'expiring_soon' => 'warning',
                         'expired' => 'danger',
@@ -112,15 +112,15 @@ class DocumentsTable
                 Action::make('open_file')
                     ->label('Open File')
                     ->icon(Heroicon::OutlinedArrowTopRightOnSquare)
-                    ->url(fn (Document $record): string => Storage::disk('public')->url($record->file_path))
+                    ->url(fn(Document $record): string => Storage::disk('public')->url($record->file_path))
                     ->openUrlInNewTab()
-                    ->visible(fn (Document $record): bool => filled($record->file_path)),
+                    ->visible(fn(Document $record): bool => filled($record->file_path)),
                 EditAction::make(),
-            ])
-            ->toolbarActions([
-                BulkActionGroup::make([
-                    DeleteBulkAction::make(),
-                ]),
             ]);
+        // ->toolbarActions([
+        //     BulkActionGroup::make([
+        //         DeleteBulkAction::make(),
+        //     ]),
+        // ]);
     }
 }
