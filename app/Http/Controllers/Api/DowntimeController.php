@@ -37,7 +37,7 @@ class DowntimeController extends Controller
             $query->whereDate('damage_date', '<=', $request->date_to);
         }
 
-        $requests = $query->paginate($request->get('per_page', 15));
+        $requests = $query->paginate($this->perPage($request));
 
         return response()->json([
             'success' => true,

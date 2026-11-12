@@ -40,7 +40,7 @@ class MaintenanceRequestController extends Controller
             });
         }
 
-        $requests = $query->paginate($request->get('per_page', 15));
+        $requests = $query->paginate($this->perPage($request));
 
         return response()->json([
             'success' => true,
@@ -54,14 +54,17 @@ class MaintenanceRequestController extends Controller
         ]);
     }
 
-    public function show($id): JsonResponse
+    public function show(Request $request, $id): JsonResponse
     {
         $maintenanceRequest = MaintenanceRequest::with([
+            'equipment.equipmentType',
             'equipment.area',
             'reportedBy',
             'approvedBy',
             'workOrders',
         ])->findOrFail($id);
+
+        $this->authorizeRequest($request, $maintenanceRequest);
 
         return response()->json([
             'success' => true,
@@ -80,7 +83,6 @@ class MaintenanceRequestController extends Controller
             'equipment_condition' => 'nullable|string|max:5000',
             'impact' => 'nullable|string|max:5000',
             'early_action' => 'nullable|string|max:5000',
-            'status' => 'required|string|in:'.implode(',', array_keys(MaintenanceRequest::STATUSES)),
             'photo' => 'nullable|array',
             'photo.*' => 'image|mimes:jpeg,png,jpg,gif|max:5120',
         ]);
@@ -105,20 +107,22 @@ class MaintenanceRequestController extends Controller
             'equipment_condition' => $request->equipment_condition,
             'impact' => $request->impact,
             'early_action' => $request->early_action,
-            'status' => $request->status,
+            'status' => MaintenanceRequest::STATUSES['Open'],
             'photo' => $photoPaths ?: null,
         ]);
 
         return response()->json([
             'success' => true,
             'message' => 'Maintenance request berhasil dibuat.',
-            'data' => new MaintenanceRequestResource($maintenanceRequest->load(['equipment.area', 'reportedBy'])),
+            'data' => new MaintenanceRequestResource($maintenanceRequest->load(['equipment.equipmentType', 'equipment.area', 'reportedBy'])),
         ], 201);
     }
 
     public function update(Request $request, $id): JsonResponse
     {
         $maintenanceRequest = MaintenanceRequest::findOrFail($id);
+
+        $this->authorizeRequest($request, $maintenanceRequest);
 
         $request->validate([
             'equipment_id' => 'sometimes|exists:equipment,id',
@@ -143,8 +147,11 @@ class MaintenanceRequestController extends Controller
             'equipment_condition',
             'impact',
             'early_action',
-            'status',
         ]);
+
+        if ($request->filled('status') && $request->status !== $maintenanceRequest->status) {
+            $this->applyStatusChange($request, $maintenanceRequest, $request->status);
+        }
 
         if ($request->hasFile('photo')) {
             if ($maintenanceRequest->photo) {
@@ -164,13 +171,15 @@ class MaintenanceRequestController extends Controller
         return response()->json([
             'success' => true,
             'message' => 'Maintenance request berhasil diperbarui.',
-            'data' => new MaintenanceRequestResource($maintenanceRequest->fresh(['equipment.area', 'reportedBy'])),
+            'data' => new MaintenanceRequestResource($maintenanceRequest->fresh(['equipment.equipmentType', 'equipment.area', 'reportedBy'])),
         ]);
     }
 
-    public function destroy($id): JsonResponse
+    public function destroy(Request $request, $id): JsonResponse
     {
         $maintenanceRequest = MaintenanceRequest::findOrFail($id);
+
+        $this->authorizeRequest($request, $maintenanceRequest);
 
         if ($maintenanceRequest->photo) {
             foreach ($maintenanceRequest->photo as $photo) {
@@ -184,5 +193,63 @@ class MaintenanceRequestController extends Controller
             'success' => true,
             'message' => 'Maintenance request berhasil dihapus.',
         ]);
+    }
+
+    /**
+     * Hanya pelapor, approver, atau role akses penuh yang boleh mengakses request.
+     */
+    protected function authorizeRequest(Request $request, MaintenanceRequest $maintenanceRequest): void
+    {
+        abort_unless(
+            UserVisibility::canAccessRequest($maintenanceRequest, $request->user()),
+            403,
+            'Anda tidak memiliki akses untuk maintenance request ini.',
+        );
+    }
+
+    /**
+     * Perubahan status hanya boleh oleh role akses penuh dan mengikuti alur transisi.
+     */
+    protected function applyStatusChange(Request $request, MaintenanceRequest $maintenanceRequest, string $status): void
+    {
+        abort_unless(
+            UserVisibility::hasFullAccess($request->user()),
+            403,
+            'Anda tidak memiliki izin mengubah status maintenance request.',
+        );
+
+        $allowed = [
+            MaintenanceRequest::STATUSES['Open'] => [
+                MaintenanceRequest::STATUSES['Approved'],
+                MaintenanceRequest::STATUSES['Rejected'],
+            ],
+            MaintenanceRequest::STATUSES['Approved'] => [
+                MaintenanceRequest::STATUSES['Assigned'],
+                MaintenanceRequest::STATUSES['In Progress'],
+                MaintenanceRequest::STATUSES['Rejected'],
+            ],
+            MaintenanceRequest::STATUSES['Assigned'] => [
+                MaintenanceRequest::STATUSES['In Progress'],
+                MaintenanceRequest::STATUSES['Rejected'],
+            ],
+            MaintenanceRequest::STATUSES['In Progress'] => [
+                MaintenanceRequest::STATUSES['Completed'],
+            ],
+        ];
+
+        $current = $maintenanceRequest->status;
+        $allowedNext = $allowed[$current] ?? [];
+
+        abort_unless(
+            in_array($status, $allowedNext, true),
+            422,
+            "Perubahan status dari {$current} ke {$status} tidak diizinkan.",
+        );
+
+        $maintenanceRequest->forceFill([
+            'status' => $status,
+            'approved_by' => $request->user()->id,
+            'approved_at' => now(),
+        ])->save();
     }
 }

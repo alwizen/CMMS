@@ -66,9 +66,9 @@ class DocumentForm
                     ->schema([
                         FileUpload::make('file_path')
                             ->label('Document File')
-                            ->disk('public')
+                            ->disk('local')
                             ->directory('documents')
-                            ->visibility('public')
+                            ->visibility('private')
                             ->maxSize(20480)
                             ->openable()
                             ->columnSpanFull(),

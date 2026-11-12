@@ -16,7 +16,7 @@ class WorkOrderController extends Controller
 {
     public function index(Request $request): JsonResponse
     {
-        $query = WorkOrder::with(['equipment.area', 'issuedBy', 'technicianCoordinator', 'workOrderWorkers.user'])
+        $query = WorkOrder::with(['equipment.equipmentType', 'equipment.area', 'issuedBy', 'technicianCoordinator', 'workOrderWorkers.user'])
             ->orderByDesc('created_at');
 
         UserVisibility::scopeWorkOrders($query, $request->user());
@@ -41,7 +41,7 @@ class WorkOrderController extends Controller
             });
         }
 
-        $workOrders = $query->paginate($request->get('per_page', 15));
+        $workOrders = $query->paginate($this->perPage($request));
 
         return response()->json([
             'success' => true,
@@ -55,9 +55,10 @@ class WorkOrderController extends Controller
         ]);
     }
 
-    public function show($id): JsonResponse
+    public function show(Request $request, $id): JsonResponse
     {
         $workOrder = WorkOrder::with([
+            'equipment.equipmentType',
             'equipment.area',
             'issuedBy',
             'technicianCoordinator',
@@ -67,6 +68,8 @@ class WorkOrderController extends Controller
             'workOrderActivities.activity',
             'workOrderWorkers.user',
         ])->findOrFail($id);
+
+        $this->authorizeWorkOrder($request, $workOrder);
 
         return response()->json([
             'success' => true,
@@ -93,6 +96,7 @@ class WorkOrderController extends Controller
             'success' => true,
             'message' => 'Work order berhasil diperbarui.',
             'data' => new WorkOrderResource($workOrder->fresh([
+                'equipment.equipmentType',
                 'equipment.area',
                 'issuedBy',
                 'technicianCoordinator',
@@ -217,20 +221,14 @@ class WorkOrderController extends Controller
 
     /**
      * Hanya user yang terkait WO (koordinator, pemberi tugas, pelaksana)
-     * atau role dengan akses penuh yang boleh mengeksekusi.
+     * atau role dengan akses penuh yang boleh mengakses.
      */
     protected function authorizeWorkOrder(Request $request, WorkOrder $workOrder): void
     {
-        $user = $request->user();
-
-        if (! $user || UserVisibility::hasFullAccess($user)) {
-            return;
-        }
-
-        $related = $workOrder->technician_coordinator_id === $user->id
-            || $workOrder->issued_by === $user->id
-            || $workOrder->workOrderWorkers()->where('user_id', $user->id)->exists();
-
-        abort_unless($related, 403, 'Anda tidak memiliki akses untuk work order ini.');
+        abort_unless(
+            UserVisibility::canAccessWorkOrder($workOrder, $request->user()),
+            403,
+            'Anda tidak memiliki akses untuk work order ini.',
+        );
     }
 }

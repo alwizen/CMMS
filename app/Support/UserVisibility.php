@@ -2,7 +2,11 @@
 
 namespace App\Support;
 
+use App\Models\MaintenancePlan;
+use App\Models\MaintenanceRequest;
+use App\Models\MaintenanceSchedule;
 use App\Models\User;
+use App\Models\WorkOrder;
 use Illuminate\Database\Eloquent\Builder;
 
 class UserVisibility
@@ -95,5 +99,67 @@ class UserVisibility
             $q->where('reported_by', $userId)
                 ->orWhere('approved_by', $userId);
         });
+    }
+
+    /**
+     * Pemeriksaan akses per record untuk work order.
+     */
+    public static function canAccessWorkOrder(WorkOrder $workOrder, ?User $user): bool
+    {
+        if (! $user || static::hasFullAccess($user)) {
+            return true;
+        }
+
+        return $workOrder->technician_coordinator_id === $user->id
+            || $workOrder->issued_by === $user->id
+            || $workOrder->workOrderWorkers()->where('user_id', $user->id)->exists();
+    }
+
+    /**
+     * Pemeriksaan akses per record untuk maintenance request.
+     */
+    public static function canAccessRequest(MaintenanceRequest $maintenanceRequest, ?User $user): bool
+    {
+        if (! $user || static::hasFullAccess($user)) {
+            return true;
+        }
+
+        return $maintenanceRequest->reported_by === $user->id
+            || $maintenanceRequest->approved_by === $user->id;
+    }
+
+    /**
+     * Pemeriksaan akses per record untuk maintenance plan.
+     */
+    public static function canAccessPlan(MaintenancePlan $plan, ?User $user): bool
+    {
+        if (! $user || static::hasFullAccess($user)) {
+            return true;
+        }
+
+        return $plan->technician_coordinator_id === $user->id
+            || $plan->created_by === $user->id;
+    }
+
+    /**
+     * Pemeriksaan akses per record untuk maintenance schedule.
+     */
+    public static function canAccessSchedule(MaintenanceSchedule $schedule, ?User $user): bool
+    {
+        if (! $user || static::hasFullAccess($user)) {
+            return true;
+        }
+
+        if ($schedule->maintenancePlan?->technician_coordinator_id === $user->id) {
+            return true;
+        }
+
+        return $schedule->workOrders()
+            ->where(function (Builder $q) use ($user) {
+                $q->where('technician_coordinator_id', $user->id)
+                    ->orWhere('issued_by', $user->id)
+                    ->orWhereHas('workOrderWorkers', fn (Builder $w) => $w->where('user_id', $user->id));
+            })
+            ->exists();
     }
 }

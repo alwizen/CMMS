@@ -6,11 +6,14 @@ use App\Filament\Imports\ActivityImporter;
 use App\Filament\Imports\AreaImporter;
 use App\Filament\Imports\EquipmentImporter;
 use App\Filament\Imports\EquipmentTypeImporter;
+use App\Filament\Imports\HousekeepingManpowerImporter;
 use App\Models\Activity;
 use App\Models\Area;
 use App\Models\Company;
 use App\Models\Equipment;
 use App\Models\EquipmentType;
+use App\Models\HousekeepingArea;
+use App\Models\HousekeepingManpower;
 use App\Models\User;
 use Filament\Actions\Imports\Models\Import;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -266,9 +269,60 @@ class ImporterTest extends TestCase
         $this->assertFalse($activity->status);
     }
 
+    public function test_manpower_import_resolves_area_and_updates_by_employee_number(): void
+    {
+        $housekeepingArea = HousekeepingArea::create([
+            'company_id' => $this->company->id,
+            'code' => 'TAMAN',
+            'name' => 'Taman Kantor',
+        ]);
+
+        $this->runImport(HousekeepingManpowerImporter::class, [
+            ['housekeeping_area_id' => 'Taman Kantor', 'name' => 'Budi', 'employee_number' => 'EMP-001', 'phone' => '0811', 'is_active' => 'aktif'],
+            ['housekeeping_area_id' => 'TAMAN', 'name' => 'Siti', 'employee_number' => 'EMP-002', 'is_active' => 'inactive'],
+        ]);
+
+        $this->assertDatabaseHas('housekeeping_manpowers', [
+            'name' => 'Budi',
+            'employee_number' => 'EMP-001',
+            'housekeeping_area_id' => $housekeepingArea->id,
+        ]);
+        $this->assertFalse((bool) HousekeepingManpower::where('employee_number', 'EMP-002')->value('is_active'));
+
+        $this->runImport(HousekeepingManpowerImporter::class, [
+            ['housekeeping_area_id' => 'Taman Kantor', 'name' => 'Budi Updated', 'employee_number' => 'EMP-001'],
+        ]);
+
+        $this->assertSame(1, HousekeepingManpower::where('employee_number', 'EMP-001')->count());
+        $this->assertSame('Budi Updated', HousekeepingManpower::where('employee_number', 'EMP-001')->value('name'));
+    }
+
+    public function test_manpower_import_updates_by_name_when_employee_number_missing(): void
+    {
+        $housekeepingArea = HousekeepingArea::create([
+            'company_id' => $this->company->id,
+            'code' => 'PARKIR',
+            'name' => 'Area Parkir',
+        ]);
+
+        HousekeepingManpower::create([
+            'housekeeping_area_id' => $housekeepingArea->id,
+            'name' => 'Andi',
+            'phone' => '0811',
+            'is_active' => true,
+        ]);
+
+        $this->runImport(HousekeepingManpowerImporter::class, [
+            ['housekeeping_area_id' => 'Area Parkir', 'name' => 'Andi', 'phone' => '0899'],
+        ]);
+
+        $this->assertSame(1, HousekeepingManpower::where('name', 'Andi')->count());
+        $this->assertSame('0899', HousekeepingManpower::where('name', 'Andi')->value('phone'));
+    }
+
     public function test_importers_no_longer_use_mutate_before_create(): void
     {
-        foreach ([AreaImporter::class, EquipmentImporter::class, EquipmentTypeImporter::class, ActivityImporter::class] as $importer) {
+        foreach ([AreaImporter::class, EquipmentImporter::class, EquipmentTypeImporter::class, ActivityImporter::class, HousekeepingManpowerImporter::class] as $importer) {
             $this->assertFalse(method_exists($importer, 'mutateBeforeCreate'));
         }
     }

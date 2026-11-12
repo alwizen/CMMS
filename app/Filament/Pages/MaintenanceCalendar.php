@@ -9,12 +9,15 @@ use BackedEnum;
 use Carbon\CarbonInterface;
 use Filament\Pages\Page;
 use Filament\Support\Icons\Heroicon;
+use UnitEnum;
 
 class MaintenanceCalendar extends Page
 {
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedCalendarDays;
 
     protected static ?string $navigationLabel = 'Kalender Maintenance';
+
+    protected static string|UnitEnum|null $navigationGroup = 'Maintenance';
 
     protected static ?int $navigationSort = 2;
 

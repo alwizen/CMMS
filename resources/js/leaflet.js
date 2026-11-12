@@ -321,11 +321,111 @@ function companyAreaMapComponent(config) {
     };
 };
 
+/**
+ * Alpine component: housekeepingMap (dashboard widget)
+ *
+ * Renders housekeeping area polygons + facility markers.
+ * Clicking an area polygon shows its size and facility count.
+ */
+function housekeepingMapComponent(config) {
+    return {
+        areas: config.areas ?? [],
+        colors: config.colors ?? {},
+        map: null,
+        layers: null,
+
+        init() {
+            let center = [-6.870255717160778, 109.18670476501677];
+
+            const first = this.areas.find((a) => Array.isArray(a.polygon) && a.polygon.length >= 3);
+            if (first) {
+                center = first.polygon[0];
+            }
+
+            this.map = L.map(this.$refs.map, { center, zoom: 13 });
+
+            L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                maxZoom: 19,
+                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+            }).addTo(this.map);
+
+            this.layers = L.layerGroup().addTo(this.map);
+            this.drawAreas();
+
+            setTimeout(() => this.map.invalidateSize(), 300);
+        },
+
+        drawAreas() {
+            const allBounds = [];
+
+            this.areas.forEach((area) => {
+                const color = this.colors[area.color] ?? '#f59e0b';
+                const hasPolygon = Array.isArray(area.polygon) && area.polygon.length >= 3;
+
+                const facilities = Array.isArray(area.facilities) ? area.facilities : [];
+                const facilitiesList = facilities.length
+                    ? `<ul style="margin:6px 0 0;padding-left:16px;font-size:12px;max-height:160px;overflow-y:auto">
+                        ${facilities.map((f) => `<li>${this.escapeHtml(f.name)}${f.code ? ` <span style="color:#9ca3af">(${this.escapeHtml(f.code)})</span>` : ''}</li>`).join('')}
+                    </ul>`
+                    : '<div style="font-size:12px;color:#9ca3af;margin-top:4px">Belum ada fasilitas</div>';
+
+                const popupHtml = `
+                    <div style="min-width:220px;max-width:300px">
+                        <div style="font-weight:600;font-size:14px">${this.escapeHtml(area.name)}</div>
+                        <div style="font-size:12px;color:#6b7280">${this.escapeHtml(area.company ?? '')}</div>
+                        <div style="font-size:12px;margin-top:4px">Luas: ${area.area_size ? area.area_size.toLocaleString('id-ID') + ' m²' : '-'}</div>
+                        <div style="font-size:12px;font-weight:600;margin-top:4px">Total fasilitas: ${area.facilities_count}</div>
+                        ${facilitiesList}
+                    </div>
+                `;
+
+                if (hasPolygon) {
+                    const polygon = L.polygon(area.polygon, {
+                        color,
+                        weight: 2,
+                        fillColor: color,
+                        fillOpacity: 0.2,
+                    }).addTo(this.layers);
+
+                    polygon.bindPopup(popupHtml);
+                    allBounds.push(...area.polygon);
+                } else if (area.lat && area.lng) {
+                    const marker = L.circleMarker([area.lat, area.lng], {
+                        radius: 8,
+                        color: '#ffffff',
+                        weight: 2,
+                        fillColor: color,
+                        fillOpacity: 1,
+                    }).addTo(this.layers);
+
+                    marker.bindPopup(popupHtml);
+                    allBounds.push([area.lat, area.lng]);
+                }
+            });
+
+            if (allBounds.length) {
+                this.map.fitBounds(allBounds, { padding: [30, 30] });
+            }
+        },
+
+        escapeHtml(value) {
+            if (value === null || value === undefined) return '';
+            return String(value)
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#039;');
+        },
+    };
+}
+
 function registerComponents() {
     if (!window.Alpine) return;
 
     window.Alpine.data('leafletMap', leafletMapComponent);
     window.Alpine.data('companyAreaMap', companyAreaMapComponent);
+    window.Alpine.data('housekeepingMap', housekeepingMapComponent);
 }
 
 if (window.Alpine) {
@@ -336,5 +436,6 @@ if (window.Alpine) {
 
 window.leafletMap = leafletMapComponent;
 window.companyAreaMap = companyAreaMapComponent;
+window.housekeepingMap = housekeepingMapComponent;
 
 export default L;

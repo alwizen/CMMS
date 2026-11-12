@@ -13,7 +13,7 @@ class MaintenancePlanController extends Controller
 {
     public function index(Request $request): JsonResponse
     {
-        $query = MaintenancePlan::with(['equipment.area', 'createdBy', 'technicianCoordinator'])
+        $query = MaintenancePlan::with(['equipment.equipmentType', 'equipment.area', 'createdBy', 'technicianCoordinator'])
             ->orderByDesc('created_at');
 
         UserVisibility::scopePlans($query, $request->user());
@@ -30,7 +30,7 @@ class MaintenancePlanController extends Controller
             });
         }
 
-        $plans = $query->paginate($request->get('per_page', 15));
+        $plans = $query->paginate($this->perPage($request));
 
         return response()->json([
             'success' => true,
@@ -44,15 +44,22 @@ class MaintenancePlanController extends Controller
         ]);
     }
 
-    public function show($id): JsonResponse
+    public function show(Request $request, $id): JsonResponse
     {
         $plan = MaintenancePlan::with([
+            'equipment.equipmentType',
             'equipment.area',
             'createdBy',
             'technicianCoordinator',
             'planActivities.activity',
             'maintenanceSchedules',
         ])->findOrFail($id);
+
+        abort_unless(
+            UserVisibility::canAccessPlan($plan, $request->user()),
+            403,
+            'Anda tidak memiliki akses untuk maintenance plan ini.',
+        );
 
         return response()->json([
             'success' => true,

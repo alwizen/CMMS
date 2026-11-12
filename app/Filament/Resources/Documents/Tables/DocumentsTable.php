@@ -12,7 +12,7 @@ use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\URL;
 
 class DocumentsTable
 {
@@ -34,12 +34,12 @@ class DocumentsTable
                     ->label('Title')
                     ->searchable()
                     ->limit(40)
-                    ->tooltip(fn($state): string => $state ?? '-'),
+                    ->tooltip(fn ($state): string => $state ?? '-'),
                 TextColumn::make('document_type')
                     ->label('Type')
                     ->badge()
-                    ->formatStateUsing(fn(string $state): string => Document::TYPES[$state] ?? $state)
-                    ->color(fn(string $state): string => match ($state) {
+                    ->formatStateUsing(fn (string $state): string => Document::TYPES[$state] ?? $state)
+                    ->color(fn (string $state): string => match ($state) {
                         'certification' => 'success',
                         'pnid' => 'info',
                         'user_manual' => 'primary',
@@ -69,10 +69,10 @@ class DocumentsTable
                     ->placeholder('-'),
                 TextColumn::make('expiry_status')
                     ->label('Expiry Status')
-                    ->state(fn(Document $record): string => $record->expiryStatus())
-                    ->formatStateUsing(fn(string $state): string => Document::EXPIRY_STATUSES[$state] ?? $state)
+                    ->state(fn (Document $record): string => $record->expiryStatus())
+                    ->formatStateUsing(fn (string $state): string => Document::EXPIRY_STATUSES[$state] ?? $state)
                     ->badge()
-                    ->color(fn(string $state): string => match ($state) {
+                    ->color(fn (string $state): string => match ($state) {
                         'valid' => 'success',
                         'expiring_soon' => 'warning',
                         'expired' => 'danger',
@@ -112,9 +112,13 @@ class DocumentsTable
                 Action::make('open_file')
                     ->label('Open File')
                     ->icon(Heroicon::OutlinedArrowTopRightOnSquare)
-                    ->url(fn(Document $record): string => Storage::disk('public')->url($record->file_path))
+                    ->url(fn (Document $record): string => URL::temporarySignedRoute(
+                        'documents.file',
+                        now()->addMinutes(30),
+                        ['document' => $record->id],
+                    ))
                     ->openUrlInNewTab()
-                    ->visible(fn(Document $record): bool => filled($record->file_path)),
+                    ->visible(fn (Document $record): bool => filled($record->file_path)),
                 EditAction::make(),
             ]);
         // ->toolbarActions([

@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\MeterLogResource;
 use App\Models\Equipment;
 use App\Models\MeterLog;
+use App\Support\UserVisibility;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
@@ -38,7 +39,7 @@ class MeterLogController extends Controller
             });
         }
 
-        $logs = $query->paginate($request->get('per_page', 15));
+        $logs = $query->paginate($this->perPage($request));
 
         return response()->json([
             'success' => true,
@@ -60,7 +61,7 @@ class MeterLogController extends Controller
             ->where('equipment_id', $equipment->id)
             ->orderByDesc('reading_date')
             ->orderByDesc('id')
-            ->paginate($request->get('per_page', 15));
+            ->paginate($this->perPage($request));
 
         return response()->json([
             'success' => true,
@@ -83,7 +84,11 @@ class MeterLogController extends Controller
             'recorded_by' => 'nullable|exists:users,id',
         ]);
 
-        $validated['recorded_by'] = $validated['recorded_by'] ?? $request->user()->id;
+        $user = $request->user();
+
+        $validated['recorded_by'] = UserVisibility::hasFullAccess($user) && filled($validated['recorded_by'] ?? null)
+            ? $validated['recorded_by']
+            : $user->id;
 
         $meterLog = MeterLog::create($validated);
 

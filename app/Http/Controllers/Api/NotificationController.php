@@ -17,7 +17,7 @@ class NotificationController extends Controller
             $query = $request->user()->unreadNotifications()->latest();
         }
 
-        $notifications = $query->paginate($request->get('per_page', 20));
+        $notifications = $query->paginate($this->perPage($request, 20));
 
         return response()->json([
             'success' => true,

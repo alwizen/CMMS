@@ -32,7 +32,7 @@ class EquipmentController extends Controller
             });
         }
 
-        $equipment = $query->paginate($request->get('per_page', 15));
+        $equipment = $query->paginate($this->perPage($request));
 
         return response()->json([
             'success' => true,

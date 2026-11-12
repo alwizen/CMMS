@@ -3,8 +3,8 @@
 namespace App\Providers\Filament;
 
 use App\Filament\Pages\Dashboard;
+use App\Filament\Pages\HousekeepingDashboard;
 use BezhanSalleh\FilamentShield\FilamentShieldPlugin;
-use Elemind\PressFilamentTheme\Enums\PressVariant;
 use Elemind\PressFilamentTheme\PressFilamentTheme;
 use Filament\Enums\DatabaseNotificationsPosition;
 use Filament\Enums\GlobalSearchPosition;
@@ -43,9 +43,10 @@ class AdminPanelProvider extends PanelProvider
             ->id('admin')
             ->path('admin')
             ->brandLogo(asset('img/logo.png'))
-            ->darkModeBrandLogo(asset('img/dark.png'))
+            // ->darkModeBrandLogo(asset('img/dark.png'))
+            ->darkMode(false)
             ->favicon(asset('img/logo.svg'))
-            ->brandLogoHeight('3.5rem')
+            ->brandLogoHeight('4.5rem')
             ->login()
             ->colors([
                 'primary' => Color::Amber,
@@ -59,9 +60,12 @@ class AdminPanelProvider extends PanelProvider
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\Filament\Pages')
             ->pages([
                 Dashboard::class,
+                HousekeepingDashboard::class,
             ])
             ->navigationGroups([
+                'Dashboard',
                 'Maintenance',
+                'Housekeeping',
                 'Riwayat & Monitoring',
                 'Master Data',
                 'User & Permission',
