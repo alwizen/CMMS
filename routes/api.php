@@ -3,8 +3,11 @@
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\DashboardController;
 use App\Http\Controllers\Api\DocumentController;
+use App\Http\Controllers\Api\DocumentFileController;
 use App\Http\Controllers\Api\DowntimeController;
 use App\Http\Controllers\Api\EquipmentController;
+use App\Http\Controllers\Api\HousekeepingAreaController;
+use App\Http\Controllers\Api\HousekeepingPlanController;
 use App\Http\Controllers\Api\MaintenanceCalendarController;
 use App\Http\Controllers\Api\MaintenancePlanController;
 use App\Http\Controllers\Api\MaintenanceRequestController;
@@ -17,6 +20,11 @@ use Illuminate\Support\Facades\Route;
 
 // Public routes
 Route::post('/login', [AuthController::class, 'login']);
+
+// Dokumen: hanya bisa diunduh melalui URL bertanda tangan berumur pendek.
+Route::get('/documents/{document}/file', [DocumentFileController::class, 'show'])
+    ->middleware('signed')
+    ->name('documents.file');
 
 // Protected routes
 Route::middleware('auth:sanctum')->group(function () {
@@ -63,4 +71,18 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/notifications/{id}/read', [NotificationController::class, 'markAsRead']);
 
     Route::get('/users/{id}', [UserController::class, 'show']);
+
+    Route::get('/housekeeping-plans', [HousekeepingPlanController::class, 'index']);
+    Route::post('/housekeeping-plans', [HousekeepingPlanController::class, 'store']);
+    Route::get('/housekeeping-plans/{id}', [HousekeepingPlanController::class, 'show']);
+    Route::put('/housekeeping-plans/{planId}/tasks/{taskId}', [HousekeepingPlanController::class, 'updateTask']);
+    Route::post('/housekeeping-plans/{planId}/tasks', [HousekeepingPlanController::class, 'addTask']);
+    Route::delete('/housekeeping-plans/{planId}/tasks/{taskId}', [HousekeepingPlanController::class, 'deleteTask']);
+    Route::post('/housekeeping-plans/{planId}/manpowers', [HousekeepingPlanController::class, 'addManpowers']);
+    Route::post('/housekeeping-plans/{planId}/tasks/{taskId}/photos', [HousekeepingPlanController::class, 'uploadTaskPhotos']);
+    Route::delete('/housekeeping-plans/{planId}/tasks/{taskId}/photos', [HousekeepingPlanController::class, 'deleteTaskPhoto']);
+
+    Route::get('/housekeeping-areas', [HousekeepingAreaController::class, 'index']);
+    Route::get('/housekeeping-areas/{id}/manpowers', [HousekeepingAreaController::class, 'manpowers']);
+    Route::get('/housekeeping-areas/{id}/facilities', [HousekeepingAreaController::class, 'facilities']);
 });

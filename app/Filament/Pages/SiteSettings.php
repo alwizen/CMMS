@@ -94,6 +94,7 @@ class SiteSettings extends Page
                     $this->formatField('maintenance_plan'),
                     $this->formatField('maintenance_schedule'),
                     $this->formatField('maintenance_request'),
+                    $this->formatField('housekeeping_plan'),
                     $this->formatField('document'),
                 ])
                 ->columns(2),
@@ -130,13 +131,13 @@ class SiteSettings extends Page
             ->required()
             ->maxLength(100)
             ->rules([
-                fn(): Closure => function (string $attribute, mixed $value, Closure $fail): void {
+                fn (): Closure => function (string $attribute, mixed $value, Closure $fail): void {
                     if (! DocumentNumber::hasSequenceToken((string) $value)) {
                         $fail('Format wajib mengandung token {SEQ} atau {SEQ:n}.');
                     }
                 },
             ])
-            ->helperText(fn(Get $get): string => 'Contoh hasil: ' . DocumentNumber::preview(
+            ->helperText(fn (Get $get): string => 'Contoh hasil: '.DocumentNumber::preview(
                 (string) ($get($type) ?: DocumentNumber::DEFAULTS[$type]),
             ));
     }

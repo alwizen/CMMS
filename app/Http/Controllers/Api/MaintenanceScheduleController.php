@@ -13,7 +13,7 @@ class MaintenanceScheduleController extends Controller
 {
     public function index(Request $request): JsonResponse
     {
-        $query = MaintenanceSchedule::with(['equipment.area', 'maintenancePlan'])
+        $query = MaintenanceSchedule::with(['equipment.equipmentType', 'equipment.area', 'maintenancePlan'])
             ->orderByDesc('scheduled_date');
 
         UserVisibility::scopeSchedules($query, $request->user());
@@ -38,7 +38,7 @@ class MaintenanceScheduleController extends Controller
             });
         }
 
-        $schedules = $query->paginate($request->get('per_page', 15));
+        $schedules = $query->paginate($this->perPage($request));
 
         return response()->json([
             'success' => true,
@@ -52,13 +52,20 @@ class MaintenanceScheduleController extends Controller
         ]);
     }
 
-    public function show($id): JsonResponse
+    public function show(Request $request, $id): JsonResponse
     {
         $schedule = MaintenanceSchedule::with([
+            'equipment.equipmentType',
             'equipment.area',
             'maintenancePlan',
             'workOrders',
         ])->findOrFail($id);
+
+        abort_unless(
+            UserVisibility::canAccessSchedule($schedule, $request->user()),
+            403,
+            'Anda tidak memiliki akses untuk maintenance schedule ini.',
+        );
 
         return response()->json([
             'success' => true,

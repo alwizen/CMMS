@@ -60,4 +60,14 @@ class User extends Authenticatable
     {
         return $this->hasMany(MeterLog::class, 'recorded_by');
     }
+
+    public function housekeepingPlansCreated(): HasMany
+    {
+        return $this->hasMany(HousekeepingPlan::class, 'created_by');
+    }
+
+    public function housekeepingAreasSupervised(): HasMany
+    {
+        return $this->hasMany(HousekeepingArea::class, 'supervisor_id');
+    }
 }

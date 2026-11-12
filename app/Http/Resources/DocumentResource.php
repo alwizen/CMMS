@@ -5,7 +5,7 @@ namespace App\Http\Resources;
 use App\Models\Document;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
-use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\URL;
 
 class DocumentResource extends JsonResource
 {
@@ -27,7 +27,14 @@ class DocumentResource extends JsonResource
             'expiry_date' => $this->expiry_date?->format('Y-m-d'),
             'expiry_status' => $this->expiryStatus(),
             'expiry_status_label' => $this->expiryStatusLabel(),
-            'file_url' => $this->file_path ? Storage::disk('public')->url($this->file_path) : null,
+            'file_url' => $this->file_path
+                ? URL::temporarySignedRoute(
+                    'documents.file',
+                    now()->addMinutes(30),
+                    ['document' => $this->id],
+                )
+                : null,
+            'file_name' => $this->file_path ? basename($this->file_path) : null,
             'description' => $this->description,
             'uploaded_by' => $this->whenLoaded('uploadedBy', fn () => $this->uploadedBy?->name),
             'updated_at' => $this->updated_at?->toIso8601String(),

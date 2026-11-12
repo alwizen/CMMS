@@ -3,28 +3,37 @@
 namespace App\Filament\Pages;
 
 use App\Filament\Widgets;
+use BackedEnum;
 use Filament\Forms;
 use Filament\Pages\Dashboard\Actions\FilterAction;
 use Filament\Pages\Dashboard as BaseDashboard;
 use Filament\Pages\Dashboard\Concerns\HasFiltersAction;
+use Filament\Support\Icons\Heroicon;
 use Illuminate\Contracts\Support\Htmlable;
+use UnitEnum;
 
 class Dashboard extends BaseDashboard
 {
     use HasFiltersAction;
 
-    protected static ?string $title = 'Dashboard';
+    protected static ?string $title = 'Maintenance Dashboard';
 
-    protected static ?string $navigationLabel = 'Dashboard';
+    protected static ?string $navigationLabel = 'Maintenance Dashboard';
+
+    protected static string|UnitEnum|null $navigationGroup = 'Dashboard';
+
+    protected static ?int $navigationSort = 1;
+
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRocketLaunch;
 
     public function getTitle(): string|Htmlable
     {
-        return 'Dashboard';
+        return 'Maintenance Dashboard';
     }
 
     public function getHeading(): string|Htmlable
     {
-        return 'Dashboard';
+        return 'Maintenance Dashboard';
     }
 
     public function getSubheading(): string|Htmlable|null

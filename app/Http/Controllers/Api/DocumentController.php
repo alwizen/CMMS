@@ -38,7 +38,7 @@ class DocumentController extends Controller
             });
         }
 
-        $documents = $query->paginate($request->get('per_page', 15));
+        $documents = $query->paginate($this->perPage($request));
 
         return response()->json([
             'success' => true,

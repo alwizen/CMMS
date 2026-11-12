@@ -28,4 +28,9 @@ class Company extends Model
     {
         return $this->hasMany(Area::class);
     }
+
+    public function housekeepingAreas(): HasMany
+    {
+        return $this->hasMany(HousekeepingArea::class);
+    }
 }
