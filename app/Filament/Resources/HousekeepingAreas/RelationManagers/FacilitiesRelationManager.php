@@ -2,14 +2,20 @@
 
 namespace App\Filament\Resources\HousekeepingAreas\RelationManagers;
 
+use App\Models\HousekeepingFacility;
+use App\Models\HousekeepingTask;
+use Filament\Actions\Action;
 use Filament\Actions\CreateAction;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\EditAction;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
+use Filament\Notifications\Notification;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Schemas\Schema;
+use Filament\Support\Enums\Width;
+use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
@@ -28,6 +34,7 @@ class FacilitiesRelationManager extends RelationManager
             ->components([
                 TextInput::make('name')
                     ->label('Nama Fasilitas')
+                    ->columnSpanFull()
                     ->required()
                     ->placeholder('e.g., Oil Catcher, Selokan, Taman'),
                 Textarea::make('description')
@@ -49,8 +56,14 @@ class FacilitiesRelationManager extends RelationManager
                     ->label('Nama Fasilitas')
                     ->searchable()
                     ->sortable(),
+                TextColumn::make('tasks_count')
+                    ->label('Checklist')
+                    ->counts('tasks')
+                    ->badge()
+                    ->color('gray'),
                 TextColumn::make('description')
                     ->label('Description')
+                    ->placeholder('-')
                     ->limit(40)
                     ->toggleable(),
                 IconColumn::make('is_active')
@@ -62,8 +75,54 @@ class FacilitiesRelationManager extends RelationManager
                 CreateAction::make(),
             ])
             ->recordActions([
+                $this->checklistAction(),
                 EditAction::make(),
                 DeleteAction::make(),
             ]);
+    }
+
+    protected function checklistAction(): Action
+    {
+        return Action::make('checklist')
+            ->label('Checklist')
+            ->icon(Heroicon::OutlinedClipboardDocumentCheck)
+            ->color('gray')
+            ->modalHeading(fn (HousekeepingFacility $record): string => 'Checklist — '.$record->name)
+            ->modalWidth(Width::TwoExtraLarge)
+            ->modalSubmitAction(fn (Action $action) => auth()->user()?->can('create', HousekeepingTask::class) ? $action : false)
+            ->modalSubmitActionLabel('Tambah Checklist')
+            ->modalCancelActionLabel('Tutup')
+            ->modalContent(fn (HousekeepingFacility $record) => view('filament.relation-managers.facility-checklist', [
+                'record' => $record->load('tasks'),
+            ]))
+            ->form(fn (): array => auth()->user()?->can('create', HousekeepingTask::class)
+                ? [
+                    TextInput::make('name')
+                        ->label('Nama Checklist')
+                        ->required()
+                        ->placeholder('e.g., Pemotongan Rumput, Pembersihan Selokan'),
+                    Textarea::make('description')
+                        ->label('Description')
+                        ->nullable()
+                        ->columnSpanFull(),
+                    Toggle::make('is_active')
+                        ->label('Active')
+                        ->default(true),
+                ]
+                : [])
+            ->action(function (HousekeepingFacility $record, array $data): void {
+                abort_unless(auth()->user()?->can('create', HousekeepingTask::class), 403);
+
+                $record->tasks()->create([
+                    'name' => $data['name'],
+                    'description' => $data['description'] ?? null,
+                    'is_active' => $data['is_active'] ?? true,
+                ]);
+
+                Notification::make()
+                    ->title('Checklist ditambahkan')
+                    ->success()
+                    ->send();
+            });
     }
 }
