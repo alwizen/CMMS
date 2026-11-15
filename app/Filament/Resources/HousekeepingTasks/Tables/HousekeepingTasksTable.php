@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\HousekeepingTasks\Tables;
 
+use App\Models\HousekeepingArea;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\EditAction;
 use Filament\Tables\Columns\IconColumn;
@@ -9,6 +10,7 @@ use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Filters\TernaryFilter;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
 
 class HousekeepingTasksTable
 {
@@ -47,6 +49,20 @@ class HousekeepingTasksTable
                     ->sortable(),
             ])
             ->filters([
+                SelectFilter::make('area_id')
+                    ->label('Area')
+                    ->options(fn (): array => HousekeepingArea::query()
+                        ->orderBy('name')
+                        ->pluck('name', 'id')
+                        ->all())
+                    ->searchable()
+                    ->query(fn (Builder $query, array $data): Builder => $query->when(
+                        filled($data['value'] ?? null),
+                        fn (Builder $query) => $query->whereHas(
+                            'facility',
+                            fn (Builder $facility) => $facility->where('housekeeping_area_id', $data['value']),
+                        ),
+                    )),
                 SelectFilter::make('housekeeping_facility_id')
                     ->label('Fasilitas')
                     ->relationship('facility', 'name'),

@@ -2,16 +2,15 @@
 
 namespace App\Filament\Resources\HousekeepingAreas\RelationManagers;
 
+use App\Filament\Actions\CreateRelatedAction;
 use App\Models\HousekeepingFacility;
 use App\Models\HousekeepingTask;
-use Filament\Actions\Action;
 use Filament\Actions\CreateAction;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\EditAction;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
-use Filament\Notifications\Notification;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Schemas\Schema;
 use Filament\Support\Enums\Width;
@@ -81,48 +80,34 @@ class FacilitiesRelationManager extends RelationManager
             ]);
     }
 
-    protected function checklistAction(): Action
+    protected function checklistAction(): CreateRelatedAction
     {
-        return Action::make('checklist')
+        return CreateRelatedAction::make('checklist')
+            ->relatedModel(HousekeepingTask::class)
             ->label('Checklist')
             ->icon(Heroicon::OutlinedClipboardDocumentCheck)
             ->color('gray')
+            ->relationship(fn (HousekeepingFacility $record) => $record->tasks())
             ->modalHeading(fn (HousekeepingFacility $record): string => 'Checklist — '.$record->name)
             ->modalWidth(Width::TwoExtraLarge)
-            ->modalSubmitAction(fn (Action $action) => auth()->user()?->can('create', HousekeepingTask::class) ? $action : false)
-            ->modalSubmitActionLabel('Tambah Checklist')
-            ->modalCancelActionLabel('Tutup')
+            ->createAnother(false)
             ->modalContent(fn (HousekeepingFacility $record) => view('filament.relation-managers.facility-checklist', [
                 'record' => $record->load('tasks'),
             ]))
-            ->form(fn (): array => auth()->user()?->can('create', HousekeepingTask::class)
-                ? [
-                    TextInput::make('name')
-                        ->label('Nama Checklist')
-                        ->required()
-                        ->placeholder('e.g., Pemotongan Rumput, Pembersihan Selokan'),
-                    Textarea::make('description')
-                        ->label('Description')
-                        ->nullable()
-                        ->columnSpanFull(),
-                    Toggle::make('is_active')
-                        ->label('Active')
-                        ->default(true),
-                ]
-                : [])
-            ->action(function (HousekeepingFacility $record, array $data): void {
-                abort_unless(auth()->user()?->can('create', HousekeepingTask::class), 403);
-
-                $record->tasks()->create([
-                    'name' => $data['name'],
-                    'description' => $data['description'] ?? null,
-                    'is_active' => $data['is_active'] ?? true,
-                ]);
-
-                Notification::make()
-                    ->title('Checklist ditambahkan')
-                    ->success()
-                    ->send();
-            });
+            ->form(fn (): array => [
+                TextInput::make('name')
+                    ->label('Nama Checklist')
+                    ->required()
+                    ->placeholder('e.g., Pemotongan Rumput, Pembersihan Selokan'),
+                Textarea::make('description')
+                    ->label('Description')
+                    ->nullable()
+                    ->columnSpanFull(),
+                Toggle::make('is_active')
+                    ->label('Active')
+                    ->default(true),
+            ])
+            ->visible(fn (): bool => auth()->user()?->can('create', HousekeepingTask::class) ?? false)
+            ->successNotificationTitle('Checklist ditambahkan');
     }
 }
