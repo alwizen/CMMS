@@ -2,8 +2,6 @@
 
 namespace App\Filament\Pages;
 
-use App\Models\MaintenancePlan;
-use App\Models\MaintenanceSchedule;
 use App\Models\WorkOrder;
 use BackedEnum;
 use Carbon\CarbonInterface;
@@ -67,77 +65,14 @@ class MaintenanceCalendar extends Page
                     'extendedProps' => [
                         'type' => 'work_order',
                         'status' => $wo->status,
+                        'time' => $wo->start_at->format('H:i'),
+                        'tag' => $tag,
                         'equipment' => $wo->equipment->equipmentType?->name.' ('.$tag.')',
                         'area' => $wo->equipment->area->name ?? '-',
                         'classification' => $wo->classification,
                         'issuedBy' => $wo->issuedBy?->name ?? '-',
                         'note' => $wo->note,
                         'recordId' => $wo->id,
-                    ],
-                ];
-            });
-
-        MaintenancePlan::with(['equipment.equipmentType', 'equipment.area', 'createdBy'])
-            ->where('status', 'Active')
-            ->where(fn ($q) => $q->whereNull('end_date')->orWhereDate('end_date', '>=', $from->toDateString()))
-            ->whereDate('start_date', '<=', $until->toDateString())
-            ->get()
-            ->each(function (MaintenancePlan $mp) use (&$events) {
-                $tag = $mp->equipment->tag_number;
-
-                $events[] = [
-                    'id' => 'plan-'.$mp->id,
-                    'title' => 'Plan: '.$tag,
-                    'start' => $mp->start_date->toDateString(),
-                    'end' => $mp->end_date?->copy()->addDay()->toDateString(),
-                    'color' => '#7c3aed',
-                    'display' => 'background',
-                    'extendedProps' => [
-                        'type' => 'plan',
-                        'status' => $mp->status,
-                        'equipment' => $mp->equipment->equipmentType?->name.' ('.$tag.')',
-                        'area' => $mp->equipment->area->name ?? '-',
-                        'classification' => $mp->maintenance_classification,
-                        'interval' => $mp->interval,
-                        'description' => $mp->description,
-                        'createdBy' => $mp->createdBy?->name ?? '-',
-                        'recordId' => $mp->id,
-                    ],
-                ];
-            });
-
-        MaintenanceSchedule::with(['equipment.equipmentType', 'equipment.area', 'maintenancePlan.equipment'])
-            ->whereBetween('scheduled_date', [$from->toDateString(), $until->toDateString()])
-            ->get()
-            ->each(function (MaintenanceSchedule $ms) use (&$events) {
-                $color = match ($ms->status) {
-                    'Completed' => '#16a34a',
-                    'In Progress' => '#2563eb',
-                    'Scheduled' => '#d97706',
-                    'Delayed' => '#ea580c',
-                    'Rescheduled' => '#7c3aed',
-                    'Cancelled' => '#dc2626',
-                    default => '#6b7280',
-                };
-
-                $tag = $ms->equipment->tag_number;
-
-                $events[] = [
-                    'id' => 'schedule-'.$ms->id,
-                    'title' => $tag.' — '.$ms->status,
-                    'start' => $ms->scheduled_date->toDateString(),
-                    'color' => $color,
-                    'extendedProps' => [
-                        'type' => 'schedule',
-                        'status' => $ms->status,
-                        'equipment' => $ms->equipment->equipmentType?->name.' ('.$tag.')',
-                        'area' => $ms->equipment->area->name ?? '-',
-                        'description' => $ms->description,
-                        'planName' => $ms->maintenancePlan
-                            ? ($ms->maintenancePlan->equipment->tag_number ?? '-').' — '.$ms->maintenancePlan->interval
-                            : '-',
-                        'rescheduledFrom' => $ms->rescheduled_from?->format('d M Y'),
-                        'recordId' => $ms->id,
                     ],
                 ];
             });

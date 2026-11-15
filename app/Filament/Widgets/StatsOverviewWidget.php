@@ -5,7 +5,6 @@ namespace App\Filament\Widgets;
 use App\Filament\Widgets\Concerns\FiltersByDate;
 use App\Models\Equipment;
 use App\Models\MaintenanceRequest;
-use App\Models\MaintenanceSchedule;
 use App\Models\WorkOrder;
 use App\Support\Downtime;
 use Filament\Widgets\StatsOverviewWidget as BaseWidget;
@@ -14,6 +13,8 @@ use Filament\Widgets\StatsOverviewWidget\Stat;
 class StatsOverviewWidget extends BaseWidget
 {
     use FiltersByDate;
+
+    protected static bool $isLazy = false;
 
     protected static ?int $sort = 1;
 
@@ -25,13 +26,13 @@ class StatsOverviewWidget extends BaseWidget
             ->whereIn('status', ['Open', 'Assigned', 'In Progress'])
             ->tap(fn ($q) => $this->applyDateFilter($q))
             ->count();
-        $overdueSchedules = MaintenanceSchedule::query()
+        $overdueWorkOrders = WorkOrder::query()
             ->whereIn('status', [
-                MaintenanceSchedule::STATUSES['Scheduled'],
-                MaintenanceSchedule::STATUSES['Rescheduled'],
-                MaintenanceSchedule::STATUSES['Delayed'],
+                WorkOrder::STATUSES['Pending'],
+                WorkOrder::STATUSES['In Progress'],
+                WorkOrder::STATUSES['On Hold'],
             ])
-            ->whereDate('scheduled_date', '<', today())
+            ->whereDate('start_at', '<', today())
             ->count();
 
         $completionRate = $woCount > 0 ? round(($woDone / $woCount) * 100) : 0;
@@ -62,10 +63,10 @@ class StatsOverviewWidget extends BaseWidget
                 ->description('Belum selesai ditangani')
                 ->descriptionIcon('heroicon-o-megaphone')
                 ->color('warning'),
-            Stat::make('Jadwal Terlambat', $overdueSchedules)
-                ->description($overdueSchedules > 0 ? 'Perlu tindak lanjut' : 'Semua sesuai jadwal')
+            Stat::make('WO Terlambat', $overdueWorkOrders)
+                ->description($overdueWorkOrders > 0 ? 'Perlu tindak lanjut' : 'Semua sesuai jadwal')
                 ->descriptionIcon('heroicon-o-exclamation-triangle')
-                ->color($overdueSchedules > 0 ? 'danger' : 'success'),
+                ->color($overdueWorkOrders > 0 ? 'danger' : 'success'),
             Stat::make('Unplanned Downtime', Downtime::formatHours($downtimeMinutes))
                 ->description($downtimeEvents.' kejadian')
                 ->descriptionIcon('heroicon-o-clock')

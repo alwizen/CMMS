@@ -12,6 +12,8 @@ class RecentWorkOrdersWidget extends BaseWidget
 {
     use FiltersByDate;
 
+    protected static bool $isLazy = false;
+
     protected static ?string $heading = 'Work Order Terbaru';
 
     protected int|string|array $columnSpan = 'full';

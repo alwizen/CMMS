@@ -28,6 +28,14 @@ class MaintenanceRequestController extends Controller
             $query->where('equipment_id', $request->equipment_id);
         }
 
+        if ($request->filled('date_from')) {
+            $query->whereDate('damage_date', '>=', $request->date_from);
+        }
+
+        if ($request->filled('date_to')) {
+            $query->whereDate('damage_date', '<=', $request->date_to);
+        }
+
         if ($request->filled('search')) {
             $search = $request->search;
             $query->where(function ($q) use ($search) {

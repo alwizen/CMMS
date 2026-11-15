@@ -18,6 +18,7 @@ class CompanyForm
         return $schema
             ->components([
                 Section::make('Company Information')
+                    ->columnSpanFull()
                     ->schema([
                         TextInput::make('code')
                             ->label('Code')
@@ -38,7 +39,8 @@ class CompanyForm
                     ])
                     ->columns(2),
                 Section::make('Geofence Location')
-                    ->description('Gambar polygon pada peta untuk menentukan batas area lokasi company.')
+                    ->description('Gambar polygon pada peta untuk menentukan batas area lokasi perusahaan.')
+                    ->columnSpanFull()
                     ->schema([
                         LeafletMap::make('geofence')
                             ->label('Geofence Map')

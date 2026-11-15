@@ -12,6 +12,8 @@ class MaintenanceTrendChart extends ChartWidget
 {
     use FiltersByDate;
 
+    protected static bool $isLazy = false;
+
     protected ?string $heading = 'Trend Maintenance (6 Bulan)';
 
     protected static ?int $sort = 3;

@@ -20,8 +20,6 @@ class DocumentNumber
      */
     public const DEFAULTS = [
         'work_order' => 'WO-{YYYY}{MM}{DD}-{SEQ}',
-        'maintenance_plan' => 'MP-{YYYY}{MM}-{SEQ}',
-        'maintenance_schedule' => 'MS-{YYYY}{MM}-{SEQ}',
         'maintenance_request' => 'MR-{YYYY}{MM}{DD}-{SEQ}',
         'document' => 'DOC-{YYYY}{MM}-{SEQ}',
         'housekeeping_plan' => 'HKP-{YYYY}{MM}{DD}-{SEQ}',
@@ -32,8 +30,6 @@ class DocumentNumber
      */
     public const LABELS = [
         'work_order' => 'Work Order',
-        'maintenance_plan' => 'Maintenance Plan',
-        'maintenance_schedule' => 'Maintenance Schedule',
         'maintenance_request' => 'Maintenance Request',
         'document' => 'Document',
         'housekeeping_plan' => 'Housekeeping Plan',

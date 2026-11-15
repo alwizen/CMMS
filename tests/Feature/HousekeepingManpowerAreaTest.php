@@ -5,7 +5,6 @@ namespace Tests\Feature;
 use App\Filament\Resources\HousekeepingManpowers\Pages\CreateHousekeepingManpower;
 use App\Models\Company;
 use App\Models\HousekeepingArea;
-use App\Models\HousekeepingManpower;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Gate;

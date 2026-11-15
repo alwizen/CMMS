@@ -11,14 +11,13 @@
 3. [Kalender Maintenance](#3-kalender-maintenance)
 4. [Master Data](#4-master-data)
 5. [Maintenance Request (Korektif)](#5-maintenance-request-korektif)
-6. [Maintenance Plan (Preventif)](#6-maintenance-plan-preventif)
-7. [Maintenance Schedule](#7-maintenance-schedule)
-8. [Work Order](#8-work-order)
-9. [Riwayat Maintenance](#9-riwayat-maintenance)
-10. [Meter Log](#10-meter-log)
-11. [Alur & Workflow](#11-alur--workflow)
-12. [Akun Dummy](#12-akun-dummy)
-13. [REST API](#13-rest-api)
+6. [Generate Work Order (Preventif)](#6-generate-work-order-preventif)
+7. [Work Order](#7-work-order)
+8. [Riwayat Maintenance](#8-riwayat-maintenance)
+9. [Meter Log](#9-meter-log)
+10. [Alur & Workflow](#10-alur--workflow)
+11. [Akun Dummy](#11-akun-dummy)
+12. [REST API](#12-rest-api)
 
 ---
 
@@ -52,8 +51,6 @@ Master Data
 
 Maintenance
 ├── ⚠️ Maintenance Requests
-├── 📅 Maintenance Plans
-├── 📆 Maintenance Schedules
 ├── 📋 Work Orders
 └── 📆 Kalender Maintenance
 
@@ -129,9 +126,6 @@ http://localhost:8000/admin/maintenance-calendar
 | 🟢 Hijau | Work Order (Completed) | WO yang sudah selesai |
 | 🟡 Kuning | Work Order (On Hold) | WO yang ditunda |
 | 🔴 Merah | Work Order (Cancelled) | WO yang dibatalkan |
-| 🟣 Ungu (Background) | Maintenance Plan | Rentang waktu rencana aktif |
-| 🟠 Oranye | Schedule (Delayed) | Jadwal yang terlambat |
-| 🟣 Ungu | Schedule (Rescheduled) | Jadwal yang dijadwalkan ulang |
 | ⚪ Abu-abu | Work Order (Open/Default) | WO default |
 
 ### View Tersedia
@@ -154,29 +148,18 @@ http://localhost:8000/admin/maintenance-calendar
 ### Detail Event (Modal)
 
 Saat mengklik event, modal akan menampilkan:
-- **Tipe**: Work Order / Maintenance Plan / Maintenance Schedule
+- **Tipe**: Work Order
 - **Status**: Status saat ini
 - **Equipment**: Nama dan tag number equipment
 - **Tanggal**: Tanggal mulai dan selesai
 - **Klasifikasi**: Preventive / Corrective (untuk WO)
-- **Interval**: Interval maintenance (untuk Plan)
-- **Keterangan**: Deskripsi tambahan (untuk Schedule)
+- **Catatan**: Deskripsi tambahan work order
 
 ### Data yang Ditampilkan
 
-Kalender menampilkan 3 jenis data sekaligus:
-
-**Work Orders** (event biasa):
+Kalender menampilkan **Work Order**:
 - Semua work order dengan tanggal mulai
 - Warna menunjukkan status
-
-**Maintenance Plans** (background):
-- Rentang waktu plan aktif
-- Ditampilkan sebagai background ungu transparan
-
-**Maintenance Schedules** (event):
-- Jadwal maintenance yang sudah dijadwalkan
-- Warna menunjukkan status schedule
 
 ---
 
@@ -383,84 +366,41 @@ Status           : Open
 
 ---
 
-## 6. Maintenance Plan (Preventif)
+## 6. Generate Work Order (Preventif)
 
-Digunakan untuk membuat rencana maintenance berkala pada equipment.
+Membuat Work Order preventif langsung dari Dashboard tanpa membuat Plan manual.
 
 ### Flow
 
 ```
-Equipment dipilih
+Equipment Type punya Penanggung Jawab + checklist (Activity per interval)
     ↓
-Maintenance Plan dibuat
+Dashboard → Generate WO
     ↓
-Aktivitas-aktivitas ditambahkan ke plan
+Pilih Equipment Type, Equipment (multi), Interval, jumlah WO
     ↓
-Maintenance Schedule di-generate per periode
-    ↓
-Work Order dibuat otomatis per jadwal
+Work Order dibuat (status Pending), checklist tersalin otomatis
 ```
 
-### Cara Membuat Maintenance Plan
+### Cara Generate WO
 
-1. Klik **Maintenance Plans** → **+ Create**
+1. Buka **Dashboard** → klik **Generate WO**
 2. Isi form:
-   - **Equipment** — Pilih equipment
-   - **Maintenance Classification** — `Preventive`, `Predictive`, atau `Condition-Based`
-   - **Interval** — `Daily`, `Weekly`, `Monthly`, `Quarterly`, `Bi-Annually`, `Yearly`
-   - **Start Date** — Tanggal mulai berlaku
-   - **End Date** — Tanggal berakhir (opsional)
-   - **Created By** — Siapa yang membuat plan
-   - **Technician Coordinator** — Koordinator teknisi (opsional)
-   - **Description** — Deskripsi plan
-   - **Status** — `Active`, `Inactive`, `Suspended`, `Completed`
-3. Klik **Create**
+   - **Equipment Type** — hanya tipe yang punya Penanggung Jawab & checklist yang muncul
+   - **Equipment** — pilih satu/lebih equipment dari tipe tersebut
+   - **Interval** — Daily, Weekly, Monthly, Quarterly, Semi-Annual, Yearly
+   - **Berapa WO per equipment** — jumlah WO yang dibuat untuk tiap equipment
+   - **Jam Mulai** dan **Pemberi Tugas**
+   - **Lewati Sabtu & Minggu**
+3. Klik **Generate**
 
-### Contoh
+> Checklist WO diambil dari activity tipe equipment yang interval-nya sama dengan interval pilihan. Penanggung jawab WO = Penanggung Jawab Equipment Type. Equipment tanpa penanggung jawab atau tanpa checklist yang cocok akan dilewati.
 
-```
-Equipment               : Pump (P-101)
-Maintenance Classification : Preventive
-Interval                : Monthly
-Start Date              : 2026-01-01
-End Date                : 2026-12-31
-Created By              : Supervisor
-Description             : Plan maintenance bulanan untuk Pump
-Status                  : Active
-```
+> Catatan: menu **Maintenance Plan** dan **Maintenance Schedule** sudah dihapus.
 
 ---
 
-## 7. Maintenance Schedule
-
-Jadwal aktual yang muncul di planner, di-generate dari Maintenance Plan.
-
-### Cara Membuat
-
-1. Klik **Maintenance Schedules** → **+ Create**
-2. Isi form:
-   - **Maintenance Plan** — Pilih plan terkait
-   - **Equipment** — Equipment yang akan di-maintenance
-   - **Scheduled Date** — Tanggal yang dijadwalkan
-   - **Status** — `Scheduled`, `In Progress`, `Completed`, `Delayed`, `Rescheduled`, `Cancelled`
-   - **Description** — Keterangan (opsional)
-   - **Rescheduled From** — Tanggal asli jika di-reschedule (opsional)
-3. Klik **Create**
-
-### Status Schedule
-
-| Status | Keterangan |
-|---|---|
-| Scheduled | Sudah dijadwalkan |
-| In Progress | Sedang dikerjakan |
-| Completed | Selesai dikerjakan |
-| Delayed | Terlambat / tertunda |
-| Rescheduled | Dijadwalkan ulang |
-| Cancelled | Dibatalkan |
-
----
-
-## 8. Work Order
+## 7. Work Order
 
 Work Order (WO) adalah transaksi maintenance utama. WO bisa berasal dari 2 sumber:
 
@@ -468,7 +408,7 @@ Work Order (WO) adalah transaksi maintenance utama. WO bisa berasal dari 2 sumbe
 
 ```
 Preventive:
-Maintenance Plan → Schedule → Work Order
+Generate WO → Work Order
 
 Corrective:
 Maintenance Request → Work Order
@@ -494,8 +434,6 @@ Contoh: WO-20260918-0001
 2. **Work Order Number** — Otomatis terisi (tidak perlu diisi)
 3. Isi form:
    - **Equipment** — Pilih equipment
-   - **Maintenance Plan** — Pilih plan jika preventive (opsional)
-   - **Maintenance Schedule** — Pilih schedule jika ada (opsional)
    - **Maintenance Request** — Pilih request jika corrective (opsional)
    - **Issued By** — Siapa yang menerbitkan WO
    - **Technician Coordinator** — Koordinator (opsional)
@@ -512,7 +450,6 @@ Contoh: WO-20260918-0001
 ```
 Work Order Number       : WO-20260918-0001 (otomatis)
 Equipment               : Pump (P-101)
-Maintenance Plan        : Plan bulanan Pump
 Issued By               : Supervisor
 Classification          : Preventive
 Interval                : Monthly
@@ -532,7 +469,7 @@ Status                  : Open
 
 ---
 
-## 9. Riwayat Maintenance
+## 8. Riwayat Maintenance
 
 Mencatat semua aktivitas maintenance yang sudah dilakukan.
 
@@ -564,7 +501,7 @@ Mencatat semua aktivitas maintenance yang sudah dilakukan.
 
 ---
 
-## 10. Meter Log
+## 9. Meter Log
 
 Mencatat pembacaan meter pada equipment (operating hours, flow meter, dll).
 
@@ -587,7 +524,7 @@ Recorded By  : Technician 1
 
 ---
 
-## 11. Alur & Workflow
+## 10. Alur & Workflow
 
 ### 11.0 Urutan Penggunaan Aplikasi
 
@@ -613,8 +550,7 @@ Pertama kali menggunakan aplikasi, ikuti urutan ini:
 | No | Menu | Keterangan |
 |---|---|---|
 | 6 | Maintenance Request | Laporkan kerusakan equipment (jika ada) |
-| 7 | Maintenance Plan | Buat rencana maintenance preventif |
-| 8 | Maintenance Schedule | Buat jadwal spesifik dari plan |
+| 7 | Generate WO | Buat Work Order preventif dari Dashboard |
 | 9 | Work Order | Terbitkan perintah kerja |
 | 10 | Maintenance History | Catat hasil pengerjaan |
 | 11 | Meter Log | Catat pembacaan meter berkala |
@@ -624,7 +560,7 @@ Pertama kali menggunakan aplikasi, ikuti urutan ini:
 ```
 Company → Area → Equipment Type → Equipment → Activity
                                                 ↓
-                              Maintenance Request/Plan → Work Order → History
+                              Maintenance Request / Generate WO → Work Order → History
 ```
 
 > **Tips:** Master data (langkah 1-2) hanya perlu dibuat sekali. Operasional (langkah 3) dilakukan setiap hari sesuai kebutuhan.
@@ -643,14 +579,13 @@ Company → Area → Equipment Type → Equipment → Activity
    ├─ Buat Equipment (data equipment di area)
    └─ Buat Activities (master aktivitas per jenis)
 
-2. BUAT RENCANA
-   ├─ Maintenance Plan (rencana berkala)
-   │   └─ Equipment + Interval + Classification
-   ├─ Tambahkan Aktivitas ke Plan
-   └─ Maintenance Schedule (jadwal per periode)
+2. BUAT WORK ORDER (PREVENTIF)
+   ├─ Generate WO dari Dashboard
+   │   └─ Equipment Type + Equipment + Interval + jumlah
+   └─ Checklist tersalin otomatis dari Activity tipe equipment
 
 3. EKSEKUSI
-   ├─ Schedule → Work Order (otomatis/manual)
+   ├─ Work Order (manual/generate)
    ├─ Assign Worker / Technician ke WO
    ├─ Technician mengerjakan
    │   ├─ Pre Inspection (sebelum kerja)
@@ -708,10 +643,7 @@ Company → Area → Equipment Type → Equipment → Activity
 
 1. Akses kalender dari sidebar → Kalender Maintenance
 
-2. Kalender menampilkan 3 jenis data:
-   ├─ Work Orders (event dengan warna status)
-   ├─ Maintenance Plans (background ungu)
-   └─ Maintenance Schedules (event dengan warna status)
+2. Kalender menampilkan Work Orders (event dengan warna status)
 
 3. Navigasi:
    ├─ Bulan/Minggu/Hari/Daftar (tombol di pojok kanan)
@@ -765,7 +697,7 @@ Company → Area → Equipment Type → Equipment → Activity
 
 ---
 
-## 12. Akun Dummy
+## 11. Akun Dummy
 
 Setelah menjalankan seeders, berikut akun yang tersedia:
 
@@ -794,7 +726,7 @@ Akses: `http://localhost:8000/admin`
 
 ---
 
-## 13. REST API
+## 12. REST API
 
 API untuk integrasi dengan perangkat mobile (Android/iOS). Menggunakan **Laravel Sanctum** untuk autentikasi token.
 
@@ -934,69 +866,7 @@ curl http://localhost:8000/api/me \
 
 ---
 
-### 13.2 Maintenance Plans
-
-#### `GET /api/maintenance-plans`
-
-Daftar maintenance plan (dengan pagination).
-
-| Parameter | Tipe | Keterangan |
-|---|---|---|
-| per_page | integer | Jumlah data per halaman (default: 15) |
-| status | string | Filter: `Active`, `Inactive`, `Suspended`, `Completed` |
-| search | string | Cari berdasarkan nama/tag number equipment |
-
-```bash
-curl "http://localhost:8000/api/maintenance-plans?status=Active&per_page=10" \
-  -H "Authorization: Bearer <token>"
-```
-
----
-
-#### `GET /api/maintenance-plans/{id}`
-
-Detail maintenance plan + activities + schedules.
-
-```bash
-curl http://localhost:8000/api/maintenance-plans/1 \
-  -H "Authorization: Bearer <token>"
-```
-
----
-
-### 13.3 Maintenance Schedules
-
-#### `GET /api/maintenance-schedules`
-
-Daftar jadwal maintenance.
-
-| Parameter | Tipe | Keterangan |
-|---|---|---|
-| per_page | integer | Jumlah data per halaman (default: 15) |
-| status | string | Filter: `Scheduled`, `In Progress`, `Completed`, `Delayed`, `Rescheduled`, `Cancelled` |
-| date_from | date | Filter tanggal mulai (`YYYY-MM-DD`) |
-| date_to | date | Filter tanggal akhir (`YYYY-MM-DD`) |
-| search | string | Cari berdasarkan nama/tag number equipment |
-
-```bash
-curl "http://localhost:8000/api/maintenance-schedules?status=Scheduled&date_from=2026-09-01" \
-  -H "Authorization: Bearer <token>"
-```
-
----
-
-#### `GET /api/maintenance-schedules/{id}`
-
-Detail schedule + work orders terkait.
-
-```bash
-curl http://localhost:8000/api/maintenance-schedules/1 \
-  -H "Authorization: Bearer <token>"
-```
-
----
-
-### 13.4 Work Orders
+### 13.2 Work Orders
 
 #### `GET /api/work-orders`
 
@@ -1018,7 +888,7 @@ curl "http://localhost:8000/api/work-orders?status=In+Progress" \
 
 #### `GET /api/work-orders/{id}`
 
-Detail work order lengkap (activities, workers, plan, schedule, request).
+Detail work order lengkap (activities, workers, request).
 
 ```bash
 curl http://localhost:8000/api/work-orders/1 \
@@ -1068,7 +938,7 @@ curl -X PUT http://localhost:8000/api/work-orders/1/activities/1 \
 
 ---
 
-### 13.5 Equipment
+### 13.3 Equipment
 
 #### `GET /api/equipment`
 
@@ -1090,7 +960,7 @@ curl "http://localhost:8000/api/equipment?status=active" \
 
 #### `GET /api/equipment/{id}`
 
-Detail equipment + maintenance plans + schedules.
+Detail equipment (+ tipe & penanggung jawab).
 
 ```bash
 curl http://localhost:8000/api/equipment/1 \
@@ -1099,17 +969,13 @@ curl http://localhost:8000/api/equipment/1 \
 
 ---
 
-### 13.6 Ringkasan Endpoint
+### 13.4 Ringkasan Endpoint
 
 | Method | Endpoint | Auth | Keterangan |
 |---|---|---|---|
 | `POST` | `/api/login` | Tidak | Login, dapatkan token |
 | `POST` | `/api/logout` | Ya | Logout, revoke token |
 | `GET` | `/api/me` | Ya | Profil user login |
-| `GET` | `/api/maintenance-plans` | Ya | Daftar plan |
-| `GET` | `/api/maintenance-plans/{id}` | Ya | Detail plan |
-| `GET` | `/api/maintenance-schedules` | Ya | Daftar schedule |
-| `GET` | `/api/maintenance-schedules/{id}` | Ya | Detail schedule |
 | `GET` | `/api/work-orders` | Ya | Daftar work order |
 | `GET` | `/api/work-orders/{id}` | Ya | Detail work order |
 | `PUT` | `/api/work-orders/{id}` | Ya | Update work order |
@@ -1119,7 +985,7 @@ curl http://localhost:8000/api/equipment/1 \
 
 ---
 
-### 13.7 Testing dengan Bruno/Postman
+### 13.5 Testing dengan Bruno/Postman
 
 1. **Login** - `POST /api/login` dengan email + password → copy token
 2. **Set Header** - `Authorization: Bearer <token>` di semua request

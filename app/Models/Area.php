@@ -15,6 +15,7 @@ class Area extends Model
         'description',
         'latitude',
         'longitude',
+        'polygon',
         'is_active',
     ];
 
@@ -22,6 +23,7 @@ class Area extends Model
         'is_active' => 'boolean',
         'latitude' => 'float',
         'longitude' => 'float',
+        'polygon' => 'array',
     ];
 
     public function company(): BelongsTo

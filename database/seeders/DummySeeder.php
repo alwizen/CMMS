@@ -7,17 +7,10 @@ use App\Models\Area;
 use App\Models\Company;
 use App\Models\Equipment;
 use App\Models\EquipmentType;
-use App\Models\MaintenanceHistory;
-use App\Models\MaintenancePlan;
-use App\Models\MaintenancePlanActivity;
 use App\Models\MaintenanceRequest;
-use App\Models\MaintenanceSchedule;
-use App\Models\MeterLog;
 use App\Models\User;
 use App\Models\WorkOrder;
-use App\Models\WorkOrderActivity;
-use App\Models\WorkOrderWorker;
-use Carbon\Carbon;
+use App\Support\Geo;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
 use Spatie\Permission\Models\Role;
@@ -29,27 +22,21 @@ class DummySeeder extends Seeder
         $roles = $this->seedRoles();
         $users = $this->seedUsers($roles);
         $types = $this->seedEquipmentTypes();
+        $this->assignEquipmentTypeResponsibles($types, $users);
         $areas = $this->seedCompaniesAndAreas();
         $equipment = $this->seedEquipment($areas, $types);
-        $activities = $this->seedActivities($types);
-        $plans = $this->seedPlans($equipment, $users, $activities);
+        $this->seedActivities($types);
 
-        $this->seedSchedulesAndWorkOrders($plans, $users);
-        $this->seedRequestsAndCorrectiveWorkOrders($equipment, $users);
-        $this->seedMeterLogs($equipment, $users);
+        $this->seedRequests($equipment, $users);
 
         $this->command?->info(sprintf(
-            'Dummy siap: %d company, %d area, %d equipment, %d activity, %d plan, %d schedule, %d request, %d WO, %d history, %d meter log.',
+            'Dummy siap: %d company, %d area, %d equipment, %d activity, %d request, %d WO.',
             Company::count(),
             Area::count(),
             Equipment::count(),
             Activity::count(),
-            MaintenancePlan::count(),
-            MaintenanceSchedule::count(),
             MaintenanceRequest::count(),
             WorkOrder::count(),
-            MaintenanceHistory::count(),
-            MeterLog::count(),
         ));
     }
 
@@ -141,6 +128,26 @@ class DummySeeder extends Seeder
     }
 
     /**
+     * Tetapkan penanggung jawab (teknisi) pada tiap tipe equipment.
+     *
+     * @param  array<string, EquipmentType>  $types
+     * @param  array<string, User>  $users
+     */
+    protected function assignEquipmentTypeResponsibles(array $types, array $users): void
+    {
+        $technicians = [$users['risna'], $users['kholis'], $users['behan'], $users['irwan']];
+        $index = 0;
+
+        foreach ($types as $type) {
+            if (blank($type->responsible_user_id)) {
+                $type->update(['responsible_user_id' => $technicians[$index % count($technicians)]->id]);
+            }
+
+            $index++;
+        }
+    }
+
+    /**
      * @return array<string, array{0: Company, 1: array<string, Area>}>
      */
     protected function seedCompaniesAndAreas(): array
@@ -153,21 +160,6 @@ class DummySeeder extends Seeder
                     ['unloading', 'Unloading', 'Area unloading'],
                     ['storage', 'Storage', 'Area tangki penyimpanan'],
                     ['mcc', 'MCC', 'Motor control center'],
-                ],
-            ],
-            'semarang' => [
-                'company' => ['ft-semarang', 'Fuel Terminal Semarang', 'Fasilitas terminal bahan bakar Semarang'],
-                'areas' => [
-                    ['loading', 'Loading', 'Area loading arm'],
-                    ['storage', 'Storage', 'Area tangki penyimpanan'],
-                    ['utility', 'Utility', 'Area utilitas'],
-                ],
-            ],
-            'cirebon' => [
-                'company' => ['ft-cirebon', 'Fuel Terminal Cirebon', 'Fasilitas terminal bahan bakar Cirebon'],
-                'areas' => [
-                    ['loading', 'Loading', 'Area loading arm'],
-                    ['storage', 'Storage', 'Area tangki penyimpanan'],
                 ],
             ],
         ];
@@ -190,15 +182,34 @@ class DummySeeder extends Seeder
 
             $areas = [];
 
+            $centerLat = (float) ($company->center_lat ?? -6.87);
+            $centerLng = (float) ($company->center_lng ?? 109.18);
+
             foreach ($definition['areas'] as [$areaCode, $areaName, $areaDescription]) {
+                $offset = fake()->randomFloat(4, -0.01, 0.01);
+                $size = fake()->randomFloat(4, 0.002, 0.006);
+
+                $baseLat = $centerLat + $offset;
+                $baseLng = $centerLng + $offset;
+
+                $polygon = [
+                    [round($baseLat - $size, 7), round($baseLng - $size, 7)],
+                    [round($baseLat - $size, 7), round($baseLng + $size, 7)],
+                    [round($baseLat + $size, 7), round($baseLng + $size, 7)],
+                    [round($baseLat + $size, 7), round($baseLng - $size, 7)],
+                ];
+
+                $center = Geo::polygonCenter($polygon);
+
                 $areas[$areaCode] = Area::firstOrCreate(
                     ['company_id' => $company->id, 'code' => $areaCode],
                     [
                         'name' => $areaName,
                         'description' => $areaDescription,
                         'is_active' => true,
-                        'latitude' => -6.87 + fake()->randomFloat(4, -0.02, 0.02),
-                        'longitude' => 109.18 + fake()->randomFloat(4, -0.02, 0.02),
+                        'polygon' => $polygon,
+                        'latitude' => $center['lat'] ?? null,
+                        'longitude' => $center['lng'] ?? null,
                     ],
                 );
             }
@@ -228,16 +239,6 @@ class DummySeeder extends Seeder
             ['fp-601', 'loading', 'tegal', 'fire_pump', 'FP-601', 'Pompa pemadam utama', 'EBARA', 'FP-200', 'critical'],
             ['m-701', 'loading', 'tegal', 'motor', 'M-701', 'Motor loading arm', 'SIEMENS', '1LE1', 'medium'],
             ['v-801', 'unloading', 'tegal', 'valve', 'V-801', 'Valve kontrol aliran', 'EMERSON', 'CV-100', 'medium'],
-            ['p-111', 'loading', 'semarang', 'pump', 'P-111', 'Pompa transfer Semarang', 'GRUNDFOS', 'CR20', 'high'],
-            ['t-211', 'storage', 'semarang', 'tank', 'T-211', 'Tangki premium Semarang', 'PERTAMINA', 'TK-4000', 'critical'],
-            ['c-311', 'utility', 'semarang', 'compressor', 'C-311', 'Kompresor utilitas', 'ATLAS COPCO', 'GA-22', 'medium'],
-            ['g-411', 'utility', 'semarang', 'genset', 'G-411', 'Genset 250 kVA', 'CUMMINS', 'C250', 'high'],
-            ['pnl-511', 'utility', 'semarang', 'panel', 'PNL-511', 'Panel distribusi', 'SCHNEIDER', 'MCC-2', 'high'],
-            ['m-711', 'loading', 'semarang', 'motor', 'M-711', 'Motor pompa loading', 'SIEMENS', '1LE2', 'medium'],
-            ['p-121', 'loading', 'cirebon', 'pump', 'P-121', 'Pompa transfer Cirebon', 'EBARA', 'U-90', 'high'],
-            ['t-221', 'storage', 'cirebon', 'tank', 'T-221', 'Tangki solar Cirebon', 'PERTAMINA', 'TK-2500', 'critical'],
-            ['g-421', 'storage', 'cirebon', 'genset', 'G-421', 'Genset 200 kVA', 'CUMMINS', 'C200', 'medium'],
-            ['v-821', 'loading', 'cirebon', 'valve', 'V-821', 'Valve loading Cirebon', 'EMERSON', 'CV-90', 'medium'],
         ];
 
         $equipment = [];
@@ -342,224 +343,29 @@ class DummySeeder extends Seeder
     /**
      * @param  array<string, Equipment>  $equipment
      * @param  array<string, User>  $users
-     * @param  array<string, array<string, Activity>>  $activities
-     * @return array<string, MaintenancePlan>
      */
-    protected function seedPlans(array $equipment, array $users, array $activities): array
+    protected function seedRequests(array $equipment, array $users): void
     {
         $definitions = [
-            ['p-101', 'pump', 'monthly', -3, 9],
-            ['p-102', 'pump', 'weekly', -2, 6],
-            ['t-201', 'tank', 'quarterly', -4, 8],
-            ['c-301', 'compressor', 'monthly', -2, 10],
-            ['g-401', 'genset', 'monthly', -3, 9],
-            ['pnl-501', 'panel', 'quarterly', -4, 8],
-            ['fp-601', 'fire_pump', 'quarterly', -4, 8],
-            ['m-701', 'motor', 'quarterly', -3, 9],
-            ['p-111', 'pump', 'monthly', -2, 10],
-            ['t-211', 'tank', 'quarterly', -3, 9],
-            ['p-121', 'pump', 'monthly', -1, 11],
-            ['v-801', 'valve', 'monthly', -2, 10],
+            ['p-103', 'Seal pompa bocor saat operasi', 'Stopped', 'Open'],
+            ['c-301', 'Kompresor berisik dan getaran tinggi', 'Running', 'Open'],
+            ['t-202', 'Level gauge tidak menunjukkan angka stabil', 'Standby', 'Open'],
+            ['v-801', 'Valve macet saat penutupan', 'Faulty', 'Open'],
+            ['m-701', 'Motor panas berlebih setelah 2 jam operasi', 'Running', 'Open'],
+            ['p-102', 'Tekanan discharge turun drastis', 'Stopped', 'Approved'],
+            ['g-401', 'Genset gagal start otomatis', 'Stopped', 'Approved'],
+            ['pnl-501', 'Breaker trip berulang', 'Faulty', 'In Progress'],
+            ['t-201', 'Korosi pada sambungan pipa keluar', 'Running', 'In Progress'],
+            ['c-301', 'Filter udara tersumbat', 'Running', 'Completed'],
+            ['fp-601', 'Kebocoran pada flange suction', 'Stopped', 'Rejected'],
         ];
 
-        $plans = [];
-
-        foreach ($definitions as [$equipmentKey, $typeKey, $interval, $startOffset, $endOffset]) {
-            $item = $equipment[$equipmentKey];
-
-            $plan = MaintenancePlan::firstOrCreate(
-                [
-                    'equipment_id' => $item->id,
-                    'maintenance_classification' => 'Preventive',
-                    'interval' => $interval,
-                ],
-                [
-                    'start_date' => now()->addMonths($startOffset)->startOfMonth()->toDateString(),
-                    'end_date' => now()->addMonths($endOffset)->endOfMonth()->toDateString(),
-                    'created_by' => $users['admin']->id,
-                    'technician_coordinator_id' => $users['kholis']->id,
-                    'description' => 'Preventive '.$interval.' untuk '.$item->tag_number,
-                    'status' => 'Active',
-                ],
-            );
-
-            $order = 0;
-
-            foreach ($activities[$typeKey] as $activity) {
-                $order++;
-
-                MaintenancePlanActivity::firstOrCreate(
-                    ['maintenance_plan_id' => $plan->id, 'activity_id' => $activity->id],
-                    ['sort_order' => $order],
-                );
-            }
-
-            $plans[$equipmentKey] = $plan;
-        }
-
-        return $plans;
-    }
-
-    /**
-     * @param  array<string, MaintenancePlan>  $plans
-     * @param  array<string, User>  $users
-     */
-    protected function seedSchedulesAndWorkOrders(array $plans, array $users): void
-    {
-        $technicians = [$users['risna'], $users['kholis'], $users['behan'], $users['irwan']];
-
-        foreach ($plans as $equipmentKey => $plan) {
-            $cursor = Carbon::parse($plan->start_date);
-            $end = Carbon::parse($plan->end_date);
-
-            while ($cursor->lte($end)) {
-                $date = $cursor->copy();
-
-                if (! $date->isWeekend()) {
-                    $schedule = MaintenanceSchedule::query()
-                        ->where('maintenance_plan_id', $plan->id)
-                        ->whereDate('scheduled_date', $date->toDateString())
-                        ->first()
-                        ?? MaintenanceSchedule::create([
-                            'maintenance_plan_id' => $plan->id,
-                            'equipment_id' => $plan->equipment_id,
-                            'scheduled_date' => $date->toDateString(),
-                            'status' => MaintenanceSchedule::STATUSES['Scheduled'],
-                            'description' => 'Jadwal preventif '.$plan->interval.' '.$plan->equipment->tag_number,
-                        ]);
-
-                    $isPast = $date->lt(today());
-
-                    if ($schedule->workOrders()->exists()) {
-                        // sudah pernah dibuat, jangan duplikasi saat seeder dijalankan ulang
-                    } elseif ($isPast) {
-                        $this->createPreventiveWorkOrder($schedule, $plan, $users, $technicians, true);
-                    } elseif ($date->lte(today()->addDays(5))) {
-                        $this->createPreventiveWorkOrder($schedule, $plan, $users, $technicians, false);
-                    }
-                }
-
-                $cursor = match ($plan->interval) {
-                    'weekly' => $cursor->copy()->addWeek(),
-                    'monthly' => $cursor->copy()->addMonth(),
-                    'quarterly' => $cursor->copy()->addMonths(3),
-                    default => $cursor->copy()->addMonth(),
-                };
-            }
-        }
-    }
-
-    /**
-     * @param  array<string, User>  $users
-     * @param  array<int, User>  $technicians
-     */
-    protected function createPreventiveWorkOrder(
-        MaintenanceSchedule $schedule,
-        MaintenancePlan $plan,
-        array $users,
-        array $technicians,
-        bool $completed,
-    ): WorkOrder {
-        $start = Carbon::parse($schedule->scheduled_date)->setTime(8, 0);
-        $finish = $start->copy()->addHours(fake()->numberBetween(1, 3));
-
-        $workOrder = WorkOrder::create([
-            'equipment_id' => $schedule->equipment_id,
-            'maintenance_plan_id' => $plan->id,
-            'maintenance_schedule_id' => $schedule->id,
-            'issued_by' => $users['spv']->id,
-            'technician_coordinator_id' => $technicians[array_rand($technicians)]->id,
-            'classification' => 'Preventive',
-            'interval' => $plan->interval,
-            'start_at' => $start,
-            'finish_at' => $completed ? $finish : null,
-            'note' => 'Preventif '.$plan->interval.' — '.$schedule->description,
-            'status' => WorkOrder::STATUSES['In Progress'],
-        ]);
-
-        $technician = $technicians[array_rand($technicians)];
-
-        WorkOrderWorker::create([
-            'work_order_id' => $workOrder->id,
-            'user_id' => $technician->id,
-            'role' => 'Teknisi',
-            'started_at' => $start,
-            'finished_at' => $completed ? $finish : null,
-            'note' => 'Pelaksana preventif',
-        ]);
-
-        $planActivities = MaintenancePlanActivity::query()
-            ->where('maintenance_plan_id', $plan->id)
-            ->with('activity')
-            ->orderBy('sort_order')
-            ->get();
-
-        foreach ($planActivities as $planActivity) {
-            $activity = $planActivity->activity;
-
-            if (! $activity) {
-                continue;
-            }
-
-            WorkOrderActivity::create([
-                'work_order_id' => $workOrder->id,
-                'activity_id' => $activity->id,
-                'reference' => $activity->reference,
-                'unit' => $activity->unit,
-                'pre_inspection' => $completed ? 'Kondisi awal sesuai standar' : null,
-                'final_result' => $completed ? $this->sampleResult($activity) : null,
-                'executed' => $completed,
-                'note' => $completed ? 'Selesai dikerjakan, hasil dalam batas normal.' : null,
-            ]);
-        }
-
-        if ($completed) {
-            $workOrder->update(['status' => WorkOrder::STATUSES['Completed']]);
-        } else {
-            $schedule->update(['status' => MaintenanceSchedule::STATUSES['In Progress']]);
-        }
-
-        return $workOrder;
-    }
-
-    protected function sampleResult(Activity $activity): string
-    {
-        if ($activity->answer_type === 'quantitative') {
-            $value = $activity->optimum ?? $activity->maximum ?? 0;
-
-            return (string) $value;
-        }
-
-        return fake()->randomElement(['OK', 'Baik', 'Normal', 'Tidak ada kebocoran', 'Sesuai standar']);
-    }
-
-    /**
-     * @param  array<string, Equipment>  $equipment
-     * @param  array<string, User>  $users
-     */
-    protected function seedRequestsAndCorrectiveWorkOrders(array $equipment, array $users): void
-    {
-        $definitions = [
-            ['p-103', 'Seal pompa bocor saat operasi', 'Stopped', 'Open', null],
-            ['c-311', 'Kompresor berisik dan getaran tinggi', 'Running', 'Open', null],
-            ['t-221', 'Level gauge tidak menunjukkan angka stabil', 'Standby', 'Open', null],
-            ['v-821', 'Valve macet saat penutupan', 'Faulty', 'Open', null],
-            ['m-711', 'Motor panas berlebih setelah 2 jam operasi', 'Running', 'Open', null],
-            ['p-102', 'Tekanan discharge turun drastis', 'Stopped', 'Approved', 'kholis'],
-            ['g-421', 'Genset gagal start otomatis', 'Stopped', 'Approved', 'behan'],
-            ['pnl-511', 'Breaker trip berulang', 'Faulty', 'In Progress', 'risna'],
-            ['t-202', 'Korosi pada sambungan pipa keluar', 'Running', 'In Progress', 'irwan'],
-            ['c-301', 'Filter udara tersumbat', 'Running', 'Completed', 'behan'],
-            ['p-121', 'Kebocoran pada flange suction', 'Stopped', 'Rejected', null],
-            ['g-411', 'Baterai lemah, indikator kuning', 'Standby', 'Open', null],
-        ];
-
-        foreach ($definitions as $index => [$equipmentKey, $description, $operationStatus, $status, $technicianKey]) {
+        foreach ($definitions as $index => [$equipmentKey, $description, $operationStatus, $status]) {
             $item = $equipment[$equipmentKey];
             $reporter = $index % 2 === 0 ? $users['pengawas'] : $users['risna'];
             $damageDate = now()->subDays(fake()->numberBetween(0, 20));
 
-            $request = MaintenanceRequest::firstOrCreate(
+            MaintenanceRequest::firstOrCreate(
                 ['equipment_id' => $item->id, 'description' => $description],
                 [
                     'reported_by' => $reporter->id,
@@ -580,116 +386,6 @@ class DummySeeder extends Seeder
                     'approved_at' => in_array($status, ['Approved', 'In Progress', 'Completed'], true) ? now()->subDays(1) : null,
                 ],
             );
-
-            if (! in_array($status, ['Approved', 'In Progress', 'Completed'], true)) {
-                continue;
-            }
-
-            if (WorkOrder::where('maintenance_request_id', $request->id)->exists()) {
-                continue;
-            }
-
-            $technician = $users[$technicianKey ?? 'kholis'];
-            $start = now()->subDays(fake()->numberBetween(0, 5))->setTime(9, 0);
-
-            $workOrder = WorkOrder::create([
-                'equipment_id' => $item->id,
-                'maintenance_request_id' => $request->id,
-                'issued_by' => $users['spv']->id,
-                'technician_coordinator_id' => $technician->id,
-                'classification' => 'Corrective',
-                'start_at' => $start,
-                'finish_at' => $status === 'Completed' ? $start->copy()->addHours(3) : null,
-                'note' => $description,
-                'status' => match ($status) {
-                    'Completed' => WorkOrder::STATUSES['In Progress'],
-                    'In Progress' => WorkOrder::STATUSES['In Progress'],
-                    default => WorkOrder::STATUSES['Pending'],
-                },
-            ]);
-
-            WorkOrderWorker::create([
-                'work_order_id' => $workOrder->id,
-                'user_id' => $technician->id,
-                'role' => 'Teknisi',
-                'started_at' => $start,
-                'finished_at' => $status === 'Completed' ? $start->copy()->addHours(3) : null,
-            ]);
-
-            WorkOrderActivity::create([
-                'work_order_id' => $workOrder->id,
-                'activity_id' => $this->pickActivityFor($item),
-                'reference' => 'Perbaikan korektif sesuai temuan',
-                'pre_inspection' => 'Ditemukan '.strtolower($description),
-                'final_result' => $status === 'Completed' ? 'Diperbaiki dan diuji normal' : null,
-                'follow_up' => $status === 'Completed' ? 'Monitor 1 minggu ke depan' : null,
-                'executed' => $status === 'Completed',
-                'note' => $status === 'Completed' ? 'Penggantian komponen dan pengujian fungsi selesai.' : null,
-            ]);
-
-            if ($status === 'Completed') {
-                $workOrder->update(['status' => WorkOrder::STATUSES['Completed']]);
-            }
-        }
-    }
-
-    protected function pickActivityFor(Equipment $equipment): int
-    {
-        $activity = Activity::query()
-            ->where('equipment_type_id', $equipment->equipment_type_id)
-            ->orderBy('id')
-            ->first();
-
-        if ($activity) {
-            return $activity->id;
-        }
-
-        $fallbackType = EquipmentType::query()->orderBy('id')->firstOrFail();
-
-        return Activity::firstOrCreate(
-            ['equipment_type_id' => $fallbackType->id, 'name' => 'Inspeksi Umum'],
-            [
-                'type' => 'inspection',
-                'maintenance_classification' => 'preventive',
-                'interval' => 'monthly',
-                'answer_type' => 'qualitative',
-                'status' => true,
-            ],
-        )->id;
-    }
-
-    /**
-     * @param  array<string, Equipment>  $equipment
-     * @param  array<string, User>  $users
-     */
-    protected function seedMeterLogs(array $equipment, array $users): void
-    {
-        $recorder = $users['kholis'];
-
-        foreach ($equipment as $item) {
-            $value = fake()->numberBetween(200, 1200);
-
-            for ($month = 5; $month >= 0; $month--) {
-                $value += fake()->numberBetween(40, 180);
-
-                $readingDate = now()->subMonths($month)->startOfMonth()->toDateString();
-
-                $exists = MeterLog::query()
-                    ->where('equipment_id', $item->id)
-                    ->whereDate('reading_date', $readingDate)
-                    ->exists();
-
-                if ($exists) {
-                    continue;
-                }
-
-                MeterLog::create([
-                    'equipment_id' => $item->id,
-                    'reading_date' => $readingDate,
-                    'value' => $value,
-                    'recorded_by' => $recorder->id,
-                ]);
-            }
         }
     }
 }

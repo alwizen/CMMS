@@ -4,17 +4,12 @@ namespace Tests\Feature;
 
 use App\Filament\Pages\Dashboard;
 use App\Filament\Widgets\CompanyAreaMapWidget;
-use App\Filament\Widgets\DueScheduleWidget;
-use App\Filament\Widgets\EquipmentByLocationChart;
-use App\Filament\Widgets\EquipmentHealthWidget;
 use App\Filament\Widgets\StatsOverviewWidget;
 use App\Filament\Widgets\WorkOrderStatusChart;
 use App\Models\Area;
 use App\Models\Company;
 use App\Models\Equipment;
 use App\Models\EquipmentType;
-use App\Models\MaintenancePlan;
-use App\Models\MaintenanceSchedule;
 use App\Models\Setting;
 use App\Models\User;
 use App\Models\WorkOrder;
@@ -62,37 +57,11 @@ class DashboardWidgetTest extends TestCase
         $widgets = (new Dashboard)->getWidgets();
 
         $this->assertContains(CompanyAreaMapWidget::class, $widgets);
-        $this->assertContains(DueScheduleWidget::class, $widgets);
         $this->assertContains(WorkOrderStatusChart::class, $widgets);
-        $this->assertNotContains(EquipmentHealthWidget::class, $widgets);
-        $this->assertNotContains(EquipmentByLocationChart::class, $widgets);
     }
 
-    public function test_due_schedule_widget_lists_overdue_and_upcoming_only(): void
+    public function test_stats_widget_counts_overdue_work_orders(): void
     {
-        $plan = $this->makePlan();
-
-        $overdue = $this->makeSchedule($plan, today()->subDays(3)->toDateString(), MaintenanceSchedule::STATUSES['Scheduled']);
-        $upcoming = $this->makeSchedule($plan, today()->addDays(3)->toDateString(), MaintenanceSchedule::STATUSES['Scheduled']);
-        $farAway = $this->makeSchedule($plan, today()->addDays(30)->toDateString(), MaintenanceSchedule::STATUSES['Scheduled']);
-        $done = $this->makeSchedule($plan, today()->subDays(10)->toDateString(), MaintenanceSchedule::STATUSES['Completed']);
-
-        $this->actingAs($this->user);
-
-        Livewire::test(DueScheduleWidget::class)
-            ->assertOk()
-            ->assertCanSeeTableRecords([$overdue, $upcoming])
-            ->assertCanNotSeeTableRecords([$farAway, $done])
-            ->assertSee('3 hari terlambat');
-    }
-
-    public function test_stats_widget_counts_overdue_schedules(): void
-    {
-        $plan = $this->makePlan();
-        $this->makeSchedule($plan, today()->subDays(2)->toDateString(), MaintenanceSchedule::STATUSES['Scheduled']);
-        $this->makeSchedule($plan, today()->subDays(1)->toDateString(), MaintenanceSchedule::STATUSES['Delayed']);
-        $this->makeSchedule($plan, today()->addDays(5)->toDateString(), MaintenanceSchedule::STATUSES['Scheduled']);
-
         WorkOrder::create([
             'equipment_id' => $this->equipment->id,
             'issued_by' => $this->user->id,
@@ -105,7 +74,7 @@ class DashboardWidgetTest extends TestCase
             'equipment_id' => $this->equipment->id,
             'issued_by' => $this->user->id,
             'classification' => 'Corrective',
-            'start_at' => now(),
+            'start_at' => now()->subDays(2),
             'status' => 'Pending',
         ]);
 
@@ -113,7 +82,7 @@ class DashboardWidgetTest extends TestCase
 
         Livewire::test(StatsOverviewWidget::class)
             ->assertOk()
-            ->assertSee('Jadwal Terlambat')
+            ->assertSee('WO Terlambat')
             ->assertSee('50% selesai');
     }
 
@@ -148,6 +117,36 @@ class DashboardWidgetTest extends TestCase
             ->assertSee('100% selesai');
     }
 
+    public function test_stats_widget_updates_when_dashboard_filter_event_fires(): void
+    {
+        WorkOrder::create([
+            'equipment_id' => $this->equipment->id,
+            'issued_by' => $this->user->id,
+            'classification' => 'Preventive',
+            'start_at' => now(),
+            'status' => 'Completed',
+        ]);
+
+        $old = WorkOrder::create([
+            'equipment_id' => $this->equipment->id,
+            'issued_by' => $this->user->id,
+            'classification' => 'Corrective',
+            'start_at' => now()->subMonth(),
+            'status' => 'Pending',
+        ]);
+
+        \DB::table('work_orders')->where('id', $old->id)->update([
+            'created_at' => now()->subMonth(),
+        ]);
+
+        $this->actingAs($this->user);
+
+        Livewire::test(StatsOverviewWidget::class)
+            ->assertSee('50% selesai')
+            ->dispatch('dashboard-filters-updated', filters: ['dateRange' => 'today'])
+            ->assertSee('100% selesai');
+    }
+
     public function test_work_order_status_chart_shows_all_statuses(): void
     {
         WorkOrder::create([
@@ -163,27 +162,5 @@ class DashboardWidgetTest extends TestCase
         Livewire::test(WorkOrderStatusChart::class)
             ->assertOk()
             ->assertSee('On Hold');
-    }
-
-    protected function makePlan(): MaintenancePlan
-    {
-        return MaintenancePlan::create([
-            'equipment_id' => $this->equipment->id,
-            'maintenance_classification' => 'Preventive',
-            'interval' => 'monthly',
-            'start_date' => today()->subMonth()->toDateString(),
-            'created_by' => $this->user->id,
-            'status' => 'Active',
-        ]);
-    }
-
-    protected function makeSchedule(MaintenancePlan $plan, string $date, string $status): MaintenanceSchedule
-    {
-        return MaintenanceSchedule::create([
-            'maintenance_plan_id' => $plan->id,
-            'equipment_id' => $this->equipment->id,
-            'scheduled_date' => $date,
-            'status' => $status,
-        ]);
     }
 }

@@ -41,8 +41,12 @@ class CompanyAreaMapWidget extends Widget
             ->whereNotNull('geofence')
             ->with(['areas' => function ($query) {
                 $query->where('is_active', true)
-                    ->whereNotNull('latitude')
-                    ->whereNotNull('longitude')
+                    ->where(function ($query) {
+                        $query->whereNotNull('polygon')
+                            ->orWhere(fn ($query) => $query
+                                ->whereNotNull('latitude')
+                                ->whereNotNull('longitude'));
+                    })
                     ->withCount('equipment');
             }])
             ->get()
@@ -54,14 +58,18 @@ class CompanyAreaMapWidget extends Widget
                     'code' => $company->code,
                     'geofence' => $company->geofence,
                     'color' => $colors[$index % count($colors)],
-                    'areas' => $company->areas->map(fn ($area) => [
-                        'id' => $area->id,
-                        'name' => $area->name,
-                        'code' => $area->code,
-                        'lat' => (float) $area->latitude,
-                        'lng' => (float) $area->longitude,
-                        'equipment_count' => $area->equipment_count,
-                    ])->values()->all(),
+                    'areas' => $company->areas
+                        ->values()
+                        ->map(fn ($area, int $areaIndex) => [
+                            'id' => $area->id,
+                            'name' => $area->name,
+                            'code' => $area->code,
+                            'lat' => $area->latitude !== null ? (float) $area->latitude : null,
+                            'lng' => $area->longitude !== null ? (float) $area->longitude : null,
+                            'polygon' => $area->polygon,
+                            'color' => $colors[$areaIndex % count($colors)],
+                            'equipment_count' => $area->equipment_count,
+                        ])->all(),
                 ];
             })
             ->all();

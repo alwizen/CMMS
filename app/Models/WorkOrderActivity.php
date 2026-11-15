@@ -16,14 +16,29 @@ class WorkOrderActivity extends Model
         'final_result',
         'unit',
         'executed',
+        'executed_at',
         'note',
         'photos',
     ];
 
     protected $casts = [
         'executed' => 'boolean',
+        'executed_at' => 'datetime',
         'photos' => 'array',
     ];
+
+    protected static function booted(): void
+    {
+        static::saving(function (WorkOrderActivity $activity): void {
+            if ($activity->executed && blank($activity->executed_at)) {
+                $activity->executed_at = now();
+            }
+
+            if (! $activity->executed) {
+                $activity->executed_at = null;
+            }
+        });
+    }
 
     public function workOrder(): BelongsTo
     {

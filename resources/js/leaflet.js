@@ -186,10 +186,15 @@ function companyAreaMapComponent(config) {
             const first = this.companies.find((c) => c.geofence?.length || c.areas?.length);
             let center = [-6.870255717160778, 109.18670476501677];
 
+            const firstPolygonArea = first?.areas?.find((a) => Array.isArray(a.polygon) && a.polygon.length >= 3);
+            const firstMarkerArea = first?.areas?.find((a) => a.lat != null && a.lng != null);
+
             if (first?.geofence?.length) {
                 center = first.geofence[0];
-            } else if (first?.areas?.length) {
-                center = [first.areas[0].lat, first.areas[0].lng];
+            } else if (firstPolygonArea) {
+                center = firstPolygonArea.polygon[0];
+            } else if (firstMarkerArea) {
+                center = [firstMarkerArea.lat, firstMarkerArea.lng];
             }
 
             this.map = L.map(this.$refs.map, { center, zoom: 13 });
@@ -231,17 +236,33 @@ function companyAreaMapComponent(config) {
                 }
 
                 company.areas.forEach((area) => {
-                    const marker = L.circleMarker([area.lat, area.lng], {
-                        radius: 8,
-                        color: '#ffffff',
-                        weight: 2,
-                        fillColor: color,
-                        fillOpacity: 1,
-                    }).addTo(this.layers);
+                    const hasPolygon = Array.isArray(area.polygon) && area.polygon.length >= 3;
+                    const areaColor = this.colors[area.color] ?? color;
 
-                    marker.on('click', () => this.showAreaEquipment(area));
+                    if (hasPolygon) {
+                        const polygon = L.polygon(area.polygon, {
+                            color: areaColor,
+                            weight: 2,
+                            fillColor: areaColor,
+                            fillOpacity: 0.2,
+                        }).addTo(this.layers);
 
-                    allBounds.push([area.lat, area.lng]);
+                        polygon.on('click', () => this.showAreaEquipment(area, polygon.getBounds().getCenter()));
+
+                        allBounds.push(...area.polygon);
+                    } else if (area.lat != null && area.lng != null) {
+                        const marker = L.circleMarker([area.lat, area.lng], {
+                            radius: 8,
+                            color: '#ffffff',
+                            weight: 2,
+                            fillColor: areaColor,
+                            fillOpacity: 1,
+                        }).addTo(this.layers);
+
+                        marker.on('click', () => this.showAreaEquipment(area, marker.getLatLng()));
+
+                        allBounds.push([area.lat, area.lng]);
+                    }
                 });
             });
 
@@ -250,9 +271,12 @@ function companyAreaMapComponent(config) {
             }
         },
 
-        async showAreaEquipment(area) {
+        async showAreaEquipment(area, latlng = null) {
+            const popupLatLng = latlng
+                ?? (area.lat != null && area.lng != null ? [area.lat, area.lng] : null);
+
             const popup = L.popup()
-                .setLatLng([area.lat, area.lng])
+                .setLatLng(popupLatLng ?? this.map.getCenter())
                 .setContent('<div style="padding:8px;font-size:13px">Memuat...</div>')
                 .openOn(this.map);
 

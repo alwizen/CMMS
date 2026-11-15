@@ -45,10 +45,10 @@ class ActivityImporter extends Importer
                 ->helperText(implode(' | ', array_keys(Activity::CLASSIFICATIONS)))
                 ->example('preventive'),
             ImportColumn::make('interval')
+                ->requiredMapping()
                 ->castStateUsing(fn (mixed $state): ?string => static::normalizeImportKey($state))
-                ->ignoreBlankState()
-                ->rules(['nullable', 'in:'.implode(',', array_keys(Activity::INTERVALS))])
-                ->helperText(implode(' | ', array_keys(Activity::INTERVALS)).' (boleh kosong)')
+                ->rules(['required', 'in:'.implode(',', array_keys(Activity::INTERVALS))])
+                ->helperText(implode(' | ', array_keys(Activity::INTERVALS)))
                 ->example('monthly'),
             ImportColumn::make('answer_type')
                 ->requiredMapping()

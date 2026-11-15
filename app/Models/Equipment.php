@@ -5,7 +5,6 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Equipment extends Model
 {
@@ -45,32 +44,9 @@ class Equipment extends Model
         return $this->hasMany(MaintenanceRequest::class);
     }
 
-    public function maintenancePlans(): HasMany
-    {
-        return $this->hasMany(MaintenancePlan::class);
-    }
-
-    public function maintenanceSchedules(): HasMany
-    {
-        return $this->hasMany(MaintenanceSchedule::class);
-    }
-
     public function workOrders(): HasMany
     {
         return $this->hasMany(WorkOrder::class);
-    }
-
-    public function latestMeterLog(): HasOne
-    {
-        return $this->hasOne(MeterLog::class)->ofMany([
-            'reading_date' => 'max',
-            'id' => 'max',
-        ]);
-    }
-
-    public function meterLogs(): HasMany
-    {
-        return $this->hasMany(MeterLog::class);
     }
 
     public function maintenanceHistories(): HasMany

@@ -1,11 +1,11 @@
-<div class="fixed bottom-0 right-0 z-50 px-6 py-3 text-right">
-
-    {{-- <p class="text-xs text-gray-400 dark:text-gray-500">
-        &copy; {{ date('Y') }} Rumat. All rights reserved.
-    </p>
-
+<div class="mt-6 w-full" style="text-align: center;">
     <p class="text-sm text-gray-500 dark:text-gray-400">
-        Rumat | Reliable · Utility · Maintenance · Asset · Tracking
-    </p> --}}
-
+        Build with Love by
+        <a
+            href="https://solu8i.tech"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="font-semibold text-gray-700 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white underline-offset-2 hover:underline"
+        >solu8i project</a>
+    </p>
 </div>

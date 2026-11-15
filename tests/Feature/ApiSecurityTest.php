@@ -7,10 +7,7 @@ use App\Models\Company;
 use App\Models\Document;
 use App\Models\Equipment;
 use App\Models\EquipmentType;
-use App\Models\MaintenancePlan;
 use App\Models\MaintenanceRequest;
-use App\Models\MaintenanceSchedule;
-use App\Models\MeterLog;
 use App\Models\Setting;
 use App\Models\User;
 use App\Models\WorkOrder;
@@ -191,30 +188,6 @@ class ApiSecurityTest extends TestCase
         $this->getJson("/api/work-orders/{$workOrder->id}")->assertOk();
     }
 
-    public function test_other_user_cannot_view_plan_or_schedule_they_are_not_part_of(): void
-    {
-        $plan = MaintenancePlan::create([
-            'equipment_id' => $this->equipment->id,
-            'maintenance_classification' => 'Preventive',
-            'interval' => 'monthly',
-            'start_date' => today()->toDateString(),
-            'created_by' => $this->owner->id,
-            'status' => 'Active',
-        ]);
-
-        $schedule = MaintenanceSchedule::create([
-            'maintenance_plan_id' => $plan->id,
-            'equipment_id' => $this->equipment->id,
-            'scheduled_date' => today()->toDateString(),
-            'status' => MaintenanceSchedule::STATUSES['Scheduled'],
-        ]);
-
-        Sanctum::actingAs($this->other, ['*']);
-
-        $this->getJson("/api/maintenance-plans/{$plan->id}")->assertForbidden();
-        $this->getJson("/api/maintenance-schedules/{$schedule->id}")->assertForbidden();
-    }
-
     public function test_per_page_is_capped_at_one_hundred(): void
     {
         $user = User::factory()->create();
@@ -223,40 +196,6 @@ class ApiSecurityTest extends TestCase
         $response = $this->getJson('/api/equipment?per_page=5000')->assertOk();
 
         $this->assertSame(100, $response->json('meta.per_page'));
-    }
-
-    public function test_meter_log_recorded_by_cannot_be_spoofed_without_full_access(): void
-    {
-        Sanctum::actingAs($this->owner, ['*']);
-
-        $this->postJson('/api/meter-logs', [
-            'equipment_id' => $this->equipment->id,
-            'reading_date' => today()->toDateString(),
-            'value' => 100,
-            'recorded_by' => $this->other->id,
-        ])->assertCreated();
-
-        $this->assertDatabaseHas('meter_logs', [
-            'equipment_id' => $this->equipment->id,
-            'recorded_by' => $this->owner->id,
-        ]);
-    }
-
-    public function test_full_access_role_can_record_on_behalf_of_another_user(): void
-    {
-        Sanctum::actingAs($this->admin, ['*']);
-
-        $this->postJson('/api/meter-logs', [
-            'equipment_id' => $this->equipment->id,
-            'reading_date' => today()->toDateString(),
-            'value' => 100,
-            'recorded_by' => $this->other->id,
-        ])->assertCreated();
-
-        $this->assertDatabaseHas('meter_logs', [
-            'equipment_id' => $this->equipment->id,
-            'recorded_by' => $this->other->id,
-        ]);
     }
 
     public function test_document_file_requires_valid_signature(): void
@@ -292,18 +231,5 @@ class ApiSecurityTest extends TestCase
 
         $this->assertIsString($url);
         $this->assertStringContainsString('signature=', $url);
-    }
-
-    public function test_recorded_by_remains_from_authenticated_user_by_default(): void
-    {
-        Sanctum::actingAs($this->owner, ['*']);
-
-        $this->postJson('/api/meter-logs', [
-            'equipment_id' => $this->equipment->id,
-            'reading_date' => today()->toDateString(),
-            'value' => 42,
-        ])->assertCreated();
-
-        $this->assertSame(1, MeterLog::where('recorded_by', $this->owner->id)->count());
     }
 }

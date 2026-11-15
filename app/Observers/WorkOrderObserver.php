@@ -4,7 +4,6 @@ namespace App\Observers;
 
 use App\Models\MaintenanceHistory;
 use App\Models\MaintenanceRequest;
-use App\Models\MaintenanceSchedule;
 use App\Models\WorkOrder;
 use App\Support\DocumentNumber;
 
@@ -41,12 +40,6 @@ class WorkOrderObserver
 
         if ($workOrder->wasChanged('status') && strcasecmp((string) $workOrder->status, 'Completed') === 0) {
             $this->createMaintenanceHistory($workOrder);
-
-            if ($workOrder->maintenance_schedule_id) {
-                MaintenanceSchedule::query()
-                    ->whereKey($workOrder->maintenance_schedule_id)
-                    ->update(['status' => MaintenanceSchedule::STATUSES['Completed']]);
-            }
         }
     }
 
@@ -129,7 +122,8 @@ class WorkOrderObserver
             ->pluck('note')
             ->implode("\n");
 
-        $performedBy = $workOrder->workOrderWorkers->first()?->user_id
+        $performedBy = $workOrder->technician_coordinator_id
+            ?? $workOrder->workOrderWorkers->first()?->user_id
             ?? $workOrder->issued_by;
 
         MaintenanceHistory::updateOrCreate(

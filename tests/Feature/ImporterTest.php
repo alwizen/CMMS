@@ -6,14 +6,18 @@ use App\Filament\Imports\ActivityImporter;
 use App\Filament\Imports\AreaImporter;
 use App\Filament\Imports\EquipmentImporter;
 use App\Filament\Imports\EquipmentTypeImporter;
+use App\Filament\Imports\HousekeepingAreaImporter;
 use App\Filament\Imports\HousekeepingManpowerImporter;
+use App\Filament\Imports\HousekeepingTaskImporter;
 use App\Models\Activity;
 use App\Models\Area;
 use App\Models\Company;
 use App\Models\Equipment;
 use App\Models\EquipmentType;
 use App\Models\HousekeepingArea;
+use App\Models\HousekeepingFacility;
 use App\Models\HousekeepingManpower;
+use App\Models\HousekeepingTask;
 use App\Models\User;
 use Filament\Actions\Imports\Models\Import;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -226,6 +230,24 @@ class ImporterTest extends TestCase
         $this->assertFalse($type->status);
     }
 
+    public function test_equipment_type_import_sets_responsible_user_by_name(): void
+    {
+        $this->runImport(EquipmentTypeImporter::class, [
+            ['code' => 'pump', 'name' => 'Pompa', 'responsible_user_id' => $this->user->name],
+        ]);
+
+        $this->assertSame($this->user->id, $this->pumpType->fresh()->responsible_user_id);
+    }
+
+    public function test_equipment_type_import_ignores_unknown_responsible_user(): void
+    {
+        $this->runImport(EquipmentTypeImporter::class, [
+            ['code' => 'pump', 'name' => 'Pompa', 'responsible_user_id' => 'Orang Tidak Ada'],
+        ]);
+
+        $this->assertNull($this->pumpType->fresh()->responsible_user_id);
+    }
+
     public function test_activity_import_resolves_equipment_type_and_updates_composite_key(): void
     {
         $this->runImport(ActivityImporter::class, [
@@ -318,6 +340,71 @@ class ImporterTest extends TestCase
 
         $this->assertSame(1, HousekeepingManpower::where('name', 'Andi')->count());
         $this->assertSame('0899', HousekeepingManpower::where('name', 'Andi')->value('phone'));
+    }
+
+    public function test_housekeeping_area_import_auto_generates_code(): void
+    {
+        $this->runImport(HousekeepingAreaImporter::class, [
+            ['company_id' => 'FT Tegal', 'name' => 'Taman Kantor', 'is_active' => 'aktif'],
+            ['company_id' => 'FT Tegal', 'name' => 'Area Parkir', 'code' => 'parkir'],
+        ]);
+
+        $this->assertDatabaseHas('housekeeping_areas', [
+            'company_id' => $this->company->id,
+            'name' => 'Taman Kantor',
+            'code' => 'taman-kantor',
+        ]);
+        $this->assertDatabaseHas('housekeeping_areas', [
+            'company_id' => $this->company->id,
+            'name' => 'Area Parkir',
+            'code' => 'parkir',
+        ]);
+    }
+
+    public function test_housekeeping_area_import_updates_existing_by_name(): void
+    {
+        HousekeepingArea::create([
+            'company_id' => $this->company->id,
+            'code' => 'taman-kantor',
+            'name' => 'Taman Kantor',
+        ]);
+
+        $this->runImport(HousekeepingAreaImporter::class, [
+            ['company_id' => 'FT Tegal', 'name' => 'Taman Kantor', 'description' => 'Diperbarui'],
+        ]);
+
+        $this->assertSame(1, HousekeepingArea::where('name', 'Taman Kantor')->count());
+        $this->assertSame('Diperbarui', HousekeepingArea::where('name', 'Taman Kantor')->value('description'));
+    }
+
+    public function test_housekeeping_task_import_resolves_facility_by_name(): void
+    {
+        $area = HousekeepingArea::create([
+            'company_id' => $this->company->id,
+            'code' => 'taman',
+            'name' => 'Taman Kantor',
+        ]);
+        $facility = HousekeepingFacility::create([
+            'housekeeping_area_id' => $area->id,
+            'name' => 'Selokan Depan',
+        ]);
+
+        $this->runImport(HousekeepingTaskImporter::class, [
+            ['housekeeping_facility_id' => 'Selokan Depan', 'name' => 'Pembersihan Selokan', 'is_active' => 'aktif'],
+        ]);
+
+        $this->assertDatabaseHas('housekeeping_tasks', [
+            'housekeeping_facility_id' => $facility->id,
+            'name' => 'Pembersihan Selokan',
+        ]);
+
+        // Update (kunci: fasilitas + nama)
+        $this->runImport(HousekeepingTaskImporter::class, [
+            ['housekeeping_facility_id' => 'Selokan Depan', 'name' => 'Pembersihan Selokan', 'description' => 'Rutin'],
+        ]);
+
+        $this->assertSame(1, HousekeepingTask::where('name', 'Pembersihan Selokan')->count());
+        $this->assertSame('Rutin', HousekeepingTask::where('name', 'Pembersihan Selokan')->value('description'));
     }
 
     public function test_importers_no_longer_use_mutate_before_create(): void

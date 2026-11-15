@@ -2,7 +2,9 @@
 
 namespace App\Filament\Resources\EquipmentTypes\Schemas;
 
+use App\Models\User;
 use App\Support\Code;
+use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
@@ -18,6 +20,7 @@ class EquipmentTypeForm
         return $schema
             ->components([
                 Section::make('Equipment Type Information')
+                    ->columnSpanFull()
                     ->schema([
                         TextInput::make('name')
                             ->label('Name')
@@ -34,6 +37,12 @@ class EquipmentTypeForm
                             ->unique(ignoreRecord: true)
                             ->placeholder('e.g., pompa, storage-tank')
                             ->helperText('Terisi otomatis dari Name. Bisa diubah manual bila perlu.'),
+                        Select::make('responsible_user_id')
+                            ->label('Penanggung Jawab')
+                            ->options(fn (): array => User::technicianCoordinatorOptions())
+                            ->searchable()
+                            ->nullable()
+                            ->helperText('Dipakai sebagai penanggung jawab WO saat generate untuk equipment bertipe ini.'),
                         Textarea::make('description')
                             ->label('Description')
                             ->nullable()

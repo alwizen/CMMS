@@ -32,7 +32,7 @@ class ActivitiesTable
                     ->width(1)
                     ->grow(false),
                 TextColumn::make('name')
-                    ->description(fn(Activity $record): string => $record->reference ?? '-')
+                    ->description(fn (Activity $record): string => $record->reference ?? '-')
                     ->label('Name / Reference')
                     ->searchable(),
                 TextColumn::make('equipmentType.name')
@@ -40,7 +40,7 @@ class ActivitiesTable
                 TextColumn::make('type')
                     ->label('Type')
                     ->badge()
-                    ->color(fn(string $state): string => match ($state) {
+                    ->color(fn (string $state): string => match ($state) {
                         'maintenance' => 'primary',
                         'inspection' => 'info',
                         'testing' => 'warning',
@@ -52,21 +52,21 @@ class ActivitiesTable
                         'replacement' => 'primary',
                         default => 'gray',
                     })
-                    ->formatStateUsing(fn(string $state): string => Activity::TYPES[$state] ?? ucfirst(str_replace('_', ' ', $state))),
+                    ->formatStateUsing(fn (string $state): string => Activity::TYPES[$state] ?? ucfirst(str_replace('_', ' ', $state))),
                 TextColumn::make('maintenance_classification')
                     ->label('Classification')
                     ->badge()
-                    ->color(fn(string $state): string => match ($state) {
+                    ->color(fn (string $state): string => match ($state) {
                         'preventive' => 'success',
                         'corrective' => 'danger',
                         'predictive' => 'info',
                         'condition_based' => 'warning',
                         default => 'gray',
                     })
-                    ->formatStateUsing(fn(string $state): string => Activity::CLASSIFICATIONS[$state] ?? ucfirst(str_replace('_', ' ', $state))),
+                    ->formatStateUsing(fn (string $state): string => Activity::CLASSIFICATIONS[$state] ?? ucfirst(str_replace('_', ' ', $state))),
                 TextColumn::make('interval')
                     ->label('Interval')
-                    ->formatStateUsing(fn(?string $state): string => $state ? (Activity::INTERVALS[$state] ?? ucfirst(str_replace('_', ' ', $state))) : '-'),
+                    ->formatStateUsing(fn (?string $state): string => $state ? (Activity::INTERVALS[$state] ?? ucfirst(str_replace('_', ' ', $state))) : '-'),
                 IconColumn::make('status')
                     ->label('Active')
                     ->boolean(),

@@ -38,12 +38,11 @@ class AdminPanelProvider extends PanelProvider
             ->userMenu(position: UserMenuPosition::Sidebar)
             ->globalSearchKeyBindings(['command+k', 'ctrl+k'])
             ->databaseNotifications()
-            ->sidebarFullyCollapsibleOnDesktop()
+            ->sidebarCollapsibleOnDesktop()
             ->profile()
             ->id('admin')
             ->path('admin')
             ->brandLogo(asset('img/logo.png'))
-            // ->darkModeBrandLogo(asset('img/dark.png'))
             ->darkMode(false)
             ->favicon(asset('img/logo.svg'))
             ->brandLogoHeight('4.5rem')
@@ -65,8 +64,8 @@ class AdminPanelProvider extends PanelProvider
             ->navigationGroups([
                 'Dashboard',
                 'Maintenance',
-                'Housekeeping',
                 'Riwayat & Monitoring',
+                'Housekeeping',
                 'Master Data',
                 'User & Permission',
                 'Pengaturan',
@@ -88,7 +87,11 @@ class AdminPanelProvider extends PanelProvider
                     ->navigationGroup('User & Permission'),
             ])
             ->renderHook(
-                PanelsRenderHook::SIMPLE_LAYOUT_END,
+                PanelsRenderHook::AUTH_LOGIN_FORM_BEFORE,
+                fn () => view('filament.auth.login-background'),
+            )
+            ->renderHook(
+                PanelsRenderHook::AUTH_LOGIN_FORM_AFTER,
                 fn () => view('filament.auth.login-footer'),
             )
             ->authMiddleware([

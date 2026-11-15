@@ -208,6 +208,23 @@ class MobileExecutionTest extends TestCase
         $this->assertSame(0, $stats['due_today']);
     }
 
+    public function test_activity_cannot_be_filled_before_scheduled_date(): void
+    {
+        $this->workOrder->update(['start_at' => now()->addDays(3)]);
+
+        Sanctum::actingAs($this->technician, ['*']);
+
+        $this->putJson(
+            "/api/work-orders/{$this->workOrder->id}/activities/{$this->activity->id}",
+            ['final_result' => 'Coba isi', 'executed' => true],
+        )->assertStatus(403);
+
+        $this->assertDatabaseMissing('work_order_activities', [
+            'id' => $this->activity->id,
+            'final_result' => 'Coba isi',
+        ]);
+    }
+
     public function test_assigned_technician_can_update_activity_result(): void
     {
         Sanctum::actingAs($this->technician, ['*']);

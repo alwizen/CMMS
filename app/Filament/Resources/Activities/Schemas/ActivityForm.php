@@ -40,7 +40,7 @@ class ActivityForm
                             ->placeholder('Select classification'),
                         Select::make('interval')
                             ->label('Interval')
-                            ->nullable()
+                            ->required()
                             ->options(Activity::INTERVALS)
                             ->placeholder('Select interval'),
                         Select::make('answer_type')

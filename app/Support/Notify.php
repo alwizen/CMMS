@@ -2,7 +2,6 @@
 
 namespace App\Support;
 
-use App\Models\MaintenanceSchedule;
 use App\Models\User;
 use App\Models\WorkOrder;
 use Illuminate\Support\Collection;
@@ -63,27 +62,5 @@ class Notify
             ->values();
 
         return $users->filter(fn (User $user): bool => (bool) $user->status)->values();
-    }
-
-    /**
-     * Penerima untuk jadwal H-3: koordinator plan dan penerima dari WO yang terkait jadwal.
-     *
-     * @return Collection<int, User>
-     */
-    public static function forSchedule(MaintenanceSchedule $schedule): Collection
-    {
-        $schedule->loadMissing('maintenancePlan.technicianCoordinator', 'workOrders');
-
-        $users = collect([$schedule->maintenancePlan?->technicianCoordinator])
-            ->filter();
-
-        foreach ($schedule->workOrders as $workOrder) {
-            $users = $users->merge(self::forWorkOrder($workOrder));
-        }
-
-        return $users
-            ->filter(fn (User $user): bool => (bool) $user->status)
-            ->unique('id')
-            ->values();
     }
 }

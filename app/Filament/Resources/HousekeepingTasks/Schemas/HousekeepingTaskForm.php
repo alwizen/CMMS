@@ -6,7 +6,6 @@ use App\Models\HousekeepingArea;
 use App\Models\HousekeepingFacility;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
-use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Components\Utilities\Get;
@@ -54,15 +53,16 @@ class HousekeepingTaskForm
                             ->required()
                             ->disabled(fn (Get $get): bool => blank($get('area_id')))
                             ->placeholder('Pilih area terlebih dahulu'),
-                        TextInput::make('name')
-                            ->label('Name')
+                        Textarea::make('name')
+                            ->label('Name Checklist')
+                            ->columnSpanFull()
                             ->required()
                             ->placeholder('e.g., Pemotongan Rumput, Pembersihan Selokan'),
-                        Textarea::make('description')
-                            ->label('Description')
-                            ->nullable()
-                            ->columnSpanFull()
-                            ->placeholder('Enter checklist description...'),
+                        // Textarea::make('description')
+                        //     ->label('Description')
+                        //     ->nullable()
+                        //     ->columnSpanFull()
+                        //     ->placeholder('Enter checklist description...'),
                         Toggle::make('is_active')
                             ->label('Active')
                             ->default(true),

@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\DowntimeResource;
 use App\Models\MaintenanceRequest;
-use App\Support\UserVisibility;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -23,7 +22,8 @@ class DowntimeController extends Controller
             ->orderByDesc('damage_date')
             ->orderByDesc('id');
 
-        UserVisibility::scopeRequests($query, $request->user());
+        // Downtime bersifat monitoring: tidak dibatasi ke pelapor/approver
+        // agar konsisten dengan laporan Downtime di web.
 
         if ($request->filled('equipment_id')) {
             $query->where('equipment_id', $request->equipment_id);
