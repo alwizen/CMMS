@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use App\Filament\Resources\HousekeepingTasks\Pages\CreateHousekeepingTask;
+use App\Filament\Resources\HousekeepingTasks\Pages\ListHousekeepingTasks;
 use App\Models\Company;
 use App\Models\HousekeepingArea;
 use App\Models\HousekeepingFacility;
@@ -49,5 +50,25 @@ class HousekeepingTaskAreaFilterTest extends TestCase
         $task = HousekeepingTask::where('name', 'Cek oil catcher')->first();
         $this->assertNotNull($task);
         $this->assertSame($facilityA->id, $task->housekeeping_facility_id);
+    }
+
+    public function test_task_table_can_be_filtered_by_area(): void
+    {
+        Gate::before(fn () => true);
+        $this->actingAs(User::factory()->create());
+
+        $company = Company::create(['code' => 'HK', 'name' => 'HK Co']);
+        $areaA = HousekeepingArea::create(['company_id' => $company->id, 'code' => 'a', 'name' => 'Area A']);
+        $areaB = HousekeepingArea::create(['company_id' => $company->id, 'code' => 'b', 'name' => 'Area B']);
+        $facilityA = HousekeepingFacility::create(['housekeeping_area_id' => $areaA->id, 'name' => 'Oil Catcher A', 'is_active' => true]);
+        $facilityB = HousekeepingFacility::create(['housekeeping_area_id' => $areaB->id, 'name' => 'Selokan B', 'is_active' => true]);
+
+        HousekeepingTask::create(['housekeeping_facility_id' => $facilityA->id, 'name' => 'Tugas Area A', 'is_active' => true]);
+        HousekeepingTask::create(['housekeeping_facility_id' => $facilityB->id, 'name' => 'Tugas Area B', 'is_active' => true]);
+
+        Livewire::test(ListHousekeepingTasks::class)
+            ->filterTable('area_id', $areaA->id)
+            ->assertSee('Tugas Area A')
+            ->assertDontSee('Tugas Area B');
     }
 }
