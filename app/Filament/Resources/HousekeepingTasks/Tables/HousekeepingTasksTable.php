@@ -2,11 +2,9 @@
 
 namespace App\Filament\Resources\HousekeepingTasks\Tables;
 
-use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteAction;
-use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
-use Filament\Tables\Columns\BooleanColumn;
+use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Filters\TernaryFilter;
@@ -43,8 +41,9 @@ class HousekeepingTasksTable
                     ->label('Description')
                     ->limit(50)
                     ->toggleable(),
-                BooleanColumn::make('is_active')
+                IconColumn::make('is_active')
                     ->label('Active')
+                    ->boolean()
                     ->sortable(),
             ])
             ->filters([

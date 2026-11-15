@@ -21,17 +21,17 @@ class DocumentForm
             ->components([
                 Section::make('Document Information')
                     ->schema([
-                        TextInput::make('title')
-                            ->label('Title')
-                            ->required()
-                            ->maxLength(150)
-                            ->placeholder('e.g., Pump Calibration Certificate'),
                         Select::make('document_type')
                             ->label('Document Type')
                             ->options(Document::TYPES)
                             ->required()
                             ->live()
                             ->placeholder('Select document type'),
+                        TextInput::make('title')
+                            ->label('Title')
+                            ->required()
+                            ->maxLength(150)
+                            ->placeholder('e.g., Pump Calibration Certificate'),
                         Select::make('equipment_id')
                             ->label('Equipment')
                             ->options(Equipment::pluck('tag_number', 'id'))

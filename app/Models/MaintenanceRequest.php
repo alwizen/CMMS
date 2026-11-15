@@ -4,8 +4,8 @@ namespace App\Models;
 
 use App\Observers\MaintenanceRequestObserver;
 use App\Support\DocumentNumber;
-use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Carbon\CarbonInterface;
+use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;

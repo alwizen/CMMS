@@ -6,8 +6,6 @@ use App\Models\Area;
 use App\Models\Company;
 use App\Models\Equipment;
 use App\Models\EquipmentType;
-use App\Models\MaintenancePlan;
-use App\Models\MaintenanceSchedule;
 use App\Models\Setting;
 use App\Models\User;
 use App\Models\WorkOrder;
@@ -58,23 +56,15 @@ class CalendarApiTest extends TestCase
         return $user;
     }
 
-    protected function makeSchedule(User $coordinator, string $date): MaintenanceSchedule
+    protected function makeWorkOrder(User $coordinator, string $date): WorkOrder
     {
-        $plan = MaintenancePlan::create([
+        return WorkOrder::create([
             'equipment_id' => $this->equipment->id,
-            'maintenance_classification' => 'Preventive',
-            'interval' => 'monthly',
-            'start_date' => now()->startOfMonth()->toDateString(),
-            'created_by' => $this->admin->id,
+            'issued_by' => $this->admin->id,
             'technician_coordinator_id' => $coordinator->id,
-            'status' => 'Active',
-        ]);
-
-        return MaintenanceSchedule::create([
-            'maintenance_plan_id' => $plan->id,
-            'equipment_id' => $this->equipment->id,
-            'scheduled_date' => $date,
-            'status' => MaintenanceSchedule::STATUSES['Scheduled'],
+            'classification' => 'Preventive',
+            'start_at' => $date.' 09:00:00',
+            'status' => WorkOrder::STATUSES['Pending'],
         ]);
     }
 
@@ -83,8 +73,8 @@ class CalendarApiTest extends TestCase
         $risna = $this->makeUserWithRole('ltsa_tad');
         $kholis = $this->makeUserWithRole('ltsa_tad');
 
-        $this->makeSchedule($risna, now()->toDateString());
-        $this->makeSchedule($kholis, now()->toDateString());
+        $this->makeWorkOrder($risna, now()->toDateString());
+        $this->makeWorkOrder($kholis, now()->toDateString());
 
         Sanctum::actingAs($this->admin, ['*']);
 
@@ -93,20 +83,20 @@ class CalendarApiTest extends TestCase
         $this->assertCount(2, $events);
     }
 
-    public function test_ltsa_only_sees_schedules_where_they_are_coordinator(): void
+    public function test_ltsa_only_sees_own_work_orders(): void
     {
         $risna = $this->makeUserWithRole('ltsa_tad');
         $kholis = $this->makeUserWithRole('ltsa_tad');
 
-        $mine = $this->makeSchedule($risna, now()->toDateString());
-        $this->makeSchedule($kholis, now()->toDateString());
+        $mine = $this->makeWorkOrder($risna, now()->toDateString());
+        $this->makeWorkOrder($kholis, now()->toDateString());
 
         Sanctum::actingAs($risna, ['*']);
 
         $events = $this->getJson('/api/maintenance-calendar')->assertOk()->json('data.events');
 
         $this->assertCount(1, $events);
-        $this->assertSame($mine->schedule_number, $events[0]['title']);
+        $this->assertSame($mine->work_order_number, $events[0]['title']);
     }
 
     public function test_ltsa_sees_work_order_when_assigned_as_worker(): void
@@ -162,21 +152,21 @@ class CalendarApiTest extends TestCase
     public function test_pengawas_and_spv_see_everything(): void
     {
         $risna = $this->makeUserWithRole('ltsa_tad');
-        $this->makeSchedule($risna, now()->toDateString());
+        $this->makeWorkOrder($risna, now()->toDateString());
 
         foreach (['pengawas', 'spv_mos'] as $role) {
             $user = $this->makeUserWithRole($role);
             Sanctum::actingAs($user, ['*']);
 
             $events = $this->getJson('/api/maintenance-calendar')->assertOk()->json('data.events');
-            $this->assertCount(1, $events, "role {$role} harus melihat semua jadwal");
+            $this->assertCount(1, $events, "role {$role} harus melihat semua work order");
         }
     }
 
     public function test_calendar_respects_date_range(): void
     {
         $risna = $this->makeUserWithRole('ltsa_tad');
-        $this->makeSchedule($risna, now()->toDateString());
+        $this->makeWorkOrder($risna, now()->toDateString());
 
         Sanctum::actingAs($this->admin, ['*']);
 

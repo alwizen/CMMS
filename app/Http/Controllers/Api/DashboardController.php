@@ -15,20 +15,22 @@ class DashboardController extends Controller
     {
         $user = $request->user();
 
-        $totalWO = UserVisibility::scopeWorkOrders(WorkOrder::query(), $user)->count();
+        $todayScope = WorkOrder::query()->whereDate('start_at', today());
+
+        $totalWO = UserVisibility::scopeWorkOrders(clone $todayScope, $user)->count();
 
         $woInProgress = UserVisibility::scopeWorkOrders(
-            WorkOrder::query()->where('status', WorkOrder::STATUSES['In Progress']),
+            (clone $todayScope)->where('status', WorkOrder::STATUSES['In Progress']),
             $user,
         )->count();
 
         $woCompleted = UserVisibility::scopeWorkOrders(
-            WorkOrder::query()->where('status', WorkOrder::STATUSES['Completed']),
+            (clone $todayScope)->where('status', WorkOrder::STATUSES['Completed']),
             $user,
         )->count();
 
         $woPending = UserVisibility::scopeWorkOrders(
-            WorkOrder::query()->where('status', WorkOrder::STATUSES['Pending']),
+            (clone $todayScope)->where('status', WorkOrder::STATUSES['Pending']),
             $user,
         )->count();
 

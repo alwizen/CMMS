@@ -29,6 +29,14 @@ class WorkOrderController extends Controller
             $query->where('classification', $request->classification);
         }
 
+        if ($request->filled('date_from')) {
+            $query->whereDate('start_at', '>=', $request->date_from);
+        }
+
+        if ($request->filled('date_to')) {
+            $query->whereDate('start_at', '<=', $request->date_to);
+        }
+
         if ($request->filled('search')) {
             $search = $request->search;
             $query->where(function ($q) use ($search) {
@@ -62,8 +70,6 @@ class WorkOrderController extends Controller
             'equipment.area',
             'issuedBy',
             'technicianCoordinator',
-            'maintenancePlan',
-            'maintenanceSchedule',
             'maintenanceRequest',
             'workOrderActivities.activity',
             'workOrderWorkers.user',
@@ -82,6 +88,21 @@ class WorkOrderController extends Controller
         $workOrder = WorkOrder::findOrFail($id);
 
         $this->authorizeWorkOrder($request, $workOrder);
+
+        // Cegah memulai/mengubah status sebelum tanggal jadwal tiba.
+        $newStatus = $request->input('status');
+        if (
+            $newStatus !== null
+            && $newStatus !== $workOrder->status
+            && in_array($newStatus, [WorkOrder::STATUSES['In Progress'], WorkOrder::STATUSES['Completed']], true)
+            && ! $workOrder->isExecutable()
+        ) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Work order belum dapat dikerjakan sebelum tanggal '.
+                    ($workOrder->start_at?->format('d M Y') ?? '-').'.',
+            ], 403);
+        }
 
         $request->validate([
             'status' => 'sometimes|string|in:Pending,In Progress,On Hold,Completed,Cancelled',
@@ -111,6 +132,14 @@ class WorkOrderController extends Controller
         $workOrder = WorkOrder::findOrFail($workOrderId);
 
         $this->authorizeWorkOrder($request, $workOrder);
+
+        if (! $workOrder->isExecutable()) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Work order belum dapat diisi sebelum tanggal '.
+                    ($workOrder->start_at?->format('d M Y') ?? '-').'.',
+            ], 403);
+        }
 
         $workOrderActivity = WorkOrderActivity::where('work_order_id', $workOrderId)
             ->findOrFail($activityId);
@@ -146,6 +175,14 @@ class WorkOrderController extends Controller
         $workOrder = WorkOrder::findOrFail($workOrderId);
 
         $this->authorizeWorkOrder($request, $workOrder);
+
+        if (! $workOrder->isExecutable()) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Work order belum dapat diisi sebelum tanggal '.
+                    ($workOrder->start_at?->format('d M Y') ?? '-').'.',
+            ], 403);
+        }
 
         $workOrderActivity = WorkOrderActivity::where('work_order_id', $workOrderId)
             ->findOrFail($activityId);

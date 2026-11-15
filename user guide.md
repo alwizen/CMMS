@@ -11,7 +11,7 @@ Login di `/admin`.
 ```
 Company → Area → Equipment Type → Equipment
   → Maintenance Checklist (Activity)
-  → Maintenance Plan (+ checklist) → Schedule → WO otomatis
+  → Generate WO dari Equipment Type (checklist otomatis) → WO
   → Maintenance Request (temuan) → Approve → WO
   → Kerjakan WO → Completed → Maintenance History
 ```
@@ -33,7 +33,7 @@ Company → Area → Equipment Type → Equipment
 **Menu:** Master Data → Company Area
 
 - **Company**, **Name** (Code terisi otomatis, bisa diubah), **Description**, **Active**.
-- **Location:** klik peta untuk menandai titik area.
+- **Boundary:** gambar polygon pada peta untuk menentukan batas area (klik titik-titik membentuk area, klik titik pertama untuk menutup).
 - Code unik per company.
 
 ### 3. Equipment Type
@@ -46,17 +46,18 @@ Company → Area → Equipment Type → Equipment
 **Fungsi:** aset nyata yang dirawat, identifikasi dengan Tag Number.
 **Menu:** Master Data → Equipment
 
-- **General Information:** Area, Equipment Type, **Tag Number** (unik), Description.
+- **General Information:** Area, Equipment Type, **Penanggung Jawab** (user), **Tag Number** (unik), Description.
+  - Penanggung Jawab wajib diisi agar equipment bisa di-generate Work Order otomatis (nilainya jadi Technician Coordinator WO).
 - **Technical Details:** Manufacturer, Model, Serial Number, Installation Date, Operational Unit.
 - **Status & Media:** Status, **Criticality**, Photo.
 - Di detail equipment, tab **Maintenance History** menampilkan riwayat aset tersebut.
 
 ### 5. Maintenance Checklist (Activity)
-**Fungsi:** master item pekerjaan per tipe equipment. Dipakai sebagai isi checklist plan dan WO.
+**Fungsi:** master item pekerjaan per tipe equipment. Dipakai sebagai isi checklist WO.
 **Menu:** Maintenance Checklist → Activities
 
 - **Equipment Type**, **Name**, **Type** (Maintenance, Inspection, Testing, Visual Check, Measurement, Lubrication, Cleaning, Calibration, Replacement).
-- **Maintenance Classification** (Preventive, Corrective, Predictive, Condition-Based), **Interval** (opsional).
+- **Maintenance Classification** (Preventive, Corrective, Predictive, Condition-Based), **Interval** (wajib: Daily, Weekly, Monthly, Quarterly, Semi-Annual, Yearly).
 - **Answer Type:** Qualitative (teks/ya-tidak) atau Quantitative (angka).
 - Untuk Quantitative: **Optimum**, **Minimum**, **Maximum**, **Unit**.
 - **Reference** dan **Active**. Activity nonaktif tidak muncul saat menyusun checklist.
@@ -65,49 +66,21 @@ Company → Area → Equipment Type → Equipment
 
 ## Perawatan Berencana (Preventif)
 
-### 6. Maintenance Plan
-**Fungsi:** aturan perawatan berulang untuk satu equipment (mis. bulanan).
-**Menu:** Maintenance → Maintenance Plans (Preventive)
+### 6. Generate Work Order (Preventif)
+**Fungsi:** membuat Work Order preventif langsung dari Dashboard tanpa membuat Plan manual.
+**Menu:** Dashboard → tombol **Generate WO**
 
-- **Equipment Type** lalu **Equipment (Tag Number)**.
-- **Classification**, **Interval** (Daily, Weekly, Monthly, Quarterly, Yearly), **Status** (Active untuk berjalan).
-- **Start Date**, **End Date** (kosongkan bila tanpa batas).
-- **Technician Coordinator**, **Description**.
-- Nomor plan terbentuk otomatis (`MP-YYYYMM-####`).
+- Pilih **Equipment Type** (hanya tipe yang punya **Penanggung Jawab** dan checklist/activity aktif).
+- Pilih **Equipment** (multi) dari tipe tersebut.
+- Pilih **Interval**, isi **Berapa WO per equipment**, **Jam Mulai**, **Pemberi Tugas**, dan toggle **Lewati Sabtu & Minggu**.
+- Checklist WO diambil **otomatis** dari activity tipe equipment yang interval-nya sama dengan interval pilihan.
+- Penanggung jawab WO = **Penanggung Jawab Equipment Type** (diisi di Master Data → Equipment Type).
+- Equipment tanpa penanggung jawab atau tanpa checklist yang cocok akan **dilewati**.
+- WO hasil generate berstatus **Pending** dan tidak terkait Plan/Schedule.
 
-**Tab Checklist Activities** (di dalam plan):
-- **Create** → pilih Activity → Order (berurutan, bisa di-drag) → Save.
-- Checklist ini disalin ke setiap WO dari plan.
+> Catatan: menu **Maintenance Plan** dan **Maintenance Schedule** sudah dihapus. Perawatan berulang dilakukan lewat tombol **Generate WO**.
 
-### 7. Maintenance Schedule
-**Fungsi:** tanggal-tanggal konkret hasil dari plan.
-**Menu:** Maintenance → Maintenance Schedule
-
-- Dibuat otomatis tiap malam 01:00 dari interval plan. Sabtu dan Minggu dilewati.
-- Bisa juga dibuat manual: pilih **Maintenance Plan**, isi **Scheduled Date** dan **Status**.
-- Status: Scheduled, In Progress, Completed, Delayed, Rescheduled, Cancelled.
-
-### 8. Work Order Otomatis
-**Fungsi:** membuat WO dari jadwal tanpa input manual.
-**Diatur di:** Pengaturan → Site Setting → *Work Order Otomatis*
-
-| Pengaturan | Fungsi | Default |
-|---|---|---|
-| Buat Work Order Otomatis | Nyalakan/matikan | Aktif |
-| Buat WO untuk N Hari ke Depan | 1–5 hari kerja ke depan | 3 |
-| Jam Mulai WO | Jam mulai di WO | 08:00 |
-| Lewati Sabtu & Minggu | WO digeser ke Senin | Aktif |
-| Batas Backfill (hari) | Jadwal terlewat dalam batas ini tetap dibuat WO | 14 |
-
-- WO otomatis berstatus **In Progress**, membawa checklist dari plan.
-- Jadwal terlewat dalam batas backfill dijadwal ulang dan berstatus **Delayed**.
-- Satu jadwal = satu WO.
-
----
-
-## Perawatan Temuan (Korektif)
-
-### 9. Maintenance Request
+### 7. Maintenance Request
 **Fungsi:** tiket temuan kerusakan dari lapangan (mis. pompa bocor).
 **Menu:** Maintenance → Maintenance Requests
 
@@ -136,11 +109,12 @@ Company → Area → Equipment Type → Equipment
 
 Request yang sudah `Rejected` atau `Completed` tidak akan berubah lagi.
 
-### 10. Work Order
+### 8. Work Order
 **Fungsi:** surat perintah kerja untuk dikerjakan di lapangan.
 **Menu:** Maintenance → Work Order
 
 - Nomor terbentuk otomatis (`WO-YYYYMMDD-####`).
+- Tombol **View** (mata) membuka halaman ringkasan WO (read-only): info WO, personel & jadwal, checklist hasil eksekusi, dan teknisi pelaksana.
 - Isi **Equipment**, **Classification**, **Status**, **Start At**, **Finish At**, **Note**.
 - **Checklist & Hasil Eksekusi:** per item isi Pre Inspection, Final Result, Follow Up, centang **Executed**, dan unggah **Foto Dokumentasi** (opsional, maks. 3).
 - **Teknisi Pelaksana:** tambahkan teknisi dan perannya.
@@ -151,7 +125,7 @@ Request yang sudah `Rejected` atau `Completed` tidak akan berubah lagi.
 
 ## Riwayat & Monitoring
 
-### 11. Maintenance History
+### 9. Maintenance History
 **Fungsi:** arsip hasil perawatan yang sudah selesai, dasar audit.
 **Menu:** Riwayat & Monitoring → Maintenance History
 
@@ -159,7 +133,7 @@ Request yang sudah `Rejected` atau `Completed` tidak akan berubah lagi.
 - Kolom: WO Number, Tag Number, Equipment, Type, Classification, Maintenance Date, Performed By, Status.
 - Tombol **Cetak PDF** di halaman ini mencetak riwayat. Bisa difilter dulu berdasarkan tanggal, equipment, dan area.
 
-### 12. Meter Log
+### 10. Meter Log
 **Fungsi:** catat pembacaan meter per equipment (jam kerja, nilai operasi). Dasar perawatan berbasis kondisi.
 **Menu:** Riwayat & Monitoring → Meter Log
 
@@ -169,32 +143,39 @@ Request yang sudah `Rejected` atau `Completed` tidak akan berubah lagi.
 
 ## Monitoring
 
-### 13. Dashboard
+### 11. Dashboard
 **Fungsi:** ringkasan kondisi hari ini.
 **Menu:** Dashboard
 
-- Statistik (total equipment, WO, WO selesai, request aktif, jadwal terlambat).
-- Peta area, jadwal jatuh tempo (7 hari), WO per klasifikasi dan status, tren 6 bulan, WO terbaru.
+- Statistik (total equipment, WO, WO selesai, request aktif, WO terlambat).
+- Peta area, WO per klasifikasi dan status, tren 6 bulan, WO terbaru.
 - Tombol **Filter** untuk periode.
 
-### 14. Kalender Maintenance
-**Fungsi:** melihat WO, plan, dan jadwal dalam kalender.
+**Tombol Generate**
+- **Generate WO** — langsung membuat Work Order (status **Pending**). Pilih Equipment Type (yang punya Penanggung Jawab & checklist), Equipment (multi), Interval, **Berapa WO per equipment**, Jam Mulai, Pemberi Tugas, dan toggle **Lewati Sabtu & Minggu**.
+  - Checklist WO diambil dari activity **tipe equipment** yang interval-nya sama dengan interval pilihan.
+  - Penanggung jawab WO = Penanggung Jawab Equipment Type.
+  - Equipment tanpa Penanggung Jawab atau tanpa checklist yang cocok akan **dilewati**.
+
+### 12. Kalender Maintenance
+**Fungsi:** melihat Work Order dalam kalender.
 **Menu:** Kalender Maintenance
 
+- Menampilkan Work Order sesuai tanggal mulai. Warna menunjukkan status; klik untuk detail.
 - Warna menunjukkan status. Klik item untuk detail.
 
 ---
 
 ## Pengaturan & Akses
 
-### 15. Site Setting
+### 13. Site Setting
 **Fungsi:** atur format nomor dan aturan WO otomatis.
 **Menu:** Pengaturan → Site Setting
 
-- **Format Penomoran:** WO, Plan, Schedule, Request. Token: `{YYYY}`, `{YY}`, `{MM}`, `{MONTH}`, `{DD}`, `{DATE}`, `{SEQ}` (mis. `{SEQ:6}`).
-- **Work Order Otomatis:** lihat bagian 8.
+- **Format Penomoran:** WO, Request, Document, Housekeeping Plan. Token: `{YYYY}`, `{YY}`, `{MM}`, `{MONTH}`, `{DD}`, `{DATE}`, `{SEQ}` (mis. `{SEQ:6}`).
 
-### 16. Pengguna & Peran
+
+### 14. Pengguna & Peran
 **Fungsi:** akun pengguna dan hak akses.
 **Menu:** User & Permission → Pengguna / Peran
 
@@ -209,8 +190,8 @@ Request yang sudah `Rejected` atau `Completed` tidak akan berubah lagi.
 3. Equipment Type
 4. Equipment
 5. Maintenance Checklist
-6. Maintenance Plan + checklist
-7. Tunggu WO otomatis (atau cek `php artisan maintenance:generate-work-orders --dry-run`)
+6. Isi Penanggung Jawab pada Equipment Type
+7. Generate WO dari Dashboard (pilih Equipment Type, Equipment, Interval, jumlah)
 8. Maintenance Request bila ada temuan
 9. Kerjakan WO sampai Completed
 10. Cek di Maintenance History
@@ -223,7 +204,7 @@ Aplikasi Android memakai API yang sama, dan **data otomatis terfilter sesuai aku
 
 | Role | Cakupan data |
 |---|---|
-| super_admin, pengawas, spv_mos | Semua jadwal dan work order |
+| super_admin, pengawas, spv_mos | Semua work order |
 | ltsa_tad | Hanya yang terkait dirinya (koordinator, pemberi tugas, atau anggota tim) |
 
 Navigasi Android memakai **menu samping (drawer)**. Ketuk ikon ☰ di kiri atas layar untuk membuka menu.
@@ -240,7 +221,7 @@ Menu yang tersedia:
 2. **Riwayat** — daftar work order.
 3. **Riwayat** — daftar work order. Ketuk salah satu untuk membuka detail dan mengerjakannya.
 4. **Kalender** — kalender maintenance bulanan:
-   - Titik kuning = jadwal, titik biru = work order.
+   - Titik biru = work order.
    - Ketuk tanggal untuk melihat agenda harinya.
    - Tombol panah untuk pindah bulan, "Hari ini" untuk kembali ke bulan berjalan.
 5. **Equipment** — daftar seluruh aset:

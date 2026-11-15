@@ -10,6 +10,8 @@ class WorkOrderClassificationChart extends ChartWidget
 {
     use FiltersByDate;
 
+    protected static bool $isLazy = false;
+
     protected ?string $heading = 'Work Order per Klasifikasi';
 
     protected static ?int $sort = 1;

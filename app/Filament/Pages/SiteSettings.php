@@ -91,8 +91,6 @@ class SiteSettings extends Page
                 ->description('Gunakan token {YYYY}, {YY}, {MM}, {MONTH}, {DD}, {DATE}, dan {SEQ} untuk nomor urut. Contoh padding: {SEQ:6}.')
                 ->schema([
                     $this->formatField('work_order'),
-                    $this->formatField('maintenance_plan'),
-                    $this->formatField('maintenance_schedule'),
                     $this->formatField('maintenance_request'),
                     $this->formatField('housekeeping_plan'),
                     $this->formatField('document'),

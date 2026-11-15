@@ -14,6 +14,14 @@ class EquipmentResource extends JsonResource
             'tag_number' => $this->tag_number,
             'description' => $this->description,
             'equipment_type' => $this->equipmentType?->name,
+            'equipment_type_detail' => $this->whenLoaded('equipmentType', fn () => [
+                'id' => $this->equipmentType->id,
+                'name' => $this->equipmentType->name,
+                'responsible_user' => $this->equipmentType->responsibleUser ? [
+                    'id' => $this->equipmentType->responsibleUser->id,
+                    'name' => $this->equipmentType->responsibleUser->name,
+                ] : null,
+            ]),
             'manufacturer' => $this->manufacturer,
             'model' => $this->model,
             'serial_number' => $this->serial_number,
@@ -30,13 +38,6 @@ class EquipmentResource extends JsonResource
                     'name' => $this->area->company->name,
                 ]),
             ]),
-            'latest_meter_log' => $this->whenLoaded('latestMeterLog', fn () => $this->latestMeterLog === null ? null : [
-                'id' => $this->latestMeterLog->id,
-                'reading_date' => $this->latestMeterLog->reading_date?->format('Y-m-d'),
-                'value' => (float) $this->latestMeterLog->value,
-            ]),
-            'maintenance_plans' => MaintenancePlanResource::collection($this->whenLoaded('maintenancePlans')),
-            'schedules' => MaintenanceScheduleResource::collection($this->whenLoaded('maintenanceSchedules')),
         ];
     }
 }

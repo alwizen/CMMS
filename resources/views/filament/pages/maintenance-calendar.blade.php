@@ -1,8 +1,8 @@
 <x-filament-panels::page>
     <div>
         {{-- Calendar Card --}}
-        <div class="fi-wi-widget-card">
-            <div id="maintenance-calendar" class="fc fc-media-screen fc-direction-ltr fc-theme-standard p-4"></div>
+        <div class="cal-card">
+            <div id="maintenance-calendar" class="fc fc-media-screen fc-direction-ltr fc-theme-standard"></div>
         </div>
     </div>
 
@@ -11,12 +11,26 @@
     <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.17/index.global.min.js"></script>
 
     <style>
+        .cal-card {
+            background: #fff;
+            border: 1px solid var(--gray-200);
+            border-radius: 1rem;
+            padding: 1.25rem;
+            box-shadow: 0 1px 2px 0 rgba(0,0,0,0.04);
+        }
+        .dark .cal-card {
+            background: #1f2937;
+            border-color: rgba(255,255,255,0.1);
+        }
+
         .fc { font-family: inherit !important; }
-        .fc .fc-toolbar-title { font-size: 1.125rem !important; font-weight: 600 !important; }
+        .fc .fc-toolbar { flex-wrap: wrap !important; gap: 0.75rem !important; margin-bottom: 1rem !important; }
+        .fc .fc-toolbar-title { font-size: 1.25rem !important; font-weight: 700 !important; color: var(--gray-800) !important; }
+        .dark .fc .fc-toolbar-title { color: #f3f4f6 !important; }
         .fc .fc-button {
             background: transparent !important;
-            border: 1px solid var(--color-gray-300) !important;
-            color: var(--color-gray-700) !important;
+            border: 1px solid var(--gray-300) !important;
+            color: var(--gray-700) !important;
             border-radius: 0.5rem !important;
             padding: 0.375rem 0.875rem !important;
             font-size: 0.8125rem !important;
@@ -24,32 +38,48 @@
             box-shadow: none !important;
             transition: all 0.15s ease !important;
         }
-        .fc .fc-button:hover { background: var(--color-gray-50) !important; border-color: var(--color-gray-400) !important; }
-        .fc .fc-button-active { background: var(--color-primary-500) !important; border-color: var(--color-primary-500) !important; color: white !important; }
+        .fc .fc-button:hover { background: var(--gray-50) !important; border-color: var(--gray-400) !important; }
+        .fc .fc-button-active { background: var(--primary-500) !important; border-color: var(--primary-500) !important; color: white !important; }
         .fc .fc-button-primary:not(:disabled).fc-button-active,
-        .fc .fc-button-primary:not(:disabled):active { background: var(--color-primary-600) !important; border-color: var(--color-primary-600) !important; }
+        .fc .fc-button-primary:not(:disabled):active { background: var(--primary-600) !important; border-color: var(--primary-600) !important; }
         .fc .fc-toolbar { gap: 0.75rem !important; }
         .fc .fc-toolbar-chunk { gap: 0.5rem !important; display: flex !important; align-items: center !important; }
         .fc .fc-button-group .fc-button { margin: 0 !important; }
         .fc .fc-button-group .fc-button:not(:first-child) { margin-left: 0.375rem !important; }
         .dark .fc .fc-button { border-color: rgba(255,255,255,0.1) !important; color: #d1d5db !important; background: rgba(255,255,255,0.05) !important; }
         .dark .fc .fc-button:hover { background: rgba(255,255,255,0.1) !important; border-color: rgba(255,255,255,0.2) !important; }
-        .fc th { font-size: 0.75rem !important; font-weight: 600 !important; text-transform: uppercase !important; letter-spacing: 0.05em !important; color: var(--color-gray-500) !important; padding: 0.75rem 0.5rem !important; }
-        .fc td, .fc th { border-color: var(--color-gray-200) !important; }
+        .fc th { font-size: 0.75rem !important; font-weight: 600 !important; text-transform: uppercase !important; letter-spacing: 0.05em !important; color: var(--gray-500) !important; padding: 0.75rem 0.5rem !important; }
+        .fc td, .fc th { border-color: var(--gray-200) !important; }
         .fc .fc-daygrid-day { padding: 2px !important; }
-        .fc .fc-daygrid-day:hover { background: var(--color-gray-50) !important; }
-        .fc .fc-daygrid-day-number { font-size: 0.8125rem !important; padding: 0.375rem 0.5rem !important; color: var(--color-gray-700) !important; }
-        .fc .fc-day-today { background: var(--color-primary-50) !important; }
+        .fc .fc-daygrid-day:hover { background: var(--gray-50) !important; }
+        .fc .fc-daygrid-day-number { font-size: 0.8125rem !important; padding: 0.375rem 0.5rem !important; color: var(--gray-700) !important; }
+        .fc .fc-day-today { background: var(--primary-50) !important; }
         .fc .fc-day-today .fc-daygrid-day-number {
-            background: var(--color-primary-500) !important; color: white !important;
+            background: var(--primary-500) !important; color: white !important;
             border-radius: 9999px !important; width: 1.75rem !important; height: 1.75rem !important;
             display: flex !important; align-items: center !important; justify-content: center !important;
         }
-        .fc .fc-event { border: none !important; border-radius: 0.375rem !important; padding: 1px 6px !important; font-size: 0.75rem !important; font-weight: 500 !important; cursor: pointer !important; transition: opacity 0.15s ease !important; }
-        .fc .fc-event:hover { opacity: 0.85 !important; }
-        .fc .fc-scrollgrid { border-radius: 0.75rem !important; overflow: hidden !important; border: 1px solid var(--color-gray-200) !important; }
-        .fc .fc-scrollgrid td, .fc .fc-scrollgrid th { border-color: var(--color-gray-200) !important; }
-        .fc .fc-list-event:hover td { background: var(--color-gray-50) !important; }
+        .fc .fc-daygrid-day-frame { min-height: 6.5rem !important; }
+        .fc .fc-daygrid-event { white-space: normal !important; margin-top: 2px !important; }
+        .fc .fc-event {
+            border: none !important;
+            border-left: 3px solid rgba(255,255,255,0.85) !important;
+            border-radius: 0.375rem !important;
+            padding: 2px 7px !important;
+            font-size: 0.72rem !important;
+            font-weight: 600 !important;
+            line-height: 1.3 !important;
+            cursor: pointer !important;
+            transition: transform 0.12s ease, filter 0.12s ease !important;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.08) !important;
+        }
+        .fc .fc-event:hover { filter: brightness(0.95) !important; transform: translateY(-1px) !important; }
+        .fc .fc-event-title { overflow: hidden !important; text-overflow: ellipsis !important; }
+        .fc .fc-event-main-frame { gap: 2px !important; }
+        .fc .fc-daygrid-more-link { font-size: 0.7rem !important; font-weight: 600 !important; color: var(--primary-600) !important; padding: 1px 4px !important; }
+        .fc .fc-scrollgrid { border-radius: 0.75rem !important; overflow: hidden !important; border: 1px solid var(--gray-200) !important; }
+        .fc .fc-scrollgrid td, .fc .fc-scrollgrid th { border-color: var(--gray-200) !important; }
+        .fc .fc-list-event:hover td { background: var(--gray-50) !important; }
         .fc .fc-list-event-dot { border-width: 0 !important; width: 8px !important; height: 8px !important; border-radius: 2px !important; }
 
         /* Modal detail info rows */
@@ -170,6 +200,32 @@
                     list: 'Daftar',
                 },
                 events: calendarEvents,
+                eventContent: function(arg) {
+                    const props = arg.event.extendedProps || {};
+                    const time = props.time || '';
+                    const tag = props.tag || arg.event.title;
+                    const wrap = document.createElement('div');
+                    wrap.style.display = 'flex';
+                    wrap.style.flexDirection = 'column';
+                    wrap.style.gap = '1px';
+                    wrap.style.lineHeight = '1.25';
+                    if (time) {
+                        const t = document.createElement('span');
+                        t.textContent = time;
+                        t.style.fontWeight = '700';
+                        t.style.fontSize = '0.7rem';
+                        t.style.opacity = '0.95';
+                        wrap.appendChild(t);
+                    }
+                    const label = document.createElement('span');
+                    label.textContent = tag;
+                    label.style.fontSize = '0.72rem';
+                    label.style.overflow = 'hidden';
+                    label.style.textOverflow = 'ellipsis';
+                    label.style.whiteSpace = 'nowrap';
+                    wrap.appendChild(label);
+                    return { domNodes: [wrap] };
+                },
                 eventClick: function(info) {
                     info.jsEvent.preventDefault();
                     openEventModal(info.event);

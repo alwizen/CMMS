@@ -34,9 +34,6 @@ class HousekeepingPlansTable
                     ->label('Area')
                     ->searchable()
                     ->sortable(),
-                TextColumn::make('area.company.name')
-                    ->label('Company')
-                    ->toggleable(),
                 TextColumn::make('area.supervisor.name')
                     ->label('Penanggung Jawab')
                     ->placeholder('-')

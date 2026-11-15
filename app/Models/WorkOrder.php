@@ -27,8 +27,6 @@ class WorkOrder extends Model
     protected $fillable = [
         'work_order_number',
         'equipment_id',
-        'maintenance_plan_id',
-        'maintenance_schedule_id',
         'maintenance_request_id',
         'issued_by',
         'technician_coordinator_id',
@@ -45,19 +43,21 @@ class WorkOrder extends Model
         'finish_at' => 'datetime',
     ];
 
+    /**
+     * Apakah WO sudah boleh dieksekusi (tanggal mulai sudah tiba/hari ini).
+     */
+    public function isExecutable(): bool
+    {
+        if ($this->start_at === null) {
+            return true;
+        }
+
+        return $this->start_at->lte(now()->endOfDay());
+    }
+
     public function equipment(): BelongsTo
     {
         return $this->belongsTo(Equipment::class);
-    }
-
-    public function maintenancePlan(): BelongsTo
-    {
-        return $this->belongsTo(MaintenancePlan::class);
-    }
-
-    public function maintenanceSchedule(): BelongsTo
-    {
-        return $this->belongsTo(MaintenanceSchedule::class);
     }
 
     public function maintenanceRequest(): BelongsTo

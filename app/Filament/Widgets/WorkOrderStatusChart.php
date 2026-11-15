@@ -10,6 +10,8 @@ class WorkOrderStatusChart extends ChartWidget
 {
     use FiltersByDate;
 
+    protected static bool $isLazy = false;
+
     protected ?string $heading = 'Backlog Work Order per Status';
 
     protected static ?int $sort = 3;

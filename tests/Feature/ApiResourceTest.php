@@ -3,17 +3,14 @@
 namespace Tests\Feature;
 
 use App\Http\Resources\EquipmentResource;
-use App\Http\Resources\MaintenancePlanResource;
 use App\Http\Resources\MaintenanceRequestResource;
-use App\Http\Resources\MaintenanceScheduleResource;
 use App\Http\Resources\WorkOrderResource;
 use App\Models\Area;
 use App\Models\Company;
 use App\Models\Equipment;
 use App\Models\EquipmentType;
-use App\Models\MaintenancePlan;
+use App\Models\MaintenanceHistory;
 use App\Models\MaintenanceRequest;
-use App\Models\MaintenanceSchedule;
 use App\Models\Setting;
 use App\Models\User;
 use App\Models\WorkOrder;
@@ -52,18 +49,6 @@ class ApiResourceTest extends TestCase
         ]);
     }
 
-    protected function plan(): MaintenancePlan
-    {
-        return MaintenancePlan::create([
-            'equipment_id' => $this->equipment->id,
-            'maintenance_classification' => 'Preventive',
-            'interval' => 'monthly',
-            'start_date' => today()->toDateString(),
-            'created_by' => $this->user->id,
-            'status' => 'Active',
-        ]);
-    }
-
     protected function workOrder(array $attributes = []): WorkOrder
     {
         return WorkOrder::create([
@@ -74,31 +59,6 @@ class ApiResourceTest extends TestCase
             'status' => 'Pending',
             ...$attributes,
         ]);
-    }
-
-    public function test_plan_resource_exposes_area_and_company_when_loaded(): void
-    {
-        $plan = $this->plan()->load(['equipment.area.company']);
-
-        $data = (new MaintenancePlanResource($plan))->toArray(Request::create('/'));
-
-        $this->assertSame('Demo Area', $data['equipment']['area']['name']);
-        $this->assertSame('Demo Company', $data['equipment']['area']['company']['name']);
-    }
-
-    public function test_schedule_resource_exposes_area_when_loaded(): void
-    {
-        $plan = $this->plan();
-        $schedule = MaintenanceSchedule::create([
-            'maintenance_plan_id' => $plan->id,
-            'equipment_id' => $this->equipment->id,
-            'scheduled_date' => today()->toDateString(),
-            'status' => MaintenanceSchedule::STATUSES['Scheduled'],
-        ])->load(['equipment.area']);
-
-        $data = (new MaintenanceScheduleResource($schedule))->toArray(Request::create('/'));
-
-        $this->assertSame('Demo Area', $data['equipment']['area']['name']);
     }
 
     public function test_work_order_resource_exposes_area_when_loaded(): void
@@ -133,6 +93,26 @@ class ApiResourceTest extends TestCase
         $data = (new EquipmentResource($equipment))->toArray(Request::create('/'));
 
         $this->assertSame('Demo Company', $data['area']['company']['name']);
+    }
+
+    public function test_equipment_maintenance_histories_endpoint_returns_history(): void
+    {
+        MaintenanceHistory::create([
+            'equipment_id' => $this->equipment->id,
+            'maintenance_type' => 'Preventive',
+            'classification' => 'Preventive',
+            'description' => 'Cek rutin',
+            'maintenance_date' => now(),
+            'performed_by' => $this->user->id,
+            'status' => 'Completed',
+        ]);
+
+        Sanctum::actingAs($this->user, ['*']);
+
+        $response = $this->getJson("/api/equipment/{$this->equipment->id}/maintenance-histories")->assertOk();
+
+        $this->assertSame(1, $response->json('meta.total'));
+        $this->assertSame('Cek rutin', $response->json('data.0.description'));
     }
 
     public function test_technician_only_sees_work_orders_they_are_linked_to(): void

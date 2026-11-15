@@ -38,9 +38,8 @@ class HousekeepingAreaForm
                                 ->orderBy('name')
                                 ->pluck('name', 'id')
                                 ->all())
-                            ->searchable()
                             ->nullable()
-                            ->placeholder('Select supervisor'),
+                            ->placeholder('Pilih penanggung jawab area'),
                         TextInput::make('name')
                             ->label('Name')
                             ->required()

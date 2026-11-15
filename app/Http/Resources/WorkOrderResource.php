@@ -18,6 +18,7 @@ class WorkOrderResource extends JsonResource
             'finish_at' => $this->finish_at?->toIso8601String(),
             'note' => $this->note,
             'status' => $this->status,
+            'can_execute' => $this->isExecutable(),
             'created_at' => $this->created_at?->toIso8601String(),
             'equipment' => $this->whenLoaded('equipment', fn () => [
                 'id' => $this->equipment->id,
@@ -36,16 +37,6 @@ class WorkOrderResource extends JsonResource
             'technician_coordinator' => $this->whenLoaded('technicianCoordinator', fn () => [
                 'id' => $this->technicianCoordinator->id,
                 'name' => $this->technicianCoordinator->name,
-            ]),
-            'maintenance_plan' => $this->whenLoaded('maintenancePlan', fn () => [
-                'id' => $this->maintenancePlan->id,
-                'maintenance_classification' => $this->maintenancePlan->maintenance_classification,
-                'interval' => $this->maintenancePlan->interval,
-            ]),
-            'maintenance_schedule' => $this->whenLoaded('maintenanceSchedule', fn () => [
-                'id' => $this->maintenanceSchedule->id,
-                'scheduled_date' => $this->maintenanceSchedule->scheduled_date?->format('Y-m-d'),
-                'status' => $this->maintenanceSchedule->status,
             ]),
             'maintenance_request' => $this->whenLoaded('maintenanceRequest', fn () => [
                 'id' => $this->maintenanceRequest->id,

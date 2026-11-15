@@ -38,11 +38,6 @@ class HousekeepingDashboard extends BaseDashboard
         return 'Housekeeping Dashboard';
     }
 
-    // public function getSubheading(): string|Htmlable|null
-    // {
-    //     return 'Selamat datang, '.(auth()->user()?->name ?? 'Pengguna');
-    // }
-
     public function getHeaderActions(): array
     {
         return [

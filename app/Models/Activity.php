@@ -74,11 +74,6 @@ class Activity extends Model
         return $this->belongsTo(EquipmentType::class);
     }
 
-    public function maintenancePlanActivities(): HasMany
-    {
-        return $this->hasMany(MaintenancePlanActivity::class);
-    }
-
     public function workOrderActivities(): HasMany
     {
         return $this->hasMany(WorkOrderActivity::class);

@@ -4,9 +4,7 @@ namespace App\Filament\Resources\WorkOrders\Schemas;
 
 use App\Models\Activity;
 use App\Models\Equipment;
-use App\Models\MaintenancePlan;
 use App\Models\MaintenanceRequest;
-use App\Models\MaintenanceSchedule;
 use App\Models\User;
 use App\Models\WorkOrder;
 use Filament\Forms\Components\DateTimePicker;
@@ -53,33 +51,6 @@ class WorkOrderForm
 
                 Section::make('Related Records')
                     ->schema([
-                        Select::make('maintenance_plan_id')
-                            ->label('Maintenance Plan')
-                            ->options(fn (): array => MaintenancePlan::query()
-                                ->with('equipment')
-                                ->orderByDesc('id')
-                                ->get()
-                                ->mapWithKeys(fn (MaintenancePlan $plan): array => [
-                                    $plan->id => ($plan->plan_number ?? '#'.$plan->id)
-                                        .' — '.($plan->equipment?->tag_number ?? '-'),
-                                ])
-                                ->all())
-                            ->searchable()
-                            ->nullable()
-                            ->placeholder('Select maintenance plan'),
-                        Select::make('maintenance_schedule_id')
-                            ->label('Maintenance Schedule')
-                            ->options(fn (): array => MaintenanceSchedule::query()
-                                ->orderByDesc('id')
-                                ->get()
-                                ->mapWithKeys(fn (MaintenanceSchedule $schedule): array => [
-                                    $schedule->id => ($schedule->schedule_number ?? '#'.$schedule->id)
-                                        .' — '.$schedule->scheduled_date?->format('d M Y'),
-                                ])
-                                ->all())
-                            ->searchable()
-                            ->nullable()
-                            ->placeholder('Select maintenance schedule'),
                         Select::make('maintenance_request_id')
                             ->label('Maintenance Request')
                             ->options(MaintenanceRequest::pluck('request_number', 'id'))
@@ -97,7 +68,8 @@ class WorkOrderForm
                             ->placeholder('Select issuer'),
                         Select::make('technician_coordinator_id')
                             ->label('Technician Coordinator')
-                            ->options(User::pluck('name', 'id'))
+                            ->options(User::technicianCoordinatorOptions())
+                            ->searchable()
                             ->nullable()
                             ->placeholder('Select coordinator'),
                         DateTimePicker::make('start_at')

@@ -2,55 +2,90 @@
 
 namespace App\Filament\Widgets;
 
+use App\Filament\Resources\HousekeepingPlans\HousekeepingPlanResource;
 use App\Filament\Widgets\Concerns\FiltersByDate;
-use App\Models\HousekeepingPlan;
+use App\Models\HousekeepingPlanTask;
+use Filament\Actions\Action;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Filament\Widgets\TableWidget as BaseWidget;
+use Illuminate\Database\Eloquent\Builder;
 
 class RecentHousekeepingPlansWidget extends BaseWidget
 {
     use FiltersByDate;
 
-    protected static ?string $heading = 'Plan Harian Terbaru';
+    protected static ?string $heading = 'Report Harian';
 
     protected int|string|array $columnSpan = 'full';
 
     protected static ?int $sort = 4;
 
+    /**
+     * Widget ini memakai filter tanggal dashboard (opsional) jika tersedia.
+     */
     public function table(Table $table): Table
     {
         return $table
             ->query(
-                HousekeepingPlan::query()
-                    ->tap(fn ($q) => $this->applyDateFilter($q, 'plan_date'))
-                    ->latest('plan_date')
-                    ->limit(10)
+                HousekeepingPlanTask::query()
+                    ->with(['plan.area', 'facility'])
+                    ->when(
+                        method_exists($this, 'dateFilterRange'),
+                        fn (Builder $query) => $query->whereHas(
+                            'plan',
+                            fn (Builder $plan) => $this->applyDateFilter($plan, 'plan_date'),
+                        ),
+                    )
+                    ->latest('id')
+                    ->limit(15)
             )
             ->columns([
-                Tables\Columns\TextColumn::make('plan_number')
-                    ->label('Plan Number')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('plan_date')
+                Tables\Columns\TextColumn::make('plan.plan_date')
                     ->label('Tanggal')
-                    ->date('d M Y'),
-                Tables\Columns\TextColumn::make('area.name')
-                    ->label('Area'),
-                Tables\Columns\TextColumn::make('area.supervisor.name')
-                    ->label('Penanggung Jawab')
+                    ->date('d M Y')
                     ->placeholder('-'),
-                Tables\Columns\TextColumn::make('manpowers_count')
-                    ->label('Manpower')
-                    ->counts('manpowers')
-                    ->badge()
-                    ->color('gray'),
+                Tables\Columns\TextColumn::make('plan.area.name')
+                    ->label('Area')
+                    ->placeholder('-'),
+                Tables\Columns\TextColumn::make('facility.name')
+                    ->label('Fasilitas')
+                    ->placeholder('-')
+                    ->toggleable(),
+                Tables\Columns\TextColumn::make('name')
+                    ->label('Pekerjaan')
+                    ->searchable()
+                    ->limit(40)
+                    ->tooltip(fn (?string $state): ?string => $state),
                 Tables\Columns\TextColumn::make('status')
+                    ->label('Status')
                     ->badge()
-                    ->color(fn (string $state): string => match ($state) {
-                        'Completed' => 'success',
+                    ->color(fn (?string $state): string => match ($state) {
+                        'Done' => 'success',
                         'In Progress' => 'warning',
                         default => 'gray',
                     }),
-            ]);
+                Tables\Columns\TextColumn::make('photo_before')
+                    ->label('Before')
+                    ->badge()
+                    ->getStateUsing(fn (HousekeepingPlanTask $record): string => count($record->photo_before ?? []).' foto')
+                    ->color(fn (HousekeepingPlanTask $record): string => count($record->photo_before ?? []) > 0 ? 'success' : 'gray'),
+                Tables\Columns\TextColumn::make('photo_after')
+                    ->label('After')
+                    ->badge()
+                    ->getStateUsing(fn (HousekeepingPlanTask $record): string => count($record->photo_after ?? []).' foto')
+                    ->color(fn (HousekeepingPlanTask $record): string => count($record->photo_after ?? []) > 0 ? 'success' : 'gray'),
+            ])
+            ->recordActions([
+                Action::make('view_plan')
+                    ->label('Lihat Plan')
+                    ->icon('heroicon-m-eye')
+                    ->visible(fn (HousekeepingPlanTask $record): bool => $record->plan_id !== null)
+                    ->url(fn (HousekeepingPlanTask $record): ?string => $record->plan_id !== null
+                        ? HousekeepingPlanResource::getUrl('view', ['record' => $record->plan_id])
+                        : null),
+            ])
+            ->emptyStateHeading('Belum ada pekerjaan tercatat')
+            ->emptyStateDescription('Pekerjaan harian muncul dari checklist Plan Harian housekeeping.');
     }
 }

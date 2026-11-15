@@ -4,10 +4,8 @@ namespace App\Filament\Resources\Areas\Tables;
 
 use App\Filament\Resources\Areas\AreaResource;
 use Filament\Actions\Action;
-use Filament\Actions\BulkActionGroup;
-use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
-use Filament\Tables\Columns\BooleanColumn;
+use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Filters\TernaryFilter;
@@ -40,8 +38,9 @@ class AreasTable
                 TextColumn::make('description')
                     ->label('Description')
                     ->limit(50),
-                BooleanColumn::make('is_active')
+                IconColumn::make('is_active')
                     ->label('Active')
+                    ->boolean()
                     ->sortable(),
             ])
             ->filters([
@@ -56,7 +55,7 @@ class AreasTable
                 Action::make('view_equipment')
                     ->label('Lihat Equipment')
                     ->icon('heroicon-m-wrench-screwdriver')
-                    ->url(fn($record) => AreaResource::getUrl('equipment', ['record' => $record], shouldGuessMissingParameters: true)),
+                    ->url(fn ($record) => AreaResource::getUrl('equipment', ['record' => $record], shouldGuessMissingParameters: true)),
             ]);
     }
 }

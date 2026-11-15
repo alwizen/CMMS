@@ -7,9 +7,7 @@ use App\Models\Area;
 use App\Models\Company;
 use App\Models\Equipment;
 use App\Models\EquipmentType;
-use App\Models\MaintenancePlan;
 use App\Models\MaintenanceRequest;
-use App\Models\MaintenanceSchedule;
 use App\Models\Setting;
 use App\Models\User;
 use App\Models\WorkOrder;
@@ -91,24 +89,8 @@ class DocumentNumberTest extends TestCase
         $this->assertSame('SPK/'.now()->format('Y').'/002', $second->work_order_number);
     }
 
-    public function test_plan_schedule_and_request_numbers_are_generated(): void
+    public function test_request_number_is_generated(): void
     {
-        $plan = MaintenancePlan::create([
-            'equipment_id' => $this->equipment->id,
-            'maintenance_classification' => 'Preventive',
-            'interval' => 'monthly',
-            'start_date' => now()->toDateString(),
-            'created_by' => $this->user->id,
-            'status' => 'Active',
-        ]);
-
-        $schedule = MaintenanceSchedule::create([
-            'maintenance_plan_id' => $plan->id,
-            'equipment_id' => $this->equipment->id,
-            'scheduled_date' => now()->toDateString(),
-            'status' => MaintenanceSchedule::STATUSES['Scheduled'],
-        ]);
-
         $request = MaintenanceRequest::create([
             'equipment_id' => $this->equipment->id,
             'reported_by' => $this->user->id,
@@ -118,8 +100,6 @@ class DocumentNumberTest extends TestCase
             'status' => 'Open',
         ]);
 
-        $this->assertStringStartsWith('MP-', $plan->plan_number);
-        $this->assertStringStartsWith('MS-', $schedule->schedule_number);
         $this->assertStringStartsWith('MR-', $request->request_number);
     }
 
@@ -152,15 +132,12 @@ class DocumentNumberTest extends TestCase
             ->assertOk()
             ->fillForm([
                 'work_order' => 'WO/{YY}/{SEQ:4}',
-                'maintenance_plan' => 'PLAN/{YYYY}/{SEQ:4}',
-                'maintenance_schedule' => 'SCH/{YYYY}/{SEQ:4}',
                 'maintenance_request' => 'REQ/{YYYY}/{SEQ:4}',
             ])
             ->call('save')
             ->assertHasNoFormErrors();
 
         $this->assertSame('WO/{YY}/{SEQ:4}', Setting::get(DocumentNumber::settingKey('work_order')));
-        $this->assertSame('PLAN/{YYYY}/{SEQ:4}', DocumentNumber::format('maintenance_plan'));
     }
 
     public function test_site_settings_page_rejects_format_without_sequence_token(): void

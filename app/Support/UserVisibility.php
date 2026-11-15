@@ -2,9 +2,7 @@
 
 namespace App\Support;
 
-use App\Models\MaintenancePlan;
 use App\Models\MaintenanceRequest;
-use App\Models\MaintenanceSchedule;
 use App\Models\User;
 use App\Models\WorkOrder;
 use Illuminate\Database\Eloquent\Builder;
@@ -51,40 +49,6 @@ class UserVisibility
     }
 
     /**
-     * Jadwal terkait user: koordinator plan, atau punya WO yang terkait user.
-     */
-    public static function scopeSchedules(Builder $query, ?User $user): Builder
-    {
-        if (! $user || static::hasFullAccess($user)) {
-            return $query;
-        }
-
-        $userId = $user->id;
-
-        return $query->where(function (Builder $q) use ($userId, $user) {
-            $q->whereHas('maintenancePlan', fn (Builder $plan) => $plan->where('technician_coordinator_id', $userId))
-                ->orWhereHas('workOrders', fn (Builder $wo) => static::scopeWorkOrders($wo, $user));
-        });
-    }
-
-    /**
-     * Plan terkait user: sebagai pembuat atau koordinator teknisi.
-     */
-    public static function scopePlans(Builder $query, ?User $user): Builder
-    {
-        if (! $user || static::hasFullAccess($user)) {
-            return $query;
-        }
-
-        $userId = $user->id;
-
-        return $query->where(function (Builder $q) use ($userId) {
-            $q->where('technician_coordinator_id', $userId)
-                ->orWhere('created_by', $userId);
-        });
-    }
-
-    /**
      * Request terkait user: sebagai pelapor atau approver.
      */
     public static function scopeRequests(Builder $query, ?User $user): Builder
@@ -126,40 +90,5 @@ class UserVisibility
 
         return $maintenanceRequest->reported_by === $user->id
             || $maintenanceRequest->approved_by === $user->id;
-    }
-
-    /**
-     * Pemeriksaan akses per record untuk maintenance plan.
-     */
-    public static function canAccessPlan(MaintenancePlan $plan, ?User $user): bool
-    {
-        if (! $user || static::hasFullAccess($user)) {
-            return true;
-        }
-
-        return $plan->technician_coordinator_id === $user->id
-            || $plan->created_by === $user->id;
-    }
-
-    /**
-     * Pemeriksaan akses per record untuk maintenance schedule.
-     */
-    public static function canAccessSchedule(MaintenanceSchedule $schedule, ?User $user): bool
-    {
-        if (! $user || static::hasFullAccess($user)) {
-            return true;
-        }
-
-        if ($schedule->maintenancePlan?->technician_coordinator_id === $user->id) {
-            return true;
-        }
-
-        return $schedule->workOrders()
-            ->where(function (Builder $q) use ($user) {
-                $q->where('technician_coordinator_id', $user->id)
-                    ->orWhere('issued_by', $user->id)
-                    ->orWhereHas('workOrderWorkers', fn (Builder $w) => $w->where('user_id', $user->id));
-            })
-            ->exists();
     }
 }

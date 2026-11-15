@@ -9,10 +9,7 @@ use App\Http\Controllers\Api\EquipmentController;
 use App\Http\Controllers\Api\HousekeepingAreaController;
 use App\Http\Controllers\Api\HousekeepingPlanController;
 use App\Http\Controllers\Api\MaintenanceCalendarController;
-use App\Http\Controllers\Api\MaintenancePlanController;
 use App\Http\Controllers\Api\MaintenanceRequestController;
-use App\Http\Controllers\Api\MaintenanceScheduleController;
-use App\Http\Controllers\Api\MeterLogController;
 use App\Http\Controllers\Api\NotificationController;
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\WorkOrderController;
@@ -32,12 +29,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/me', [AuthController::class, 'me']);
     Route::get('/dashboard', [DashboardController::class, 'index']);
 
-    Route::get('/maintenance-plans', [MaintenancePlanController::class, 'index']);
-    Route::get('/maintenance-plans/{id}', [MaintenancePlanController::class, 'show']);
-
     Route::get('/maintenance-calendar', [MaintenanceCalendarController::class, 'index']);
-    Route::get('/maintenance-schedules', [MaintenanceScheduleController::class, 'index']);
-    Route::get('/maintenance-schedules/{id}', [MaintenanceScheduleController::class, 'show']);
 
     Route::get('/work-orders', [WorkOrderController::class, 'index']);
     Route::get('/work-orders/{id}', [WorkOrderController::class, 'show']);
@@ -47,6 +39,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::delete('/work-orders/{workOrderId}/activities/{activityId}/photos', [WorkOrderController::class, 'deleteActivityPhoto']);
 
     Route::get('/equipment', [EquipmentController::class, 'index']);
+    Route::get('/equipment-filter-options', [EquipmentController::class, 'filterOptions']);
+    Route::get('/equipment/{id}/maintenance-histories', [EquipmentController::class, 'maintenanceHistories']);
     Route::get('/equipment/{id}', [EquipmentController::class, 'show']);
 
     Route::get('/maintenance-requests', [MaintenanceRequestController::class, 'index']);
@@ -54,11 +48,6 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/maintenance-requests', [MaintenanceRequestController::class, 'store']);
     Route::put('/maintenance-requests/{id}', [MaintenanceRequestController::class, 'update']);
     Route::delete('/maintenance-requests/{id}', [MaintenanceRequestController::class, 'destroy']);
-
-    Route::get('/meter-logs', [MeterLogController::class, 'index']);
-    Route::get('/meter-logs/{id}', [MeterLogController::class, 'show']);
-    Route::post('/meter-logs', [MeterLogController::class, 'store']);
-    Route::get('/equipment/{equipmentId}/meter-logs', [MeterLogController::class, 'byEquipment']);
 
     Route::get('/downtime', [DowntimeController::class, 'index']);
 

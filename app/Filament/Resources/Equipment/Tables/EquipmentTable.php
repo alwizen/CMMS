@@ -90,10 +90,10 @@ class EquipmentTable
                     ->relationManager(MaintenanceHistoriesRelationManager::class),
                 EditAction::make(),
             ]);
-            // ->toolbarActions([
-            //     BulkActionGroup::make([
-            //         DeleteBulkAction::make(),
-            //     ]),
-            // ]);
+        // ->toolbarActions([
+        //     BulkActionGroup::make([
+        //         DeleteBulkAction::make(),
+        //     ]),
+        // ]);
     }
 }

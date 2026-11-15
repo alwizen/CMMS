@@ -76,7 +76,7 @@ class ViewMaintenanceRequests extends ViewRecord
                         ->columnSpanFull(),
                     Select::make('technician_coordinator_id')
                         ->label('Penanggung Jawab')
-                        ->options(User::pluck('name', 'id'))
+                        ->options(User::technicianCoordinatorOptions())
                         ->required()
                         ->searchable()
                         ->placeholder('Pilih 1 penanggung jawab'),

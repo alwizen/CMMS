@@ -5,6 +5,7 @@ namespace App\Filament\Resources\Areas\Schemas;
 use App\Forms\Components\LeafletMap;
 use App\Models\Company;
 use App\Support\Code;
+use App\Support\Geo;
 use Filament\Forms\Components\Hidden;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
@@ -22,6 +23,7 @@ class AreaForm
         return $schema
             ->components([
                 Section::make('Area Information')
+                    ->columnSpanFull()
                     ->schema([
                         Select::make('company_id')
                             ->label('Company')
@@ -55,28 +57,37 @@ class AreaForm
                             ->default(true),
                     ])
                     ->columns(2),
-                Section::make('Location')
-                    ->description('Klik pada peta untuk menentukan titik lokasi area.')
+                Section::make('Boundary')
+                    ->description('Gambar polygon pada peta untuk menentukan batas area.')
+                    ->columnSpanFull()
                     ->schema([
-                        LeafletMap::make('location')
-                            ->label('Location Map')
-                            ->mode('marker')
-                            ->height(400)
+                        LeafletMap::make('polygon')
+                            ->label('Area Boundary')
+                            ->mode('polygon')
+                            ->height(450)
                             ->columnSpanFull()
                             ->defaultLat(fn ($get): float => (float) (Company::find($get('company_id'))?->center_lat ?? -6.870255717160778))
                             ->defaultLng(fn ($get): float => (float) (Company::find($get('company_id'))?->center_lng ?? 109.18670476501677))
-                            ->dehydrated(false)
+                            ->live()
                             ->afterStateHydrated(function (LeafletMap $component, $record): void {
-                                if ($record?->latitude && $record?->longitude) {
-                                    $component->state([
-                                        'lat' => (float) $record->latitude,
-                                        'lng' => (float) $record->longitude,
-                                    ]);
+                                if (is_array($record?->polygon) && $record->polygon !== []) {
+                                    $component->state($record->polygon);
                                 }
                             })
-                            ->afterStateUpdated(function ($set, ?array $state): void {
-                                $set('latitude', $state['lat'] ?? null);
-                                $set('longitude', $state['lng'] ?? null);
+                            ->afterStateUpdated(function (?array $state, Set $set): void {
+                                if (empty($state)) {
+                                    $set('latitude', null);
+                                    $set('longitude', null);
+
+                                    return;
+                                }
+
+                                $center = Geo::polygonCenter($state);
+
+                                if ($center) {
+                                    $set('latitude', $center['lat']);
+                                    $set('longitude', $center['lng']);
+                                }
                             }),
                         Hidden::make('latitude'),
                         Hidden::make('longitude'),

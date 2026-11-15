@@ -4,10 +4,27 @@ namespace App\Filament\Widgets\Concerns;
 
 use Carbon\Carbon;
 use Filament\Widgets\Concerns\InteractsWithPageFilters;
+use Livewire\Attributes\On;
 
 trait FiltersByDate
 {
     use InteractsWithPageFilters;
+
+    /**
+     * Filter efektif dari event dashboard (menimpa pageFilters bila ada).
+     *
+     * @var array<string, mixed>|null
+     */
+    public ?array $appliedFilters = null;
+
+    /**
+     * Sinkronkan filter ketika halaman dashboard mengubah periode.
+     */
+    #[On('dashboard-filters-updated')]
+    public function syncDashboardFilters(?array $filters = null): void
+    {
+        $this->appliedFilters = $filters;
+    }
 
     private function dateFilterFrom(): ?Carbon
     {
@@ -58,7 +75,7 @@ trait FiltersByDate
 
     private function dateFilterValue(string $key): mixed
     {
-        $filters = $this->pageFilters ?? request()->query('filters');
+        $filters = $this->appliedFilters ?? $this->pageFilters ?? request()->query('filters');
 
         if (is_array($filters)) {
             return $filters[$key] ?? null;
