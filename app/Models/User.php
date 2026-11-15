@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use Filament\Models\Contracts\FilamentUser;
+use Filament\Panel;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Attributes\Hidden;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -13,9 +15,18 @@ use Spatie\Permission\Traits\HasRoles;
 
 #[Fillable(['name', 'email', 'password', 'employee_number', 'phone', 'status'])]
 #[Hidden(['password', 'remember_token'])]
-class User extends Authenticatable
+class User extends Authenticatable implements FilamentUser
 {
     use HasApiTokens, HasFactory, HasRoles, Notifiable;
+
+    /**
+     * Semua user aktif boleh membuka panel Filament.
+     * Hak akses per menu/resource tetap diatur lewat permission Shield.
+     */
+    public function canAccessPanel(Panel $panel): bool
+    {
+        return (bool) $this->status;
+    }
 
     /**
      * Role yang tidak eligible sebagai Technician Coordinator maintenance.
