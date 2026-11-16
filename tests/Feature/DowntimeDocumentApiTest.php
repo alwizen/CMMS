@@ -46,7 +46,7 @@ class DowntimeDocumentApiTest extends TestCase
         return MaintenanceRequest::create(array_merge([
             'equipment_id' => $this->equipment->id,
             'reported_by' => $this->user->id,
-            'operation_status' => 'Stopped',
+            'operation_status' => 'Faulty',
             'description' => 'Pompa berhenti',
             'damage_date' => today()->subDay()->toDateString(),
             'damage_time' => '08:00:00',

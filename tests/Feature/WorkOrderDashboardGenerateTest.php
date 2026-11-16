@@ -88,7 +88,39 @@ class WorkOrderDashboardGenerateTest extends TestCase
         $this->assertSame(2, WorkOrder::where('status', WorkOrder::STATUSES['Pending'])->count());
     }
 
-    public function test_generate_wo_shows_warning_when_no_checklist_matches_interval(): void
+    public function test_interval_options_follow_checklist_of_selected_equipment(): void
+    {
+        Gate::before(fn () => true);
+        $this->actingAs($this->user);
+
+        Activity::create([
+            'equipment_type_id' => $this->equipment->equipment_type_id,
+            'name' => 'Cek Harian',
+            'type' => 'inspection',
+            'maintenance_classification' => 'preventive',
+            'interval' => 'daily',
+            'answer_type' => 'qualitative',
+            'status' => true,
+        ]);
+
+        $component = Livewire::test(Dashboard::class);
+
+        $this->assertSame([], $component->instance()->intervalOptions(null));
+
+        $options = $component->instance()->intervalOptions([$this->equipment->id]);
+
+        $this->assertSame(['daily' => 'Daily', 'monthly' => 'Monthly'], $options);
+        $this->assertArrayNotHasKey('yearly', $options);
+    }
+
+    public function test_interval_options_empty_when_checklist_has_no_interval(): void
+    {
+        Activity::where('equipment_type_id', $this->equipment->equipment_type_id)->update(['interval' => null]);
+
+        $this->assertSame([], app(Dashboard::class)->intervalOptions([$this->equipment->id]));
+    }
+
+    public function test_generate_wo_rejects_interval_not_in_checklist(): void
     {
         Gate::before(fn () => true);
         $this->actingAs($this->user);
@@ -103,7 +135,7 @@ class WorkOrderDashboardGenerateTest extends TestCase
                 'issued_by' => $this->user->id,
                 'skip_weekend' => true,
             ])
-            ->assertNotified('Tidak ada Work Order yang dibuat');
+            ->assertHasActionErrors(['interval']);
 
         $this->assertSame(0, WorkOrder::count());
     }

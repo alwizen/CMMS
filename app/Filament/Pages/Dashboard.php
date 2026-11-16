@@ -17,6 +17,7 @@ use Filament\Pages\Dashboard\Actions\FilterAction;
 use Filament\Pages\Dashboard as BaseDashboard;
 use Filament\Pages\Dashboard\Concerns\HasFiltersAction;
 use Filament\Schemas\Components\Utilities\Get;
+use Filament\Schemas\Components\Utilities\Set;
 use Filament\Support\Icons\Heroicon;
 use Illuminate\Contracts\Support\Htmlable;
 use UnitEnum;
@@ -58,6 +59,44 @@ class Dashboard extends BaseDashboard
         return 'Selamat datang, '.(auth()->user()?->name ?? 'Pengguna');
     }
 
+    /**
+     * Interval yang tersedia diambil dari checklist maintenance (Activity)
+     * milik equipment type dari equipment yang dipilih.
+     *
+     * @param  array<int, int|string>|null  $equipmentIds
+     * @return array<string, string>
+     */
+    public function intervalOptions(?array $equipmentIds): array
+    {
+        if (blank($equipmentIds)) {
+            return [];
+        }
+
+        $typeIds = Equipment::query()
+            ->whereIn('id', $equipmentIds)
+            ->whereNotNull('equipment_type_id')
+            ->pluck('equipment_type_id')
+            ->unique()
+            ->all();
+
+        if (empty($typeIds)) {
+            return [];
+        }
+
+        $intervals = Activity::query()
+            ->whereIn('equipment_type_id', $typeIds)
+            ->where('status', true)
+            ->whereNotNull('interval')
+            ->pluck('interval')
+            ->unique()
+            ->all();
+
+        return array_intersect_key(
+            Activity::INTERVALS,
+            array_flip($intervals),
+        );
+    }
+
     public function getHeaderActions(): array
     {
         return [
@@ -80,6 +119,10 @@ class Dashboard extends BaseDashboard
                         ->live()
                         ->required()
                         ->placeholder('Pilih tipe equipment')
+                        ->afterStateUpdated(function (Set $set): void {
+                            $set('equipment_ids', null);
+                            $set('interval', null);
+                        })
                         ->helperText('Hanya tipe dengan penanggung jawab & checklist yang muncul.'),
                     Forms\Components\Select::make('equipment_ids')
                         ->label('Equipment')
@@ -92,12 +135,16 @@ class Dashboard extends BaseDashboard
                             ->orderBy('tag_number')
                             ->pluck('tag_number', 'id')
                             ->all())
+                        ->live()
+                        ->afterStateUpdated(fn (Set $set) => $set('interval', null))
                         ->helperText('Equipment dari tipe yang dipilih.'),
                     Forms\Components\Select::make('interval')
                         ->label('Interval')
-                        ->options(Activity::INTERVALS)
+                        ->options(fn (Get $get): array => $this->intervalOptions($get('equipment_ids')))
                         ->required()
-                        ->placeholder('Pilih interval'),
+                        ->live()
+                        ->placeholder('Pilih interval')
+                        ->helperText('Interval mengikuti checklist maintenance equipment yang dipilih.'),
                     Forms\Components\TextInput::make('quantity')
                         ->label('Berapa WO per equipment')
                         ->numeric()

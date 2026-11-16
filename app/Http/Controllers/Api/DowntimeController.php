@@ -14,6 +14,7 @@ class DowntimeController extends Controller
     public function index(Request $request): JsonResponse
     {
         $query = MaintenanceRequest::with(['equipment.area', 'workOrders'])
+            ->where('operation_status', 'Faulty')
             ->where('status', '!=', MaintenanceRequest::STATUSES['Rejected'])
             ->where(function (Builder $q): void {
                 $q->whereDoesntHave('workOrders')

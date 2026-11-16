@@ -82,11 +82,16 @@ class MaintenanceRequest extends Model
     }
 
     /**
-     * Downtime hanya dihitung untuk gangguan tak terencana (corrective).
+     * Downtime hanya dihitung untuk gangguan tak terencana (corrective)
+     * dengan status operasi Faulty.
      */
     public function isUnplannedDowntime(): bool
     {
         if ($this->status === self::STATUSES['Rejected']) {
+            return false;
+        }
+
+        if (strcasecmp((string) $this->operation_status, 'Faulty') !== 0) {
             return false;
         }
 

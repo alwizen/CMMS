@@ -104,7 +104,7 @@ class MaintenanceRequestInfolist
 
                 Section::make('Downtime')
                     ->icon(Heroicon::OutlinedClock)
-                    ->description('Dihitung otomatis dari waktu kerusakan sampai work order selesai.')
+                    ->description('Dihitung otomatis untuk status operasi Faulty, dari waktu kerusakan sampai work order selesai.')
                     ->schema([
                         TextEntry::make('downtime_start')
                             ->label('Mulai')

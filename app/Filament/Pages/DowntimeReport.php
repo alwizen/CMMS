@@ -44,7 +44,7 @@ class DowntimeReport extends Page implements HasTable
 
     public function getSubheading(): ?string
     {
-        return 'Downtime tak terencana dihitung otomatis dari Maintenance Request sampai Work Order selesai.';
+        return 'Downtime dihitung otomatis untuk Maintenance Request dengan status operasi Faulty sampai Work Order selesai.';
     }
 
     public function table(Table $table): Table
@@ -52,6 +52,7 @@ class DowntimeReport extends Page implements HasTable
         return $table
             ->query(fn (): Builder => MaintenanceRequest::query()
                 ->with(['equipment.area', 'reportedBy', 'workOrders'])
+                ->where('operation_status', 'Faulty')
                 ->where('status', '!=', MaintenanceRequest::STATUSES['Rejected']))
             ->defaultSort('damage_date', 'desc')
             ->columns([
@@ -168,7 +169,7 @@ class DowntimeReport extends Page implements HasTable
                     ->url(fn (MaintenanceRequest $record): string => MaintenanceRequestResource::getUrl('view', ['record' => $record])),
             ])
             ->emptyStateHeading('Belum ada downtime tercatat')
-            ->emptyStateDescription('Downtime muncul otomatis dari maintenance request yang ditindaklanjuti work order.');
+            ->emptyStateDescription('Downtime muncul otomatis dari maintenance request berstatus operasi Faulty yang ditindaklanjuti work order.');
     }
 
     public function content(Schema $schema): Schema

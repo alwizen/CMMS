@@ -51,7 +51,7 @@ class DowntimeTest extends TestCase
         return MaintenanceRequest::create(array_merge([
             'equipment_id' => $this->equipment->id,
             'reported_by' => $this->user->id,
-            'operation_status' => 'Stopped',
+            'operation_status' => 'Faulty',
             'description' => 'Pompa berhenti beroperasi',
             'damage_date' => today()->subDay()->toDateString(),
             'damage_time' => '08:00:00',
@@ -115,6 +115,40 @@ class DowntimeTest extends TestCase
 
         $this->assertFalse($request->isUnplannedDowntime());
         $this->assertNull($request->downtimeMinutes());
+    }
+
+    public function test_non_faulty_operation_status_has_no_downtime(): void
+    {
+        foreach (['Running', 'Stopped', 'Standby'] as $operationStatus) {
+            $request = $this->makeRequest(['operation_status' => $operationStatus]);
+            $this->makeWorkOrder($request);
+
+            $request->refresh()->load('workOrders');
+
+            $this->assertFalse($request->isUnplannedDowntime());
+            $this->assertNull($request->downtimeStart());
+            $this->assertNull($request->downtimeEnd());
+            $this->assertNull($request->downtimeMinutes());
+        }
+    }
+
+    public function test_downtime_page_only_lists_faulty_requests(): void
+    {
+        $faulty = $this->makeRequest(['description' => 'Pompa faulty']);
+        $this->makeWorkOrder($faulty);
+
+        $stopped = $this->makeRequest([
+            'operation_status' => 'Stopped',
+            'description' => 'Pompa stopped',
+        ]);
+        $this->makeWorkOrder($stopped);
+
+        $this->actingAs($this->user);
+
+        Livewire::test(DowntimeReport::class)
+            ->assertOk()
+            ->assertSee('Pompa faulty')
+            ->assertDontSee('Pompa stopped');
     }
 
     public function test_maintenance_history_downtime_only_applies_to_corrective_from_request(): void

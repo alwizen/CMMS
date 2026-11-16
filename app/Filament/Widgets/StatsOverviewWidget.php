@@ -38,6 +38,7 @@ class StatsOverviewWidget extends BaseWidget
         $completionRate = $woCount > 0 ? round(($woDone / $woCount) * 100) : 0;
 
         $downtimeRequests = MaintenanceRequest::query()
+            ->where('operation_status', 'Faulty')
             ->where('status', '!=', MaintenanceRequest::STATUSES['Rejected'])
             ->tap(fn ($q) => $this->applyDateFilter($q, 'damage_date'))
             ->with('workOrders')
