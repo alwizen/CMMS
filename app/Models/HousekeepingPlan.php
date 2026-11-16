@@ -102,4 +102,9 @@ class HousekeepingPlan extends Model
     {
         return $this->hasMany(HousekeepingPlanTask::class);
     }
+
+    public function requests(): HasMany
+    {
+        return $this->hasMany(HousekeepingRequest::class);
+    }
 }

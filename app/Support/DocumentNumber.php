@@ -23,6 +23,7 @@ class DocumentNumber
         'maintenance_request' => 'MR-{YYYY}{MM}{DD}-{SEQ}',
         'document' => 'DOC-{YYYY}{MM}-{SEQ}',
         'housekeeping_plan' => 'HKP-{YYYY}{MM}{DD}-{SEQ}',
+        'housekeeping_request' => 'HKR-{YYYY}{MM}{DD}-{SEQ}',
     ];
 
     /**
@@ -33,6 +34,7 @@ class DocumentNumber
         'maintenance_request' => 'Maintenance Request',
         'document' => 'Document',
         'housekeeping_plan' => 'Housekeeping Plan',
+        'housekeeping_request' => 'Housekeeping Request',
     ];
 
     public static function format(string $type): string
