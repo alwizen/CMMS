@@ -2,7 +2,7 @@
 
 namespace Tests\Feature;
 
-use App\Filament\Pages\Dashboard;
+use App\Filament\Pages\HousekeepingDashboard;
 use App\Filament\Resources\HousekeepingRequests\Pages\ViewHousekeepingRequest;
 use App\Models\Company;
 use App\Models\HousekeepingArea;
@@ -166,7 +166,7 @@ class HousekeepingPlanGenerateTest extends TestCase
         Gate::before(fn () => true);
         $this->actingAs($this->user);
 
-        Livewire::test(Dashboard::class)
+        Livewire::test(HousekeepingDashboard::class)
             ->assertActionExists('generateHousekeepingPlans')
             ->callAction('generateHousekeepingPlans', data: [
                 'area_ids' => [$this->area->id],
@@ -186,7 +186,7 @@ class HousekeepingPlanGenerateTest extends TestCase
 
         HousekeepingTask::query()->update(['is_active' => false]);
 
-        Livewire::test(Dashboard::class)
+        Livewire::test(HousekeepingDashboard::class)
             ->callAction('generateHousekeepingPlans', data: [
                 'area_ids' => [$this->area->id],
                 'plan_date' => today()->toDateString(),
