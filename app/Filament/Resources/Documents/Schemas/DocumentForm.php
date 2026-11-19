@@ -4,6 +4,7 @@ namespace App\Filament\Resources\Documents\Schemas;
 
 use App\Models\Document;
 use App\Models\Equipment;
+use App\Models\EquipmentType;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Select;
@@ -11,6 +12,7 @@ use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Components\Utilities\Get;
+use Filament\Schemas\Components\Utilities\Set;
 use Filament\Schemas\Schema;
 
 class DocumentForm
@@ -32,11 +34,26 @@ class DocumentForm
                             ->required()
                             ->maxLength(150)
                             ->placeholder('e.g., Pump Calibration Certificate'),
-                        Select::make('equipment_id')
-                            ->label('Equipment')
-                            ->options(Equipment::pluck('tag_number', 'id'))
+                        Select::make('equipment_type_id')
+                            ->label('Equipment Type')
+                            ->options(EquipmentType::pluck('name', 'id'))
                             ->searchable()
                             ->nullable()
+                            ->live()
+                            ->placeholder('Select equipment type (optional)')
+                            ->afterStateUpdated(fn (Set $set) => $set('equipment_id', null))
+                            ->dehydrated(false)
+                            ->afterStateHydrated(function (Select $component, $record): void {
+                                $component->state($record?->equipment?->equipment_type_id);
+                            }),
+                        Select::make('equipment_id')
+                            ->label('Equipment')
+                            ->options(fn (Get $get) => Equipment::query()
+                                ->where('equipment_type_id', $get('equipment_type_id'))
+                                ->pluck('tag_number', 'id'))
+                            ->searchable()
+                            ->nullable()
+                            ->visible(fn (Get $get): bool => filled($get('equipment_type_id')))
                             ->placeholder('Select equipment (optional)'),
                         TextInput::make('revision')
                             ->label('Revision')

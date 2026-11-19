@@ -34,6 +34,13 @@ class EquipmentImporter extends Importer
                 ->rules(['required', 'string', 'max:50'])
                 ->helperText('Unik. Dipakai sebagai kunci update saat import ulang.')
                 ->example('P-101'),
+            ImportColumn::make('pm_tag')
+                ->label('PM Tag')
+                ->castStateUsing(fn (mixed $state): ?string => static::normalizeImportText($state))
+                ->ignoreBlankState()
+                ->rules(['nullable', 'string', 'max:50'])
+                ->helperText('Tag PM equipment (opsional).')
+                ->example('PM-P-101'),
             ImportColumn::make('description')
                 ->castStateUsing(fn (mixed $state): ?string => static::normalizeImportText($state))
                 ->ignoreBlankState()
