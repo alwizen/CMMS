@@ -32,6 +32,10 @@ class EquipmentForm
                             ->required()
                             ->unique(ignoreRecord: true)
                             ->placeholder('e.g., P-101, T-001'),
+                        TextInput::make('pm_tag')
+                            ->label('PM Tag')
+                            ->nullable()
+                            ->placeholder('e.g., PM-P-101'),
                         Textarea::make('description')
                             ->label('Description')
                             ->nullable()

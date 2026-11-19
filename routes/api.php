@@ -8,6 +8,7 @@ use App\Http\Controllers\Api\DowntimeController;
 use App\Http\Controllers\Api\EquipmentController;
 use App\Http\Controllers\Api\HousekeepingAreaController;
 use App\Http\Controllers\Api\HousekeepingPlanController;
+use App\Http\Controllers\Api\HousekeepingRequestController;
 use App\Http\Controllers\Api\MaintenanceCalendarController;
 use App\Http\Controllers\Api\MaintenanceRequestController;
 use App\Http\Controllers\Api\NotificationController;
@@ -70,6 +71,12 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/housekeeping-plans/{planId}/manpowers', [HousekeepingPlanController::class, 'addManpowers']);
     Route::post('/housekeeping-plans/{planId}/tasks/{taskId}/photos', [HousekeepingPlanController::class, 'uploadTaskPhotos']);
     Route::delete('/housekeeping-plans/{planId}/tasks/{taskId}/photos', [HousekeepingPlanController::class, 'deleteTaskPhoto']);
+
+    Route::get('/housekeeping-requests', [HousekeepingRequestController::class, 'index']);
+    Route::post('/housekeeping-requests', [HousekeepingRequestController::class, 'store']);
+    Route::get('/housekeeping-requests/{id}', [HousekeepingRequestController::class, 'show']);
+    Route::post('/housekeeping-requests/{id}/approve', [HousekeepingRequestController::class, 'approve']);
+    Route::post('/housekeeping-requests/{id}/reject', [HousekeepingRequestController::class, 'reject']);
 
     Route::get('/housekeeping-areas', [HousekeepingAreaController::class, 'index']);
     Route::get('/housekeeping-areas/{id}/manpowers', [HousekeepingAreaController::class, 'manpowers']);

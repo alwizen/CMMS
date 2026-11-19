@@ -6,6 +6,7 @@ use App\Filament\Resources\Equipment\RelationManagers\MaintenanceHistoriesRelati
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
+use Filament\Actions\ViewAction;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\SelectFilter;
@@ -31,6 +32,9 @@ class EquipmentTable
                     ->grow(false),
                 TextColumn::make('tag_number')
                     ->label('Tag Number')
+                    ->searchable(),
+                TextColumn::make('pm_tag')
+                    ->label('PM Tag')
                     ->searchable(),
                 TextColumn::make('description')
                     ->label('Description')
@@ -83,6 +87,7 @@ class EquipmentTable
                     ]),
             ])
             ->recordActions([
+                ViewAction::make(),
                 RelationManagerAction::make('lesson-relation-manager')
                     ->label('View History')
                     ->icon(Heroicon::OutlinedClock)

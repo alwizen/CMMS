@@ -93,6 +93,7 @@ class SiteSettings extends Page
                     $this->formatField('work_order'),
                     $this->formatField('maintenance_request'),
                     $this->formatField('housekeeping_plan'),
+                    $this->formatField('housekeeping_request'),
                     $this->formatField('document'),
                 ])
                 ->columns(2),

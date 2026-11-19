@@ -2,6 +2,7 @@
 
 namespace App\Filament\Pages;
 
+use App\Filament\Actions\GenerateHousekeepingPlanAction;
 use App\Filament\Widgets;
 use BackedEnum;
 use Filament\Forms;
@@ -41,6 +42,7 @@ class HousekeepingDashboard extends BaseDashboard
     public function getHeaderActions(): array
     {
         return [
+            GenerateHousekeepingPlanAction::make(),
             FilterAction::make()
                 ->schema([
                     Forms\Components\Select::make('dateRange')
