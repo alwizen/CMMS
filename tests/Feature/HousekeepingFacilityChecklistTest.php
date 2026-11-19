@@ -74,6 +74,65 @@ class HousekeepingFacilityChecklistTest extends TestCase
         ]);
     }
 
+    public function test_checklist_modal_exposes_create_another_button(): void
+    {
+        $component = $this->facilityRelationManager()
+            ->mountTableAction('checklist', $this->facility);
+
+        $action = $component->instance()->getMountedAction();
+
+        $this->assertNotNull($action);
+        $this->assertTrue(
+            $action->canCreateAnother(),
+            'Tombol "Buat & buat lagi" bawaan Filament harus aktif.',
+        );
+    }
+
+    public function test_create_another_saves_task_and_keeps_modal_open(): void
+    {
+        $this->facilityRelationManager()
+            ->mountTableAction('checklist', $this->facility)
+            ->setTableActionData([
+                'name' => 'Checklist Pertama',
+                'is_active' => true,
+            ])
+            ->callMountedTableAction(['another' => true])
+            ->assertHasNoTableActionErrors();
+
+        $this->assertDatabaseHas('housekeeping_tasks', [
+            'housekeeping_facility_id' => $this->facility->id,
+            'name' => 'Checklist Pertama',
+        ]);
+    }
+
+    public function test_create_another_can_be_used_repeatedly(): void
+    {
+        $component = $this->facilityRelationManager()
+            ->mountTableAction('checklist', $this->facility)
+            ->setTableActionData([
+                'name' => 'Checklist Satu',
+                'is_active' => true,
+            ])
+            ->callMountedTableAction(['another' => true])
+            ->assertHasNoTableActionErrors();
+
+        // Modal tetap terbuka setelah "Buat & buat lagi".
+        $this->assertNotNull($component->instance()->getMountedAction());
+
+        $component
+            ->setTableActionData([
+                'name' => 'Checklist Dua',
+                'is_active' => true,
+            ])
+            ->callMountedTableAction(['another' => true])
+            ->assertHasNoTableActionErrors();
+
+        $this->assertSame(
+            ['Checklist Satu', 'Checklist Dua'],
+            $this->facility->tasks()->orderBy('id')->pluck('name')->all(),
+        );
+    }
+
     public function test_checklist_modal_shows_existing_tasks(): void
     {
         HousekeepingTask::create([

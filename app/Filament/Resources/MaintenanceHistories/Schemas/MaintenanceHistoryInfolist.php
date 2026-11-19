@@ -38,8 +38,6 @@ class MaintenanceHistoryInfolist
                                 'pending' => 'info',
                                 default => 'gray',
                             }),
-                        TextEntry::make('maintenance_type')
-                            ->label('Maintenance Type'),
                         TextEntry::make('classification')
                             ->badge()
                             ->color(fn (?string $state): string => match (strtolower((string) $state)) {

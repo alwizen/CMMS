@@ -8,60 +8,88 @@ use Illuminate\Database\Seeder;
 
 class ActivitySeeder extends Seeder
 {
+    /**
+     * Master checklist (Activity) per equipment type.
+     * Nilai type/classification/answer_type/interval mengikuti konstanta di App\Models\Activity
+     * agar cocok dengan pilihan pada form dan Generate WO.
+     *
+     * @var array<int, array{type: string, name: string, activity_type: string, classification: string, interval: string, answer_type: string, reference: string, optimum?: float, minimum?: float, maximum?: float, unit?: string}>
+     */
+    public const ACTIVITIES = [
+        // Pump
+        ['type' => 'PUMP', 'name' => 'Visual Check Pompa', 'activity_type' => 'visual_check', 'classification' => 'preventive', 'interval' => 'daily', 'answer_type' => 'qualitative', 'reference' => 'Cek kebocoran, getaran, dan suara tidak normal'],
+        ['type' => 'PUMP', 'name' => 'Vibration Check', 'activity_type' => 'measurement', 'classification' => 'preventive', 'interval' => 'weekly', 'answer_type' => 'quantitative', 'reference' => 'Ukur level getaran bearing', 'optimum' => 2.8, 'maximum' => 5.0, 'unit' => 'mm/s'],
+        ['type' => 'PUMP', 'name' => 'Oil Change', 'activity_type' => 'maintenance', 'classification' => 'preventive', 'interval' => 'monthly', 'answer_type' => 'qualitative', 'reference' => 'Ganti oli dan filter sesuai manual'],
+        ['type' => 'PUMP', 'name' => 'Bearing Lubrication', 'activity_type' => 'lubrication', 'classification' => 'preventive', 'interval' => 'quarterly', 'answer_type' => 'qualitative', 'reference' => 'Pelumasan bearing pompa'],
+        ['type' => 'PUMP', 'name' => 'Overhaul Tahunan', 'activity_type' => 'maintenance', 'classification' => 'preventive', 'interval' => 'yearly', 'answer_type' => 'qualitative', 'reference' => 'Overhaul menyeluruh pompa'],
+
+        // Compressor
+        ['type' => 'COMPRESSOR', 'name' => 'Drain Condensate', 'activity_type' => 'maintenance', 'classification' => 'preventive', 'interval' => 'daily', 'answer_type' => 'qualitative', 'reference' => 'Buang kondensat dari tangki udara'],
+        ['type' => 'COMPRESSOR', 'name' => 'Oil Level Check', 'activity_type' => 'inspection', 'classification' => 'preventive', 'interval' => 'weekly', 'answer_type' => 'qualitative', 'reference' => 'Periksa level oli kompresor'],
+        ['type' => 'COMPRESSOR', 'name' => 'Air Filter Cleaning', 'activity_type' => 'cleaning', 'classification' => 'preventive', 'interval' => 'monthly', 'answer_type' => 'qualitative', 'reference' => 'Bersihkan filter udara'],
+        ['type' => 'COMPRESSOR', 'name' => 'Pressure Relief Valve Check', 'activity_type' => 'testing', 'classification' => 'preventive', 'interval' => 'quarterly', 'answer_type' => 'quantitative', 'reference' => 'Test valve relief', 'optimum' => 8.0, 'maximum' => 8.5, 'unit' => 'bar'],
+
+        // Tank
+        ['type' => 'TANK', 'name' => 'Visual Inspection Tangki', 'activity_type' => 'inspection', 'classification' => 'preventive', 'interval' => 'weekly', 'answer_type' => 'qualitative', 'reference' => 'Inspeksi visual korosi dan kebocoran'],
+        ['type' => 'TANK', 'name' => 'Water Drain', 'activity_type' => 'maintenance', 'classification' => 'preventive', 'interval' => 'monthly', 'answer_type' => 'qualitative', 'reference' => 'Buang air endapan pada tangki'],
+        ['type' => 'TANK', 'name' => 'Pressure Test', 'activity_type' => 'testing', 'classification' => 'preventive', 'interval' => 'quarterly', 'answer_type' => 'quantitative', 'reference' => 'Test tekanan tangki', 'optimum' => 2.5, 'maximum' => 3.0, 'unit' => 'bar'],
+        ['type' => 'TANK', 'name' => 'Internal Cleaning', 'activity_type' => 'cleaning', 'classification' => 'preventive', 'interval' => 'yearly', 'answer_type' => 'qualitative', 'reference' => 'Pembersihan internal dan removal endapan'],
+
+        // Panel
+        ['type' => 'PANEL', 'name' => 'Panel Cleaning', 'activity_type' => 'cleaning', 'classification' => 'preventive', 'interval' => 'monthly', 'answer_type' => 'qualitative', 'reference' => 'Bersihkan debu dan debris panel'],
+        ['type' => 'PANEL', 'name' => 'Electrical Check', 'activity_type' => 'measurement', 'classification' => 'preventive', 'interval' => 'quarterly', 'answer_type' => 'quantitative', 'reference' => 'Ukur tegangan dan arus', 'optimum' => 380.0, 'minimum' => 360.0, 'maximum' => 400.0, 'unit' => 'V'],
+        ['type' => 'PANEL', 'name' => 'Circuit Breaker Test', 'activity_type' => 'testing', 'classification' => 'preventive', 'interval' => 'yearly', 'answer_type' => 'qualitative', 'reference' => 'Test circuit breaker'],
+
+        // Valve
+        ['type' => 'VALVE', 'name' => 'Valve Operation Test', 'activity_type' => 'testing', 'classification' => 'preventive', 'interval' => 'monthly', 'answer_type' => 'qualitative', 'reference' => 'Test operasi buka/tutup valve'],
+        ['type' => 'VALVE', 'name' => 'Seal Inspection', 'activity_type' => 'inspection', 'classification' => 'preventive', 'interval' => 'quarterly', 'answer_type' => 'qualitative', 'reference' => 'Inspeksi kebocoran seal'],
+
+        // Motor
+        ['type' => 'MOTOR', 'name' => 'Bearing Lubrication', 'activity_type' => 'lubrication', 'classification' => 'preventive', 'interval' => 'quarterly', 'answer_type' => 'qualitative', 'reference' => 'Pelumasan bearing motor'],
+        ['type' => 'MOTOR', 'name' => 'Insulation Resistance Test', 'activity_type' => 'testing', 'classification' => 'preventive', 'interval' => 'yearly', 'answer_type' => 'quantitative', 'reference' => 'Test resistansi isolasi', 'minimum' => 1.0, 'unit' => 'MΩ'],
+
+        // Fire Pump
+        ['type' => 'FIRE-PUMP', 'name' => 'Visual Check Fire Pump', 'activity_type' => 'visual_check', 'classification' => 'preventive', 'interval' => 'monthly', 'answer_type' => 'qualitative', 'reference' => 'Cek kondisi fisik dan panel fire pump'],
+        ['type' => 'FIRE-PUMP', 'name' => 'System Pressure Test', 'activity_type' => 'testing', 'classification' => 'preventive', 'interval' => 'quarterly', 'answer_type' => 'quantitative', 'reference' => 'Test tekanan sistem', 'optimum' => 7.0, 'maximum' => 8.0, 'unit' => 'bar'],
+        ['type' => 'FIRE-PUMP', 'name' => 'Flow Rate Check', 'activity_type' => 'testing', 'classification' => 'preventive', 'interval' => 'semi_annual', 'answer_type' => 'quantitative', 'reference' => 'Ukur laju aliran', 'optimum' => 500.0, 'maximum' => 550.0, 'unit' => 'lpm'],
+
+        // Genset
+        ['type' => 'GENSET', 'name' => 'Battery Check', 'activity_type' => 'inspection', 'classification' => 'preventive', 'interval' => 'monthly', 'answer_type' => 'qualitative', 'reference' => 'Periksa kondisi baterai genset'],
+        ['type' => 'GENSET', 'name' => 'Load Test', 'activity_type' => 'testing', 'classification' => 'preventive', 'interval' => 'quarterly', 'answer_type' => 'qualitative', 'reference' => 'Test genset dengan beban'],
+        ['type' => 'GENSET', 'name' => 'Engine Oil Change', 'activity_type' => 'maintenance', 'classification' => 'preventive', 'interval' => 'yearly', 'answer_type' => 'qualitative', 'reference' => 'Ganti oli dan filter mesin'],
+    ];
+
     public function run(): void
     {
-        $pump = EquipmentType::where('code', 'PUMP')->first();
-        $tank = EquipmentType::where('code', 'TANK')->first();
-        $compressor = EquipmentType::where('code', 'COMPRESSOR')->first();
-        $genset = EquipmentType::where('code', 'GENSET')->first();
-        $panel = EquipmentType::where('code', 'PANEL')->first();
-        $firePump = EquipmentType::where('code', 'FIRE-PUMP')->first();
-        $motor = EquipmentType::where('code', 'MOTOR')->first();
-        $valve = EquipmentType::where('code', 'VALVE')->first();
+        $types = EquipmentType::query()->pluck('id', 'code');
 
-        $activities = [
-            // Pump Activities
-            ['equipment_type_id' => $pump->id, 'name' => 'Oil Change', 'type' => 'Maintenance', 'maintenance_classification' => 'Preventive', 'interval' => 'Monthly', 'answer_type' => 'Qualitative', 'reference' => 'Ganti oli dan filter sesuai manual'],
-            ['equipment_type_id' => $pump->id, 'name' => 'Vibration Check', 'type' => 'Inspection', 'maintenance_classification' => 'Preventive', 'interval' => 'Weekly', 'answer_type' => 'Quantitative', 'reference' => 'Ukur level getaran', 'optimum' => 2.8, 'maximum' => 5.0, 'unit' => 'mm/s'],
-            ['equipment_type_id' => $pump->id, 'name' => 'Temperature Check', 'type' => 'Inspection', 'maintenance_classification' => 'Preventive', 'interval' => 'Weekly', 'answer_type' => 'Quantitative', 'reference' => 'Cek suhu bearing', 'optimum' => 50.0, 'maximum' => 80.0, 'unit' => '°C'],
-            ['equipment_type_id' => $pump->id, 'name' => 'Bearing Replacement', 'type' => 'Replacement', 'maintenance_classification' => 'Corrective', 'interval' => 'As needed', 'answer_type' => 'Qualitative', 'reference' => 'Ganti bearing yang aus'],
+        foreach (self::ACTIVITIES as $activity) {
+            $typeId = $types[$activity['type']] ?? null;
 
-            // Tank Activities
-            ['equipment_type_id' => $tank->id, 'name' => 'Visual Inspection', 'type' => 'Inspection', 'maintenance_classification' => 'Preventive', 'interval' => 'Quarterly', 'answer_type' => 'Qualitative', 'reference' => 'Inspeksi visual korosi dan kebocoran'],
-            ['equipment_type_id' => $tank->id, 'name' => 'Internal Cleaning', 'type' => 'Cleaning', 'maintenance_classification' => 'Preventive', 'interval' => 'Yearly', 'answer_type' => 'Qualitative', 'reference' => 'Pembersihan internal dan removal endapan'],
-            ['equipment_type_id' => $tank->id, 'name' => 'Pressure Test', 'type' => 'Testing', 'maintenance_classification' => 'Preventive', 'interval' => 'Yearly', 'answer_type' => 'Quantitative', 'reference' => 'Test tekanan tangki', 'optimum' => 2.5, 'maximum' => 3.0, 'unit' => 'bar'],
+            if (! $typeId) {
+                continue;
+            }
 
-            // Compressor Activities
-            ['equipment_type_id' => $compressor->id, 'name' => 'Air Filter Cleaning', 'type' => 'Cleaning', 'maintenance_classification' => 'Preventive', 'interval' => 'Monthly', 'answer_type' => 'Qualitative', 'reference' => 'Bersihkan filter udara'],
-            ['equipment_type_id' => $compressor->id, 'name' => 'Oil Level Check', 'type' => 'Inspection', 'maintenance_classification' => 'Preventive', 'interval' => 'Monthly', 'answer_type' => 'Qualitative', 'reference' => 'Periksa level oli'],
-            ['equipment_type_id' => $compressor->id, 'name' => 'Pressure Relief Valve Check', 'type' => 'Testing', 'maintenance_classification' => 'Preventive', 'interval' => 'Quarterly', 'answer_type' => 'Quantitative', 'reference' => 'Test valve relief', 'optimum' => 8.0, 'maximum' => 8.5, 'unit' => 'bar'],
-
-            // Genset Activities
-            ['equipment_type_id' => $genset->id, 'name' => 'Engine Oil Change', 'type' => 'Maintenance', 'maintenance_classification' => 'Preventive', 'interval' => 'Every 250 hours', 'answer_type' => 'Qualitative', 'reference' => 'Ganti oli dan filter mesin'],
-            ['equipment_type_id' => $genset->id, 'name' => 'Load Test', 'type' => 'Testing', 'maintenance_classification' => 'Preventive', 'interval' => 'Monthly', 'answer_type' => 'Qualitative', 'reference' => 'Test genset dengan beban'],
-            ['equipment_type_id' => $genset->id, 'name' => 'Battery Check', 'type' => 'Inspection', 'maintenance_classification' => 'Preventive', 'interval' => 'Monthly', 'answer_type' => 'Qualitative', 'reference' => 'Periksa kondisi baterai'],
-            ['equipment_type_id' => $genset->id, 'name' => 'Fuel Filter Change', 'type' => 'Maintenance', 'maintenance_classification' => 'Preventive', 'interval' => 'Every 500 hours', 'answer_type' => 'Qualitative', 'reference' => 'Ganti filter bahan bakar'],
-
-            // Panel Activities
-            ['equipment_type_id' => $panel->id, 'name' => 'Electrical Check', 'type' => 'Testing', 'maintenance_classification' => 'Preventive', 'interval' => 'Quarterly', 'answer_type' => 'Quantitative', 'reference' => 'Ukur tegangan dan arus', 'optimum' => 380.0, 'minimum' => 360.0, 'maximum' => 400.0, 'unit' => 'V'],
-            ['equipment_type_id' => $panel->id, 'name' => 'Panel Cleaning', 'type' => 'Cleaning', 'maintenance_classification' => 'Preventive', 'interval' => 'Monthly', 'answer_type' => 'Qualitative', 'reference' => 'Bersihkan debu dan debris'],
-            ['equipment_type_id' => $panel->id, 'name' => 'Circuit Breaker Test', 'type' => 'Testing', 'maintenance_classification' => 'Preventive', 'interval' => 'Yearly', 'answer_type' => 'Qualitative', 'reference' => 'Test circuit breaker'],
-
-            // Fire Pump Activities
-            ['equipment_type_id' => $firePump->id, 'name' => 'System Pressure Test', 'type' => 'Testing', 'maintenance_classification' => 'Preventive', 'interval' => 'Quarterly', 'answer_type' => 'Quantitative', 'reference' => 'Test tekanan sistem', 'optimum' => 7.0, 'maximum' => 8.0, 'unit' => 'bar'],
-            ['equipment_type_id' => $firePump->id, 'name' => 'Flow Rate Check', 'type' => 'Testing', 'maintenance_classification' => 'Preventive', 'interval' => 'Semi-annually', 'answer_type' => 'Quantitative', 'reference' => 'Ukur laju aliran', 'optimum' => 500.0, 'maximum' => 550.0, 'unit' => 'lpm'],
-
-            // Motor Activities
-            ['equipment_type_id' => $motor->id, 'name' => 'Bearing Lubrication', 'type' => 'Maintenance', 'maintenance_classification' => 'Preventive', 'interval' => 'Quarterly', 'answer_type' => 'Qualitative', 'reference' => 'Pelumasan bearing'],
-            ['equipment_type_id' => $motor->id, 'name' => 'Insulation Resistance Test', 'type' => 'Testing', 'maintenance_classification' => 'Preventive', 'interval' => 'Yearly', 'answer_type' => 'Quantitative', 'reference' => 'Test resistansi isolasi', 'minimum' => 1.0, 'unit' => 'MΩ'],
-
-            // Valve Activities
-            ['equipment_type_id' => $valve->id, 'name' => 'Valve Operation Test', 'type' => 'Testing', 'maintenance_classification' => 'Preventive', 'interval' => 'Monthly', 'answer_type' => 'Qualitative', 'reference' => 'Test operasi valve'],
-            ['equipment_type_id' => $valve->id, 'name' => 'Seal Inspection', 'type' => 'Inspection', 'maintenance_classification' => 'Preventive', 'interval' => 'Quarterly', 'answer_type' => 'Qualitative', 'reference' => 'Inspeksi kebocoran seal'],
-        ];
-
-        foreach ($activities as $activity) {
-            Activity::create($activity + ['status' => true]);
+            Activity::firstOrCreate(
+                [
+                    'equipment_type_id' => $typeId,
+                    'name' => $activity['name'],
+                ],
+                [
+                    'type' => $activity['activity_type'],
+                    'maintenance_classification' => $activity['classification'],
+                    'interval' => $activity['interval'],
+                    'answer_type' => $activity['answer_type'],
+                    'reference' => $activity['reference'],
+                    'optimum' => $activity['optimum'] ?? null,
+                    'minimum' => $activity['minimum'] ?? null,
+                    'maximum' => $activity['maximum'] ?? null,
+                    'unit' => $activity['unit'] ?? null,
+                    'status' => true,
+                ],
+            );
         }
+
+        $this->command?->info('Checklist (activity) siap: '.count(self::ACTIVITIES).' item');
     }
 }

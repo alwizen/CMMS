@@ -12,6 +12,7 @@ use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Gate;
 use Livewire\Livewire;
+use Spatie\Permission\Models\Role;
 use Tests\TestCase;
 
 class HousekeepingTaskActionsVisibilityTest extends TestCase
@@ -21,7 +22,11 @@ class HousekeepingTaskActionsVisibilityTest extends TestCase
     public function test_actions_present_for_each_status(): void
     {
         Gate::before(fn () => true);
-        $this->actingAs(User::factory()->create());
+        Role::findOrCreate('patra-jasa', 'web');
+
+        $petugas = User::factory()->create(['status' => true]);
+        $petugas->assignRole('patra-jasa');
+        $this->actingAs($petugas);
 
         $company = Company::create(['code' => 'HK-1', 'name' => 'HK Co']);
         $area = HousekeepingArea::create(['company_id' => $company->id, 'code' => 'a', 'name' => 'A']);

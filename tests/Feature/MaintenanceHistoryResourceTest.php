@@ -49,7 +49,6 @@ class MaintenanceHistoryResourceTest extends TestCase
     {
         $history = MaintenanceHistory::create([
             'equipment_id' => $this->equipment->id,
-            'maintenance_type' => 'Preventive',
             'classification' => 'Preventive',
             'description' => 'Pengecekan rutin pompa',
             'maintenance_date' => now(),
@@ -102,7 +101,6 @@ class MaintenanceHistoryResourceTest extends TestCase
             'equipment_id' => $this->equipment->id,
             'work_order_id' => $workOrder->id,
             'work_order_number' => $workOrder->work_order_number,
-            'maintenance_type' => 'Preventive',
             'classification' => 'Preventive',
             'description' => 'Pengecekan rutin pompa',
             'maintenance_date' => now(),

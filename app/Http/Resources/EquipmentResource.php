@@ -17,10 +17,13 @@ class EquipmentResource extends JsonResource
             'equipment_type_detail' => $this->whenLoaded('equipmentType', fn () => [
                 'id' => $this->equipmentType->id,
                 'name' => $this->equipmentType->name,
-                'responsible_user' => $this->equipmentType->responsibleUser ? [
-                    'id' => $this->equipmentType->responsibleUser->id,
-                    'name' => $this->equipmentType->responsibleUser->name,
-                ] : null,
+                'responsible_users' => $this->equipmentType->relationLoaded('responsibleUsers')
+                    ? $this->equipmentType->responsibleUsers->map(fn ($user): array => [
+                        'id' => $user->id,
+                        'name' => $user->name,
+                    ])->values()
+                    : [],
+                'responsible_user' => $this->primaryResponsibleUser(),
             ]),
             'manufacturer' => $this->manufacturer,
             'model' => $this->model,
@@ -39,5 +42,28 @@ class EquipmentResource extends JsonResource
                 ]),
             ]),
         ];
+    }
+
+    /**
+     * Penanggung jawab utama (pertama) untuk kompatibilitas klien lama.
+     *
+     * @return array{id: int, name: string}|null
+     */
+    protected function primaryResponsibleUser(): ?array
+    {
+        $type = $this->equipmentType;
+
+        if (! $type) {
+            return null;
+        }
+
+        $user = $type->relationLoaded('responsibleUsers')
+            ? $type->responsibleUsers->first()
+            : $type->responsibleUser;
+
+        return $user ? [
+            'id' => $user->id,
+            'name' => $user->name,
+        ] : null;
     }
 }

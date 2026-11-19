@@ -64,6 +64,33 @@ class NotifyRecipientsTest extends TestCase
         $this->assertSame([$spv->id], $ids);
     }
 
+    public function test_housekeeping_supervisors_use_spv_gos_role(): void
+    {
+        Role::findOrCreate('spv_gos', 'web');
+        Role::findOrCreate('spv_mos', 'web');
+
+        $gos = User::factory()->create();
+        $gos->assignRole('spv_gos');
+
+        $mos = User::factory()->create();
+        $mos->assignRole('spv_mos');
+
+        $this->assertSame([$gos->id], Notify::housekeepingSupervisors()->pluck('id')->all());
+
+        // Supervisor maintenance tetap memakai SPV MOS.
+        $this->assertSame([$mos->id], Notify::supervisors()->pluck('id')->all());
+    }
+
+    public function test_housekeeping_supervisors_fall_back_to_super_admin(): void
+    {
+        Role::findOrCreate('super_admin', 'web');
+
+        $admin = User::factory()->create();
+        $admin->assignRole('super_admin');
+
+        $this->assertSame([$admin->id], Notify::housekeepingSupervisors()->pluck('id')->all());
+    }
+
     public function test_work_order_recipients_are_coordinator_and_workers_without_duplicates(): void
     {
         $coordinator = User::factory()->create();

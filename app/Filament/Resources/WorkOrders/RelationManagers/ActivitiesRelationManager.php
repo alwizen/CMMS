@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\WorkOrders\RelationManagers;
 
 use App\Models\Activity;
+use App\Models\WorkOrderActivity;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\CreateAction;
 use Filament\Actions\DeleteAction;
@@ -35,7 +36,7 @@ class ActivitiesRelationManager extends RelationManager
                 Section::make('Item Pekerjaan')
                     ->schema([
                         Select::make('activity_id')
-                            ->label('Activity')
+                            ->label('Activity (checklist)')
                             ->options(fn (): array => Activity::query()
                                 ->with('equipmentType')
                                 ->where('status', true)
@@ -46,7 +47,14 @@ class ActivitiesRelationManager extends RelationManager
                                 ])
                                 ->all())
                             ->searchable()
-                            ->required(),
+                            ->live()
+                            ->nullable()
+                            ->placeholder('Pilih dari checklist atau isi nama manual di samping'),
+                        TextInput::make('name')
+                            ->label('Nama Manual')
+                            ->nullable()
+                            ->placeholder('Isi bila bukan dari checklist')
+                            ->helperText('Dipakai bila aktivitas diketik sendiri.'),
                         TextInput::make('reference')
                             ->label('Reference')
                             ->nullable(),
@@ -92,8 +100,9 @@ class ActivitiesRelationManager extends RelationManager
     {
         return $table
             ->columns([
-                TextColumn::make('activity.name')
+                TextColumn::make('name')
                     ->label('Activity')
+                    ->state(fn (WorkOrderActivity $record): string => $record->displayName())
                     ->searchable()
                     ->sortable(),
                 TextColumn::make('reference')

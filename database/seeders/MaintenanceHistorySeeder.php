@@ -14,15 +14,6 @@ class MaintenanceHistorySeeder extends Seeder
         $equipments = Equipment::all();
         $users = User::where('email', '!=', 'admin@ft-tegal.com')->get();
 
-        $maintenanceTypes = [
-            'Preventive Maintenance',
-            'Corrective Maintenance',
-            'Inspection',
-            'Cleaning',
-            'Testing',
-            'Repair',
-        ];
-
         $findings = [
             'Equipment dalam kondisi baik, tidak ada masalah ditemukan.',
             'Ditemukan sedikit keausan pada bearing, tetap dalam batas toleransi.',
@@ -45,7 +36,6 @@ class MaintenanceHistorySeeder extends Seeder
             for ($i = 0; $i < 5; $i++) {
                 MaintenanceHistory::create([
                     'equipment_id' => $equipment->id,
-                    'maintenance_type' => $maintenanceTypes[array_rand($maintenanceTypes)],
                     'classification' => rand(0, 1) ? 'Preventive' : 'Corrective',
                     'description' => 'Pemeliharaan rutin untuk '.$equipment->name,
                     'maintenance_date' => now()->subDays(rand(1, 90)),

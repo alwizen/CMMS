@@ -30,10 +30,13 @@ class WorkOrder extends Model
         'maintenance_request_id',
         'issued_by',
         'technician_coordinator_id',
+        'fungsi',
         'classification',
         'interval',
         'start_at',
         'finish_at',
+        'expired_days',
+        'expired_at',
         'note',
         'status',
     ];
@@ -41,7 +44,26 @@ class WorkOrder extends Model
     protected $casts = [
         'start_at' => 'datetime',
         'finish_at' => 'datetime',
+        'expired_days' => 'integer',
+        'expired_at' => 'datetime',
     ];
+
+    /**
+     * Apakah WO melewati batas masa berlaku (belum selesai & sudah expired).
+     */
+    public function isExpired(): bool
+    {
+        if (! $this->expired_at) {
+            return false;
+        }
+
+        $closed = [
+            self::STATUSES['Completed'],
+            self::STATUSES['Cancelled'],
+        ];
+
+        return ! in_array($this->status, $closed, true) && $this->expired_at->isPast();
+    }
 
     /**
      * Apakah WO sudah boleh dieksekusi (tanggal mulai sudah tiba/hari ini).
@@ -73,6 +95,26 @@ class WorkOrder extends Model
     public function technicianCoordinator(): BelongsTo
     {
         return $this->belongsTo(User::class, 'technician_coordinator_id');
+    }
+
+    /**
+     * Apakah WO belum diambil / dikerjakan siapa pun.
+     */
+    public function isUnclaimed(): bool
+    {
+        return $this->technician_coordinator_id === null;
+    }
+
+    /**
+     * Ambil WO untuk user tertentu (performed by) bila belum ada pemilik.
+     */
+    public function claimBy(?int $userId): void
+    {
+        if ($this->technician_coordinator_id !== null || $userId === null) {
+            return;
+        }
+
+        $this->forceFill(['technician_coordinator_id' => $userId])->saveQuietly();
     }
 
     public function workOrderActivities(): HasMany

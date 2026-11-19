@@ -32,10 +32,6 @@ class HousekeepingManpowersTable
                 TextColumn::make('area.name')
                     ->label('Area Housekeeping')
                     ->placeholder('-'),
-                TextColumn::make('area.supervisor.name')
-                    ->label('Penanggung Jawab')
-                    ->placeholder('-')
-                    ->toggleable(),
                 TextColumn::make('phone')
                     ->label('Phone')
                     ->searchable()

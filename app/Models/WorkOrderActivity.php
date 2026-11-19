@@ -10,6 +10,7 @@ class WorkOrderActivity extends Model
     protected $fillable = [
         'work_order_id',
         'activity_id',
+        'name',
         'reference',
         'pre_inspection',
         'follow_up',
@@ -48,5 +49,15 @@ class WorkOrderActivity extends Model
     public function activity(): BelongsTo
     {
         return $this->belongsTo(Activity::class);
+    }
+
+    /**
+     * Nama item checklist: dari master Activity, atau nama manual bila diketik sendiri.
+     */
+    public function displayName(): string
+    {
+        return $this->name
+            ?? $this->activity?->name
+            ?? ('Aktivitas #'.$this->id);
     }
 }

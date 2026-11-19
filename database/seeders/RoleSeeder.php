@@ -15,8 +15,11 @@ class RoleSeeder extends Seeder
     public const ROLES = [
         'super_admin',
         'spv_mos',
+        'spv_gos',
+        'spv_hsse',
         'pengawas',
         'ltsa_tad',
+        'patra-jasa',
     ];
 
     public function run(): void

@@ -45,7 +45,7 @@ class DummySeeder extends Seeder
      */
     protected function seedRoles(): array
     {
-        $names = ['super_admin', 'pengawas', 'spv_mos', 'ltsa_tad'];
+        $names = ['super_admin', 'pengawas', 'spv_mos', 'spv_gos', 'spv_hsse', 'ltsa_tad'];
 
         $roles = [];
 
@@ -69,6 +69,8 @@ class DummySeeder extends Seeder
             'admin' => ['Admin User', 'admin@admin.com', 'ADM-001', 'super_admin'],
             'pengawas' => ['Pengawas Lapangan', 'pengawas@demo.com', 'PGW-001', 'pengawas'],
             'spv' => ['SPV MOS', 'spv@demo.com', 'SPV-001', 'spv_mos'],
+            'spvgos' => ['SPV GOS', 'spvgos@demo.com', 'SPV-GOS-001', 'spv_gos'],
+            'spvhsse' => ['SPV HSSE', 'spvhsse@demo.com', 'SPV-HSSE-001', 'spv_hsse'],
             'risna' => ['Risna', 'risna@demo.com', 'TAD-001', 'ltsa_tad'],
             'kholis' => ['Kholis', 'kholis@demo.com', 'TAD-002', 'ltsa_tad'],
             'behan' => ['Behan', 'behan@demo.com', 'LTSA-001', 'ltsa_tad'],

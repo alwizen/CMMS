@@ -7,28 +7,37 @@ use Illuminate\Database\Seeder;
 
 class EquipmentTypeSeeder extends Seeder
 {
+    /**
+     * Master equipment type beserta fungsinya.
+     * Fungsi dipakai sebagai penanggung jawab & filter pada Generate WO.
+     *
+     * @var array<int, array{code: string, name: string, fungsi: string, description: string}>
+     */
+    public const TYPES = [
+        ['code' => 'PUMP', 'name' => 'Pump', 'fungsi' => 'MOS LTSA', 'description' => 'Pompa untuk distribusi fluida'],
+        ['code' => 'COMPRESSOR', 'name' => 'Compressor', 'fungsi' => 'MOS PM Reborn', 'description' => 'Kompresor udara'],
+        ['code' => 'TANK', 'name' => 'Storage Tank', 'fungsi' => 'MOS TAD', 'description' => 'Tangki penyimpanan'],
+        ['code' => 'PANEL', 'name' => 'Panel', 'fungsi' => 'HSSE', 'description' => 'Panel listrik kontrol'],
+        ['code' => 'VALVE', 'name' => 'Valve', 'fungsi' => 'MOS LTSA', 'description' => 'Katup/klep kontrol'],
+        ['code' => 'MOTOR', 'name' => 'Motor', 'fungsi' => 'MOS PM Reborn', 'description' => 'Motor penggerak'],
+        ['code' => 'FIRE-PUMP', 'name' => 'Fire Pump', 'fungsi' => 'HSSE', 'description' => 'Pompa pemadam kebakaran'],
+        ['code' => 'GENSET', 'name' => 'Genset', 'fungsi' => 'MOS TAD', 'description' => 'Generator Set'],
+    ];
+
     public function run(): void
     {
-        $types = [
-            ['code' => 'PUMP', 'name' => 'Pump', 'description' => 'Pompa untuk distribusi fluida'],
-            ['code' => 'TANK', 'name' => 'Storage Tank', 'description' => 'Tangki penyimpanan'],
-            ['code' => 'COMPRESSOR', 'name' => 'Compressor', 'description' => 'Kompresor udara'],
-            ['code' => 'GENSET', 'name' => 'Genset', 'description' => 'Generator Set'],
-            ['code' => 'PANEL', 'name' => 'Panel', 'description' => 'Panel listrik kontrol'],
-            ['code' => 'FIRE-PUMP', 'name' => 'Fire Pump', 'description' => 'Pompa pemadam kebakaran'],
-            ['code' => 'MOTOR', 'name' => 'Motor', 'description' => 'Motor penggerak'],
-            ['code' => 'VALVE', 'name' => 'Valve', 'description' => 'Katup/klep kontrol'],
-            ['code' => 'METER', 'name' => 'Flow Meter', 'description' => 'Meter pengukur aliran'],
-            ['code' => 'TRANSMITTER', 'name' => 'Level Transmitter', 'description' => 'Transmitter level'],
-        ];
-
-        foreach ($types as $type) {
-            EquipmentType::create([
-                'code' => $type['code'],
-                'name' => $type['name'],
-                'description' => $type['description'],
-                'status' => true,
-            ]);
+        foreach (self::TYPES as $type) {
+            EquipmentType::firstOrCreate(
+                ['code' => $type['code']],
+                [
+                    'name' => $type['name'],
+                    'fungsi' => $type['fungsi'],
+                    'description' => $type['description'],
+                    'status' => true,
+                ],
+            );
         }
+
+        $this->command?->info('Equipment type siap: '.implode(', ', array_column(self::TYPES, 'code')));
     }
 }

@@ -13,7 +13,6 @@ class MaintenanceHistory extends Model
         'equipment_id',
         'work_order_id',
         'work_order_number',
-        'maintenance_type',
         'classification',
         'description',
         'maintenance_date',

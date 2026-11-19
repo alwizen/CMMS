@@ -7,42 +7,50 @@ use Illuminate\Database\Seeder;
 
 class UserSeeder extends Seeder
 {
+    /**
+     * User dasar untuk testing maintenance.
+     * Password semua user: "password".
+     *
+     * @var array<int, array{name: string, email: string, employee_number: string, role: string, fungsi: ?string}>
+     */
+    public const USERS = [
+        ['name' => 'Admin User', 'email' => 'admin@admin.com', 'employee_number' => 'ADM-001', 'role' => 'super_admin', 'fungsi' => null],
+        ['name' => 'SPV MOS', 'email' => 'spv@demo.com', 'employee_number' => 'SPV-001', 'role' => 'spv_mos', 'fungsi' => null],
+        ['name' => 'SPV GOS', 'email' => 'spvgos@demo.com', 'employee_number' => 'SPV-GOS-001', 'role' => 'spv_gos', 'fungsi' => null],
+        ['name' => 'SPV HSSE', 'email' => 'spvhsse@demo.com', 'employee_number' => 'SPV-HSSE-001', 'role' => 'spv_hsse', 'fungsi' => null],
+        ['name' => 'Pengawas Lapangan', 'email' => 'pengawas@demo.com', 'employee_number' => 'PGW-001', 'role' => 'pengawas', 'fungsi' => null],
+        ['name' => 'Teknisi MOS LTSA', 'email' => 'ltsa@demo.com', 'employee_number' => 'TAD-001', 'role' => 'ltsa_tad', 'fungsi' => 'MOS LTSA'],
+        ['name' => 'Teknisi MOS PM Reborn', 'email' => 'pmreborn@demo.com', 'employee_number' => 'TAD-002', 'role' => 'ltsa_tad', 'fungsi' => 'MOS PM Reborn'],
+        ['name' => 'Teknisi MOS TAD', 'email' => 'tad@demo.com', 'employee_number' => 'TAD-003', 'role' => 'ltsa_tad', 'fungsi' => 'MOS TAD'],
+        ['name' => 'Petugas HSSE', 'email' => 'hsse@demo.com', 'employee_number' => 'HSSE-001', 'role' => 'ltsa_tad', 'fungsi' => 'HSSE'],
+        ['name' => 'Petugas Housekeeping', 'email' => 'petugas@demo.com', 'employee_number' => 'HK-001', 'role' => 'patra-jasa', 'fungsi' => null],
+    ];
+
     public function run(): void
     {
-        User::create([
-            'name' => 'Admin User',
-            'email' => 'admin@admin.com',
-            'password' => bcrypt('password'),
-            'employee_number' => 'ADM-001',
-            'phone' => '081234567890',
-            'status' => true,
-        ]);
+        foreach (self::USERS as $definition) {
+            $user = User::firstOrCreate(
+                ['email' => $definition['email']],
+                [
+                    'name' => $definition['name'],
+                    'password' => bcrypt('password'),
+                    'employee_number' => $definition['employee_number'],
+                    'phone' => '0812345678'.str_pad((string) random_int(0, 99), 2, '0', STR_PAD_LEFT),
+                    'fungsi' => $definition['fungsi'],
+                    'status' => true,
+                ],
+            );
 
-        User::create([
-            'name' => 'Technician 1',
-            'email' => 'tech1@ft-tegal.com',
-            'password' => bcrypt('password'),
-            'employee_number' => 'TECH-001',
-            'phone' => '081234567891',
-            'status' => true,
-        ]);
+            $user->forceFill([
+                'name' => $definition['name'],
+                'employee_number' => $definition['employee_number'],
+                'fungsi' => $definition['fungsi'],
+                'status' => true,
+            ])->save();
 
-        User::create([
-            'name' => 'Technician 2',
-            'email' => 'tech2@ft-tegal.com',
-            'password' => bcrypt('password'),
-            'employee_number' => 'TECH-002',
-            'phone' => '081234567892',
-            'status' => true,
-        ]);
+            $user->syncRoles([$definition['role']]);
+        }
 
-        User::create([
-            'name' => 'Supervisor',
-            'email' => 'supervisor@ft-tegal.com',
-            'password' => bcrypt('password'),
-            'employee_number' => 'SUP-001',
-            'phone' => '081234567893',
-            'status' => true,
-        ]);
+        $this->command?->info('User siap: '.implode(', ', array_column(self::USERS, 'email')));
     }
 }

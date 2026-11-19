@@ -12,6 +12,7 @@ use App\Models\MaintenanceRequest;
 use App\Models\Setting;
 use App\Models\User;
 use App\Models\WorkOrder;
+use Filament\Actions\Testing\TestAction;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Gate;
 use Livewire\Livewire;
@@ -123,7 +124,7 @@ class RequestApprovalTest extends TestCase
         $this->assertNull($workOrder->finish_at);
     }
 
-    public function test_approve_requires_responsible_user(): void
+    public function test_approve_without_coordinator_creates_function_owned_work_order(): void
     {
         $request = $this->makeOpenRequest();
 
@@ -135,12 +136,16 @@ class RequestApprovalTest extends TestCase
                 'start_date' => now()->addDay()->toDateString(),
                 'technician_coordinator_id' => null,
                 'classification' => 'Corrective',
+                'activity_ids' => [],
             ])
             ->callMountedAction()
-            ->assertHasActionErrors(['technician_coordinator_id']);
+            ->assertHasNoActionErrors();
 
-        $this->assertSame(MaintenanceRequest::STATUSES['Open'], $request->fresh()->status);
-        $this->assertSame(0, WorkOrder::where('maintenance_request_id', $request->id)->count());
+        $workOrder = WorkOrder::where('maintenance_request_id', $request->id)->firstOrFail();
+
+        $this->assertNull($workOrder->technician_coordinator_id);
+        $this->assertTrue($workOrder->isUnclaimed());
+        $this->assertSame(MaintenanceRequest::STATUSES['Approved'], $request->fresh()->status);
     }
 
     public function test_approve_can_select_specific_activities_only(): void
@@ -186,6 +191,85 @@ class RequestApprovalTest extends TestCase
         $workOrder = WorkOrder::where('maintenance_request_id', $request->id)->firstOrFail();
 
         $this->assertCount(0, $workOrder->workOrderActivities);
+    }
+
+    public function test_approve_checklist_has_clear_all_action(): void
+    {
+        $request = $this->makeOpenRequest();
+
+        $this->actingAs($this->spv);
+
+        Livewire::test(ViewMaintenanceRequests::class, ['record' => $request->getRouteKey()])
+            ->mountAction('approve')
+            ->fillForm([
+                'activity_ids' => [$this->activityA->id, $this->activityB->id],
+            ])
+            ->assertFormSet(
+                ['activity_ids' => [$this->activityA->id, $this->activityB->id]],
+                form: 'mountedActionSchema0',
+            )
+            ->callAction(
+                TestAction::make('clearActivityChecklist')->schemaComponent('activity_ids'),
+            )
+            ->assertFormSet(
+                fn (array $state) => $this->assertEmpty($state['activity_ids'] ?? []),
+                form: 'mountedActionSchema0',
+            );
+    }
+
+    public function test_approve_can_add_manual_activities_typed_by_user(): void
+    {
+        $request = $this->makeOpenRequest();
+
+        $this->actingAs($this->spv);
+
+        Livewire::test(ViewMaintenanceRequests::class, ['record' => $request->getRouteKey()])
+            ->mountAction('approve')
+            ->fillForm([
+                'start_date' => now()->addDay()->toDateString(),
+                'technician_coordinator_id' => $this->penanggungJawab->id,
+                'classification' => 'Corrective',
+                'activity_ids' => [],
+                'manual_activities' => ['Cek manual bearing', '  Ganti seal  ', 'Cek manual bearing'],
+            ])
+            ->callMountedAction()
+            ->assertHasNoActionErrors();
+
+        $workOrder = WorkOrder::where('maintenance_request_id', $request->id)->firstOrFail();
+        $activities = $workOrder->workOrderActivities()->orderBy('id')->get();
+
+        $this->assertCount(2, $activities);
+        $this->assertSame(['Cek manual bearing', 'Ganti seal'], $activities->pluck('name')->all());
+        $this->assertNull($activities->first()->activity_id);
+        $this->assertSame('Cek manual bearing', $activities->first()->displayName());
+    }
+
+    public function test_approve_can_combine_checklist_and_manual_activities(): void
+    {
+        $request = $this->makeOpenRequest();
+
+        $this->actingAs($this->spv);
+
+        Livewire::test(ViewMaintenanceRequests::class, ['record' => $request->getRouteKey()])
+            ->mountAction('approve')
+            ->fillForm([
+                'start_date' => now()->addDay()->toDateString(),
+                'technician_coordinator_id' => $this->penanggungJawab->id,
+                'classification' => 'Corrective',
+                'activity_ids' => [$this->activityA->id],
+                'manual_activities' => ['Pemeriksaan tambahan'],
+            ])
+            ->callMountedAction()
+            ->assertHasNoActionErrors();
+
+        $workOrder = WorkOrder::where('maintenance_request_id', $request->id)->firstOrFail();
+        $activities = $workOrder->workOrderActivities()->orderBy('id')->get();
+
+        $this->assertCount(2, $activities);
+        $this->assertSame($this->activityA->id, $activities->first()->activity_id);
+        $this->assertSame($this->activityA->name, $activities->first()->name);
+        $this->assertNull($activities->last()->activity_id);
+        $this->assertSame('Pemeriksaan tambahan', $activities->last()->name);
     }
 
     public function test_reject_sets_status_rejected_without_work_order(): void

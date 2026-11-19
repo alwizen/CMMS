@@ -982,10 +982,188 @@ curl http://localhost:8000/api/equipment/1 \
 | `PUT` | `/api/work-orders/{woId}/activities/{actId}` | Ya | Update aktivitas WO |
 | `GET` | `/api/equipment` | Ya | Daftar equipment |
 | `GET` | `/api/equipment/{id}` | Ya | Detail equipment |
+| `GET` | `/api/maintenance-requests` | Ya | Daftar maintenance request |
+| `POST` | `/api/maintenance-requests` | Ya | Buat maintenance request |
+| `PUT` | `/api/maintenance-requests/{id}` | Ya | Update maintenance request |
+| `GET` | `/api/downtime` | Ya | Laporan downtime |
+| `GET` | `/api/dashboard/housekeeping` | Ya | Ringkasan housekeeping (plan aktif, progres, SLA). Khusus `patra-jasa` & akses penuh |
+| `GET` | `/api/housekeeping-areas` | Ya | Daftar area housekeeping |
+| `GET` | `/api/housekeeping-areas/{id}/manpowers` | Ya | Manpower aktif area |
+| `GET` | `/api/housekeeping-areas/{id}/facilities` | Ya | Fasilitas + master checklist |
+| `GET` | `/api/reports/daily-housekeeping?date=YYYY-MM-DD` | Ya | Laporan harian housekeeping (PDF). Khusus role `patra-jasa` & akses penuh |
+| `GET` | `/api/housekeeping-plans` | Ya | Daftar plan harian |
+| `POST` | `/api/housekeeping-plans` | Ya | Buat plan kosong |
+| `POST` | `/api/housekeeping-plans/generate` | Ya | Generate plan + checklist dari area |
+| `GET` | `/api/housekeeping-plans/{id}` | Ya | Detail plan + checklist |
+| `PUT` | `/api/housekeeping-plans/{id}` | Ya | Update tanggal/catatan plan |
+| `DELETE` | `/api/housekeeping-plans/{id}` | Ya | Hapus plan |
+| `POST` | `/api/housekeeping-plans/{planId}/tasks` | Ya | Tambah item checklist |
+| `DELETE` | `/api/housekeeping-plans/{planId}/tasks/{taskId}` | Ya | Hapus item checklist |
+| `PUT` | `/api/housekeeping-plans/{planId}/tasks/{taskId}` | Ya | Update status/catatan item |
+| `POST` | `/api/housekeeping-plans/{planId}/facilities/{planFacilityId}/photos` | Ya | Upload foto before/after fasilitas |
+| `DELETE` | `/api/housekeeping-plans/{planId}/facilities/{planFacilityId}/photos` | Ya | Hapus foto fasilitas |
+| `POST` | `/api/housekeeping-plans/{planId}/manpowers` | Ya | Tugaskan manpower |
+| `DELETE` | `/api/housekeeping-plans/{planId}/manpowers/{manpowerId}` | Ya | Lepas manpower |
+| `GET` | `/api/housekeeping-requests` | Ya | Daftar housekeeping request (`?mine=1` untuk milik sendiri) |
+| `POST` | `/api/housekeeping-requests` | Ya | Buat request (multipart `photos[]`) |
+| `GET` | `/api/housekeeping-requests/{id}` | Ya | Detail request |
+| `PUT` | `/api/housekeeping-requests/{id}` | Ya | Ubah request (status Open) |
+| `DELETE` | `/api/housekeeping-requests/{id}` | Ya | Hapus request (status Open) |
+| `POST` | `/api/housekeeping-requests/{id}/photos` | Ya | Upload foto request |
+| `DELETE` | `/api/housekeeping-requests/{id}/photos` | Ya | Hapus foto request |
+| `POST` | `/api/housekeeping-requests/{id}/approve` | Ya | Setujui request + buat plan |
+| `POST` | `/api/housekeeping-requests/{id}/reject` | Ya | Tolak request |
 
 ---
 
-### 13.5 Testing dengan Bruno/Postman
+### 13.5 Alur Housekeeping untuk Android
+
+**A. Supervisor membuat request dari lapangan**
+
+```bash
+# 1) Ambil area & fasilitas + master checklist
+curl http://localhost:8000/api/housekeeping-areas -H "Authorization: Bearer <token>"
+curl http://localhost:8000/api/housekeeping-areas/1/facilities -H "Authorization: Bearer <token>"
+
+# 2) Kirim request beserta foto (multipart)
+curl -X POST http://localhost:8000/api/housekeeping-requests   -H "Authorization: Bearer <token>"   -H "Accept: application/json"   -F "housekeeping_area_id=1"   -F "housekeeping_facility_id=2"   -F "request_date=2026-11-20"   -F "description=Gazebo kotor setelah acara"   -F "priority=High"   -F "photos[]=@foto1.jpg"
+
+# 3) Pantau status request milik sendiri
+curl "http://localhost:8000/api/housekeeping-requests?mine=1" -H "Authorization: Bearer <token>"
+```
+
+**B. Approver menyetujui request (otomatis membuat Plan Harian)**
+
+```bash
+curl -X POST http://localhost:8000/api/housekeeping-requests/1/approve   -H "Authorization: Bearer <token>"   -H "Content-Type: application/json"   -d '{"plan_date":"2026-11-20","manpower_ids":[1,2],"approval_notes":"Disetujui"}'
+```
+
+**C. Generate Plan Harian langsung dari master checklist area**
+
+```bash
+curl -X POST http://localhost:8000/api/housekeeping-plans/generate   -H "Authorization: Bearer <token>"   -H "Content-Type: application/json"   -d '{"area_ids":[1],"plan_date":"2026-11-20","manpower_ids":[1]}'
+```
+
+Response `201` berisi `data` (plan yang dibuat) dan `skipped` (alasan area dilewati). Jika tidak ada plan yang dibuat, response `422` dengan `created: 0`.
+
+**D. Eksekusi checklist & dokumentasi fasilitas (mobile)**
+
+Foto dokumentasi dikelola **per fasilitas** pada plan, bukan per item checklist.
+`GET /api/housekeeping-plans/{id}` mengembalikan `facilities[]` berisi `id` (plan facility id) dan `photo_before`/`photo_after`.
+
+```bash
+# 1) WAJIB upload foto before fasilitas dulu
+curl -X POST http://localhost:8000/api/housekeeping-plans/1/facilities/1/photos   -H "Authorization: Bearer <token>" -F "type=before" -F "photos[]=@before.jpg"
+
+# 2) Baru boleh mulai kerja (tanpa foto before -> 422)
+curl -X PUT http://localhost:8000/api/housekeeping-plans/1/tasks/1   -H "Authorization: Bearer <token>" -H "Content-Type: application/json"   -d '{"status":"In Progress"}'
+
+# 3) WAJIB upload foto after fasilitas dulu
+curl -X POST http://localhost:8000/api/housekeeping-plans/1/facilities/1/photos   -H "Authorization: Bearer <token>" -F "type=after" -F "photos[]=@after.jpg"
+
+# 4) Baru boleh selesaikan (tanpa foto after -> 422)
+curl -X PUT http://localhost:8000/api/housekeeping-plans/1/tasks/1   -H "Authorization: Bearer <token>" -H "Content-Type: application/json"   -d '{"status":"Done","note":"Selesai"}'
+```
+
+Urutan ini juga divalidasi di web (Filament): tombol "Mulai Kerja" dan "Selesaikan" menolak aksi bila foto fasilitas belum ada.
+
+**Visibilitas plan per penanggung jawab area.** Patra-jasa hanya melihat plan pada area yang ia menjadi penanggung jawab (`housekeeping_areas.supervisor_id`) atau plan yang secara eksplisit menugaskannya (`housekeeping_plan_users`). Aturan ini berlaku di `GET /api/housekeeping-plans`, `GET /api/housekeeping-plans/{id}` (403 bila bukan haknya), serta seluruh angka pada `GET /api/dashboard/housekeeping` (plan aktif, progres checklist, pekerjaan selesai hari ini). SPV GOS, `pengawas`, dan `super_admin` tetap melihat semua area.
+
+**Dashboard Android per role.** User `patra-jasa` mendarat di **dashboard housekeeping** (bukan dashboard maintenance): kartu progres pekerjaan aktif, jumlah plan aktif/lewat SLA/selesai hari ini, pintasan Daftar Plan, Laporan, dan Profil, serta daftar plan berjalan. Datanya berasal dari `GET /api/dashboard/housekeeping`. Role akses penuh tetap memakai dashboard maintenance.
+
+**UX generate laporan di Android.** Saat laporan dibuat, aplikasi menampilkan dialog progres tanpa tombol ("Membuat laporan… sedang diproses") dan ikon di app bar berubah menjadi spinner, sehingga user tahu prosesnya berjalan dan tidak menekan ulang. Setelah selesai, muncul dialog hasil: **"Laporan siap"** bila berhasil (PDF langsung dibuka), atau **"Laporan gagal dibuat"** dengan alasan dari server apa adanya (mis. plan belum direview/disetujui SPV GOS, tidak punya hak akses 403, atau file tidak valid). Error tidak lagi hanya masuk ke state daftar plan — tersimpan terpisah di `reportError`/`reportMessage` agar selalu terlihat oleh user yang login.
+
+**Laporan harian dari Android.** User housekeeping (`patra-jasa`) melihat ikon dokumen di app bar daftar plan.
+
+Catatan Android: file laporan disimpan dengan nama unik (`laporan-housekeeping-YYYY-MM-DD-<timestamp>.pdf`) dan laporan lama di cache dihapus. Ini penting karena penampil PDF (Chrome/MuPDF/Drive) meng-cache berdasarkan nama file — dengan nama tetap, laporan baru bisa menampilkan versi lama yang belum ada fotonya. Aplikasi juga memvalidasi header `%PDF` sebelum membuka file. Menekan ikon itu membuka date picker, lalu PDF laporan harian untuk tanggal tersebut diunduh dari `GET /api/reports/daily-housekeeping?date=YYYY-MM-DD` dan langsung dibuka dengan aplikasi PDF. Endpoint ini juga boleh diakses role akses penuh (`super_admin`, `spv_gos`, `pengawas`).
+
+Di aplikasi Android, alur per fasilitas di UI:
+
+1. Upload **foto before** fasilitas.
+2. Tekan **Mulai Kerjakan** → seluruh checklist fasilitas itu menjadi `In Progress` sekaligus.
+3. **Centang** checklist yang sudah dikerjakan (belum dikirim ke server).
+4. Upload **foto after** fasilitas.
+5. Tekan **Selesaikan** → checklist yang dicentang dikirim sebagai `Done`. Checklist `Done` dipindahkan ke bawah daftar.
+
+> Catatan: foto dikembalikan sebagai path relatif pada disk `public` (mis. `housekeeping/plan-facilities/before/xxx.jpg`). Android perlu menambahkan prefix `{base_url}/storage/` untuk menampilkan gambar.
+
+**E. Laporan harian housekeeping**
+
+Sekali generate laporan untuk tanggal tertentu, PDF memuat:
+
+1. Ringkasan: plan berjalan, plan dimulai hari ini, plan selesai hari ini, pekerjaan selesai, plan melewati SLA.
+2. Detail **plan yang dimulai hari ini**.
+3. Detail **plan yang masih berjalan** (termasuk yang sudah lewat SLA).
+4. Detail **plan yang selesai** pada tanggal itu.
+
+Pada setiap detail plan, checklist dan dokumentasi foto disajikan dalam **satu tabel**: kolom `Pekerjaan | Fasilitas | Status | Foto Before | Foto After`. Foto before/after ditampilkan sekali per fasilitas (sel digabung dengan `rowspan`), sehingga tidak ada tabel foto terpisah dan tidak ada foto yang berulang di tiap baris pekerjaan.
+
+Tabel rekap "Seluruh pekerjaan hari ini" dihapus karena isinya sudah tercakup pada detail plan di poin 2–4.
+
+**F. Progress & SLA plan (otomatis)**
+
+Progress **tidak diisi manual** — server menghitung `progress_percent` = item checklist `Done` ÷ total item. SLA dihitung dari `plan_date + sla_days` area (mis. kantor 1 hari, area luar 14 hari). Setiap plan mengembalikan `progress_percent`, `sla_days`, `due_date`, `sla_status` (`On Track` / `At Risk` / `Overdue` / `Completed`), dan `is_overdue`.
+
+Aplikasi Android cukup menampilkan nilai tersebut; perubahan status checklist (`PUT .../tasks/{taskId}`) otomatis memperbarui progress plan.
+
+**G. Pembagian peran**
+
+- **Admin web**: membuat/meng-generate Plan Harian, menambah item checklist, menugaskan manpower.
+- **Patra-jasa (Android)**: hanya melihat plan yang sudah dibuat, mengubah status checklist (Pending → In Progress → Done), serta mengunggah foto before/after **per fasilitas**.
+
+**G2. Approval Plan Harian oleh SPV GOS**
+
+Role supervisor dibagi per bidang: `spv_mos` (maintenance), **`spv_gos` (housekeeping/General Office Services)**, dan `spv_hsse` (HSSE).
+
+**Pemisahan peran housekeeping:**
+
+| Aksi | SPV GOS (`spv_gos`) | Patra-jasa (`patra-jasa`) |
+|---|---|---|
+| Buat / generate / ubah / hapus Plan Harian | ✅ | ❌ (403 di API, tombol disembunyikan di web & Android) |
+| Tambah/hapus checklist & fasilitas plan | ✅ | ❌ |
+| Tugaskan manpower | ✅ | ❌ |
+| Mulai/selesaikan checklist | ❌ | ✅ |
+| Upload/hapus foto before-after fasilitas | ❌ | ✅ |
+| Approve / Reject laporan harian | ✅ | ❌ |
+| Lihat plan & laporan | ✅ | ✅ |
+
+Alur housekeeping:
+
+1. **SPV GOS membuat Plan Harian** (generate / tambah checklist, tugaskan manpower) lalu **langsung diteruskan ke patra-jasa** — tidak ada approval di awal. Penanggung jawab area tetap petugas `patra-jasa`.
+2. **Patra-jasa mengerjakan** checklist + upload foto before/after dari Android sampai semua checklist `Done` (plan menjadi `Completed`). Android menyembunyikan tombol eksekusi untuk SPV GOS dan sebaliknya.
+3. **SPV GOS me-review pekerjaan** — bisa saat masih berjalan maupun setelah selesai — lalu **Approve** (atau **Reject** dengan catatan) dari halaman Plan Harian (tabel maupun halaman detail). Tombol review muncul begitu pekerjaan dimulai, dan notifikasi dikirim saat pekerjaan selesai.
+4. **Approval SPV GOS adalah trigger laporan**: setelah di-approve, patra-jasa bisa **mengunduh laporan harian hari itu** dari Android (menu Housekeeping → ikon laporan).
+
+Laporan ditolak (422) bila ada plan yang **belum direview/disetujui** SPV GOS atau **ditolak**. Bila patra-jasa mengubah checklist setelah approval, status kembali `Pending` sehingga SPV GOS perlu review ulang (mencegah laporan berisi pekerjaan yang belum diperiksa). Notifikasi maintenance tetap ke `spv_mos`.
+
+Approval ini menjadi **gerbang generate laporan harian housekeeping**: laporan tanggal tertentu hanya bisa digenerate bila semua plan pada tanggal itu **dan** semua plan lain yang masih berjalan sudah `Approved`. Bila masih ada yang `Pending`/`Rejected`, web dan Android menerima pesan penolakan (422) berisi nomor plan yang menahan. Plan lama yang sudah ada sebelum fitur ini otomatis dianggap `Approved`.
+
+Endpoint terkait:
+- `GET /api/housekeeping-plans/{id}` kini menyertakan `approval_status`, `approval_notes`, `approved_at`, `approved_by`.
+- `GET /api/dashboard/housekeeping` menyertakan `approval_status` pada setiap plan berjalan.
+- `GET /api/reports/daily-housekeeping` mengembalikan `422` + `data.pending_plans`/`data.rejected_plans` bila belum boleh digenerate.
+
+**H. Penguncian pembuatan plan**
+
+Plan baru untuk satu area **ditolak** bila masih ada plan yang belum `Completed` dan batas SLA-nya belum lewat. Aturan ini berlaku di generate Plan Harian, approve request (web + API), dan `POST /api/housekeeping-plans`. Setelah SLA lewat (overdue) atau plan selesai, area boleh digenerate lagi.
+
+**I. Klasifikasi KPI housekeeping**
+
+Area housekeeping punya `kpi_class` (`indoor` / `outdoor`) yang menentukan set metrik KPI:
+
+| Indoor (plan harian) | Bobot | Outdoor (plan per window SLA) | Bobot |
+|---|---|---|---|
+| `task_completion_rate` | 25 | `task_completion_rate` | 25 |
+| `sla_compliance` | 25 | `sla_compliance` | 25 |
+| `plan_consistency` (hari ber-plan ÷ hari periode) | 20 | `sla_efficiency` (SLA ÷ hari selesai, maks 100%) | 20 |
+| `documentation_compliance` | 15 | `window_coverage` (hari tercakup plan ÷ hari periode) | 15 |
+| `backlog` (maks backlog yang ditoleransi) | 15 | `documentation_compliance` | 15 |
+
+Target & bobot bisa diubah lewat menu **KPI > KPI Metric Settings**.
+
+---
+
+### 13.6 Testing dengan Bruno/Postman
 
 1. **Login** - `POST /api/login` dengan email + password → copy token
 2. **Set Header** - `Authorization: Bearer <token>` di semua request

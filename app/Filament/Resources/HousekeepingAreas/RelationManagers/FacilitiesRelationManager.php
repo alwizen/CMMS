@@ -87,14 +87,19 @@ class FacilitiesRelationManager extends RelationManager
             ->label('Checklist')
             ->icon(Heroicon::OutlinedClipboardDocumentCheck)
             ->color('gray')
-            ->relationship(fn (HousekeepingFacility $record) => $record->tasks())
-            ->modalHeading(fn (HousekeepingFacility $record): string => 'Checklist — '.$record->name)
+            // Filament memanggil ulang closure ini dengan $record = null saat
+            // tombol "Buat & buat lagi" me-render ulang modal, jadi closure
+            // harus aman terhadap null.
+            ->relationship(fn (?HousekeepingFacility $record) => $record?->tasks())
+            ->modalHeading(fn (?HousekeepingFacility $record): string => 'Checklist — '.($record?->name ?? '-'))
             ->modalWidth(Width::TwoExtraLarge)
-            ->createAnother(false)
-            ->modalContent(fn (HousekeepingFacility $record) => view('filament.relation-managers.facility-checklist', [
-                'record' => $record->load('tasks'),
-            ]))
-            ->form(fn (): array => [
+            ->createAnother(true)
+            ->modalContent(fn (?HousekeepingFacility $record) => $record === null
+                ? null
+                : view('filament.relation-managers.facility-checklist', [
+                    'record' => $record->load('tasks'),
+                ]))
+            ->schema(fn (): array => [
                 TextInput::make('name')
                     ->label('Nama Checklist')
                     ->required()

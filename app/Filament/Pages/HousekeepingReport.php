@@ -50,7 +50,7 @@ class HousekeepingReport extends Page implements HasTable
     {
         return $table
             ->query(fn (): Builder => HousekeepingPlanTask::query()
-                ->with(['plan.area.company', 'plan.area.supervisor', 'facility']))
+                ->with(['plan.area.company', 'plan.area.supervisor', 'facility', 'planFacility']))
             ->defaultSort('created_at', 'desc')
             ->paginated([25, 50, 100])
             ->columns([
@@ -88,13 +88,13 @@ class HousekeepingReport extends Page implements HasTable
                 TextColumn::make('photo_before')
                     ->label('Before')
                     ->badge()
-                    ->getStateUsing(fn (HousekeepingPlanTask $record): string => count($record->photo_before ?? []).' foto')
-                    ->color(fn (HousekeepingPlanTask $record): string => count($record->photo_before ?? []) > 0 ? 'success' : 'gray'),
+                    ->getStateUsing(fn (HousekeepingPlanTask $record): string => count($record->planFacility?->photo_before ?? []).' foto')
+                    ->color(fn (HousekeepingPlanTask $record): string => count($record->planFacility?->photo_before ?? []) > 0 ? 'success' : 'gray'),
                 TextColumn::make('photo_after')
                     ->label('After')
                     ->badge()
-                    ->getStateUsing(fn (HousekeepingPlanTask $record): string => count($record->photo_after ?? []).' foto')
-                    ->color(fn (HousekeepingPlanTask $record): string => count($record->photo_after ?? []) > 0 ? 'success' : 'gray'),
+                    ->getStateUsing(fn (HousekeepingPlanTask $record): string => count($record->planFacility?->photo_after ?? []).' foto')
+                    ->color(fn (HousekeepingPlanTask $record): string => count($record->planFacility?->photo_after ?? []) > 0 ? 'success' : 'gray'),
                 TextColumn::make('started_at')
                     ->label('Mulai')
                     ->dateTime('d M Y H:i')
@@ -164,9 +164,12 @@ class HousekeepingReport extends Page implements HasTable
                     ->label('Belum Ada Foto After')
                     ->toggle()
                     ->query(fn (Builder $query, array $data): Builder => ($data['isActive'] ?? false)
-                        ? $query->where(fn (Builder $query) => $query
-                            ->whereNull('photo_after')
-                            ->orWhere('photo_after', '[]'))
+                        ? $query->whereDoesntHave(
+                            'planFacility',
+                            fn (Builder $planFacility) => $planFacility
+                                ->whereNotNull('photo_after')
+                                ->where('photo_after', '!=', '[]'),
+                        )
                         : $query),
             ])
             ->recordActions([

@@ -6,12 +6,14 @@ use App\Models\Company;
 use App\Models\HousekeepingArea;
 use App\Models\HousekeepingManpower;
 use App\Models\HousekeepingPlan;
+use App\Models\HousekeepingPlanFacility;
 use App\Models\HousekeepingPlanTask;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 use Laravel\Sanctum\Sanctum;
+use Spatie\Permission\Models\Role;
 use Tests\TestCase;
 
 class ApiHousekeepingTest extends TestCase
@@ -28,13 +30,20 @@ class ApiHousekeepingTest extends TestCase
     {
         parent::setUp();
 
-        $this->user = User::factory()->create();
+        foreach (['spv_gos', 'patra-jasa', 'super_admin'] as $role) {
+            Role::findOrCreate($role, 'web');
+        }
+
+        // Eksekusi checklist & dokumentasi foto milik petugas housekeeping.
+        $this->user = User::factory()->create(['status' => true]);
+        $this->user->assignRole('patra-jasa');
         Sanctum::actingAs($this->user, ['*']);
 
         $company = Company::create(['code' => 'HK', 'name' => 'HK Co']);
         $this->area = HousekeepingArea::create([
             'company_id' => $company->id,
             'code' => 'taman',
+            'supervisor_id' => $this->user->id,
             'name' => 'Taman Kantor',
             'polygon' => [[-6.87, 109.18], [-6.871, 109.18], [-6.871, 109.181]],
             'area_size' => 6151.52,
@@ -79,37 +88,28 @@ class ApiHousekeepingTest extends TestCase
             ->assertJsonPath('data.tasks.0.name', 'Pemotongan Rumput');
     }
 
-    public function test_cannot_start_task_without_before_photo(): void
-    {
-        $task = HousekeepingPlanTask::create([
-            'housekeeping_plan_id' => $this->plan->id,
-            'name' => 'Bersih Selokan',
-            'status' => 'Pending',
-        ]);
-
-        $this->putJson("/api/housekeeping-plans/{$this->plan->id}/tasks/{$task->id}", [
-            'status' => 'In Progress',
-        ])->assertStatus(422);
-
-        $this->assertSame('Pending', $task->fresh()->status);
-    }
-
-    public function test_upload_before_photo_then_start_task(): void
+    public function test_upload_facility_photos_and_task_status_transition(): void
     {
         Storage::fake('public');
 
+        $planFacility = HousekeepingPlanFacility::create([
+            'housekeeping_plan_id' => $this->plan->id,
+            'photo_after' => null,
+        ]);
+
         $task = HousekeepingPlanTask::create([
             'housekeeping_plan_id' => $this->plan->id,
+            'housekeeping_plan_facility_id' => $planFacility->id,
             'name' => 'Bersih Selokan',
             'status' => 'Pending',
         ]);
 
-        $this->postJson("/api/housekeeping-plans/{$this->plan->id}/tasks/{$task->id}/photos", [
+        $this->postJson("/api/housekeeping-plans/{$this->plan->id}/facilities/{$planFacility->id}/photos", [
             'type' => 'before',
             'photos' => [UploadedFile::fake()->image('before.jpg')],
         ])->assertOk()->assertJsonPath('success', true);
 
-        $this->assertNotEmpty($task->fresh()->photo_before);
+        $this->assertNotEmpty($planFacility->fresh()->photo_before);
 
         $this->putJson("/api/housekeeping-plans/{$this->plan->id}/tasks/{$task->id}", [
             'status' => 'In Progress',
@@ -117,36 +117,8 @@ class ApiHousekeepingTest extends TestCase
 
         $this->assertSame('In Progress', $task->fresh()->status);
         $this->assertNotNull($task->fresh()->started_at);
-    }
 
-    public function test_cannot_complete_task_without_after_photo(): void
-    {
-        $task = HousekeepingPlanTask::create([
-            'housekeeping_plan_id' => $this->plan->id,
-            'name' => 'Bersih Selokan',
-            'status' => 'In Progress',
-            'photo_before' => ['housekeeping/plan-tasks/before/x.jpg'],
-        ]);
-
-        $this->putJson("/api/housekeeping-plans/{$this->plan->id}/tasks/{$task->id}", [
-            'status' => 'Done',
-        ])->assertStatus(422);
-
-        $this->assertSame('In Progress', $task->fresh()->status);
-    }
-
-    public function test_upload_after_photo_then_complete_task(): void
-    {
-        Storage::fake('public');
-
-        $task = HousekeepingPlanTask::create([
-            'housekeeping_plan_id' => $this->plan->id,
-            'name' => 'Bersih Selokan',
-            'status' => 'In Progress',
-            'photo_before' => ['housekeeping/plan-tasks/before/x.jpg'],
-        ]);
-
-        $this->postJson("/api/housekeeping-plans/{$this->plan->id}/tasks/{$task->id}/photos", [
+        $this->postJson("/api/housekeeping-plans/{$this->plan->id}/facilities/{$planFacility->id}/photos", [
             'type' => 'after',
             'photos' => [UploadedFile::fake()->image('after.jpg')],
         ])->assertOk();
@@ -159,25 +131,125 @@ class ApiHousekeepingTest extends TestCase
         $this->assertNotNull($task->fresh()->completed_at);
     }
 
-    public function test_delete_task_photo(): void
+    public function test_cannot_start_task_without_facility_before_photo(): void
     {
-        Storage::fake('public');
-        Storage::disk('public')->put('housekeeping/plan-tasks/before/x.jpg', 'x');
+        $planFacility = HousekeepingPlanFacility::create([
+            'housekeeping_plan_id' => $this->plan->id,
+        ]);
 
         $task = HousekeepingPlanTask::create([
             'housekeeping_plan_id' => $this->plan->id,
+            'housekeeping_plan_facility_id' => $planFacility->id,
             'name' => 'Bersih Selokan',
             'status' => 'Pending',
-            'photo_before' => ['housekeeping/plan-tasks/before/x.jpg'],
         ]);
 
-        $this->deleteJson("/api/housekeeping-plans/{$this->plan->id}/tasks/{$task->id}/photos", [
-            'type' => 'before',
-            'path' => 'housekeeping/plan-tasks/before/x.jpg',
+        $this->putJson("/api/housekeeping-plans/{$this->plan->id}/tasks/{$task->id}", [
+            'status' => 'In Progress',
+        ])->assertStatus(422)
+            ->assertJsonPath('success', false);
+
+        $this->assertSame('Pending', $task->fresh()->status);
+
+        $planFacility->update(['photo_before' => ['housekeeping/plan-facilities/before/x.jpg']]);
+
+        $this->putJson("/api/housekeeping-plans/{$this->plan->id}/tasks/{$task->id}", [
+            'status' => 'In Progress',
         ])->assertOk();
 
-        $this->assertEmpty($task->fresh()->photo_before);
-        Storage::disk('public')->assertMissing('housekeeping/plan-tasks/before/x.jpg');
+        $this->assertSame('In Progress', $task->fresh()->status);
+    }
+
+    public function test_cannot_complete_task_without_facility_after_photo(): void
+    {
+        $planFacility = HousekeepingPlanFacility::create([
+            'housekeeping_plan_id' => $this->plan->id,
+            'photo_before' => ['housekeeping/plan-facilities/before/x.jpg'],
+        ]);
+
+        $task = HousekeepingPlanTask::create([
+            'housekeeping_plan_id' => $this->plan->id,
+            'housekeeping_plan_facility_id' => $planFacility->id,
+            'name' => 'Bersih Selokan',
+            'status' => 'In Progress',
+        ]);
+
+        $this->putJson("/api/housekeeping-plans/{$this->plan->id}/tasks/{$task->id}", [
+            'status' => 'Done',
+        ])->assertStatus(422)
+            ->assertJsonPath('success', false);
+
+        $this->assertSame('In Progress', $task->fresh()->status);
+
+        $planFacility->update(['photo_after' => ['housekeeping/plan-facilities/after/x.jpg']]);
+
+        $this->putJson("/api/housekeeping-plans/{$this->plan->id}/tasks/{$task->id}", [
+            'status' => 'Done',
+        ])->assertOk();
+
+        $this->assertSame('Done', $task->fresh()->status);
+    }
+
+    public function test_task_without_facility_can_change_status(): void
+    {
+        $task = HousekeepingPlanTask::create([
+            'housekeeping_plan_id' => $this->plan->id,
+            'name' => 'Tanpa Fasilitas',
+            'status' => 'Pending',
+        ]);
+
+        $this->putJson("/api/housekeeping-plans/{$this->plan->id}/tasks/{$task->id}", [
+            'status' => 'In Progress',
+        ])->assertOk();
+
+        $this->putJson("/api/housekeeping-plans/{$this->plan->id}/tasks/{$task->id}", [
+            'status' => 'Done',
+        ])->assertOk();
+
+        $this->assertSame('Done', $task->fresh()->status);
+    }
+
+    public function test_task_resource_exposes_facility_photos(): void
+    {
+        $planFacility = HousekeepingPlanFacility::create([
+            'housekeeping_plan_id' => $this->plan->id,
+            'photo_before' => ['housekeeping/plan-facilities/before/x.jpg'],
+            'photo_after' => ['housekeeping/plan-facilities/after/y.jpg'],
+        ]);
+
+        HousekeepingPlanTask::create([
+            'housekeeping_plan_id' => $this->plan->id,
+            'housekeeping_plan_facility_id' => $planFacility->id,
+            'name' => 'Bersih Selokan',
+            'status' => 'Done',
+        ]);
+
+        $response = $this->getJson('/api/housekeeping-plans/'.$this->plan->id)->assertOk();
+
+        $response->assertJsonPath('data.tasks.0.photo_before.0', 'housekeeping/plan-facilities/before/x.jpg')
+            ->assertJsonPath('data.tasks.0.photo_after.0', 'housekeeping/plan-facilities/after/y.jpg')
+            ->assertJsonPath('data.progress_percent', 100)
+            ->assertJsonPath('data.sla_days', 1)
+            ->assertJsonPath('data.facilities.0.photo_before.0', 'housekeeping/plan-facilities/before/x.jpg');
+    }
+
+    public function test_delete_facility_photo(): void
+    {
+        Storage::fake('public');
+        Storage::disk('public')->put('housekeeping/plan-facilities/before/x.jpg', 'x');
+
+        $planFacility = HousekeepingPlanFacility::create([
+            'housekeeping_plan_id' => $this->plan->id,
+            'photo_before' => ['housekeeping/plan-facilities/before/x.jpg'],
+        ]);
+
+        $this->deleteJson("/api/housekeeping-plans/{$this->plan->id}/facilities/{$planFacility->id}/photos", [
+            'type' => 'before',
+            'path' => 'housekeeping/plan-facilities/before/x.jpg',
+        ])->assertOk();
+
+        $this->assertEmpty($planFacility->fresh()->photo_before);
+        Storage::disk('public')->assertMissing('housekeeping/plan-facilities/before/x.jpg');
     }
 
     public function test_requires_authentication(): void

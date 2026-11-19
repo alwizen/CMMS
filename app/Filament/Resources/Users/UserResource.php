@@ -52,6 +52,12 @@ class UserResource extends Resource
                 TextInput::make('employee_number'),
                 TextInput::make('phone')
                     ->tel(),
+                Select::make('fungsi')
+                    ->label('Fungsi')
+                    ->options(User::FUNGSI)
+                    ->nullable()
+                    ->searchable()
+                    ->placeholder('Pilih fungsi'),
                 Toggle::make('status')
                     ->required(),
             ]);
@@ -77,6 +83,8 @@ class UserResource extends Resource
                     ->placeholder('-'),
                 TextEntry::make('phone')
                     ->placeholder('-'),
+                TextEntry::make('fungsi')
+                    ->placeholder('-'),
                 IconEntry::make('status')
                     ->boolean(),
             ]);
@@ -85,6 +93,7 @@ class UserResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
+            ->paginated([25, 50])
             ->columns([
                 TextColumn::make('name')
                     ->searchable(),
@@ -108,6 +117,11 @@ class UserResource extends Resource
                     ->searchable(),
                 TextColumn::make('phone')
                     ->searchable(),
+                TextColumn::make('fungsi')
+                    ->label('Fungsi')
+                    ->badge()
+                    ->placeholder('-')
+                    ->sortable(),
                 IconColumn::make('status')
                     ->boolean(),
             ])

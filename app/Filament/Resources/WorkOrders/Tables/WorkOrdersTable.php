@@ -35,12 +35,27 @@ class WorkOrdersTable
                     ->label('Equipment'),
                 TextColumn::make('classification')
                     ->label('Classification'),
+                TextColumn::make('fungsi')
+                    ->label('Fungsi')
+                    ->badge()
+                    ->placeholder('-')
+                    ->toggleable(),
                 TextColumn::make('technicianCoordinator.name')
-                    ->label('Performed by'),
+                    ->label('Performed by')
+                    ->placeholder('Belum diambil')
+                    ->badge()
+                    ->color(fn ($record): string => $record?->isUnclaimed() ? 'warning' : 'gray'),
                 TextColumn::make('start_at')
                     ->label('Start At')
                     ->date()
                     ->sortable(),
+                TextColumn::make('expired_at')
+                    ->label('Expired')
+                    ->date()
+                    ->placeholder('-')
+                    ->color(fn ($record): string => $record?->isExpired() ? 'danger' : 'gray')
+                    ->description(fn ($record): ?string => $record?->isExpired() ? 'Sudah expired' : null)
+                    ->toggleable(),
                 TextColumn::make('status')
                     ->label('Status')
                     ->badge()

@@ -3,6 +3,8 @@
 namespace App\Filament\Pages;
 
 use App\Filament\Actions\GenerateHousekeepingPlanAction;
+use App\Filament\Actions\PrintDailyReportAction;
+use App\Filament\Actions\ResetDashboardFilterAction;
 use App\Filament\Widgets;
 use BackedEnum;
 use Filament\Forms;
@@ -17,15 +19,26 @@ class HousekeepingDashboard extends BaseDashboard
 {
     use HasFiltersAction;
 
+    /**
+     * Filter global tidak disimpan di URL/session: setiap refresh atau
+     * perpindahan halaman kembali ke default.
+     */
+    public ?array $filters = null;
+
+    public function persistsFiltersInSession(): bool
+    {
+        return false;
+    }
+
     protected static string $routePath = 'housekeeping-dashboard';
 
     protected static ?string $title = 'Housekeeping Dashboard';
 
     protected static ?string $navigationLabel = 'Housekeeping Dashboard';
 
-    protected static string|UnitEnum|null $navigationGroup = 'Dashboard';
+    protected static string|UnitEnum|null $navigationGroup = 'Housekeeping';
 
-    protected static ?int $navigationSort = 2;
+    protected static ?int $navigationSort = -10;
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedSparkles;
 
@@ -43,6 +56,7 @@ class HousekeepingDashboard extends BaseDashboard
     {
         return [
             GenerateHousekeepingPlanAction::make(),
+            PrintDailyReportAction::make('housekeeping'),
             FilterAction::make()
                 ->schema([
                     Forms\Components\Select::make('dateRange')
@@ -65,6 +79,7 @@ class HousekeepingDashboard extends BaseDashboard
                         ->label('Sampai Tanggal')
                         ->visible(fn ($get) => $get('dateRange') === 'custom'),
                 ]),
+            ResetDashboardFilterAction::make(),
         ];
     }
 

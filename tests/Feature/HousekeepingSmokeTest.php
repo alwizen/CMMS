@@ -16,6 +16,7 @@ use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Gate;
 use Livewire\Livewire;
+use Spatie\Permission\Models\Role;
 use Tests\TestCase;
 
 class HousekeepingSmokeTest extends TestCase
@@ -25,7 +26,11 @@ class HousekeepingSmokeTest extends TestCase
     public function test_housekeeping_pages_render(): void
     {
         Gate::before(fn () => true);
-        $user = User::factory()->create();
+
+        Role::findOrCreate('spv_gos', 'web');
+
+        $user = User::factory()->create(['status' => true]);
+        $user->assignRole('spv_gos');
         $this->actingAs($user);
 
         $company = Company::create(['code' => 'HK-1', 'name' => 'HK Co']);

@@ -4,6 +4,7 @@ namespace App\Support;
 
 use App\Models\Activity;
 use App\Models\Equipment;
+use App\Models\User;
 use App\Models\WorkOrder;
 use App\Models\WorkOrderActivity;
 use Carbon\Carbon;
@@ -16,13 +17,20 @@ class WorkOrderGenerator
     /**
      * Buat Work Order langsung untuk equipment terpilih (tanpa Plan/Schedule).
      *
+     * WO dimiliki oleh FUNGSI (shared pool): semua user aktif pada fungsi itu
+     * dapat melihat & mengerjakan WO. `technician_coordinator_id` diisi nanti
+     * oleh user yang pertama kali mulai mengerjakan (performed by).
+     *
      * Syarat per equipment:
-     * - Wajib punya penanggung jawab (responsible_user_id).
+     * - Harus ada minimal satu user aktif pada fungsi yang dipilih.
      * - Tipe equipment harus punya activity aktif dengan interval yang dipilih.
      * Equipment yang tidak memenuhi syarat dilewati.
      *
+     * WO duplikat (equipment + interval sama pada periode yang sama) dilewati
+     * kecuali $allowDuplicate = true.
+     *
      * @param  array<int, int>  $equipmentIds
-     * @return array{created: int, skipped: array<int, string>, skip_reasons: array<string, string>}
+     * @return array{created: int, skipped: array<int, string>, skip_reasons: array<string, string>, duplicates: array<string, string>}
      */
     public function generateDirect(
         array $equipmentIds,
@@ -31,25 +39,58 @@ class WorkOrderGenerator
         string $startTime,
         bool $skipWeekend,
         int $issuedBy,
+        ?string $startDate = null,
+        int $expiredDays = 0,
+        ?string $fungsi = null,
+        bool $allowDuplicate = false,
     ): array {
         $interval = strtolower(trim($interval));
         $quantity = max(1, $quantity);
+        $expiredDays = max(0, $expiredDays);
+
+        $startDay = filled($startDate)
+            ? Carbon::parse($startDate)->startOfDay()
+            : Carbon::today();
 
         $equipments = Equipment::query()
-            ->with('equipmentType')
+            ->with('equipmentType.responsibleUsers')
             ->whereIn('id', $equipmentIds)
             ->get();
+
+        $fungsi = filled($fungsi) ? trim((string) $fungsi) : null;
+
+        $fungsiHasActiveUser = $fungsi !== null
+            && User::query()
+                ->where('status', true)
+                ->where('fungsi', $fungsi)
+                ->exists();
 
         $created = 0;
         $skipped = [];
         $skipReasons = [];
+        $duplicates = [];
 
         foreach ($equipments as $equipment) {
-            $responsibleUserId = $equipment->equipmentType?->responsible_user_id;
+            // WO dimiliki fungsi; koordinator diisi saat pengerjaan (performed by).
+            $woFungsi = $fungsi ?? $equipment->equipmentType?->fungsi;
 
-            if (blank($responsibleUserId) || blank($equipment->equipment_type_id)) {
+            if (blank($equipment->equipment_type_id) || blank($woFungsi)) {
                 $skipped[] = $equipment->tag_number;
-                $skipReasons[$equipment->tag_number] = 'Equipment Type belum punya Penanggung Jawab';
+                $skipReasons[$equipment->tag_number] = 'Equipment Type belum punya Fungsi';
+
+                continue;
+            }
+
+            if ($fungsi !== null && ! $fungsiHasActiveUser) {
+                $skipped[] = $equipment->tag_number;
+                $skipReasons[$equipment->tag_number] = 'Belum ada user aktif dengan fungsi '.$fungsi;
+
+                continue;
+            }
+
+            if (! User::query()->where('status', true)->where('fungsi', $woFungsi)->exists()) {
+                $skipped[] = $equipment->tag_number;
+                $skipReasons[$equipment->tag_number] = 'Belum ada user aktif dengan fungsi '.$woFungsi;
 
                 continue;
             }
@@ -68,19 +109,33 @@ class WorkOrderGenerator
                 continue;
             }
 
-            $base = $this->firstWorkday(Carbon::today()->setTimeFromTimeString($startTime), $skipWeekend);
+            $base = $this->firstWorkday($startDay->copy()->setTimeFromTimeString($startTime), $skipWeekend);
+
+            $equipmentCreated = 0;
+            $duplicateMessage = null;
 
             for ($i = 0; $i < $quantity; $i++) {
                 $startAt = $this->shiftByInterval($base, $interval, $i, $skipWeekend);
 
-                DB::transaction(function () use ($equipment, $activities, $interval, $startAt, $issuedBy, $responsibleUserId): void {
+                if (! $allowDuplicate && $this->hasDuplicate($equipment->id, $interval, $startAt, $woFungsi)) {
+                    $duplicateMessage = 'Sudah ada WO interval '.$interval.' pada '.$this->periodLabel($startAt, $interval);
+
+                    continue;
+                }
+
+                $expiredAt = $expiredDays > 0 ? $startAt->copy()->addDays($expiredDays) : null;
+
+                DB::transaction(function () use ($equipment, $activities, $interval, $startAt, $expiredDays, $expiredAt, $issuedBy, $woFungsi): void {
                     $workOrder = WorkOrder::create([
                         'equipment_id' => $equipment->id,
                         'issued_by' => $issuedBy,
-                        'technician_coordinator_id' => $responsibleUserId,
+                        'technician_coordinator_id' => null,
+                        'fungsi' => $woFungsi,
                         'classification' => 'Preventive',
                         'interval' => $interval,
                         'start_at' => $startAt,
+                        'expired_days' => $expiredDays > 0 ? $expiredDays : null,
+                        'expired_at' => $expiredAt,
                         'note' => 'Dibuat otomatis dari generate WO ('.$interval.')',
                         'status' => WorkOrder::STATUSES['Pending'],
                     ]);
@@ -89,6 +144,7 @@ class WorkOrderGenerator
                         WorkOrderActivity::create([
                             'work_order_id' => $workOrder->id,
                             'activity_id' => $activity->id,
+                            'name' => $activity->name,
                             'reference' => $activity->reference,
                             'unit' => $activity->unit,
                             'executed' => false,
@@ -97,10 +153,82 @@ class WorkOrderGenerator
                 });
 
                 $created++;
+                $equipmentCreated++;
+            }
+
+            if ($duplicateMessage !== null) {
+                $duplicates[$equipment->tag_number] = $duplicateMessage;
+
+                if ($equipmentCreated === 0) {
+                    $skipped[] = $equipment->tag_number;
+                    $skipReasons[$equipment->tag_number] = $duplicateMessage;
+                }
             }
         }
 
-        return ['created' => $created, 'skipped' => $skipped, 'skip_reasons' => $skipReasons];
+        return [
+            'created' => $created,
+            'skipped' => $skipped,
+            'skip_reasons' => $skipReasons,
+            'duplicates' => $duplicates,
+        ];
+    }
+
+    /**
+     * Apakah sudah ada WO (non-cancelled) untuk equipment + interval yang sama
+     * pada periode yang sama dengan tanggal rencana.
+     */
+    protected function hasDuplicate(int $equipmentId, string $interval, Carbon $startAt, ?string $fungsi = null): bool
+    {
+        [$from, $to] = $this->periodBounds($startAt, $interval);
+
+        return WorkOrder::query()
+            ->where('equipment_id', $equipmentId)
+            ->where('interval', $interval)
+            ->when(filled($fungsi), fn ($query) => $query->where('fungsi', $fungsi))
+            ->whereNotIn('status', [WorkOrder::STATUSES['Cancelled']])
+            ->whereBetween('start_at', [$from, $to])
+            ->exists();
+    }
+
+    /**
+     * Batas periode untuk pengecekan duplikat sesuai interval.
+     *
+     * @return array{0: Carbon, 1: Carbon}
+     */
+    protected function periodBounds(Carbon $date, string $interval): array
+    {
+        $start = match ($interval) {
+            'weekly' => $date->copy()->startOfWeek(),
+            'monthly' => $date->copy()->startOfMonth(),
+            'quarterly' => $date->copy()->startOfQuarter(),
+            'semi_annual' => $date->copy()->startOfYear()->addMonthsNoOverflow($date->month <= 6 ? 0 : 6),
+            'yearly' => $date->copy()->startOfYear(),
+            default => $date->copy()->startOfDay(),
+        };
+
+        $end = match ($interval) {
+            'weekly' => $date->copy()->endOfWeek(),
+            'monthly' => $date->copy()->endOfMonth(),
+            'quarterly' => $date->copy()->endOfQuarter(),
+            'semi_annual' => $start->copy()->addMonthsNoOverflow(6)->subSecond(),
+            'yearly' => $date->copy()->endOfYear(),
+            default => $date->copy()->endOfDay(),
+        };
+
+        return [$start, $end];
+    }
+
+    protected function periodLabel(Carbon $date, string $interval): string
+    {
+        return match ($interval) {
+            'weekly' => 'minggu '.$date->isoFormat('W, GGGG'),
+            'monthly' => $date->isoFormat('MMMM YYYY'),
+            'quarterly' => 'Kuartal '.$date->quarter.' '.$date->year,
+            'semi_annual' => 'Semester '.($date->month <= 6 ? '1' : '2').' '.$date->year,
+            'yearly' => 'Tahun '.$date->year,
+            default => $date->isoFormat('D MMMM YYYY'),
+        };
     }
 
     /**

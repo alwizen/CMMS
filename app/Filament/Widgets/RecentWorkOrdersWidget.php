@@ -18,7 +18,7 @@ class RecentWorkOrdersWidget extends BaseWidget
 
     protected int|string|array $columnSpan = 'full';
 
-    protected static ?int $sort = 4;
+    protected static ?int $sort = 5;
 
     public function table(Table $table): Table
     {
@@ -26,6 +26,8 @@ class RecentWorkOrdersWidget extends BaseWidget
             ->query(
                 WorkOrder::query()
                     ->tap(fn ($q) => $this->applyDateFilter($q))
+                    ->tap(fn ($q) => $this->applyUserFilter($q))
+                    ->tap(fn ($q) => $this->applyFungsiFilter($q))
                     ->latest()
                     ->limit(10)
             )

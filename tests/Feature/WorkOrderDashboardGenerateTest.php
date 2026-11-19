@@ -31,12 +31,13 @@ class WorkOrderDashboardGenerateTest extends TestCase
 
         Setting::flushCache();
 
-        $this->user = User::factory()->create();
+        $this->user = User::factory()->create(['fungsi' => 'MOS LTSA']);
         $company = Company::create(['code' => 'CO', 'name' => 'Demo Company']);
         $area = Area::create(['company_id' => $company->id, 'code' => 'AR', 'name' => 'Demo Area']);
         $type = EquipmentType::create([
             'code' => 'mov',
             'name' => 'MOV',
+            'fungsi' => 'MOS LTSA',
             'responsible_user_id' => $this->user->id,
         ]);
 
@@ -74,6 +75,7 @@ class WorkOrderDashboardGenerateTest extends TestCase
 
         Livewire::test(Dashboard::class)
             ->callAction('generateWorkOrders', data: [
+                'fungsi' => 'MOS LTSA',
                 'equipment_type_id' => $this->equipment->equipment_type_id,
                 'equipment_ids' => [$this->equipment->id],
                 'interval' => 'monthly',
@@ -86,6 +88,64 @@ class WorkOrderDashboardGenerateTest extends TestCase
 
         $this->assertSame(2, WorkOrder::count());
         $this->assertSame(2, WorkOrder::where('status', WorkOrder::STATUSES['Pending'])->count());
+    }
+
+    public function test_generate_wo_blocks_duplicate_in_same_period(): void
+    {
+        Gate::before(fn () => true);
+        $this->actingAs($this->user);
+
+        $data = [
+            'fungsi' => 'MOS LTSA',
+            'equipment_type_id' => $this->equipment->equipment_type_id,
+            'equipment_ids' => [$this->equipment->id],
+            'interval' => 'monthly',
+            'quantity' => 1,
+            'start_date' => '2026-11-10',
+            'start_time' => '08:00',
+            'expired_days' => 7,
+            'issued_by' => $this->user->id,
+            'skip_weekend' => true,
+        ];
+
+        Livewire::test(Dashboard::class)
+            ->callAction('generateWorkOrders', data: $data)
+            ->assertHasNoActionErrors();
+
+        $this->assertSame(1, WorkOrder::count());
+
+        // Generate ulang pada bulan yang sama -> dilewati.
+        Livewire::test(Dashboard::class)
+            ->callAction('generateWorkOrders', data: $data)
+            ->assertHasNoActionErrors()
+            ->assertNotified('Tidak ada Work Order yang dibuat');
+
+        $this->assertSame(1, WorkOrder::count());
+    }
+
+    public function test_generate_wo_allows_duplicate_when_enabled(): void
+    {
+        Gate::before(fn () => true);
+        $this->actingAs($this->user);
+
+        $data = [
+            'fungsi' => 'MOS LTSA',
+            'equipment_type_id' => $this->equipment->equipment_type_id,
+            'equipment_ids' => [$this->equipment->id],
+            'interval' => 'monthly',
+            'quantity' => 1,
+            'start_date' => '2026-11-10',
+            'start_time' => '08:00',
+            'expired_days' => 7,
+            'issued_by' => $this->user->id,
+            'skip_weekend' => true,
+            'allow_duplicate' => true,
+        ];
+
+        Livewire::test(Dashboard::class)->callAction('generateWorkOrders', data: $data);
+        Livewire::test(Dashboard::class)->callAction('generateWorkOrders', data: $data);
+
+        $this->assertSame(2, WorkOrder::count());
     }
 
     public function test_interval_options_follow_checklist_of_selected_equipment(): void
@@ -127,6 +187,7 @@ class WorkOrderDashboardGenerateTest extends TestCase
 
         Livewire::test(Dashboard::class)
             ->callAction('generateWorkOrders', data: [
+                'fungsi' => 'MOS LTSA',
                 'equipment_type_id' => $this->equipment->equipment_type_id,
                 'equipment_ids' => [$this->equipment->id],
                 'interval' => 'yearly',

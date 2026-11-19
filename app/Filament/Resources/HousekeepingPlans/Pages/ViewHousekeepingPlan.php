@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\HousekeepingPlans\Pages;
 
+use App\Filament\Resources\HousekeepingPlans\Actions\ApproveHousekeepingPlanAction;
 use App\Filament\Resources\HousekeepingPlans\HousekeepingPlanResource;
 use App\Filament\Resources\HousekeepingPlans\Schemas\HousekeepingPlanInfolist;
 use App\Models\HousekeepingPlan;
@@ -21,8 +22,10 @@ class ViewHousekeepingPlan extends ViewRecord
                 'area.company',
                 'area.supervisor',
                 'createdBy',
+                'users',
                 'tasks' => fn ($query) => $query->orderBy('id'),
                 'tasks.facility',
+                'facilities.facility',
             ])
             ->findOrFail($key);
     }
@@ -35,6 +38,8 @@ class ViewHousekeepingPlan extends ViewRecord
     protected function getHeaderActions(): array
     {
         return [
+            ApproveHousekeepingPlanAction::approve(),
+            ApproveHousekeepingPlanAction::reject(),
             EditAction::make(),
             DeleteAction::make(),
         ];

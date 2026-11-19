@@ -16,7 +16,7 @@ class EquipmentController extends Controller
 {
     public function index(Request $request): JsonResponse
     {
-        $query = Equipment::with(['area.company', 'equipmentType.responsibleUser'])
+        $query = Equipment::with(['area.company', 'equipmentType.responsibleUsers'])
             ->orderBy('tag_number');
 
         if ($request->filled('area_id')) {
@@ -81,7 +81,7 @@ class EquipmentController extends Controller
     {
         $equipment = Equipment::with([
             'area.company',
-            'equipmentType.responsibleUser',
+            'equipmentType.responsibleUsers',
         ])->findOrFail($id);
 
         return response()->json([
@@ -99,7 +99,7 @@ class EquipmentController extends Controller
 
         $histories = MaintenanceHistory::query()
             ->where('equipment_id', $id)
-            ->with('performedBy')
+            ->with(['performedBy', 'workOrder.workOrderActivities.activity'])
             ->orderByDesc('maintenance_date')
             ->orderByDesc('id')
             ->paginate($this->perPage($request));

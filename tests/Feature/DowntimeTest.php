@@ -160,7 +160,6 @@ class DowntimeTest extends TestCase
             'equipment_id' => $this->equipment->id,
             'work_order_id' => $workOrder->id,
             'work_order_number' => $workOrder->work_order_number,
-            'maintenance_type' => 'Corrective',
             'classification' => 'Corrective',
             'description' => 'Perbaikan pompa',
             'maintenance_date' => today()->setTime(10, 0),
@@ -175,7 +174,6 @@ class DowntimeTest extends TestCase
 
         $preventive = MaintenanceHistory::create([
             'equipment_id' => $this->equipment->id,
-            'maintenance_type' => 'Preventive',
             'classification' => 'Preventive',
             'description' => 'Perawatan rutin',
             'maintenance_date' => today(),

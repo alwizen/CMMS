@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\WorkOrders\Schemas;
 
 use App\Models\Activity;
+use App\Models\WorkOrderActivity;
 use Filament\Infolists\Components\IconEntry;
 use Filament\Infolists\Components\ImageEntry;
 use Filament\Infolists\Components\RepeatableEntry;
@@ -65,9 +66,13 @@ class WorkOrderInfolist
                     ->columnSpanFull()
                     ->schema([
 
-                        TextEntry::make('technicianCoordinator.name')
-                            ->label('Technician Coordinator')
+                        TextEntry::make('fungsi')
+                            ->label('Fungsi')
+                            ->badge()
                             ->placeholder('-'),
+                        TextEntry::make('technicianCoordinator.name')
+                            ->label('Performed By')
+                            ->placeholder('Belum diambil'),
                         TextEntry::make('start_at')
                             ->label('Mulai')
                             ->dateTime('d M Y H:i')
@@ -76,6 +81,12 @@ class WorkOrderInfolist
                             ->label('Selesai')
                             ->dateTime('d M Y H:i')
                             ->placeholder('-'),
+                        TextEntry::make('expired_at')
+                            ->label('Expired')
+                            ->dateTime('d M Y H:i')
+                            ->placeholder('-')
+                            ->badge()
+                            ->color(fn ($record): string => $record?->isExpired() ? 'danger' : 'gray'),
                         TextEntry::make('note')
                             ->label('Catatan')
                             ->placeholder('-')
@@ -102,8 +113,9 @@ class WorkOrderInfolist
                                 TableColumn::make('Waktu Eksekusi'),
                             ])
                             ->schema([
-                                TextEntry::make('activity.name')
+                                TextEntry::make('name')
                                     ->label('Activity')
+                                    ->state(fn (WorkOrderActivity $record): string => $record->displayName())
                                     ->placeholder('-')
                                     ->bulleted(),
                                 TextEntry::make('reference')

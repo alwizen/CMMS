@@ -66,12 +66,20 @@ class WorkOrderForm
                             ->options(User::pluck('name', 'id'))
                             ->required()
                             ->placeholder('Select issuer'),
+                        Select::make('fungsi')
+                            ->label('Fungsi')
+                            ->options(User::FUNGSI)
+                            ->searchable()
+                            ->nullable()
+                            ->placeholder('Pilih fungsi')
+                            ->helperText('WO dibagikan ke semua user pada fungsi ini.'),
                         Select::make('technician_coordinator_id')
-                            ->label('Technician Coordinator')
+                            ->label('Performed By')
                             ->options(User::technicianCoordinatorOptions())
                             ->searchable()
                             ->nullable()
-                            ->placeholder('Select coordinator'),
+                            ->placeholder('Terisi otomatis saat mulai dikerjakan')
+                            ->helperText('Diisi otomatis oleh user yang memulai pengerjaan.'),
                         DateTimePicker::make('start_at')
                             ->label('Start At')
                             ->required(),

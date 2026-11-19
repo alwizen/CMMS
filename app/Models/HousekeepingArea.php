@@ -8,6 +8,16 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class HousekeepingArea extends Model
 {
+    public const KPI_CLASSES = [
+        'indoor' => 'Indoor (dalam)',
+        'outdoor' => 'Outdoor (luar)',
+    ];
+
+    protected $attributes = [
+        'sla_days' => 1,
+        'kpi_class' => 'outdoor',
+    ];
+
     protected $fillable = [
         'company_id',
         'supervisor_id',
@@ -16,6 +26,8 @@ class HousekeepingArea extends Model
         'description',
         'polygon',
         'area_size',
+        'sla_days',
+        'kpi_class',
         'latitude',
         'longitude',
         'is_active',
@@ -24,6 +36,8 @@ class HousekeepingArea extends Model
     protected $casts = [
         'polygon' => 'array',
         'area_size' => 'float',
+        'sla_days' => 'integer',
+        'kpi_class' => 'string',
         'latitude' => 'float',
         'longitude' => 'float',
         'is_active' => 'boolean',

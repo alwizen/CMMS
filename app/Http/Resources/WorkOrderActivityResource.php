@@ -11,6 +11,7 @@ class WorkOrderActivityResource extends JsonResource
     {
         return [
             'id' => $this->id,
+            'name' => $this->displayName(),
             'reference' => $this->reference,
             'pre_inspection' => $this->pre_inspection,
             'follow_up' => $this->follow_up,
@@ -19,7 +20,7 @@ class WorkOrderActivityResource extends JsonResource
             'executed' => $this->executed,
             'note' => $this->note,
             'photos' => $this->photos ?? [],
-            'activity' => $this->whenLoaded('activity', fn () => [
+            'activity' => $this->whenLoaded('activity', fn () => $this->activity ? [
                 'id' => $this->activity->id,
                 'name' => $this->activity->name,
                 'type' => $this->activity->type,
@@ -28,7 +29,7 @@ class WorkOrderActivityResource extends JsonResource
                 'minimum' => $this->activity->minimum,
                 'maximum' => $this->activity->maximum,
                 'unit' => $this->activity->unit,
-            ]),
+            ] : null),
         ];
     }
 }

@@ -30,8 +30,9 @@ class UserVisibility
     }
 
     /**
-     * Work order yang terkait dengan user: sebagai koordinator, pemberi tugas,
-     * atau anggota tim pelaksana.
+     * Work order yang terkait dengan user: sebagai koordinator (performed by),
+     * pemberi tugas, anggota tim pelaksana, atau milik FUNGSI yang sama
+     * (WO shared pool yang belum/sudah dikerjakan).
      */
     public static function scopeWorkOrders(Builder $query, ?User $user): Builder
     {
@@ -40,11 +41,16 @@ class UserVisibility
         }
 
         $userId = $user->id;
+        $fungsi = $user->fungsi;
 
-        return $query->where(function (Builder $q) use ($userId) {
+        return $query->where(function (Builder $q) use ($userId, $fungsi) {
             $q->where('technician_coordinator_id', $userId)
                 ->orWhere('issued_by', $userId)
                 ->orWhereHas('workOrderWorkers', fn (Builder $w) => $w->where('user_id', $userId));
+
+            if (filled($fungsi)) {
+                $q->orWhere('fungsi', $fungsi);
+            }
         });
     }
 
@@ -76,6 +82,7 @@ class UserVisibility
 
         return $workOrder->technician_coordinator_id === $user->id
             || $workOrder->issued_by === $user->id
+            || (filled($user->fungsi) && $workOrder->fungsi === $user->fungsi)
             || $workOrder->workOrderWorkers()->where('user_id', $user->id)->exists();
     }
 

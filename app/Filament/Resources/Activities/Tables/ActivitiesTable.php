@@ -92,11 +92,11 @@ class ActivitiesTable
                     EditAction::make(),
                     DeleteAction::make(),
                 ]),
+            ])
+            ->toolbarActions([
+                BulkActionGroup::make([
+                    DeleteBulkAction::make(),
+                ]),
             ]);
-        // ->toolbarActions([
-        //     BulkActionGroup::make([
-        //         DeleteBulkAction::make(),
-        //     ]),
-        // ]);
     }
 }

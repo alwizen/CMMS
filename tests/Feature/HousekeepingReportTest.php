@@ -6,6 +6,7 @@ use App\Filament\Pages\HousekeepingReport;
 use App\Models\Company;
 use App\Models\HousekeepingArea;
 use App\Models\HousekeepingPlan;
+use App\Models\HousekeepingPlanFacility;
 use App\Models\HousekeepingPlanTask;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -95,12 +96,17 @@ class HousekeepingReportTest extends TestCase
             'created_by' => $user->id,
         ]);
 
+        $planFacility = HousekeepingPlanFacility::create([
+            'housekeeping_plan_id' => $plan->id,
+            'photo_before' => ['housekeeping/plan-facilities/before/a.jpg'],
+            'photo_after' => ['housekeeping/plan-facilities/after/b.jpg'],
+        ]);
+
         $task = HousekeepingPlanTask::create([
             'housekeeping_plan_id' => $plan->id,
+            'housekeeping_plan_facility_id' => $planFacility->id,
             'name' => 'Pemotongan Rumput',
             'status' => 'Done',
-            'photo_before' => ['housekeeping/plan-tasks/before/a.jpg'],
-            'photo_after' => ['housekeeping/plan-tasks/after/b.jpg'],
             'note' => 'Sudah rapi',
         ]);
 

@@ -13,7 +13,7 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Spatie\Permission\Traits\HasRoles;
 
-#[Fillable(['name', 'email', 'password', 'employee_number', 'phone', 'status'])]
+#[Fillable(['name', 'email', 'password', 'employee_number', 'phone', 'fungsi', 'status'])]
 #[Hidden(['password', 'remember_token'])]
 class User extends Authenticatable implements FilamentUser
 {
@@ -26,6 +26,43 @@ class User extends Authenticatable implements FilamentUser
     public function canAccessPanel(Panel $panel): bool
     {
         return (bool) $this->status;
+    }
+
+    /**
+     * Daftar fungsi yang dipakai pada penugasan maintenance/housekeeping.
+     *
+     * @var array<string, string>
+     */
+    public const FUNGSI = [
+        'MOS LTSA' => 'MOS LTSA',
+        'MOS PM Reborn' => 'MOS PM Reborn',
+        'MOS TAD' => 'MOS TAD',
+        'HSSE' => 'HSSE',
+    ];
+
+    /**
+     * Nilai fungsi yang valid.
+     *
+     * @return array<int, string>
+     */
+    public static function fungsiValues(): array
+    {
+        return array_keys(self::FUNGSI);
+    }
+
+    /**
+     * User aktif dengan fungsi tertentu (dipakai sebagai koordinator WO).
+     *
+     * @return array<int, string>
+     */
+    public static function optionsByFungsi(string $fungsi): array
+    {
+        return static::query()
+            ->where('status', true)
+            ->where('fungsi', $fungsi)
+            ->orderBy('name')
+            ->pluck('name', 'id')
+            ->all();
     }
 
     /**

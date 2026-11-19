@@ -37,9 +37,12 @@ class WorkOrderGeneratorDirectTest extends TestCase
 
         $company = Company::create(['code' => 'CO', 'name' => 'Demo Company']);
         $area = Area::create(['company_id' => $company->id, 'code' => 'AR', 'name' => 'Demo Area']);
+        $this->user->update(['fungsi' => 'MOS LTSA']);
+
         $this->type = EquipmentType::create([
             'code' => 'mov',
             'name' => 'MOV',
+            'fungsi' => 'MOS LTSA',
             'responsible_user_id' => $this->user->id,
         ]);
 
@@ -62,7 +65,10 @@ class WorkOrderGeneratorDirectTest extends TestCase
 
         $wo = WorkOrder::first();
         $this->assertSame(WorkOrder::STATUSES['Pending'], $wo->status);
-        $this->assertSame($this->user->id, $wo->technician_coordinator_id);
+        // WO dimiliki fungsi, performed by diisi saat mulai dikerjakan.
+        $this->assertNull($wo->technician_coordinator_id);
+        $this->assertSame('MOS LTSA', $wo->fungsi);
+        $this->assertTrue($wo->isUnclaimed());
         $this->assertSame('monthly', $wo->interval);
         $this->assertSame(2, WorkOrderActivity::where('work_order_id', $wo->id)->count());
     }
@@ -71,12 +77,114 @@ class WorkOrderGeneratorDirectTest extends TestCase
     {
         $this->makeActivity('Cek', 'monthly');
         $this->type->update(['responsible_user_id' => null]);
+        $this->user->update(['fungsi' => null]);
 
-        $result = $this->generate();
+        $result = $this->generate(fungsi: null);
 
         $this->assertSame(0, $result['created']);
         $this->assertContains('MOV-1', $result['skipped']);
         $this->assertSame(0, WorkOrder::count());
+    }
+
+    public function test_fungsi_selects_coordinator_and_sets_expired(): void
+    {
+        $this->makeActivity('Cek', 'monthly');
+
+        // Pastikan hanya satu user pada fungsi ini sebagai koordinator terpilih.
+        $this->user->update(['fungsi' => 'HSSE']);
+
+        $koordinator = User::factory()->create([
+            'name' => 'Koordinator LTSA',
+            'fungsi' => 'MOS LTSA',
+            'status' => true,
+        ]);
+
+        $result = $this->generate(quantity: 2, expiredDays: 7, fungsi: 'MOS LTSA', startDate: '2026-11-20');
+
+        $this->assertSame(2, $result['created']);
+
+        $wo = WorkOrder::orderBy('start_at')->first();
+        $this->assertNull($wo->technician_coordinator_id);
+        $this->assertSame('MOS LTSA', $wo->fungsi);
+        $this->assertSame('2026-11-20', $wo->start_at->toDateString());
+        $this->assertSame(7, $wo->expired_days);
+        $this->assertSame('2026-11-27', $wo->expired_at->toDateString());
+    }
+
+    public function test_skips_when_fungsi_has_no_active_user(): void
+    {
+        $this->makeActivity('Cek', 'monthly');
+
+        $this->user->update(['fungsi' => null]);
+
+        $result = $this->generate(fungsi: 'HSSE');
+
+        $this->assertSame(0, $result['created']);
+        $this->assertArrayHasKey('MOV-1', $result['skip_reasons']);
+    }
+
+    public function test_skips_duplicate_work_order_for_same_period(): void
+    {
+        $this->makeActivity('Cek', 'monthly');
+
+        $first = $this->generate(interval: 'monthly');
+        $this->assertSame(1, $first['created']);
+
+        $second = $this->generate(interval: 'monthly');
+
+        $this->assertSame(0, $second['created']);
+        $this->assertContains('MOV-1', $second['skipped']);
+        $this->assertArrayHasKey('MOV-1', $second['duplicates']);
+        $this->assertSame(1, WorkOrder::count());
+    }
+
+    public function test_allows_work_order_on_different_period(): void
+    {
+        $this->makeActivity('Cek', 'monthly');
+
+        $this->generate(interval: 'monthly', startDate: '2026-11-10');
+        $result = $this->generate(interval: 'monthly', startDate: '2026-12-10');
+
+        $this->assertSame(1, $result['created']);
+        $this->assertSame(2, WorkOrder::count());
+        $this->assertSame([], $result['duplicates']);
+    }
+
+    public function test_daily_duplicate_only_blocks_same_day(): void
+    {
+        $this->makeActivity('Cek', 'daily');
+
+        $this->generate(interval: 'daily', startDate: '2026-11-16', skipWeekend: false);
+        $sameDay = $this->generate(interval: 'daily', startDate: '2026-11-16', skipWeekend: false);
+        $nextDay = $this->generate(interval: 'daily', startDate: '2026-11-17', skipWeekend: false);
+
+        $this->assertSame(0, $sameDay['created']);
+        $this->assertSame(1, $nextDay['created']);
+        $this->assertSame(2, WorkOrder::count());
+    }
+
+    public function test_can_force_duplicate_when_allowed(): void
+    {
+        $this->makeActivity('Cek', 'monthly');
+
+        $this->generate(interval: 'monthly');
+        $result = $this->generate(interval: 'monthly', allowDuplicate: true);
+
+        $this->assertSame(1, $result['created']);
+        $this->assertSame(2, WorkOrder::count());
+    }
+
+    public function test_cancelled_work_order_does_not_block_regenerate(): void
+    {
+        $this->makeActivity('Cek', 'monthly');
+
+        $this->generate(interval: 'monthly');
+        WorkOrder::query()->update(['status' => WorkOrder::STATUSES['Cancelled']]);
+
+        $result = $this->generate(interval: 'monthly');
+
+        $this->assertSame(1, $result['created']);
+        $this->assertSame(2, WorkOrder::count());
     }
 
     public function test_skips_equipment_without_matching_checklist_interval(): void
@@ -161,8 +269,15 @@ class WorkOrderGeneratorDirectTest extends TestCase
     /**
      * @return array{created: int, skipped: array<int, string>}
      */
-    protected function generate(int $quantity = 1, string $interval = 'monthly', bool $skipWeekend = true): array
-    {
+    protected function generate(
+        int $quantity = 1,
+        string $interval = 'monthly',
+        bool $skipWeekend = true,
+        int $expiredDays = 0,
+        ?string $fungsi = 'MOS LTSA',
+        ?string $startDate = null,
+        bool $allowDuplicate = false,
+    ): array {
         return app(WorkOrderGenerator::class)->generateDirect(
             equipmentIds: [$this->equipment->id],
             interval: $interval,
@@ -170,6 +285,10 @@ class WorkOrderGeneratorDirectTest extends TestCase
             startTime: '08:00',
             skipWeekend: $skipWeekend,
             issuedBy: $this->user->id,
+            startDate: $startDate,
+            expiredDays: $expiredDays,
+            fungsi: $fungsi,
+            allowDuplicate: $allowDuplicate,
         );
     }
 

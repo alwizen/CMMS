@@ -56,14 +56,15 @@ class HousekeepingPlanGenerator
                 continue;
             }
 
-            $existing = HousekeepingPlan::query()
-                ->where('housekeeping_area_id', $area->id)
-                ->whereDate('plan_date', $date->toDateString())
-                ->exists();
+            $blocking = $this->blockingPlan($area, $date);
 
-            if ($existing) {
+            if ($blocking !== null) {
                 $skipped[] = $area->name;
-                $skipReasons[$area->name] = 'Plan untuk area ini pada tanggal tersebut sudah ada';
+                $skipReasons[$area->name] = sprintf(
+                    'Masih ada Plan %s yang belum selesai (batas SLA %s)',
+                    $blocking->plan_number,
+                    $blocking->due_date?->format('d M Y') ?? '-',
+                );
 
                 continue;
             }
@@ -93,21 +94,74 @@ class HousekeepingPlanGenerator
     }
 
     /**
+     * Plan aktif yang menghalangi pembuatan plan baru pada area ini.
+     *
+     * Plan menghalangi bila belum `Completed` DAN memenuhi salah satu:
+     * - tanggal plan baru sama dengan tanggal plan tersebut (hindari duplikat), atau
+     * - batas SLA plan tersebut belum lewat.
+     *
+     * Plan yang sudah `Completed` tidak pernah menghalangi, termasuk pada
+     * tanggal yang sama, sehingga area bisa langsung dijadwalkan ulang.
+     */
+    public function blockingPlan(HousekeepingArea $area, Carbon $date): ?HousekeepingPlan
+    {
+        $plans = HousekeepingPlan::query()
+            ->where('housekeeping_area_id', $area->id)
+            ->where('status', '!=', HousekeepingPlan::STATUSES['Completed'])
+            ->with('area:id,sla_days')
+            ->orderBy('plan_date')
+            ->get();
+
+        foreach ($plans as $plan) {
+            if (! $plan->plan_date) {
+                continue;
+            }
+
+            if ($plan->plan_date->toDateString() === $date->toDateString()) {
+                return $plan;
+            }
+
+            $due = $plan->due_date;
+
+            if ($due !== null && $date->lessThanOrEqualTo($due)) {
+                return $plan;
+            }
+        }
+
+        return null;
+    }
+
+    /**
      * Generate plan dari satu housekeeping request yang sudah disetujui.
      *
      * @param  array<int, int|string>  $manpowerIds
+     * @param  array<int, int|string>  $userIds  Petugas housekeeping (user role patra-jasa).
      */
     public function generateFromRequest(
         HousekeepingRequest $request,
         string|Carbon|null $planDate = null,
         array $manpowerIds = [],
         ?int $createdBy = null,
+        array $userIds = [],
     ): HousekeepingPlan {
         $date = Carbon::parse($planDate ?? $request->request_date ?? now())->startOfDay();
 
+        if ($request->area !== null) {
+            $blocking = $this->blockingPlan($request->area, $date);
+
+            if ($blocking !== null) {
+                throw new \RuntimeException(sprintf(
+                    'Area %s masih punya Plan %s yang belum selesai (batas SLA %s).',
+                    $request->area->name,
+                    $blocking->plan_number,
+                    $blocking->due_date?->format('d M Y') ?? '-',
+                ));
+            }
+        }
+
         $tasks = $this->tasksForRequest($request);
 
-        return DB::transaction(function () use ($request, $tasks, $date, $manpowerIds, $createdBy): HousekeepingPlan {
+        return DB::transaction(function () use ($request, $tasks, $date, $manpowerIds, $createdBy, $userIds): HousekeepingPlan {
             $plan = HousekeepingPlan::create([
                 'housekeeping_area_id' => $request->housekeeping_area_id,
                 'plan_date' => $date->toDateString(),
@@ -118,6 +172,10 @@ class HousekeepingPlanGenerator
 
             $this->fillTasks($plan, $tasks);
             $this->attachManpowers($plan, $request->area, $manpowerIds);
+
+            if ($userIds !== []) {
+                $plan->users()->sync($userIds);
+            }
 
             return $plan;
         });

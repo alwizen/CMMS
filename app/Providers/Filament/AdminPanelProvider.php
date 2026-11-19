@@ -62,7 +62,6 @@ class AdminPanelProvider extends PanelProvider
                 HousekeepingDashboard::class,
             ])
             ->navigationGroups([
-                'Dashboard',
                 'Maintenance',
                 'Riwayat & Monitoring',
                 'Housekeeping',

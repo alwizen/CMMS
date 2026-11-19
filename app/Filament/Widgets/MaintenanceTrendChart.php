@@ -32,6 +32,8 @@ class MaintenanceTrendChart extends ChartWidget
 
         $data = MaintenanceHistory::selectRaw("{$monthExpression} as month, COUNT(*) as count")
             ->where('maintenance_date', '>=', now()->subMonths(6))
+            ->tap(fn ($q) => $this->applyUserFilter($q, 'performed_by'))
+            ->tap(fn ($q) => $this->applyFungsiFilter($q, 'performedBy'))
             ->groupByRaw($monthExpression)
             ->pluck('count', 'month')
             ->toArray();

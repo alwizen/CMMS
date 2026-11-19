@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\HousekeepingPlans\Pages;
 
 use App\Filament\Resources\HousekeepingPlans\HousekeepingPlanResource;
+use App\Support\HousekeepingRole;
 use Filament\Actions\CreateAction;
 use Filament\Resources\Pages\ListRecords;
 
@@ -13,7 +14,8 @@ class ListHousekeepingPlans extends ListRecords
     protected function getHeaderActions(): array
     {
         return [
-            CreateAction::make(),
+            CreateAction::make()
+                ->visible(fn (): bool => HousekeepingRole::canManagePlan(auth()->user())),
         ];
     }
 }

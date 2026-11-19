@@ -36,9 +36,6 @@ class MaintenanceHistoriesTable
                 TextColumn::make('equipment.equipmentType.name')
                     ->label('Equipment')
                     ->sortable(),
-                TextColumn::make('maintenance_type')
-                    ->label('Type')
-                    ->sortable(),
                 TextColumn::make('classification')
                     ->label('Classification')
                     ->sortable(),

@@ -37,12 +37,13 @@ class EquipmentTypeForm
                             ->unique(ignoreRecord: true)
                             ->placeholder('e.g., pompa, storage-tank')
                             ->helperText('Terisi otomatis dari Name. Bisa diubah manual bila perlu.'),
-                        Select::make('responsible_user_id')
-                            ->label('Penanggung Jawab')
-                            ->options(fn (): array => User::technicianCoordinatorOptions())
+                        Select::make('fungsi')
+                            ->label('Fungsi')
+                            ->options(User::FUNGSI)
                             ->searchable()
                             ->nullable()
-                            ->helperText('Dipakai sebagai penanggung jawab WO saat generate untuk equipment bertipe ini.'),
+                            ->placeholder('Pilih fungsi penanggung jawab')
+                            ->helperText('Menentukan penanggung jawab WO saat generate untuk tipe equipment ini.'),
                         Textarea::make('description')
                             ->label('Description')
                             ->nullable()

@@ -6,12 +6,14 @@ use App\Filament\Resources\HousekeepingPlans\Pages\CreateHousekeepingPlan;
 use App\Filament\Resources\HousekeepingPlans\Pages\EditHousekeepingPlan;
 use App\Filament\Resources\HousekeepingPlans\Pages\ListHousekeepingPlans;
 use App\Filament\Resources\HousekeepingPlans\Pages\ViewHousekeepingPlan;
+use App\Filament\Resources\HousekeepingPlans\RelationManagers\FacilitiesRelationManager;
 use App\Filament\Resources\HousekeepingPlans\RelationManagers\ManpowersRelationManager;
 use App\Filament\Resources\HousekeepingPlans\RelationManagers\TasksRelationManager;
 use App\Filament\Resources\HousekeepingPlans\Schemas\HousekeepingPlanForm;
 use App\Filament\Resources\HousekeepingPlans\Schemas\HousekeepingPlanInfolist;
 use App\Filament\Resources\HousekeepingPlans\Tables\HousekeepingPlansTable;
 use App\Models\HousekeepingPlan;
+use App\Support\HousekeepingRole;
 use BackedEnum;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
@@ -30,6 +32,21 @@ class HousekeepingPlanResource extends Resource
     protected static string|UnitEnum|null $navigationGroup = 'Housekeeping';
 
     protected static ?int $navigationSort = 4;
+
+    public static function canCreate(): bool
+    {
+        return HousekeepingRole::canManagePlan(auth()->user());
+    }
+
+    public static function canEdit($record): bool
+    {
+        return HousekeepingRole::canManagePlan(auth()->user());
+    }
+
+    public static function canDelete($record): bool
+    {
+        return HousekeepingRole::canManagePlan(auth()->user());
+    }
 
     public static function form(Schema $schema): Schema
     {
@@ -50,6 +67,7 @@ class HousekeepingPlanResource extends Resource
     {
         return [
             TasksRelationManager::class,
+            FacilitiesRelationManager::class,
             ManpowersRelationManager::class,
         ];
     }

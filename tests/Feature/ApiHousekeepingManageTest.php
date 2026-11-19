@@ -12,6 +12,7 @@ use App\Models\HousekeepingTask;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Laravel\Sanctum\Sanctum;
+use Spatie\Permission\Models\Role;
 use Tests\TestCase;
 
 class ApiHousekeepingManageTest extends TestCase
@@ -26,7 +27,13 @@ class ApiHousekeepingManageTest extends TestCase
     {
         parent::setUp();
 
-        $this->user = User::factory()->create();
+        foreach (['spv_gos', 'patra-jasa', 'super_admin'] as $role) {
+            Role::findOrCreate($role, 'web');
+        }
+
+        // Pengelolaan plan (buat/generate/ubah) milik SPV GOS.
+        $this->user = User::factory()->create(['status' => true]);
+        $this->user->assignRole('spv_gos');
         Sanctum::actingAs($this->user, ['*']);
 
         $company = Company::create(['code' => 'HK', 'name' => 'HK Co']);
@@ -208,5 +215,164 @@ class ApiHousekeepingManageTest extends TestCase
             ->assertOk();
 
         $this->assertDatabaseMissing('housekeeping_plan_tasks', ['id' => $task->id]);
+    }
+
+    public function test_generates_plan_with_checklist_from_master(): void
+    {
+        $facility = HousekeepingFacility::create([
+            'housekeeping_area_id' => $this->area->id,
+            'name' => 'Gazebo',
+            'is_active' => true,
+        ]);
+        HousekeepingTask::create([
+            'housekeeping_facility_id' => $facility->id,
+            'name' => 'Sapu daun',
+            'is_active' => true,
+        ]);
+        HousekeepingTask::create([
+            'housekeeping_facility_id' => $facility->id,
+            'name' => 'Bersih bangku',
+            'is_active' => true,
+        ]);
+        HousekeepingTask::create([
+            'housekeeping_facility_id' => $facility->id,
+            'name' => 'Tidak aktif',
+            'is_active' => false,
+        ]);
+
+        $response = $this->postJson('/api/housekeeping-plans/generate', [
+            'area_ids' => [$this->area->id],
+            'plan_date' => '2026-11-20',
+        ])->assertStatus(201);
+
+        $response->assertJsonPath('success', true)
+            ->assertJsonPath('created', 1)
+            ->assertJsonPath('data.0.task_count', 2)
+            ->assertJsonPath('data.0.area.name', 'Taman Kantor');
+
+        $this->assertSame(2, HousekeepingPlanTask::count());
+    }
+
+    public function test_generate_skips_duplicate_plan_on_same_date(): void
+    {
+        $facility = HousekeepingFacility::create([
+            'housekeeping_area_id' => $this->area->id,
+            'name' => 'Gazebo',
+            'is_active' => true,
+        ]);
+        HousekeepingTask::create([
+            'housekeeping_facility_id' => $facility->id,
+            'name' => 'Sapu daun',
+            'is_active' => true,
+        ]);
+
+        $this->postJson('/api/housekeeping-plans/generate', [
+            'area_ids' => [$this->area->id],
+            'plan_date' => '2026-11-20',
+        ])->assertStatus(201);
+
+        $this->postJson('/api/housekeeping-plans/generate', [
+            'area_ids' => [$this->area->id],
+            'plan_date' => '2026-11-20',
+        ])
+            ->assertStatus(422)
+            ->assertJsonPath('success', false)
+            ->assertJsonPath('created', 0);
+
+        $this->assertSame(1, HousekeepingPlan::count());
+    }
+
+    public function test_generate_requires_area_with_active_checklist(): void
+    {
+        $this->postJson('/api/housekeeping-plans/generate', [
+            'area_ids' => [$this->area->id],
+            'plan_date' => '2026-11-20',
+        ])->assertStatus(422);
+    }
+
+    public function test_removes_manpower_from_plan(): void
+    {
+        $plan = HousekeepingPlan::create([
+            'housekeeping_area_id' => $this->area->id,
+            'plan_date' => now(),
+            'status' => 'Draft',
+        ]);
+
+        $manpower = HousekeepingManpower::create([
+            'housekeeping_area_id' => $this->area->id,
+            'name' => 'Budi',
+            'is_active' => true,
+        ]);
+        $plan->manpowers()->attach($manpower->id);
+
+        $this->deleteJson("/api/housekeeping-plans/{$plan->id}/manpowers/{$manpower->id}")
+            ->assertOk()
+            ->assertJsonPath('success', true);
+
+        $this->assertDatabaseMissing('housekeeping_plan_manpowers', [
+            'housekeeping_plan_id' => $plan->id,
+            'housekeeping_manpower_id' => $manpower->id,
+        ]);
+    }
+
+    public function test_petugas_cannot_create_or_generate_plan(): void
+    {
+        $petugas = User::factory()->create(['status' => true]);
+        $petugas->assignRole('patra-jasa');
+        Sanctum::actingAs($petugas, ['*']);
+
+        $this->postJson('/api/housekeeping-plans', [
+            'housekeeping_area_id' => $this->area->id,
+            'plan_date' => '2026-11-20',
+        ])->assertForbidden();
+
+        $this->postJson('/api/housekeeping-plans/generate', [
+            'area_ids' => [$this->area->id],
+            'plan_date' => '2026-11-20',
+        ])->assertForbidden();
+    }
+
+    public function test_spv_cannot_execute_checklist(): void
+    {
+        $plan = HousekeepingPlan::create([
+            'housekeeping_area_id' => $this->area->id,
+            'plan_date' => now(),
+            'status' => 'Draft',
+        ]);
+
+        $task = HousekeepingPlanTask::create([
+            'housekeeping_plan_id' => $plan->id,
+            'name' => 'Sapu',
+            'status' => 'Pending',
+        ]);
+
+        $this->putJson("/api/housekeeping-plans/{$plan->id}/tasks/{$task->id}", [
+            'status' => 'In Progress',
+        ])->assertForbidden();
+
+        $this->deleteJson("/api/housekeeping-plans/{$plan->id}/facilities/999/photos", [
+            'type' => 'before',
+            'path' => 'x.jpg',
+        ])->assertForbidden();
+    }
+
+    public function test_updates_and_deletes_plan(): void
+    {
+        $plan = HousekeepingPlan::create([
+            'housekeeping_area_id' => $this->area->id,
+            'plan_date' => now(),
+            'status' => 'Draft',
+        ]);
+
+        $this->putJson("/api/housekeeping-plans/{$plan->id}", [
+            'plan_date' => '2026-11-21',
+            'note' => 'Catatan baru',
+        ])
+            ->assertOk()
+            ->assertJsonPath('data.plan_date', '2026-11-21');
+
+        $this->deleteJson("/api/housekeeping-plans/{$plan->id}")->assertOk();
+
+        $this->assertDatabaseMissing('housekeeping_plans', ['id' => $plan->id]);
     }
 }

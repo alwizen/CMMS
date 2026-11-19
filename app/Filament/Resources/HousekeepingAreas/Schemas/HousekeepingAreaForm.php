@@ -4,6 +4,7 @@ namespace App\Filament\Resources\HousekeepingAreas\Schemas;
 
 use App\Forms\Components\LeafletMap;
 use App\Models\Company;
+use App\Models\HousekeepingArea;
 use App\Models\User;
 use App\Support\Code;
 use App\Support\Geo;
@@ -34,11 +35,14 @@ class HousekeepingAreaForm
                         Select::make('supervisor_id')
                             ->label('Penanggung Jawab')
                             ->options(fn (): array => User::query()
+                                ->where('status', true)
                                 ->whereHas('roles', fn ($query) => $query->where('name', 'patra-jasa'))
                                 ->orderBy('name')
                                 ->pluck('name', 'id')
                                 ->all())
+                            ->searchable()
                             ->nullable()
+                            ->helperText('Petugas housekeeping (patra-jasa) yang bertanggung jawab atas area ini.')
                             ->placeholder('Pilih penanggung jawab area'),
                         TextInput::make('name')
                             ->label('Name')
@@ -62,6 +66,22 @@ class HousekeepingAreaForm
                             ->label('Description')
                             ->nullable()
                             ->placeholder('Enter area description...'),
+                        TextInput::make('sla_days')
+                            ->label('SLA Pengerjaan (hari)')
+                            ->numeric()
+                            ->integer()
+                            ->minValue(1)
+                            ->default(1)
+                            ->required()
+                            ->suffix('hari')
+                            ->helperText('Batas waktu penyelesaian plan untuk area ini. Contoh: kantor 1 hari, area luar 14 hari.'),
+                        Select::make('kpi_class')
+                            ->label('Klasifikasi KPI')
+                            ->options(HousekeepingArea::KPI_CLASSES)
+                            ->default('outdoor')
+                            ->required()
+                            ->selectablePlaceholder(false)
+                            ->helperText('Menentukan set metrik KPI. Area dalam: penilaian harian. Area luar: penilaian per window SLA.'),
                         Toggle::make('is_active')
                             ->label('Active')
                             ->default(true),

@@ -107,16 +107,22 @@ class DashboardController extends Controller
     }
 
     /**
-     * Work order milik user yang login saja (koordinator, pemberi tugas, atau pelaksana).
+     * Work order milik user yang login: koordinator (performed by), pemberi tugas,
+     * pelaksana, atau milik FUNGSI yang sama (shared pool).
      */
     protected function ownWorkOrders(?object $user): Builder
     {
         $userId = $user?->id;
+        $fungsi = $user?->fungsi;
 
-        return WorkOrder::query()->where(function (Builder $query) use ($userId): void {
+        return WorkOrder::query()->where(function (Builder $query) use ($userId, $fungsi): void {
             $query->where('technician_coordinator_id', $userId)
                 ->orWhere('issued_by', $userId)
                 ->orWhereHas('workOrderWorkers', fn (Builder $worker) => $worker->where('user_id', $userId));
+
+            if (filled($fungsi)) {
+                $query->orWhere('fungsi', $fungsi);
+            }
         });
     }
 }

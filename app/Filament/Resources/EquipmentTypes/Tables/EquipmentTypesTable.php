@@ -31,9 +31,11 @@ class EquipmentTypesTable
                     ->label('Name')
                     ->searchable()
                     ->sortable(),
-                TextColumn::make('responsibleUser.name')
-                    ->label('Penanggung Jawab')
+                TextColumn::make('fungsi')
+                    ->label('Fungsi')
+                    ->badge()
                     ->placeholder('-')
+                    ->sortable()
                     ->toggleable(),
                 TextColumn::make('equipment_count')
                     ->label('Total Equipment')

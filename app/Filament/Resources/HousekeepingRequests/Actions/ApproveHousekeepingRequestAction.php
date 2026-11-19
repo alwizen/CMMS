@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\HousekeepingRequests\Actions;
 
 use App\Models\HousekeepingRequest;
+use App\Models\User;
 use App\Support\HousekeepingPlanGenerator;
 use Filament\Actions\Action;
 use Filament\Forms\Components\DatePicker;
@@ -26,29 +27,40 @@ class ApproveHousekeepingRequestAction
                     ->label('Tanggal Plan Harian')
                     ->required()
                     ->default(fn (HousekeepingRequest $record) => $record->request_date ?? now()),
-                Select::make('manpower_ids')
-                    ->label('Manpower')
+                Select::make('user_ids')
+                    ->label('Petugas Housekeeping')
                     ->multiple()
                     ->searchable()
                     ->preload()
-                    ->options(fn (HousekeepingRequest $record): array => $record->area?->manpowers()
-                        ->where('is_active', true)
+                    ->options(fn (): array => User::query()
+                        ->where('status', true)
+                        ->whereHas('roles', fn ($query) => $query->where('name', 'patra-jasa'))
                         ->orderBy('name')
                         ->pluck('name', 'id')
-                        ->all() ?? [])
-                    ->helperText('Kosongkan untuk menugaskan semua manpower aktif di area.'),
+                        ->all())
+                    ->helperText('Pilih user dengan role patra-jasa yang akan mengerjakan plan ini.'),
                 Textarea::make('approval_notes')
                     ->label('Catatan Approval')
                     ->rows(3)
                     ->nullable(),
             ])
             ->action(function (HousekeepingRequest $record, array $data): void {
-                $plan = app(HousekeepingPlanGenerator::class)->generateFromRequest(
-                    request: $record,
-                    planDate: $data['plan_date'],
-                    manpowerIds: $data['manpower_ids'] ?? [],
-                    createdBy: auth()->id(),
-                );
+                try {
+                    $plan = app(HousekeepingPlanGenerator::class)->generateFromRequest(
+                        request: $record,
+                        planDate: $data['plan_date'],
+                        createdBy: auth()->id(),
+                        userIds: $data['user_ids'] ?? [],
+                    );
+                } catch (\RuntimeException $exception) {
+                    Notification::make()
+                        ->title('Tidak bisa membuat Plan Harian')
+                        ->body($exception->getMessage())
+                        ->danger()
+                        ->send();
+
+                    return;
+                }
 
                 $record->update([
                     'status' => HousekeepingRequest::STATUSES['Approved'],

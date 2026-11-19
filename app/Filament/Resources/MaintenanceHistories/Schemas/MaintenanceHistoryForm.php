@@ -34,10 +34,6 @@ class MaintenanceHistoryForm
                             ->disabled()
                             ->dehydrated()
                             ->placeholder('Auto-filled from Work Order'),
-                        TextInput::make('maintenance_type')
-                            ->label('Maintenance Type')
-                            ->required()
-                            ->placeholder('e.g., Preventive Maintenance, Inspection'),
                         TextInput::make('classification')
                             ->label('Classification')
                             ->required()

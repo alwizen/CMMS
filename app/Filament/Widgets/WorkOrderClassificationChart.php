@@ -21,6 +21,8 @@ class WorkOrderClassificationChart extends ChartWidget
         $data = WorkOrder::query()
             ->selectRaw('classification, COUNT(*) as count')
             ->tap(fn ($q) => $this->applyDateFilter($q))
+            ->tap(fn ($q) => $this->applyUserFilter($q))
+            ->tap(fn ($q) => $this->applyFungsiFilter($q))
             ->groupBy('classification')
             ->get();
 

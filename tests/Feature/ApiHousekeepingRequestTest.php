@@ -12,6 +12,8 @@ use App\Models\HousekeepingTask;
 use App\Models\Setting;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Storage;
 use Laravel\Sanctum\Sanctum;
 use Tests\TestCase;
 
@@ -177,5 +179,142 @@ class ApiHousekeepingRequestTest extends TestCase
         $this->withHeaders(['Accept' => 'application/json'])
             ->getJson('/api/housekeeping-requests')
             ->assertUnauthorized();
+    }
+
+    public function test_store_accepts_multipart_photo_upload(): void
+    {
+        Storage::fake('public');
+
+        $response = $this->post('/api/housekeeping-requests', [
+            'housekeeping_area_id' => $this->area->id,
+            'request_date' => today()->toDateString(),
+            'description' => 'Gazebo kotor dengan foto',
+            'photos' => [UploadedFile::fake()->image('foto.jpg')],
+        ], ['Accept' => 'application/json'])->assertCreated();
+
+        $response->assertJsonCount(1, 'data.photo');
+
+        $photo = $response->json('data.photo.0');
+        Storage::disk('public')->assertExists($photo);
+    }
+
+    public function test_index_supports_mine_filter(): void
+    {
+        $other = User::factory()->create();
+
+        HousekeepingRequest::create([
+            'housekeeping_area_id' => $this->area->id,
+            'request_date' => today()->toDateString(),
+            'description' => 'Request saya',
+            'requested_by' => $this->user->id,
+            'status' => HousekeepingRequest::STATUSES['Open'],
+        ]);
+        HousekeepingRequest::create([
+            'housekeeping_area_id' => $this->area->id,
+            'request_date' => today()->toDateString(),
+            'description' => 'Request orang lain',
+            'requested_by' => $other->id,
+            'status' => HousekeepingRequest::STATUSES['Open'],
+        ]);
+
+        $this->getJson('/api/housekeeping-requests?mine=1')
+            ->assertOk()
+            ->assertJsonCount(1, 'data')
+            ->assertJsonPath('data.0.description', 'Request saya');
+    }
+
+    public function test_owner_can_update_open_request(): void
+    {
+        $request = HousekeepingRequest::create([
+            'housekeeping_area_id' => $this->area->id,
+            'request_date' => today()->toDateString(),
+            'description' => 'Deskripsi lama',
+            'requested_by' => $this->user->id,
+            'status' => HousekeepingRequest::STATUSES['Open'],
+        ]);
+
+        $this->putJson("/api/housekeeping-requests/{$request->id}", [
+            'description' => 'Deskripsi baru',
+            'priority' => 'High',
+        ])
+            ->assertOk()
+            ->assertJsonPath('data.description', 'Deskripsi baru')
+            ->assertJsonPath('data.priority', 'High');
+    }
+
+    public function test_other_user_cannot_update_or_delete_request(): void
+    {
+        $request = HousekeepingRequest::create([
+            'housekeeping_area_id' => $this->area->id,
+            'request_date' => today()->toDateString(),
+            'description' => 'Request orang lain',
+            'requested_by' => User::factory()->create()->id,
+            'status' => HousekeepingRequest::STATUSES['Open'],
+        ]);
+
+        $this->putJson("/api/housekeeping-requests/{$request->id}", ['description' => 'Diretas'])
+            ->assertForbidden();
+        $this->deleteJson("/api/housekeeping-requests/{$request->id}")->assertForbidden();
+    }
+
+    public function test_cannot_update_approved_request(): void
+    {
+        $request = HousekeepingRequest::create([
+            'housekeeping_area_id' => $this->area->id,
+            'request_date' => today()->toDateString(),
+            'description' => 'Sudah disetujui',
+            'requested_by' => $this->user->id,
+            'status' => HousekeepingRequest::STATUSES['Approved'],
+        ]);
+
+        $this->putJson("/api/housekeeping-requests/{$request->id}", ['description' => 'Ubah'])
+            ->assertStatus(422);
+    }
+
+    public function test_owner_can_delete_open_request_and_photos_are_removed(): void
+    {
+        Storage::fake('public');
+
+        $photo = UploadedFile::fake()->image('foto.jpg')->store('housekeeping/requests', 'public');
+
+        $request = HousekeepingRequest::create([
+            'housekeeping_area_id' => $this->area->id,
+            'request_date' => today()->toDateString(),
+            'description' => 'Akan dihapus',
+            'requested_by' => $this->user->id,
+            'status' => HousekeepingRequest::STATUSES['Open'],
+            'photo' => [$photo],
+        ]);
+
+        $this->deleteJson("/api/housekeeping-requests/{$request->id}")->assertOk();
+
+        $this->assertDatabaseMissing('housekeeping_requests', ['id' => $request->id]);
+        Storage::disk('public')->assertMissing($photo);
+    }
+
+    public function test_upload_and_delete_request_photos(): void
+    {
+        Storage::fake('public');
+
+        $request = HousekeepingRequest::create([
+            'housekeeping_area_id' => $this->area->id,
+            'request_date' => today()->toDateString(),
+            'description' => 'Dengan foto',
+            'requested_by' => $this->user->id,
+            'status' => HousekeepingRequest::STATUSES['Open'],
+        ]);
+
+        $response = $this->post("/api/housekeeping-requests/{$request->id}/photos", [
+            'photos' => [UploadedFile::fake()->image('a.jpg')],
+        ], ['Accept' => 'application/json'])->assertOk();
+
+        $path = $response->json('data.photo.0');
+        Storage::disk('public')->assertExists($path);
+
+        $this->deleteJson("/api/housekeeping-requests/{$request->id}/photos", ['path' => $path])
+            ->assertOk()
+            ->assertJsonCount(0, 'data.photo');
+
+        Storage::disk('public')->assertMissing($path);
     }
 }

@@ -38,7 +38,7 @@ class DowntimeReport extends Page implements HasTable
 
     protected static ?string $title = 'Unplanned Downtime';
 
-    protected static string|UnitEnum|null $navigationGroup = 'Riwayat & Monitoring';
+    protected static string|UnitEnum|null $navigationGroup = 'Maintenance';
 
     protected static ?int $navigationSort = 3;
 

@@ -34,9 +34,18 @@ class HousekeepingStatsOverviewWidget extends BaseWidget
             ->where('status', 'In Progress')
             ->whereHas('plan', fn ($q) => $this->applyDateFilter($q, 'plan_date'))
             ->count();
+        // Plan aktif = belum selesai dan batas SLA belum lewat. Tidak difilter
+        // `plan_date` saja agar plan SLA panjang yang masih berjalan ikut terhitung.
+        $openPlans = HousekeepingPlan::query()
+            ->where('status', '!=', 'Completed')
+            ->with('area:id,sla_days')
+            ->get();
+
+        $activePlans = $openPlans->filter(fn (HousekeepingPlan $plan): bool => ! $plan->is_overdue)->count();
+        $overduePlans = $openPlans->filter(fn (HousekeepingPlan $plan): bool => $plan->is_overdue)->count();
         $pendingToday = HousekeepingPlanTask::query()
             ->whereIn('status', ['Pending', 'In Progress'])
-            ->whereHas('plan', fn ($q) => $q->whereDate('plan_date', today()))
+            ->whereHas('plan', fn ($q) => $q->where('status', '!=', 'Completed'))
             ->count();
 
         $completionRate = $taskTotal > 0 ? round(($taskDone / $taskTotal) * 100) : 0;
@@ -62,10 +71,14 @@ class HousekeepingStatsOverviewWidget extends BaseWidget
                 ->description('Pekerjaan berstatus In Progress')
                 ->descriptionIcon('heroicon-o-play')
                 ->color($taskInProgress > 0 ? 'warning' : 'success'),
-            Stat::make('Belum Selesai Hari Ini', $pendingToday)
-                ->description($pendingToday > 0 ? 'Perlu tindak lanjut' : 'Semua tuntas')
-                ->descriptionIcon('heroicon-o-exclamation-triangle')
-                ->color($pendingToday > 0 ? 'danger' : 'success'),
+            Stat::make('Plan Aktif', $activePlans)
+                ->description($pendingToday.' pekerjaan belum selesai')
+                ->descriptionIcon('heroicon-o-arrow-path')
+                ->color($activePlans > 0 ? 'warning' : 'success'),
+            Stat::make('Plan Melewati SLA', $overduePlans)
+                ->description($overduePlans > 0 ? 'Perlu eskalasi' : 'Semua sesuai SLA')
+                ->descriptionIcon('heroicon-o-clock')
+                ->color($overduePlans > 0 ? 'danger' : 'success'),
         ];
     }
 }

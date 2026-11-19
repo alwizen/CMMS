@@ -14,13 +14,15 @@ class WorkOrderStatusChart extends ChartWidget
 
     protected ?string $heading = 'Backlog Work Order per Status';
 
-    protected static ?int $sort = 3;
+    protected static ?int $sort = 2;
 
     protected function getData(): array
     {
         $counts = WorkOrder::query()
             ->selectRaw('status, COUNT(*) as count')
             ->tap(fn ($query) => $this->applyDateFilter($query))
+            ->tap(fn ($query) => $this->applyUserFilter($query))
+            ->tap(fn ($query) => $this->applyFungsiFilter($query))
             ->groupBy('status')
             ->pluck('count', 'status');
 

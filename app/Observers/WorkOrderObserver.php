@@ -35,12 +35,38 @@ class WorkOrderObserver
     public function updated(WorkOrder $workOrder): void
     {
         if ($workOrder->wasChanged('status')) {
+            $this->claimByStartingUser($workOrder);
             $this->syncRequestStatus($workOrder);
         }
 
         if ($workOrder->wasChanged('status') && strcasecmp((string) $workOrder->status, 'Completed') === 0) {
             $this->createMaintenanceHistory($workOrder);
         }
+    }
+
+    /**
+     * WO milik fungsi (shared): user pertama yang memulai pengerjaan
+     * dicatat sebagai performed by (technician_coordinator_id).
+     */
+    protected function claimByStartingUser(WorkOrder $workOrder): void
+    {
+        if (! $workOrder->isUnclaimed()) {
+            return;
+        }
+
+        $status = strtolower(trim((string) $workOrder->status));
+
+        if ($status !== 'in progress' && $status !== 'on hold') {
+            return;
+        }
+
+        $userId = auth()->id();
+
+        if (blank($userId)) {
+            return;
+        }
+
+        $workOrder->claimBy((int) $userId);
     }
 
     /**
@@ -131,7 +157,6 @@ class WorkOrderObserver
             [
                 'equipment_id' => $workOrder->equipment_id,
                 'work_order_number' => $workOrder->work_order_number,
-                'maintenance_type' => $workOrder->classification,
                 'classification' => $workOrder->classification,
                 'description' => $workOrder->note ?? $workOrder->work_order_number,
                 'maintenance_date' => $workOrder->finish_at ?? now(),

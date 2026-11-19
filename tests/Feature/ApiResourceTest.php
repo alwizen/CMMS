@@ -14,6 +14,7 @@ use App\Models\MaintenanceRequest;
 use App\Models\Setting;
 use App\Models\User;
 use App\Models\WorkOrder;
+use App\Models\WorkOrderActivity;
 use App\Models\WorkOrderWorker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\Request;
@@ -99,7 +100,6 @@ class ApiResourceTest extends TestCase
     {
         MaintenanceHistory::create([
             'equipment_id' => $this->equipment->id,
-            'maintenance_type' => 'Preventive',
             'classification' => 'Preventive',
             'description' => 'Cek rutin',
             'maintenance_date' => now(),
@@ -113,6 +113,53 @@ class ApiResourceTest extends TestCase
 
         $this->assertSame(1, $response->json('meta.total'));
         $this->assertSame('Cek rutin', $response->json('data.0.description'));
+    }
+
+    public function test_equipment_maintenance_histories_endpoint_includes_checklist(): void
+    {
+        $workOrder = WorkOrder::create([
+            'equipment_id' => $this->equipment->id,
+            'issued_by' => $this->user->id,
+            'technician_coordinator_id' => $this->user->id,
+            'classification' => 'Preventive',
+            'start_at' => now(),
+            'finish_at' => now(),
+            'status' => WorkOrder::STATUSES['Completed'],
+        ]);
+
+        WorkOrderActivity::create([
+            'work_order_id' => $workOrder->id,
+            'name' => 'Cek tekanan oli',
+            'executed' => true,
+            'final_result' => 'Normal',
+        ]);
+        WorkOrderActivity::create([
+            'work_order_id' => $workOrder->id,
+            'name' => 'Ganti filter manual',
+            'executed' => false,
+        ]);
+
+        MaintenanceHistory::create([
+            'equipment_id' => $this->equipment->id,
+            'work_order_id' => $workOrder->id,
+            'work_order_number' => $workOrder->work_order_number,
+            'classification' => 'Preventive',
+            'description' => 'Cek rutin',
+            'maintenance_date' => now(),
+            'performed_by' => $this->user->id,
+            'status' => 'Completed',
+        ]);
+
+        Sanctum::actingAs($this->user, ['*']);
+
+        $response = $this->getJson("/api/equipment/{$this->equipment->id}/maintenance-histories")->assertOk();
+
+        $response->assertJsonPath('data.0.work_order_number', $workOrder->work_order_number)
+            ->assertJsonCount(2, 'data.0.checklist')
+            ->assertJsonPath('data.0.checklist.0.name', 'Cek tekanan oli')
+            ->assertJsonPath('data.0.checklist.0.executed', true)
+            ->assertJsonPath('data.0.checklist.1.name', 'Ganti filter manual')
+            ->assertJsonPath('data.0.checklist.1.executed', false);
     }
 
     public function test_technician_only_sees_work_orders_they_are_linked_to(): void

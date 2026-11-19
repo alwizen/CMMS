@@ -120,7 +120,7 @@
         <div
             class="absolute inset-0 bg-cover bg-center bg-no-repeat"
             style="
-                background-image: url('{{ asset('img/hero.webp') }}');
+                background-image: url('{{ asset('img/bg.webp') }}');
                 opacity: 0.7;
                 -webkit-mask-image: linear-gradient(to right, rgba(0,0,0,0.43) 0%, rgba(0,0,0,1) 100%);
                 mask-image: linear-gradient(to right, rgba(0,0,0,0.43) 0%, rgba(0,0,0,1) 100%);

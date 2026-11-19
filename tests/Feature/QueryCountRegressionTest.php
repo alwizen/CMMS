@@ -143,7 +143,6 @@ class QueryCountRegressionTest extends TestCase
         $history = MaintenanceHistory::create([
             'equipment_id' => $equipment->id,
             'work_order_id' => $workOrder->id,
-            'maintenance_type' => 'Preventive',
             'classification' => 'Preventive',
             'description' => 'd',
             'maintenance_date' => '2026-01-01 09:00:00',

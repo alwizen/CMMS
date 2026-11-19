@@ -230,22 +230,22 @@ class ImporterTest extends TestCase
         $this->assertFalse($type->status);
     }
 
-    public function test_equipment_type_import_sets_responsible_user_by_name(): void
+    public function test_equipment_type_import_sets_fungsi(): void
     {
         $this->runImport(EquipmentTypeImporter::class, [
-            ['code' => 'pump', 'name' => 'Pompa', 'responsible_user_id' => $this->user->name],
+            ['code' => 'pump', 'name' => 'Pompa', 'fungsi' => 'MOS LTSA'],
         ]);
 
-        $this->assertSame($this->user->id, $this->pumpType->fresh()->responsible_user_id);
+        $this->assertSame('MOS LTSA', $this->pumpType->fresh()->fungsi);
     }
 
-    public function test_equipment_type_import_ignores_unknown_responsible_user(): void
+    public function test_equipment_type_import_rejects_invalid_fungsi(): void
     {
-        $this->runImport(EquipmentTypeImporter::class, [
-            ['code' => 'pump', 'name' => 'Pompa', 'responsible_user_id' => 'Orang Tidak Ada'],
-        ]);
+        $this->expectException(ValidationException::class);
 
-        $this->assertNull($this->pumpType->fresh()->responsible_user_id);
+        $this->runImport(EquipmentTypeImporter::class, [
+            ['code' => 'pump', 'name' => 'Pompa', 'fungsi' => 'Fungsi Tidak Ada'],
+        ]);
     }
 
     public function test_activity_import_resolves_equipment_type_and_updates_composite_key(): void

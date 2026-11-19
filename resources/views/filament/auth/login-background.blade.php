@@ -1,5 +1,5 @@
 @php
-    $bgUrl = asset('img/hero.webp');
+    $bgUrl = asset('img/ft.webp');
 @endphp
 
 <style>

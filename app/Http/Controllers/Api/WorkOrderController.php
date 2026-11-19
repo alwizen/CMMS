@@ -160,6 +160,11 @@ class WorkOrderController extends Controller
             'note',
         ]));
 
+        // WO shared pool: user pertama yang mengeksekusi checklist menjadi performed by.
+        if ($request->boolean('executed')) {
+            $workOrder->claimBy($request->user()?->id);
+        }
+
         return response()->json([
             'success' => true,
             'message' => 'Aktivitas work order berhasil diperbarui.',

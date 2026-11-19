@@ -10,38 +10,24 @@ class AreaSeeder extends Seeder
 {
     public function run(): void
     {
-        $ftTegal = Company::where('code', 'FT-TGL')->first();
+        $company = Company::where('code', 'FT-TGL')->firstOrFail();
 
-        Area::create([
-            'company_id' => $ftTegal->id,
-            'code' => 'LOAD',
-            'name' => 'Loading',
-            'description' => 'Loading area untuk distribusi',
-            'is_active' => true,
-        ]);
+        $areas = [
+            ['code' => 'LOAD', 'name' => 'Loading', 'description' => 'Loading area untuk distribusi'],
+            ['code' => 'UNLOAD', 'name' => 'Unloading', 'description' => 'Unloading area'],
+            ['code' => 'STORAGE', 'name' => 'Storage', 'description' => 'Area penyimpanan'],
+            ['code' => 'MCC', 'name' => 'MCC', 'description' => 'Motor Control Center'],
+        ];
 
-        Area::create([
-            'company_id' => $ftTegal->id,
-            'code' => 'UNLOAD',
-            'name' => 'Unloading',
-            'description' => 'Unloading area',
-            'is_active' => true,
-        ]);
-
-        Area::create([
-            'company_id' => $ftTegal->id,
-            'code' => 'STORAGE',
-            'name' => 'Storage',
-            'description' => 'Area penyimpanan',
-            'is_active' => true,
-        ]);
-
-        Area::create([
-            'company_id' => $ftTegal->id,
-            'code' => 'MCC',
-            'name' => 'MCC',
-            'description' => 'Motor Control Center',
-            'is_active' => true,
-        ]);
+        foreach ($areas as $area) {
+            Area::firstOrCreate(
+                ['company_id' => $company->id, 'code' => $area['code']],
+                [
+                    'name' => $area['name'],
+                    'description' => $area['description'],
+                    'is_active' => true,
+                ],
+            );
+        }
     }
 }

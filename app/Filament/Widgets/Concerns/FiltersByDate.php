@@ -68,6 +68,50 @@ trait FiltersByDate
         }
     }
 
+    /**
+     * ID user yang dipilih pada filter global dashboard (null = semua user).
+     */
+    private function userFilterId(): ?int
+    {
+        $value = $this->dateFilterValue('user_id');
+
+        return filled($value) ? (int) $value : null;
+    }
+
+    /**
+     * Terapkan filter user. Default kolom: technician_coordinator_id.
+     */
+    private function applyUserFilter($query, string $column = 'technician_coordinator_id'): void
+    {
+        $userId = $this->userFilterId();
+
+        if ($userId) {
+            $query->where($column, $userId);
+        }
+    }
+
+    /**
+     * Fungsi yang dipilih pada filter global dashboard (null = semua fungsi).
+     */
+    private function fungsiFilter(): ?string
+    {
+        $value = $this->dateFilterValue('fungsi');
+
+        return filled($value) ? (string) $value : null;
+    }
+
+    /**
+     * Terapkan filter fungsi lewat relasi koordinator WO.
+     */
+    private function applyFungsiFilter($query, string $relation = 'technicianCoordinator'): void
+    {
+        $fungsi = $this->fungsiFilter();
+
+        if ($fungsi) {
+            $query->whereHas($relation, fn ($q) => $q->where('fungsi', $fungsi));
+        }
+    }
+
     private function dateFilterRange(): string
     {
         return (string) ($this->dateFilterValue('dateRange') ?? 'all');
@@ -75,12 +119,14 @@ trait FiltersByDate
 
     private function dateFilterValue(string $key): mixed
     {
-        $filters = $this->appliedFilters ?? $this->pageFilters ?? request()->query('filters');
+        // Filter hanya dari page/applied filters. Tidak membaca query string
+        // agar filter lama tidak ikut terpakai setelah refresh/navigasi.
+        $filters = $this->appliedFilters ?? $this->pageFilters;
 
         if (is_array($filters)) {
             return $filters[$key] ?? null;
         }
 
-        return request()->query($key);
+        return null;
     }
 }

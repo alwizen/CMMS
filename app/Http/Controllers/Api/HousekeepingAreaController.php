@@ -30,6 +30,8 @@ class HousekeepingAreaController extends Controller
             'code' => $area->code,
             'company' => $area->company?->name,
             'area_size' => $area->area_size,
+            'sla_days' => $area->sla_days,
+            'kpi_class' => $area->kpi_class,
             'supervisor' => $area->supervisor?->name,
         ])->values();
 

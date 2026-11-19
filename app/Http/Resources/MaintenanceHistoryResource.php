@@ -12,7 +12,6 @@ class MaintenanceHistoryResource extends JsonResource
         return [
             'id' => $this->id,
             'work_order_number' => $this->work_order_number,
-            'maintenance_type' => $this->maintenance_type,
             'classification' => $this->classification,
             'description' => $this->description,
             'maintenance_date' => $this->maintenance_date?->toIso8601String(),
@@ -25,6 +24,17 @@ class MaintenanceHistoryResource extends JsonResource
                 'id' => $this->performedBy->id,
                 'name' => $this->performedBy->name,
             ] : null),
+            'checklist' => $this->whenLoaded('workOrder', fn () => $this->workOrder?->workOrderActivities
+                ?->map(fn ($activity): array => [
+                    'id' => $activity->id,
+                    'name' => $activity->displayName(),
+                    'executed' => (bool) $activity->executed,
+                    'unit' => $activity->unit,
+                    'pre_inspection' => $activity->pre_inspection,
+                    'final_result' => $activity->final_result,
+                    'note' => $activity->note,
+                ])
+                ->values() ?? []),
         ];
     }
 }

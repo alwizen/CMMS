@@ -15,9 +15,11 @@ use Filament\Actions\Action;
 use Filament\Actions\EditAction;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Select;
+use Filament\Forms\Components\TagsInput;
 use Filament\Forms\Components\Textarea;
 use Filament\Notifications\Notification;
 use Filament\Resources\Pages\ViewRecord;
+use Filament\Schemas\Components\Utilities\Set;
 use Filament\Schemas\Schema;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Notification as NotificationFacade;
@@ -66,20 +68,34 @@ class ViewMaintenanceRequests extends ViewRecord
                         ->required()
                         ->default(now()),
                     Select::make('activity_ids')
-                        ->label('Aktivitas Pemeriksaan')
+                        ->label('Aktivitas dari Checklist')
                         ->options(fn ($livewire): array => $livewire->activityOptions())
                         ->default(fn ($livewire): array => array_keys($livewire->activityOptions()))
                         ->multiple()
                         ->searchable()
                         ->preload()
-                        ->helperText('Checklist yang akan dikerjakan teknisi. Kosongkan bila memang tidak ada item pemeriksaan.')
+                        ->hintAction(
+                            Action::make('clearActivityChecklist')
+                                ->label('Hapus semua')
+                                ->icon('heroicon-o-x-mark')
+                                ->color('danger')
+                                ->link()
+                                ->action(fn (Set $set) => $set('activity_ids', [])),
+                        )
+                        ->helperText('Pilih item dari master checklist. Bisa dikosongkan bila memakai aktivitas manual di bawah.')
+                        ->columnSpanFull(),
+                    TagsInput::make('manual_activities')
+                        ->label('Aktivitas Manual (ketik sendiri)')
+                        ->placeholder('Ketik nama aktivitas lalu tekan Enter')
+                        ->helperText('Tambahkan item pekerjaan yang tidak ada di checklist. Bisa dipakai bersamaan dengan checklist di atas.')
                         ->columnSpanFull(),
                     Select::make('technician_coordinator_id')
-                        ->label('Penanggung Jawab')
+                        ->label('Performed By (opsional)')
                         ->options(User::technicianCoordinatorOptions())
-                        ->required()
+                        ->nullable()
                         ->searchable()
-                        ->placeholder('Pilih 1 penanggung jawab'),
+                        ->placeholder('Kosongkan agar diisi saat mulai dikerjakan')
+                        ->helperText('WO dibagikan ke semua user pada fungsi equipment. Performed by terisi otomatis saat mulai.'),
                     Select::make('classification')
                         ->label('Classification')
                         ->options([
@@ -108,7 +124,8 @@ class ViewMaintenanceRequests extends ViewRecord
                         'equipment_id' => $record->equipment_id,
                         'maintenance_request_id' => $record->id,
                         'issued_by' => auth()->id(),
-                        'technician_coordinator_id' => $data['technician_coordinator_id'],
+                        'fungsi' => $record->equipment?->equipmentType?->fungsi,
+                        'technician_coordinator_id' => $data['technician_coordinator_id'] ?? null,
                         'classification' => $data['classification'],
                         'start_at' => $data['start_date'],
                         'finish_at' => null,
@@ -134,11 +151,21 @@ class ViewMaintenanceRequests extends ViewRecord
                             WorkOrderActivity::create([
                                 'work_order_id' => $workOrder->id,
                                 'activity_id' => $activity->id,
+                                'name' => $activity->name,
                                 'reference' => $activity->reference,
                                 'unit' => $activity->unit,
                                 'executed' => false,
                             ]);
                         }
+                    }
+
+                    foreach ($this->normalizeManualActivities($data['manual_activities'] ?? []) as $manualName) {
+                        WorkOrderActivity::create([
+                            'work_order_id' => $workOrder->id,
+                            'activity_id' => null,
+                            'name' => $manualName,
+                            'executed' => false,
+                        ]);
                     }
 
                     $this->notifyApproval($record->fresh(['equipment', 'reportedBy']), $workOrder);
@@ -195,11 +222,29 @@ class ViewMaintenanceRequests extends ViewRecord
     }
 
     /**
+     * Bersihkan daftar aktivitas manual: trim, buang kosong, dan hilangkan duplikat.
+     *
+     * @param  array<int, mixed>|string|null  $values
+     * @return array<int, string>
+     */
+    protected function normalizeManualActivities(array|string|null $values): array
+    {
+        $values = is_array($values) ? $values : [$values];
+
+        return collect($values)
+            ->map(fn ($value): string => trim((string) $value))
+            ->filter(fn (string $value): bool => $value !== '')
+            ->unique()
+            ->values()
+            ->all();
+    }
+
+    /**
      * Kirim notifikasi approve ke teknisi penanggung jawab dan pelapor.
      */
     protected function notifyApproval(MaintenanceRequest $request, WorkOrder $workOrder): void
     {
-        $recipients = $this->approvalRecipients($request, $workOrder->technician_coordinator_id);
+        $recipients = $this->approvalRecipients($request, $workOrder->technician_coordinator_id, $workOrder->fungsi);
 
         if ($recipients->isEmpty()) {
             return;
@@ -227,11 +272,21 @@ class ViewMaintenanceRequests extends ViewRecord
     /**
      * @return Collection<int, User>
      */
-    protected function approvalRecipients(MaintenanceRequest $request, ?int $coordinatorId): Collection
+    protected function approvalRecipients(MaintenanceRequest $request, ?int $coordinatorId, ?string $fungsi = null): Collection
     {
+        $userIds = array_filter([$request->reported_by, $coordinatorId]);
+
         return User::query()
-            ->whereIn('id', array_filter([$request->reported_by, $coordinatorId]))
             ->where('status', true)
+            ->where(function ($query) use ($userIds, $fungsi): void {
+                if ($userIds !== []) {
+                    $query->whereIn('id', $userIds);
+                }
+
+                if (filled($fungsi)) {
+                    $query->orWhere('fungsi', $fungsi);
+                }
+            })
             ->get();
     }
 }
