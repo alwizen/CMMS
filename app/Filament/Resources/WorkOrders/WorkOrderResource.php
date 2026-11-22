@@ -26,6 +26,30 @@ class WorkOrderResource extends Resource
 
     protected static ?int $navigationSort = 4;
 
+    /**
+     * Jumlah WO yang menunggu review SPV MOS.
+     */
+    public static function getNavigationBadge(): ?string
+    {
+        $user = auth()->user();
+
+        if (! $user?->hasAnyRole(['spv_mos', 'super_admin'])) {
+            return null;
+        }
+
+        $count = WorkOrder::query()
+            ->where('status', WorkOrder::STATUSES['Completed'])
+            ->where('approval_status', '!=', WorkOrder::APPROVAL_APPROVED)
+            ->count();
+
+        return $count > 0 ? (string) $count : null;
+    }
+
+    public static function getNavigationBadgeColor(): string|array|null
+    {
+        return 'warning';
+    }
+
     public static function form(Schema $schema): Schema
     {
         return WorkOrderForm::configure($schema);

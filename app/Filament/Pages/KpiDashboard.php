@@ -15,16 +15,12 @@ use Filament\Pages\Page;
 use Filament\Schemas\Components\Actions;
 use Filament\Schemas\Components\EmbeddedSchema;
 use Filament\Schemas\Components\EmbeddedTable;
-use Filament\Schemas\Components\Grid;
-use Filament\Schemas\Components\Icon;
 use Filament\Schemas\Components\Section;
-use Filament\Schemas\Components\Text;
 use Filament\Schemas\Components\Utilities\Get;
 use Filament\Schemas\Components\Utilities\Set;
+use Filament\Schemas\Components\View;
 use Filament\Schemas\Schema;
 use Filament\Support\Enums\FontWeight;
-use Filament\Support\Enums\IconSize;
-use Filament\Support\Enums\TextSize;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Concerns\InteractsWithTable;
@@ -373,38 +369,25 @@ class KpiDashboard extends Page implements HasTable
                     ->description('Gambaran umum hasil penilaian pada periode terpilih.')
                     ->icon(Heroicon::OutlinedPresentationChartLine)
                     ->schema([
-                        Grid::make(4)
-                            ->schema([
-                                $this->statCard('Objek Dinilai', (string) $summary['count'], 'Orang/area dengan data', Heroicon::OutlinedUsers),
-                                $this->statCard('Rata-rata Skor', $summary['average_score'].' / 100', 'Periode: '.$period->label, Heroicon::OutlinedChartBar),
-                                $this->statCard('Achieve', (string) $summary['achieve'], 'Skor ≥ 80', Heroicon::OutlinedCheckBadge),
-                                $this->statCard('Below Target', (string) $summary['below'], 'Skor < 60', Heroicon::OutlinedExclamationTriangle),
+                        View::make('filament.pages.kpi-summary-cards')
+                            ->viewData([
+                                'summary' => $summary,
+                                'period' => $period,
+                                'source' => $source,
                             ]),
                     ])
                     ->columnSpanFull(),
 
                 Section::make('Metrik & Target')
                     ->description($scopeNote)
-                    ->schema(
-                        collect($summary['metrics'])
-                            ->map(fn (array $metric, string $key): Grid => Grid::make(4)->schema([
-                                Text::make($metric['label'])
-                                    ->weight(FontWeight::SemiBold)
-                                    ->size(TextSize::Small),
-                                Text::make('Target: '.$metric['target'].' '.$metric['unit'])
-                                    ->size(TextSize::ExtraSmall)
-                                    ->color('gray'),
-                                Text::make('Bobot: '.$metric['weight'].'%')
-                                    ->size(TextSize::ExtraSmall)
-                                    ->color('gray'),
-                                Text::make('Rata-rata: '.$metric['average'])
-                                    ->size(TextSize::Small)
-                                    ->weight(FontWeight::Medium),
-                            ]))
-                            ->values()
-                            ->all()
-                    )
-                    ->columns(2)
+                    ->icon(Heroicon::OutlinedAdjustmentsHorizontal)
+                    ->schema([
+                        View::make('filament.pages.kpi-metric-cards')
+                            ->viewData([
+                                'metrics' => $summary['metrics'],
+                                'results' => $this->results(),
+                            ]),
+                    ])
                     ->columnSpanFull(),
 
                 Section::make('Peringkat')
@@ -413,17 +396,5 @@ class KpiDashboard extends Page implements HasTable
                     ])
                     ->columnSpanFull(),
             ]);
-    }
-
-    protected function statCard(string $label, string $value, string $description, Heroicon $icon): Grid
-    {
-        return Grid::make(1)->schema([
-            Icon::make($icon)
-                ->color('primary')
-                ->size(IconSize::Small),
-            Text::make($label)->size(TextSize::ExtraSmall)->color('gray'),
-            Text::make($value)->weight(FontWeight::Bold)->size(TextSize::Large),
-            Text::make($description)->size(TextSize::ExtraSmall)->color('gray'),
-        ]);
     }
 }

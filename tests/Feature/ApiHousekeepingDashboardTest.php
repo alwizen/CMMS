@@ -25,7 +25,7 @@ class ApiHousekeepingDashboardTest extends TestCase
 
         Carbon::setTestNow(Carbon::parse('2026-11-18 10:00:00'));
 
-        foreach (['super_admin', 'spv_mos', 'spv_gos', 'spv_hsse', 'pengawas', 'ltsa_tad', 'patra-jasa'] as $role) {
+        foreach (['super_admin', 'spv_mos', 'spv_gos', 'spv_hsse', 'pengawas', 'mos', 'patra-jasa'] as $role) {
             Role::findOrCreate($role, 'web');
         }
 
@@ -140,7 +140,7 @@ class ApiHousekeepingDashboardTest extends TestCase
 
     public function test_other_roles_are_forbidden(): void
     {
-        Sanctum::actingAs($this->makeUser('ltsa_tad'), ['*']);
+        Sanctum::actingAs($this->makeUser('mos'), ['*']);
 
         $this->getJson('/api/dashboard/housekeeping')->assertForbidden();
     }

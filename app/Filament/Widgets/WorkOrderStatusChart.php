@@ -31,7 +31,6 @@ class WorkOrderStatusChart extends ChartWidget
         $colors = [
             'Pending' => '#f59e0b',
             'In Progress' => '#3b82f6',
-            'On Hold' => '#a855f7',
             'Completed' => '#22c55e',
             'Cancelled' => '#ef4444',
         ];

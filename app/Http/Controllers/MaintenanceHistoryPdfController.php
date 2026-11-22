@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\MaintenanceHistory;
+use App\Models\User;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 
@@ -10,6 +11,12 @@ class MaintenanceHistoryPdfController extends Controller
 {
     public function __invoke(Request $request)
     {
+        abort_unless(
+            $request->user()?->hasAnyRole(User::ADMIN_PANEL_ROLES),
+            403,
+            'Anda tidak berhak mengunduh laporan ini.',
+        );
+
         $from = $request->query('from');
         $until = $request->query('until');
 

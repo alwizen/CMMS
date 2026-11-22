@@ -11,12 +11,13 @@ use App\Support\UserVisibility;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Validation\Rule;
 
 class WorkOrderController extends Controller
 {
     public function index(Request $request): JsonResponse
     {
-        $query = WorkOrder::with(['equipment.equipmentType', 'equipment.area', 'issuedBy', 'technicianCoordinator', 'workOrderWorkers.user'])
+        $query = WorkOrder::with(['equipment.equipmentType', 'equipment.area', 'issuedBy', 'technicianCoordinator', 'approvedBy', 'workOrderWorkers.user'])
             ->orderByDesc('created_at');
 
         UserVisibility::scopeWorkOrders($query, $request->user());
@@ -70,6 +71,7 @@ class WorkOrderController extends Controller
             'equipment.area',
             'issuedBy',
             'technicianCoordinator',
+            'approvedBy',
             'maintenanceRequest',
             'workOrderActivities.activity',
             'workOrderWorkers.user',
@@ -89,6 +91,10 @@ class WorkOrderController extends Controller
 
         $this->authorizeWorkOrder($request, $workOrder);
 
+        if ($locked = $this->lockedResponse($request, $workOrder)) {
+            return $locked;
+        }
+
         // Cegah memulai/mengubah status sebelum tanggal jadwal tiba.
         $newStatus = $request->input('status');
         if (
@@ -105,11 +111,24 @@ class WorkOrderController extends Controller
         }
 
         $request->validate([
-            'status' => 'sometimes|string|in:Pending,In Progress,On Hold,Completed,Cancelled',
+            'status' => 'sometimes|string|in:Pending,In Progress,Completed,Cancelled',
             'note' => 'sometimes|string|max:5000',
             'start_at' => 'sometimes|date',
             'finish_at' => 'sometimes|date|nullable',
         ]);
+
+        // WO shared pool: user pertama yang memulai/menyelesaikan menjadi performed by.
+        if (
+            $newStatus !== null
+            && in_array($newStatus, [
+                WorkOrder::STATUSES['In Progress'],
+                WorkOrder::STATUSES['Completed'],
+            ], true)
+            && ! $this->claimForExecution($request, $workOrder)
+        ) {
+            return $this->lockedResponse($request, $workOrder->fresh())
+                ?? response()->json(['success' => false, 'message' => 'Work order sedang dikerjakan user lain.'], 403);
+        }
 
         $workOrder->update($request->only(['status', 'note', 'start_at', 'finish_at']));
 
@@ -121,6 +140,7 @@ class WorkOrderController extends Controller
                 'equipment.area',
                 'issuedBy',
                 'technicianCoordinator',
+                'approvedBy',
                 'workOrderActivities.activity',
                 'workOrderWorkers.user',
             ])),
@@ -133,6 +153,14 @@ class WorkOrderController extends Controller
 
         $this->authorizeWorkOrder($request, $workOrder);
 
+        if ($locked = $this->lockedResponse($request, $workOrder)) {
+            return $locked;
+        }
+
+        if ($statusLocked = $this->statusEditableResponse($workOrder)) {
+            return $statusLocked;
+        }
+
         if (! $workOrder->isExecutable()) {
             return response()->json([
                 'success' => false,
@@ -144,13 +172,35 @@ class WorkOrderController extends Controller
         $workOrderActivity = WorkOrderActivity::where('work_order_id', $workOrderId)
             ->findOrFail($activityId);
 
+        $qualitative = $workOrderActivity->usesQualitativeResult();
+
+        // Checklist kualitatif: Pre Inspection & Final Result memakai pilihan kondisi.
+        // Nilai lama tetap diterima agar data existing tidak ditolak saat diedit.
+        $preInspectionRule = ['sometimes', 'nullable', 'string', 'max:100'];
+        $finalResultRule = ['sometimes', 'nullable', 'string', 'max:100'];
+
+        if ($qualitative) {
+            $preInspectionRule[] = Rule::in(array_keys(
+                WorkOrderActivity::qualitativeOptions($workOrderActivity->pre_inspection),
+            ));
+            $finalResultRule[] = Rule::in(array_keys(
+                WorkOrderActivity::qualitativeOptions($workOrderActivity->final_result),
+            ));
+        }
+
         $request->validate([
-            'pre_inspection' => 'sometimes|nullable|string|max:100',
+            'pre_inspection' => $preInspectionRule,
             'follow_up' => 'sometimes|nullable|string|max:100',
-            'final_result' => 'sometimes|nullable|string|max:100',
+            'final_result' => $finalResultRule,
             'executed' => 'sometimes|boolean',
             'note' => 'sometimes|string|max:5000',
         ]);
+
+        // WO shared pool: user pertama yang mengeksekusi checklist menjadi performed by.
+        if ($request->boolean('executed') && ! $this->claimForExecution($request, $workOrder)) {
+            return $this->lockedResponse($request, $workOrder->fresh())
+                ?? response()->json(['success' => false, 'message' => 'Work order sedang dikerjakan user lain.'], 403);
+        }
 
         $workOrderActivity->update($request->only([
             'pre_inspection',
@@ -159,11 +209,6 @@ class WorkOrderController extends Controller
             'executed',
             'note',
         ]));
-
-        // WO shared pool: user pertama yang mengeksekusi checklist menjadi performed by.
-        if ($request->boolean('executed')) {
-            $workOrder->claimBy($request->user()?->id);
-        }
 
         return response()->json([
             'success' => true,
@@ -180,6 +225,14 @@ class WorkOrderController extends Controller
         $workOrder = WorkOrder::findOrFail($workOrderId);
 
         $this->authorizeWorkOrder($request, $workOrder);
+
+        if ($locked = $this->lockedResponse($request, $workOrder)) {
+            return $locked;
+        }
+
+        if ($statusLocked = $this->statusEditableResponse($workOrder)) {
+            return $statusLocked;
+        }
 
         if (! $workOrder->isExecutable()) {
             return response()->json([
@@ -231,6 +284,14 @@ class WorkOrderController extends Controller
 
         $this->authorizeWorkOrder($request, $workOrder);
 
+        if ($locked = $this->lockedResponse($request, $workOrder)) {
+            return $locked;
+        }
+
+        if ($statusLocked = $this->statusEditableResponse($workOrder)) {
+            return $statusLocked;
+        }
+
         $workOrderActivity = WorkOrderActivity::where('work_order_id', $workOrderId)
             ->findOrFail($activityId);
 
@@ -265,6 +326,30 @@ class WorkOrderController extends Controller
      * Hanya user yang terkait WO (koordinator, pemberi tugas, pelaksana)
      * atau role dengan akses penuh yang boleh mengakses.
      */
+    /**
+     * Item checklist/foto hanya boleh diubah selama pekerjaan masih berjalan.
+     */
+    protected function statusEditableResponse(WorkOrder $workOrder): ?JsonResponse
+    {
+        if (in_array($workOrder->status, [
+            WorkOrder::STATUSES['Pending'],
+            WorkOrder::STATUSES['In Progress'],
+        ], true)) {
+            return null;
+        }
+
+        return response()->json([
+            'success' => false,
+            'message' => $workOrder->status === WorkOrder::STATUSES['Completed']
+                ? 'Work order sudah diselesaikan dan menunggu review SPV MOS.'
+                : 'Work order berstatus '.$workOrder->status.' tidak dapat diubah.',
+            'data' => [
+                'status' => $workOrder->status,
+                'approval_status' => $workOrder->approval_status,
+            ],
+        ], 403);
+    }
+
     protected function authorizeWorkOrder(Request $request, WorkOrder $workOrder): void
     {
         abort_unless(
@@ -272,5 +357,46 @@ class WorkOrderController extends Controller
             403,
             'Anda tidak memiliki akses untuk work order ini.',
         );
+    }
+
+    /**
+     * Tolak perubahan bila WO sedang dikerjakan user lain. Role akses penuh
+     * (supervisor/pengawas) tetap boleh menindaklanjuti.
+     */
+    protected function lockedResponse(Request $request, WorkOrder $workOrder): ?JsonResponse
+    {
+        $user = $request->user();
+
+        if (UserVisibility::hasFullAccess($user) || ! $workOrder->isLockedFor($user)) {
+            return null;
+        }
+
+        return response()->json([
+            'success' => false,
+            'message' => $workOrder->lockMessage(),
+            'data' => [
+                'locked_by' => [
+                    'id' => $workOrder->technician_coordinator_id,
+                    'name' => $workOrder->lockedByName(),
+                ],
+                'status' => $workOrder->status,
+            ],
+        ], 403);
+    }
+
+    /**
+     * Klaim WO untuk user yang mulai mengerjakan (kecuali role akses penuh).
+     *
+     * @return bool `false` bila WO sudah diklaim user lain.
+     */
+    protected function claimForExecution(Request $request, WorkOrder $workOrder): bool
+    {
+        $user = $request->user();
+
+        if (! $user || UserVisibility::hasFullAccess($user)) {
+            return true;
+        }
+
+        return $workOrder->claimBy($user->id);
     }
 }

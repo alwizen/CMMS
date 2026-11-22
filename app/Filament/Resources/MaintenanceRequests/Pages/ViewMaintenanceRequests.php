@@ -34,6 +34,27 @@ class ViewMaintenanceRequests extends ViewRecord
     }
 
     /**
+     * Fungsi default pada form approval: fungsi tipe equipment bila punya
+     * petugas MOS, selain itu fungsi MOS pertama yang tersedia.
+     */
+    public function defaultFungsiForApproval(): ?string
+    {
+        $options = User::fungsiOptionsForRole('mos');
+
+        if ($options === []) {
+            return null;
+        }
+
+        $equipmentFungsi = $this->getRecord()?->equipment?->equipmentType?->fungsi;
+
+        if (filled($equipmentFungsi) && array_key_exists($equipmentFungsi, $options)) {
+            return $equipmentFungsi;
+        }
+
+        return array_key_first($options);
+    }
+
+    /**
      * Aktivitas aktif untuk tipe equipment dari request ini.
      *
      * @return array<int, string>
@@ -89,13 +110,14 @@ class ViewMaintenanceRequests extends ViewRecord
                         ->placeholder('Ketik nama aktivitas lalu tekan Enter')
                         ->helperText('Tambahkan item pekerjaan yang tidak ada di checklist. Bisa dipakai bersamaan dengan checklist di atas.')
                         ->columnSpanFull(),
-                    Select::make('technician_coordinator_id')
-                        ->label('Performed By (opsional)')
-                        ->options(User::technicianCoordinatorOptions())
-                        ->nullable()
+                    Select::make('fungsi')
+                        ->label('Performed By (Fungsi)')
+                        ->options(fn (): array => User::fungsiOptionsForRole('mos'))
+                        ->default(fn (): ?string => $this->defaultFungsiForApproval())
+                        ->required()
                         ->searchable()
-                        ->placeholder('Kosongkan agar diisi saat mulai dikerjakan')
-                        ->helperText('WO dibagikan ke semua user pada fungsi equipment. Performed by terisi otomatis saat mulai.'),
+                        ->placeholder('Pilih fungsi penanggung jawab')
+                        ->helperText('WO dibagikan ke semua petugas MOS pada fungsi ini. Petugas pertama yang mulai mengerjakan menjadi Performed By.'),
                     Select::make('classification')
                         ->label('Classification')
                         ->options([
@@ -124,8 +146,8 @@ class ViewMaintenanceRequests extends ViewRecord
                         'equipment_id' => $record->equipment_id,
                         'maintenance_request_id' => $record->id,
                         'issued_by' => auth()->id(),
-                        'fungsi' => $record->equipment?->equipmentType?->fungsi,
-                        'technician_coordinator_id' => $data['technician_coordinator_id'] ?? null,
+                        'fungsi' => $data['fungsi'],
+                        'technician_coordinator_id' => null,
                         'classification' => $data['classification'],
                         'start_at' => $data['start_date'],
                         'finish_at' => null,
@@ -177,7 +199,7 @@ class ViewMaintenanceRequests extends ViewRecord
                         ->send();
                 })
                 ->after(function (): void {
-                    $this->redirect(route('filament.admin.resources.maintenance-requests.view', $this->getRecord()));
+                    $this->redirect(MaintenanceRequestResource::getUrl('view', ['record' => $this->getRecord()]));
                 })
                 ->requiresConfirmation()
                 ->modalHeading('Approve Maintenance Request')
@@ -212,7 +234,7 @@ class ViewMaintenanceRequests extends ViewRecord
                         ->send();
                 })
                 ->after(function (): void {
-                    $this->redirect(route('filament.admin.resources.maintenance-requests.view', $this->getRecord()));
+                    $this->redirect(MaintenanceRequestResource::getUrl('view', ['record' => $this->getRecord()]));
                 })
                 ->requiresConfirmation()
                 ->modalHeading('Reject Maintenance Request')

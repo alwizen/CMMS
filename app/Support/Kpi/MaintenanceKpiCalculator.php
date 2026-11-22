@@ -217,7 +217,6 @@ class MaintenanceKpiCalculator
         return [
             WorkOrder::STATUSES['Pending'],
             WorkOrder::STATUSES['In Progress'],
-            WorkOrder::STATUSES['On Hold'],
             WorkOrder::STATUSES['Completed'],
         ];
     }
@@ -230,7 +229,6 @@ class MaintenanceKpiCalculator
         return [
             WorkOrder::STATUSES['Pending'],
             WorkOrder::STATUSES['In Progress'],
-            WorkOrder::STATUSES['On Hold'],
         ];
     }
 

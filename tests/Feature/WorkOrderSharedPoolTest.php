@@ -16,6 +16,7 @@ use App\Support\WorkOrderGenerator;
 use Carbon\Carbon;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Laravel\Sanctum\Sanctum;
+use Spatie\Permission\Models\Role;
 use Tests\TestCase;
 
 class WorkOrderSharedPoolTest extends TestCase
@@ -117,9 +118,9 @@ class WorkOrderSharedPoolTest extends TestCase
 
         $this->assertSame($this->ltsaB->id, $wo->technician_coordinator_id);
 
-        // User lain yang memulai setelahnya tidak menimpa performed by.
+        // User lain yang menyelesaikan setelahnya tidak menimpa performed by.
         $this->actingAs($this->ltsaA);
-        $wo->update(['status' => WorkOrder::STATUSES['On Hold']]);
+        $wo->update(['status' => WorkOrder::STATUSES['Completed']]);
 
         $this->assertSame($this->ltsaB->id, $wo->refresh()->technician_coordinator_id);
     }
@@ -152,6 +153,126 @@ class WorkOrderSharedPoolTest extends TestCase
 
         $this->assertSame($this->ltsaB->id, $wo->refresh()->technician_coordinator_id);
         $this->assertFalse($wo->isUnclaimed());
+    }
+
+    public function test_work_order_is_locked_for_other_users_once_started(): void
+    {
+        $wo = $this->generate();
+
+        $this->actingAs($this->ltsaA);
+        $wo->update(['status' => WorkOrder::STATUSES['In Progress']]);
+
+        $wo->refresh();
+
+        $this->assertTrue($wo->isLockedFor($this->ltsaB));
+        $this->assertFalse($wo->isLockedFor($this->ltsaA));
+        $this->assertSame('LTSA A', $wo->lockedByName());
+        $this->assertStringContainsString('LTSA A', $wo->lockMessage());
+    }
+
+    public function test_locked_work_order_is_not_locked_once_completed(): void
+    {
+        $wo = $this->generate();
+
+        $this->actingAs($this->ltsaA);
+        $wo->update(['status' => WorkOrder::STATUSES['In Progress']]);
+        $wo->update(['status' => WorkOrder::STATUSES['Completed']]);
+
+        $this->assertFalse($wo->refresh()->isLockedFor($this->ltsaB));
+    }
+
+    public function test_other_user_cannot_update_locked_work_order_via_api(): void
+    {
+        $wo = $this->generate();
+
+        $this->actingAs($this->ltsaA);
+        $wo->update(['status' => WorkOrder::STATUSES['In Progress']]);
+
+        Sanctum::actingAs($this->ltsaB, ['*']);
+
+        $this->putJson("/api/work-orders/{$wo->id}", [
+            'status' => WorkOrder::STATUSES['Completed'],
+        ])
+            ->assertForbidden()
+            ->assertJsonPath('success', false)
+            ->assertJsonPath('data.locked_by.name', 'LTSA A');
+
+        $this->assertSame(WorkOrder::STATUSES['In Progress'], $wo->refresh()->status);
+        $this->assertSame($this->ltsaA->id, $wo->technician_coordinator_id);
+    }
+
+    public function test_other_user_cannot_fill_checklist_of_locked_work_order_via_api(): void
+    {
+        $wo = $this->generate();
+
+        $activity = WorkOrderActivity::create([
+            'work_order_id' => $wo->id,
+            'name' => 'Cek',
+            'executed' => false,
+        ]);
+
+        $this->actingAs($this->ltsaA);
+        $wo->update(['status' => WorkOrder::STATUSES['In Progress']]);
+
+        Sanctum::actingAs($this->ltsaB, ['*']);
+
+        $this->putJson("/api/work-orders/{$wo->id}/activities/{$activity->id}", [
+            'executed' => true,
+            'final_result' => 'Dicoba B',
+        ])->assertForbidden();
+
+        $this->assertFalse($activity->refresh()->executed);
+        $this->assertNull($activity->final_result);
+    }
+
+    public function test_other_user_can_still_view_locked_work_order_via_api(): void
+    {
+        $wo = $this->generate();
+
+        $this->actingAs($this->ltsaA);
+        $wo->update(['status' => WorkOrder::STATUSES['In Progress']]);
+
+        Sanctum::actingAs($this->ltsaB, ['*']);
+
+        $this->getJson("/api/work-orders/{$wo->id}")
+            ->assertOk()
+            ->assertJsonPath('data.is_locked', true)
+            ->assertJsonPath('data.can_execute', false)
+            ->assertJsonPath('data.locked_by.name', 'LTSA A');
+    }
+
+    public function test_supervisor_can_still_manage_locked_work_order_via_api(): void
+    {
+        $wo = $this->generate();
+
+        $this->actingAs($this->ltsaA);
+        $wo->update(['status' => WorkOrder::STATUSES['In Progress']]);
+
+        $supervisor = User::factory()->create();
+        $supervisor->assignRole(Role::findOrCreate('spv_mos', 'web'));
+
+        Sanctum::actingAs($supervisor, ['*']);
+
+        $this->putJson("/api/work-orders/{$wo->id}", [
+            'status' => WorkOrder::STATUSES['Completed'],
+        ])->assertOk();
+
+        $this->assertSame(WorkOrder::STATUSES['Completed'], $wo->refresh()->status);
+    }
+
+    public function test_on_hold_status_is_rejected_via_api(): void
+    {
+        $wo = $this->generate();
+
+        Sanctum::actingAs($this->ltsaA, ['*']);
+
+        $this->putJson("/api/work-orders/{$wo->id}", [
+            'status' => 'On Hold',
+        ])
+            ->assertStatus(422)
+            ->assertJsonValidationErrors('status');
+
+        $this->assertSame(WorkOrder::STATUSES['Pending'], $wo->refresh()->status);
     }
 
     public function test_generator_skips_when_fungsi_has_no_active_user(): void

@@ -25,18 +25,25 @@ class WorkersRelationManager extends RelationManager
 
     protected static ?string $modelLabel = 'worker';
 
+    protected static bool $isLazy = false;
+
     public function form(Schema $schema): Schema
     {
         return $schema
             ->components([
                 Select::make('user_id')
                     ->label('Teknisi')
-                    ->options(fn (): array => User::query()->orderBy('name')->pluck('name', 'id')->all())
+                    ->options(fn (): array => User::query()
+                        ->where('status', true)
+                        ->orderBy('name')
+                        ->pluck('name', 'id')
+                        ->all())
                     ->searchable()
                     ->required(),
                 TextInput::make('role')
                     ->label('Role')
                     ->placeholder('e.g., Teknisi, Supervisor')
+                    ->default('Teknisi')
                     ->nullable(),
                 DateTimePicker::make('started_at')
                     ->label('Started At')
@@ -88,6 +95,8 @@ class WorkersRelationManager extends RelationManager
                 BulkActionGroup::make([
                     DeleteBulkAction::make(),
                 ]),
-            ]);
+            ])
+            ->emptyStateHeading('Belum ada teknisi pelaksana')
+            ->emptyStateDescription('Petugas yang menekan "Mulai Pekerjaan" di panel lapangan otomatis tercatat di sini. Anda juga bisa menambah teknisi manual.');
     }
 }

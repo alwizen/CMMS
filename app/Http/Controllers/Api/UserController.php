@@ -18,6 +18,7 @@ class UserController extends Controller
                 'id' => $user->id,
                 'name' => $user->name,
                 'email' => $user->email,
+                'fungsi' => $user->fungsi,
                 'roles' => $user->getRoleNames(),
             ],
         ]);

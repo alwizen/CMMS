@@ -7,6 +7,19 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class WorkOrderActivity extends Model
 {
+    /**
+     * Pilihan hasil untuk checklist kualitatif (Pre Inspection & Final Result).
+     *
+     * @var array<string, string>
+     */
+    public const QUALITATIVE_OPTIONS = [
+        'Good' => 'Good – Kondisi baik dan berfungsi normal',
+        'Fair' => 'Fair – Kondisi cukup baik, ada sedikit kerusakan atau penurunan fungsi',
+        'Poor' => 'Poor – Kondisi buruk, perlu perbaikan',
+        'Not Working' => 'Not Working – Tidak berfungsi atau rusak total',
+        'Under Maintenance' => 'Under Maintenance – Sedang dalam perawatan atau perbaikan',
+    ];
+
     protected $fillable = [
         'work_order_id',
         'activity_id',
@@ -59,5 +72,47 @@ class WorkOrderActivity extends Model
         return $this->name
             ?? $this->activity?->name
             ?? ('Aktivitas #'.$this->id);
+    }
+
+    /**
+     * Apakah checklist ini memakai jawaban kualitatif.
+     *
+     * Item manual (tanpa master Activity) dianggap kualitatif karena tidak
+     * punya satuan/nilai optimum.
+     */
+    public static function isQualitative(?int $activityId): bool
+    {
+        if ($activityId === null) {
+            return true;
+        }
+
+        return Activity::query()
+            ->whereKey($activityId)
+            ->value('answer_type') !== 'quantitative';
+    }
+
+    /**
+     * Apakah record ini memakai jawaban kualitatif.
+     */
+    public function usesQualitativeResult(): bool
+    {
+        return static::isQualitative($this->activity_id);
+    }
+
+    /**
+     * Opsi dropdown kualitatif, tetap menyertakan nilai lama agar data
+     * existing (mis. "ok") tidak hilang saat diedit.
+     *
+     * @return array<string, string>
+     */
+    public static function qualitativeOptions(?string $currentValue = null): array
+    {
+        $options = self::QUALITATIVE_OPTIONS;
+
+        if (filled($currentValue) && ! array_key_exists($currentValue, $options)) {
+            $options[$currentValue] = $currentValue;
+        }
+
+        return $options;
     }
 }

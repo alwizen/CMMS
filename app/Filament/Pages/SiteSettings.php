@@ -4,6 +4,7 @@ namespace App\Filament\Pages;
 
 use App\Models\Setting;
 use App\Support\DocumentNumber;
+use App\Support\WorkOrderGenerator;
 use App\Support\WorkOrderSettings;
 use BackedEnum;
 use Closure;
@@ -98,16 +99,19 @@ class SiteSettings extends Page
                 ])
                 ->columns(2),
             Section::make('Work Order Otomatis')
-                ->description('WO dibuat otomatis dari jadwal untuk N hari kerja ke depan. Sabtu & Minggu tidak dibuatkan WO.')
+                ->description('Default nonaktif. Selama nonaktif, WO hanya dibuat manual lewat tombol Generate WO di dashboard. Jika diaktifkan, scheduler membuat WO preventif otomatis dari Equipment Type + interval checklist.')
                 ->schema([
                     Toggle::make('wo_auto_generate')
-                        ->label(WorkOrderSettings::LABELS[WorkOrderSettings::AUTO_GENERATE]),
+                        ->label(WorkOrderSettings::LABELS[WorkOrderSettings::AUTO_GENERATE])
+                        ->helperText('Scheduler berjalan setiap hari pukul 00:05. Pastikan cron `php artisan schedule:run` aktif di server.')
+                        ->live(),
                     Toggle::make('wo_skip_weekend')
                         ->label(WorkOrderSettings::LABELS[WorkOrderSettings::SKIP_WEEKEND]),
                     Select::make('wo_lead_days')
                         ->label(WorkOrderSettings::LABELS[WorkOrderSettings::LEAD_DAYS])
                         ->options([1 => '1 hari', 2 => '2 hari', 3 => '3 hari', 4 => '4 hari', 5 => '5 hari'])
-                        ->required(),
+                        ->required()
+                        ->helperText('WO dibuat untuk tanggal hari ini sampai N hari ke depan.'),
                     TextInput::make('wo_start_time')
                         ->label(WorkOrderSettings::LABELS[WorkOrderSettings::START_TIME])
                         ->type('time')
@@ -117,7 +121,8 @@ class SiteSettings extends Page
                         ->numeric()
                         ->minValue(0)
                         ->maxValue(365)
-                        ->required(),
+                        ->required()
+                        ->helperText('0 = hanya jadwal ke depan. Isi >0 bila ingin mengejar jadwal yang terlewat saat scheduler sempat mati.'),
                 ])
                 ->columns(2),
         ]);
@@ -167,17 +172,44 @@ class SiteSettings extends Page
     {
         $this->form->fill([
             ...DocumentNumber::DEFAULTS,
-            'wo_auto_generate' => true,
+            'wo_auto_generate' => false,
             'wo_lead_days' => 3,
             'wo_start_time' => '08:00',
             'wo_skip_weekend' => true,
-            'wo_backfill_days' => 14,
+            'wo_backfill_days' => 0,
         ]);
 
         Notification::make()
             ->info()
             ->title('Format dikembalikan ke default')
             ->body('Klik "Simpan Pengaturan" untuk menyimpan perubahan.')
+            ->send();
+    }
+
+    /**
+     * Jalankan generator WO otomatis sekarang (tanpa menunggu scheduler).
+     */
+    public function generateScheduledWorkOrders(): void
+    {
+        if (! WorkOrderSettings::autoGenerate()) {
+            Notification::make()
+                ->title('Work Order otomatis nonaktif')
+                ->body('Aktifkan "Buat Work Order Otomatis" lalu simpan pengaturan terlebih dahulu.')
+                ->warning()
+                ->send();
+
+            return;
+        }
+
+        $result = app(WorkOrderGenerator::class)->generateScheduled(
+            now()->subDays(WorkOrderSettings::backfillDays())->startOfDay(),
+            now()->addDays(WorkOrderSettings::leadDays())->endOfDay(),
+        );
+
+        Notification::make()
+            ->title('Generate WO otomatis selesai')
+            ->body($result['created'].' WO dibuat, '.$result['existing'].' periode sudah ada.')
+            ->success()
             ->send();
     }
 
@@ -189,6 +221,15 @@ class SiteSettings extends Page
                 ->livewireSubmitHandler('save')
                 ->footer([
                     Actions::make([
+                        Action::make('generateScheduledWorkOrders')
+                            ->label('Generate WO Sekarang')
+                            ->icon(Heroicon::OutlinedBolt)
+                            ->color('gray')
+                            ->visible(fn (): bool => WorkOrderSettings::autoGenerate())
+                            ->requiresConfirmation()
+                            ->modalHeading('Jalankan Generator WO Otomatis')
+                            ->modalDescription('Membuat WO untuk periode yang belum punya WO sesuai pengaturan yang tersimpan. Simpan pengaturan terlebih dahulu bila baru diubah.')
+                            ->action('generateScheduledWorkOrders'),
                         Action::make('resetToDefaults')
                             ->label('Reset Default')
                             ->color('gray')

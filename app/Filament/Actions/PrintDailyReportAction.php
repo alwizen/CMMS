@@ -14,7 +14,7 @@ class PrintDailyReportAction
      * Tombol Generate Laporan. Scope membatasi bagian yang dicetak:
      * "maintenance" atau "housekeeping".
      */
-    public static function make(string $scope): Action
+    public static function make(string $scope, string $routeName = 'daily-report.pdf'): Action
     {
         return Action::make('printDailyReport_'.$scope)
             ->label('Generate Laporan')
@@ -26,7 +26,7 @@ class PrintDailyReportAction
                     ->required()
                     ->default(now()),
             ])
-            ->action(function (array $data) use ($scope) {
+            ->action(function (array $data) use ($scope, $routeName) {
                 if ($scope === 'housekeeping') {
                     $inspection = HousekeepingReportGate::inspect($data['date']);
 
@@ -42,7 +42,7 @@ class PrintDailyReportAction
                     }
                 }
 
-                return redirect()->to(route('daily-report.pdf', [
+                return redirect()->to(route($routeName, [
                     'date' => $data['date'],
                     'scope' => $scope,
                 ]));

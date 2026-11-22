@@ -124,7 +124,6 @@ http://localhost:8000/admin/maintenance-calendar
 |---|---|---|
 | 🔵 Biru | Work Order (In Progress) | WO yang sedang dikerjakan |
 | 🟢 Hijau | Work Order (Completed) | WO yang sudah selesai |
-| 🟡 Kuning | Work Order (On Hold) | WO yang ditunda |
 | 🔴 Merah | Work Order (Cancelled) | WO yang dibatalkan |
 | ⚪ Abu-abu | Work Order (Open/Default) | WO default |
 
@@ -326,10 +325,12 @@ Equipment mengalami gangguan
     ↓
 User membuat Maintenance Request
     ↓
-Supervisor mereview & approve
+Supervisor mereview & approve (pilih fungsi MOS penanggung jawab)
     ↓
-Dibuatkan Work Order
+Dibuatkan Work Order untuk fungsi tersebut (shared pool)
 ```
+
+Saat approve, **Performed By** diisi dengan **fungsi** (wajib), bukan satu orang. Pilihan fungsi dibatasi pada fungsi yang punya petugas role `mos`. WO menjadi milik fungsi tersebut; petugas MOS pertama yang mulai mengerjakan menjadi `performed by`, sedangkan petugas lain pada fungsi yang sama hanya dapat melihat sampai WO selesai.
 
 ### Cara Membuat Maintenance Request
 
@@ -442,7 +443,7 @@ Contoh: WO-20260918-0001
    - **Start At** — Tanggal & waktu mulai
    - **Finish At** — Tanggal & waktu selesai (opsional)
    - **Note** — Catatan pekerjaan (opsional)
-   - **Status** — `Open`, `In Progress`, `On Hold`, `Completed`, `Cancelled`
+   - **Status** — `Pending`, `In Progress`, `Completed`, `Cancelled`
 4. Klik **Create**
 
 ### Contoh Isian
@@ -461,11 +462,46 @@ Status                  : Open
 
 | Status | Keterangan |
 |---|---|
-| Open | Belum mulai dikerjakan |
+| Pending | Belum mulai dikerjakan |
 | In Progress | Sedang dikerjakan |
-| On Hold | Ditunda sementara |
-| Completed | Selesai dikerjakan |
+| Completed | Selesai dikerjakan, menunggu review SPV MOS |
 | Cancelled | Dibatalkan |
+
+### Review SPV MOS
+
+WO yang ditandai **Completed** oleh teknisi belum langsung tuntas. WO masuk antrean review SPV MOS:
+
+1. Teknisi menekan **Tandai Selesai** (panel `/app` atau Android). Status WO menjadi `Completed`, `approval_status` menjadi `Pending`.
+2. SPV MOS membuka **Work Order** di `/admin`. Badge navigasi dan filter **Perlu Review SPV MOS** menunjukkan WO yang menunggu.
+3. **Approve** → `approval_status = Approved`, maintenance history dibuat, dan maintenance request terkait ikut `Completed` bila semua WO-nya sudah tuntas.
+4. **Reject** (wajib catatan) → WO dibuka kembali ke `In Progress`, `finish_at` dikosongkan, dan teknisi menerima notifikasi untuk memperbaiki pekerjaan.
+5. Selama menunggu review, checklist dan foto tidak dapat diubah (web & API) agar hasil yang direview tidak berubah.
+
+### Work Order Otomatis (Scheduler)
+
+**Pengaturan → Site Setting → Work Order Otomatis** (default **nonaktif**):
+
+| Setting | Keterangan |
+|---|---|
+| Buat Work Order Otomatis | Toggle utama. Nonaktif = WO hanya dibuat manual dari tombol Generate WO di dashboard |
+| Buat WO untuk N Hari ke Depan | Rentang tanggal yang dibuatkan WO (hari ini s.d. +N) |
+| Jam Mulai WO | `start_at` WO yang dibuat |
+| Lewati Sabtu & Minggu | Hari kerja yang dipakai |
+| Batas Backfill Jadwal Terlewat | Berapa hari ke belakang boleh dikejar (0 = tanpa backfill) |
+
+Saat toggle aktif, scheduler harian pukul **00:05** menjalankan:
+
+```bash
+php artisan work-orders:generate-scheduled
+```
+
+Command ini membuat WO preventif dari **Equipment Type + interval checklist** untuk setiap equipment, satu WO per periode (harian/mingguan/bulanan/…). Periode yang sudah punya WO dilewati, jadi aman dijalankan berulang. WO dibuat berstatus **Pending**, dimiliki **fungsi**, dengan checklist tersalin otomatis.
+
+Syarat: cron `php artisan schedule:run` harus aktif di server. Tombol **Generate WO Sekarang** di Site Setting bisa dipakai untuk menjalankan generator tanpa menunggu scheduler. Untuk mencoba manual:
+
+```bash
+php artisan work-orders:generate-scheduled --force --days=3 --backfill=0
+```
 
 ---
 
@@ -720,7 +756,18 @@ php artisan migrate:fresh --seed
 php artisan serve
 ```
 
-Akses: `http://localhost:8000/admin`
+Login terpadu di `http://localhost:8000/login`. Setelah login, user diarahkan otomatis sesuai role:
+
+- **Admin** (supervisor, pengawas, super admin): `http://localhost:8000/admin`
+- **App** (petugas lapangan: `mos`, `patra-jasa`; `super_admin` untuk support): `http://localhost:8000/app`
+
+Logout dari panel mana pun kembali ke `/login`.
+
+Role `ltsa_tad` sudah diganti menjadi `mos`. Petugas HSSE tetap memakai role `mos` dan dibedakan lewat kolom `fungsi = HSSE`.
+
+Menu dan aksi panel `/app` sepenuhnya mengikuti permission Shield, diatur dari **/admin → User & Permission → Peran**. Akses masuk panel `/app` memakai `View:FieldDashboard`; menu mengikuti `ViewAny:<Model>`; aksi mengikuti `Create/Update/Delete:<Model>`.
+
+Contoh: agar role `mos` bisa melihat **Dokumen** tanpa bisa membuat/mengubah/menghapus, cukup berikan `ViewAny:Document` dan `View:Document` (tanpa `Create/Update/Delete:Document`). Panel `/app` menampilkan dokumen sebagai arsip read-only. Role default `mos` dan `patra-jasa` sudah diberi permission awal lewat `FieldPermissionSeeder` / migrasi `sync_field_panel_permissions`.
 
 ---
 
@@ -875,7 +922,7 @@ Daftar work order.
 | Parameter | Tipe | Keterangan |
 |---|---|---|
 | per_page | integer | Jumlah data per halaman (default: 15) |
-| status | string | Filter: `Pending`, `In Progress`, `On Hold`, `Completed`, `Cancelled` |
+| status | string | Filter: `Pending`, `In Progress`, `Completed`, `Cancelled` |
 | classification | string | Filter: `Preventive`, `Corrective` |
 | search | string | Cari berdasarkan WO number, note, atau nama/tag equipment |
 
@@ -890,6 +937,21 @@ curl "http://localhost:8000/api/work-orders?status=In+Progress" \
 
 Detail work order lengkap (activities, workers, request).
 
+Field klaim pengerjaan:
+
+| Field | Keterangan |
+|---|---|
+| is_unclaimed | `true` bila WO belum diambil siapa pun |
+| is_locked | `true` bila WO sedang dikerjakan user lain |
+| locked_by | `{id, name}` user yang mengerjakan, atau `null` |
+| lock_message | Pesan siap tampil, mis. "Work order sedang dikerjakan oleh Budi. Anda hanya dapat melihat." |
+| can_execute | `false` bila tanggal belum tiba, WO dikunci user lain, atau WO sudah selesai |
+| approval_status | `Pending`, `Approved`, atau `Rejected` |
+| is_awaiting_review | `true` bila WO selesai dikerjakan dan menunggu review SPV MOS |
+| approval_notes | Catatan review SPV MOS |
+| approved_at | Waktu review disetujui/ditolak |
+| approved_by | `{id, name}` SPV MOS yang mereview, atau `null` |
+
 ```bash
 curl http://localhost:8000/api/work-orders/1 \
   -H "Authorization: Bearer <token>"
@@ -903,7 +965,7 @@ Update work order (status, catatan, tanggal).
 
 | Field | Tipe | Keterangan |
 |---|---|---|
-| status | string | `Pending`, `In Progress`, `On Hold`, `Completed`, `Cancelled` |
+| status | string | `Pending`, `In Progress`, `Completed`, `Cancelled`. `On Hold` ditolak `422`. |
 | note | string | Catatan pekerjaan |
 | start_at | datetime | Waktu mulai (ISO 8601) |
 | finish_at | datetime | Waktu selesai (ISO 8601) |
@@ -914,6 +976,24 @@ curl -X PUT http://localhost:8000/api/work-orders/1 \
   -H "Content-Type: application/json" \
   -d '{"status":"Completed","note":"Selesai dikerjakan"}'
 ```
+
+**Visibilitas request.** Petugas MOS melihat maintenance request miliknya, request untuk equipment dengan fungsi yang sama, serta request dari WO yang ia pegang. Supervisor/pengawas/super admin melihat semua.
+
+**Hasil checklist kualitatif.** Item dengan `answer_type = qualitative` memakai pilihan kondisi untuk `pre_inspection` dan `final_result`:
+
+| Nilai | Keterangan |
+|---|---|
+| `Good` | Kondisi baik dan berfungsi normal |
+| `Fair` | Kondisi cukup baik, ada sedikit kerusakan atau penurunan fungsi |
+| `Poor` | Kondisi buruk, perlu perbaikan |
+| `Not Working` | Tidak berfungsi atau rusak total |
+| `Under Maintenance` | Sedang dalam perawatan atau perbaikan |
+
+`GET /api/work-orders/{id}` mengembalikan `answer_type`, `is_qualitative`, dan `result_options` (`[{value,label}]`) per aktivitas. `PUT .../activities/{id}` menolak nilai di luar daftar dengan `422`. Item manual (tanpa master checklist) dianggap kualitatif; item kuantitatif tetap memakai teks bebas.
+
+**Review SPV MOS.** WO berstatus `Completed` menyertakan `approval_status` (`Pending`/`Approved`/`Rejected`), `approval_notes`, `is_awaiting_review`, `approved_at`, dan `approved_by`. Perubahan checklist/foto setelah WO selesai ditolak `403` dengan pesan `Work order sudah diselesaikan dan menunggu review SPV MOS.` Maintenance history dan status request `Completed` baru terjadi setelah review **Approve**.
+
+**Klaim WO per fungsi.** User pertama yang memulai/menyelesaikan WO menjadi `performed by`. User lain pada fungsi yang sama hanya bisa melihat; perubahan status/checklist/foto ditolak `403` dengan pesan `Work order sedang dikerjakan oleh <nama>. Anda hanya dapat melihat.` Role `super_admin`, `pengawas`, dan `spv_mos` tetap bisa menindaklanjuti.
 
 ---
 

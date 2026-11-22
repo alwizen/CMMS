@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Filament\Auth\LogoutResponse;
+use Filament\Auth\Http\Responses\Contracts\LogoutResponse as LogoutResponseContract;
 use Filament\Support\Facades\FilamentIcon;
 use Filament\Support\Icons\Heroicon;
 use Filament\View\PanelsIconAlias;
@@ -14,7 +16,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //
+        // Logout dari panel mana pun kembali ke satu halaman login.
+        $this->app->bind(LogoutResponseContract::class, LogoutResponse::class);
     }
 
     /**

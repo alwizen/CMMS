@@ -30,7 +30,7 @@ class HousekeepingPlanApprovalTest extends TestCase
     {
         parent::setUp();
 
-        foreach (['super_admin', 'spv_mos', 'spv_gos', 'spv_hsse', 'pengawas', 'ltsa_tad', 'patra-jasa'] as $role) {
+        foreach (['super_admin', 'spv_mos', 'spv_gos', 'spv_hsse', 'pengawas', 'mos', 'patra-jasa'] as $role) {
             Role::findOrCreate($role, 'web');
         }
 

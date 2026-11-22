@@ -20,6 +20,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Gate;
 use Livewire\Attributes\Url;
 use Livewire\Livewire;
+use Spatie\Permission\Models\Role;
 use Tests\TestCase;
 
 class DashboardWidgetTest extends TestCase
@@ -40,6 +41,7 @@ class DashboardWidgetTest extends TestCase
         Gate::before(fn (): bool => true);
 
         $this->user = User::factory()->create();
+        $this->user->assignRole(Role::findOrCreate('super_admin', 'web'));
 
         $company = Company::create(['code' => 'CO', 'name' => 'Demo Company']);
         $area = Area::create(['company_id' => $company->id, 'code' => 'AR', 'name' => 'Demo Area']);
@@ -422,18 +424,24 @@ class DashboardWidgetTest extends TestCase
 
     public function test_work_order_status_chart_shows_all_statuses(): void
     {
-        WorkOrder::create([
-            'equipment_id' => $this->equipment->id,
-            'issued_by' => $this->user->id,
-            'classification' => 'Preventive',
-            'start_at' => now(),
-            'status' => 'On Hold',
-        ]);
+        foreach (WorkOrder::STATUSES as $status) {
+            WorkOrder::create([
+                'equipment_id' => $this->equipment->id,
+                'issued_by' => $this->user->id,
+                'classification' => 'Preventive',
+                'start_at' => now(),
+                'status' => $status,
+            ]);
+        }
 
         $this->actingAs($this->user);
 
         Livewire::test(WorkOrderStatusChart::class)
             ->assertOk()
-            ->assertSee('On Hold');
+            ->assertSee('Pending')
+            ->assertSee('In Progress')
+            ->assertSee('Completed')
+            ->assertSee('Cancelled')
+            ->assertDontSee('On Hold');
     }
 }

@@ -26,6 +26,7 @@ use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Storage;
 use Livewire\Livewire;
+use Spatie\Permission\Models\Role;
 use Tests\TestCase;
 
 class DailyReportTest extends TestCase
@@ -44,6 +45,7 @@ class DailyReportTest extends TestCase
         Carbon::setTestNow(Carbon::parse('2026-11-16 10:00:00'));
 
         $this->user = User::factory()->create();
+        $this->user->assignRole(Role::findOrCreate('super_admin', 'web'));
 
         $company = Company::create(['code' => 'CO', 'name' => 'Demo']);
         $area = Area::create(['company_id' => $company->id, 'code' => 'AR', 'name' => 'Area']);

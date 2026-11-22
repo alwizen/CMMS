@@ -38,15 +38,15 @@ class WorkOrderPhotoTest extends TestCase
         Setting::flushCache();
         Storage::fake('public');
 
-        foreach (['super_admin', 'pengawas', 'spv_mos', 'ltsa_tad'] as $role) {
+        foreach (['super_admin', 'pengawas', 'spv_mos', 'mos'] as $role) {
             Role::firstOrCreate(['name' => $role, 'guard_name' => 'web']);
         }
 
         $this->technician = User::factory()->create();
-        $this->technician->assignRole('ltsa_tad');
+        $this->technician->assignRole('mos');
 
         $this->stranger = User::factory()->create();
-        $this->stranger->assignRole('ltsa_tad');
+        $this->stranger->assignRole('mos');
 
         $company = Company::create(['code' => 'CO', 'name' => 'Demo Company']);
         $area = Area::create(['company_id' => $company->id, 'code' => 'AR', 'name' => 'Demo Area']);

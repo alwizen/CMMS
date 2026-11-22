@@ -28,9 +28,13 @@ class WorkOrderSettings
         self::BACKFILL_DAYS => 'Batas Backfill Jadwal Terlewat (hari)',
     ];
 
+    /**
+     * Default nonaktif: WO dibuat manual lewat tombol Generate di dashboard.
+     * Aktifkan lewat Site Setting untuk membuat WO otomatis via scheduler.
+     */
     public static function autoGenerate(): bool
     {
-        return (bool) Setting::get(self::AUTO_GENERATE, true);
+        return (bool) Setting::get(self::AUTO_GENERATE, false);
     }
 
     public static function leadDays(): int
@@ -52,9 +56,13 @@ class WorkOrderSettings
         return (bool) Setting::get(self::SKIP_WEEKEND, true);
     }
 
+    /**
+     * Berapa hari ke belakang generator otomatis boleh mengejar jadwal yang
+     * terlewat (mis. scheduler/server sempat mati). Default 0 = tanpa backfill.
+     */
     public static function backfillDays(): int
     {
-        return max(0, (int) Setting::get(self::BACKFILL_DAYS, 14));
+        return max(0, (int) Setting::get(self::BACKFILL_DAYS, 0));
     }
 
     /**

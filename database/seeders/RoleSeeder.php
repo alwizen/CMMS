@@ -18,7 +18,7 @@ class RoleSeeder extends Seeder
         'spv_gos',
         'spv_hsse',
         'pengawas',
-        'ltsa_tad',
+        'mos',
         'patra-jasa',
     ];
 

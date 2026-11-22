@@ -48,7 +48,6 @@ class MaintenanceCalendar extends Page
                 $color = match ($wo->status) {
                     'Completed' => '#16a34a',
                     'In Progress' => '#2563eb',
-                    'On Hold' => '#d97706',
                     'Cancelled' => '#dc2626',
                     default => '#6b7280',
                 };

@@ -37,7 +37,6 @@ class DashboardController extends Controller
         $openStatuses = [
             WorkOrder::STATUSES['Pending'],
             WorkOrder::STATUSES['In Progress'],
-            WorkOrder::STATUSES['On Hold'],
         ];
 
         $woDueToday = $this->ownWorkOrders($user)

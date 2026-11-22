@@ -13,6 +13,7 @@ use App\Support\Code;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Gate;
 use Livewire\Livewire;
+use Spatie\Permission\Models\Role;
 use Tests\TestCase;
 
 class CodeGenerationTest extends TestCase
@@ -31,6 +32,7 @@ class CodeGenerationTest extends TestCase
         Gate::before(fn (): bool => true);
 
         $this->user = User::factory()->create();
+        $this->user->assignRole(Role::findOrCreate('super_admin', 'web'));
         $this->company = Company::create(['code' => 'CO', 'name' => 'Demo Company']);
     }
 

@@ -536,6 +536,10 @@ class KpiTest extends TestCase
         Livewire::test(KpiDashboard::class)
             ->assertOk()
             ->assertSee('Teknisi A')
-            ->assertSee('WO Completion Rate');
+            ->assertSee('WO Completion Rate')
+            ->assertSee('Objek Dinilai')
+            ->assertSee('Rata-rata Skor')
+            ->assertSee('Distribusi Status')
+            ->assertSee('tercapai');
     }
 }

@@ -45,7 +45,7 @@ class DummySeederTest extends TestCase
         $this->assertTrue(User::where('email', 'admin@admin.com')->first()->hasRole('super_admin'));
         $this->assertTrue(User::where('email', 'spv@demo.com')->first()->hasRole('spv_mos'));
         $this->assertTrue(User::where('email', 'pengawas@demo.com')->first()->hasRole('pengawas'));
-        $this->assertTrue(User::where('email', 'risna@demo.com')->first()->hasRole('ltsa_tad'));
+        $this->assertTrue(User::where('email', 'risna@demo.com')->first()->hasRole('mos'));
     }
 
     public function test_it_seeds_activities(): void

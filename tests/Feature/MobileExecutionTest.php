@@ -39,7 +39,7 @@ class MobileExecutionTest extends TestCase
 
         Setting::flushCache();
 
-        foreach (['super_admin', 'pengawas', 'spv_mos', 'ltsa_tad'] as $role) {
+        foreach (['super_admin', 'pengawas', 'spv_mos', 'mos'] as $role) {
             Role::firstOrCreate(['name' => $role, 'guard_name' => 'web']);
         }
 
@@ -47,10 +47,10 @@ class MobileExecutionTest extends TestCase
         $this->admin->assignRole('super_admin');
 
         $this->technician = User::factory()->create();
-        $this->technician->assignRole('ltsa_tad');
+        $this->technician->assignRole('mos');
 
         $this->otherTechnician = User::factory()->create();
-        $this->otherTechnician->assignRole('ltsa_tad');
+        $this->otherTechnician->assignRole('mos');
 
         $company = Company::create(['code' => 'CO', 'name' => 'Demo Company']);
         $area = Area::create(['company_id' => $company->id, 'code' => 'AR', 'name' => 'Demo Area']);
@@ -232,8 +232,8 @@ class MobileExecutionTest extends TestCase
         $response = $this->putJson(
             "/api/work-orders/{$this->workOrder->id}/activities/{$this->activity->id}",
             [
-                'pre_inspection' => 'Ada kebocoran kecil',
-                'final_result' => 'Sudah diganti',
+                'pre_inspection' => 'Fair',
+                'final_result' => 'Good',
                 'follow_up' => 'Pantau 3 hari',
                 'executed' => true,
                 'note' => 'Selesai',
@@ -244,10 +244,57 @@ class MobileExecutionTest extends TestCase
 
         $this->assertDatabaseHas('work_order_activities', [
             'id' => $this->activity->id,
-            'pre_inspection' => 'Ada kebocoran kecil',
-            'final_result' => 'Sudah diganti',
+            'pre_inspection' => 'Fair',
+            'final_result' => 'Good',
             'executed' => true,
         ]);
+    }
+
+    public function test_qualitative_activity_rejects_value_outside_dropdown_options(): void
+    {
+        Sanctum::actingAs($this->technician, ['*']);
+
+        $this->putJson(
+            "/api/work-orders/{$this->workOrder->id}/activities/{$this->activity->id}",
+            [
+                'pre_inspection' => 'Kondisi lumayan',
+                'final_result' => 'Sudah bagus',
+                'executed' => true,
+            ],
+        )
+            ->assertStatus(422)
+            ->assertJsonValidationErrors(['pre_inspection', 'final_result']);
+    }
+
+    public function test_qualitative_activity_exposes_dropdown_options(): void
+    {
+        Sanctum::actingAs($this->technician, ['*']);
+
+        $data = $this->getJson("/api/work-orders/{$this->workOrder->id}")
+            ->assertOk()
+            ->json('data.activities.0');
+
+        $this->assertTrue($data['is_qualitative']);
+        $this->assertSame('qualitative', $data['answer_type']);
+        $this->assertSame(
+            ['Good', 'Fair', 'Poor', 'Not Working', 'Under Maintenance'],
+            array_column($data['result_options'], 'value'),
+        );
+        $this->assertStringContainsString('Kondisi baik', $data['result_options'][0]['label']);
+    }
+
+    public function test_quantitative_activity_keeps_free_text_result(): void
+    {
+        $this->activity->activity->update(['answer_type' => 'quantitative']);
+
+        Sanctum::actingAs($this->technician, ['*']);
+
+        $this->putJson(
+            "/api/work-orders/{$this->workOrder->id}/activities/{$this->activity->id}",
+            ['final_result' => '4.4'],
+        )->assertOk();
+
+        $this->assertSame('4.4', $this->activity->fresh()->final_result);
     }
 
     public function test_unrelated_user_cannot_update_activity(): void

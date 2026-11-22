@@ -2,7 +2,7 @@
 
 Panduan penggunaan aplikasi dari awal (membuat perusahaan) sampai akhir (riwayat perawatan).
 
-Login di `/admin`.
+Login terpadu di `/login`. Setelah masuk, sistem mengarahkan otomatis: supervisor/admin ke `/admin`, petugas lapangan (MOS & patra-jasa) ke `/app`. Logout kembali ke `/login`.
 
 ---
 
@@ -92,7 +92,9 @@ Company → Area → Equipment Type → Equipment
 - Nomor terbentuk otomatis (`MR-YYYYMMDD-####`).
 
 **Approve (SPV):** pada request berstatus Open, klik **Approve**:
-- **Start Date**, **Penanggung Jawab** (wajib, 1 orang), **Classification** (default Corrective), **Catatan Approval**.
+- **Start Date**, **Performed By (Fungsi)** (wajib — pilih fungsi MOS, mis. `MOS PM Reborn`), **Classification** (default Corrective), **Catatan Approval**.
+  - WO dibuat untuk fungsi tersebut (shared pool), bukan untuk satu orang. Pilihan fungsi hanya yang punya petugas role `mos`.
+  - Petugas MOS pertama yang menekan **Mulai Pekerjaan** menjadi Performed By; petugas lain pada fungsi yang sama hanya bisa melihat sampai WO selesai.
 - **Aktivitas Pemeriksaan** — checklist yang akan dikerjakan teknisi. Otomatis terisi semua aktivitas aktif untuk tipe equipment tersebut. Bisa dikurangi, ditambah, atau dikosongkan.
 - Hasil: request menjadi **Approved**, WO dibuat berstatus **Pending**, terhubung ke request, dan checklist tersalin ke WO.
 
@@ -104,7 +106,7 @@ Company → Area → Equipment Type → Equipment
 |---|---|
 | WO dibuat dari request yang masih Open | `Assigned` |
 | WO mulai dikerjakan / ditunda | `In Progress` |
-| Semua WO dari request selesai (minimal satu Completed) | `Completed` |
+| Semua WO dari request selesai dan disetujui SPV MOS | `Completed` |
 | Semua WO dibatalkan | tetap `Approved` (perlu keputusan manual) |
 
 Request yang sudah `Rejected` atau `Completed` tidak akan berubah lagi.
@@ -117,9 +119,21 @@ Request yang sudah `Rejected` atau `Completed` tidak akan berubah lagi.
 - Tombol **View** (mata) membuka halaman ringkasan WO (read-only): info WO, personel & jadwal, checklist hasil eksekusi, dan teknisi pelaksana.
 - Isi **Equipment**, **Classification**, **Status**, **Start At**, **Finish At**, **Note**.
 - **Checklist & Hasil Eksekusi:** per item isi Pre Inspection, Final Result, Follow Up, centang **Executed**, dan unggah **Foto Dokumentasi** (opsional, maks. 3).
+  - Checklist **kualitatif** memakai dropdown kondisi untuk Pre Inspection dan Final Result.
+  - Checklist **kuantitatif** (punya nilai optimum/min/max) tetap memakai isian bebas.
 - **Teknisi Pelaksana:** tambahkan teknisi dan perannya.
-- Status: Pending → In Progress → Completed (atau On Hold / Cancelled).
-- Saat **Completed**, sistem membuat Maintenance History otomatis.
+- Status: Pending → In Progress → Completed (atau Cancelled).
+- Saat **Completed**, WO **menunggu review SPV MOS**. Maintenance History baru dibuat setelah review **Approve**.
+
+### Review SPV MOS
+
+WO yang selesai dikerjakan teknisi wajib direview **SPV MOS** sebelum dianggap tuntas:
+
+1. Teknisi menandai WO **Completed** dari `/app` atau Android → `approval_status = Pending`.
+2. SPV MOS membuka **Maintenance → Work Order** di `/admin`. Ada badge jumlah WO yang menunggu review dan filter **Perlu Review SPV MOS**.
+3. **Approve** → WO disetujui, **Maintenance History** dibuat, dan request terkait ikut `Completed` bila semua WO-nya sudah tuntas.
+4. **Reject** → wajib isi alasan. WO kembali ke **In Progress**, `finish_at` dikosongkan, dan teknisi mendapat notifikasi untuk memperbaiki lalu menandai selesai lagi.
+5. Selama menunggu review, checklist/foto tidak bisa diubah (web & API) agar hasil review tidak berubah.
 
 ---
 
@@ -173,6 +187,13 @@ Request yang sudah `Rejected` atau `Completed` tidak akan berubah lagi.
 **Menu:** Pengaturan → Site Setting
 
 - **Format Penomoran:** WO, Request, Document, Housekeeping Plan. Token: `{YYYY}`, `{YY}`, `{MM}`, `{MONTH}`, `{DD}`, `{DATE}`, `{SEQ}` (mis. `{SEQ:6}`).
+- **Work Order Otomatis** (default **nonaktif**):
+  - Selama nonaktif, WO hanya dibuat manual lewat tombol **Generate WO** di dashboard.
+  - Jika **Buat Work Order Otomatis** diaktifkan dan disimpan, scheduler harian (00:05) membuat WO preventif dari **Equipment Type + interval checklist** untuk hari ini sampai **N hari ke depan**.
+  - **Jam Mulai WO**, **Lewati Sabtu & Minggu**, dan **Batas Backfill** dihormati. Backfill `0` = hanya jadwal ke depan.
+  - Tombol **Generate WO Sekarang** muncul saat toggle aktif, untuk menjalankan generator tanpa menunggu scheduler.
+  - Syarat server: cron `php artisan schedule:run` (atau `php artisan schedule:work` saat development) harus berjalan.
+  - WO otomatis dibuat dengan status **Pending**, dimiliki **fungsi**, dan checklist tersalin dari activity sesuai interval.
 
 
 ### 14. Pengguna & Peran
@@ -180,6 +201,18 @@ Request yang sudah `Rejected` atau `Completed` tidak akan berubah lagi.
 **Menu:** User & Permission → Pengguna / Peran
 
 - Hanya admin yang mengatur bagian ini.
+
+---
+
+## Permission Panel Lapangan (`/app`)
+
+Hak akses menu dan aksi di `/app` diatur dari **/admin → User & Permission → Peran** (Shield):
+
+- Masuk panel `/app`: `View:FieldDashboard`.
+- Menu mengikuti `ViewAny:<Model>` (mis. `ViewAny:WorkOrder`, `ViewAny:Document`).
+- Aksi mengikuti `Create/Update/Delete:<Model>`.
+
+Contoh: role `mos` diberi `ViewAny:Document` + `View:Document` saja → menu **Dokumen** muncul dan hanya bisa dilihat/diunduh, tanpa tombol buat/ubah/hapus. Mencabut `ViewAny:Document` menyembunyikan menu dan menolak akses langsung ke URL-nya.
 
 ---
 
@@ -205,7 +238,8 @@ Aplikasi Android memakai API yang sama, dan **data otomatis terfilter sesuai aku
 | Role | Cakupan data |
 |---|---|
 | super_admin, pengawas, spv_mos | Semua work order |
-| ltsa_tad | Hanya yang terkait dirinya (koordinator, pemberi tugas, atau anggota tim) |
+| mos | Hanya yang terkait dirinya/fungsinya (koordinator, pemberi tugas, anggota tim, atau WO dengan fungsi sama). HSSE termasuk di sini lewat kolom fungsi |
+| patra-jasa | Hanya plan housekeeping pada area yang menjadi tanggung jawabnya |
 
 Navigasi Android memakai **menu samping (drawer)**. Ketuk ikon ☰ di kiri atas layar untuk membuka menu.
 
@@ -241,14 +275,13 @@ Tombol **Logout** juga tersedia di bagian bawah menu samping.
 1. Buka **Riwayat** (atau ketuk kartu WO di Dashboard).
 2. Di halaman detail, gunakan **Aksi Pekerjaan**:
    - **Mulai Pekerjaan** — status berubah menjadi In Progress dan waktu mulai tercatat.
-   - **Tandai Selesai** — status menjadi Completed dan waktu selesai tercatat.
-   - **Tunda Pekerjaan** / **Lanjutkan Pekerjaan** — untuk On Hold.
+   - **Tandai Selesai** — status menjadi Completed, waktu selesai tercatat, lalu WO menunggu review SPV MOS.
 3. Pada tiap **Aktivitas**, ketuk **Isi Hasil Inspeksi** (atau **Edit Hasil** bila sudah diisi), lalu isi:
    - **Pre Inspection** — kondisi sebelum dikerjakan (maks. 100 karakter).
    - **Final Result** — hasil akhir (maks. 100 karakter).
    - **Follow Up** — tindak lanjut (maks. 100 karakter).
    - **Catatan** — keterangan tambahan.
-   - Aktifkan **Tandai sudah dieksekusi** bila item ini selesai.
+   - Aktifkan **Tandai sudah dikerjakan** bila item ini selesai.
 4. **Foto Dokumentasi (opsional)** — maksimal 3 foto per item:
    - Ketuk **Tambah Foto**, lalu pilih **Kamera** atau **Galeri**.
    - Ketuk thumbnail untuk melihat foto ukuran penuh.
@@ -258,5 +291,39 @@ Tombol **Logout** juga tersedia di bagian bawah menu samping.
 5. Ketuk **Simpan**. Data langsung tersimpan di server.
 
 Hanya user yang terkait WO tersebut (koordinator, pemberi tugas, atau anggota tim) yang dapat mengubah status dan mengisi hasil. Selain itu akan muncul pesan "Anda tidak berhak mengubah aktivitas ini".
+
+### Mengisi Checklist di Panel `/app`
+
+Buka **Work Order → View**. Di tab **Checklist & Hasil Eksekusi**, setiap item punya tombol **Isi Hasil** (ikon pensil) untuk mengisi Pre Inspection, Final Result, Follow Up, catatan, foto (maks. 3), dan menandai **Executed**. Checklist hasil approval SPV juga muncul di sini, termasuk item manual yang diketik saat approval.
+
+**Pilihan kondisi checklist kualitatif** (Pre Inspection & Final Result):
+
+| Nilai | Keterangan |
+|---|---|
+| Good | Kondisi baik dan berfungsi normal |
+| Fair | Kondisi cukup baik, ada sedikit kerusakan atau penurunan fungsi |
+| Poor | Kondisi buruk, perlu perbaikan |
+| Not Working | Tidak berfungsi atau rusak total |
+| Under Maintenance | Sedang dalam perawatan atau perbaikan |
+
+Item checklist manual (tanpa master checklist) dianggap kualitatif sehingga memakai dropdown ini. Checklist kuantitatif (dengan satuan/nilai optimum) tetap memakai isian bebas.
+
+Tombol **Isi Hasil** hanya muncul untuk petugas yang berhak (`Update:WorkOrder`) dan tidak sedang dikunci petugas lain.
+
+### Visibilitas Maintenance Request
+
+Petugas MOS melihat request miliknya, request untuk equipment dengan fungsi yang sama, dan request dari WO yang ia pegang. Dashboard **Request Aktif** menghitung request berstatus `Open`, `Assigned`, dan `In Progress` yang terlihat oleh akun tersebut.
+
+### Klaim Work Order (WO per Fungsi)
+
+WO yang dibuat untuk sebuah **fungsi** (mis. `MOS PM Reborn`) bisa dilihat semua user dengan fungsi tersebut, tetapi hanya **satu orang** yang mengerjakannya:
+
+1. User pertama yang menekan **Mulai Pekerjaan** (atau mengisi checklist) otomatis menjadi **Performed By**.
+2. User lain pada fungsi yang sama **tetap bisa melihat detail WO**, tetapi tombol aksi disembunyikan dan muncul keterangan **"Sedang dikerjakan oleh <nama>"**.
+3. Selama WO berstatus `In Progress`, user lain tidak bisa mengubah status, mengisi checklist, atau upload/hapus foto. Server menolak dengan `403` dan pesan `Work order sedang dikerjakan oleh <nama>. Anda hanya dapat melihat.`
+4. Kunci terbuka lagi setelah WO `Completed` atau `Cancelled`.
+5. Role akses penuh (`super_admin`, `pengawas`, `spv_mos`) tetap bisa menindaklanjuti WO yang sedang dikerjakan.
+
+Di API, `GET /api/work-orders/{id}` mengembalikan `is_locked`, `locked_by` (`id`, `name`), dan `lock_message`. Field `can_execute` bernilai `false` saat WO dikunci user lain. Aplikasi Android sebaiknya menampilkan `lock_message` dan menyembunyikan aksi pekerjaan ketika `is_locked = true`.
 
 Alamat server diatur di halaman login (kolom Base URL). Gunakan `http://IP-SERVER:8000/api/`.
