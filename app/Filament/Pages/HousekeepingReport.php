@@ -49,8 +49,7 @@ class HousekeepingReport extends Page implements HasTable
     public function table(Table $table): Table
     {
         return $table
-            ->query(fn (): Builder => HousekeepingPlanTask::query()
-                ->with(['plan.area.company', 'plan.area.supervisor', 'facility', 'planFacility']))
+            ->query(fn (): Builder => $this->reportQuery())
             ->defaultSort('created_at', 'desc')
             ->paginated([25, 50, 100])
             ->columns([
@@ -250,6 +249,16 @@ class HousekeepingReport extends Page implements HasTable
                     ]),
                 EmbeddedTable::make(),
             ]);
+    }
+
+    /**
+     * Query dasar tabel report. Panel lapangan menimpanya agar hanya
+     * menampilkan pekerjaan pada plan yang boleh dilihat user.
+     */
+    protected function reportQuery(): Builder
+    {
+        return HousekeepingPlanTask::query()
+            ->with(['plan.area.company', 'plan.area.supervisor', 'facility', 'planFacility']);
     }
 
     /**

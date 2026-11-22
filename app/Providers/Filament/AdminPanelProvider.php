@@ -46,7 +46,7 @@ class AdminPanelProvider extends PanelProvider
             ->darkMode(false)
             ->favicon(asset('img/logo.svg'))
             ->brandLogoHeight('4.5rem')
-            ->login()
+            ->login(fn () => redirect('/login'))
             ->colors([
                 'primary' => Color::Amber,
             ])

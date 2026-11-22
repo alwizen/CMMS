@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\WorkOrders\Pages;
 
+use App\Filament\Resources\WorkOrders\Actions\ReviewWorkOrderAction;
 use App\Filament\Resources\WorkOrders\Schemas\WorkOrderInfolist;
 use App\Filament\Resources\WorkOrders\WorkOrderResource;
 use App\Models\WorkOrder;
@@ -36,6 +37,8 @@ class ViewWorkOrder extends ViewRecord
     protected function getHeaderActions(): array
     {
         return [
+            ReviewWorkOrderAction::approve(),
+            ReviewWorkOrderAction::reject(),
             EditAction::make(),
             DeleteAction::make(),
         ];

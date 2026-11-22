@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use App\Support\HousekeepingReportGate;
 use App\Support\Report\DailyReport;
 use Barryvdh\DomPDF\Facade\Pdf;
@@ -18,6 +19,12 @@ class DailyReportPdfController extends Controller
      */
     public function __invoke(Request $request)
     {
+        abort_unless(
+            $request->user()?->hasAnyRole(User::ADMIN_PANEL_ROLES),
+            403,
+            'Anda tidak berhak mengunduh laporan ini.',
+        );
+
         $date = $request->query('date') ?: now()->toDateString();
         $scope = $request->query('scope') ?: 'all';
 

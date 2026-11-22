@@ -7,6 +7,7 @@ use App\Models\Document;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Gate;
+use Spatie\Permission\Models\Role;
 use Tests\TestCase;
 
 class DocumentResourceTest extends TestCase
@@ -26,6 +27,7 @@ class DocumentResourceTest extends TestCase
         Gate::before(fn (): bool => true);
 
         $user = User::factory()->create();
+        $user->assignRole(Role::findOrCreate('super_admin', 'web'));
 
         $document = Document::create([
             'title' => 'Pump Calibration Certificate',

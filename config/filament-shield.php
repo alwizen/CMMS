@@ -1,6 +1,8 @@
 <?php
 
 declare(strict_types=1);
+use App\Filament\App\Pages\HousekeepingReport as AppHousekeepingReport;
+use App\Filament\App\Pages\MaintenanceCalendar as AppMaintenanceCalendar;
 use BezhanSalleh\FilamentShield\Resources\Roles\RoleResource;
 use Filament\Pages\Dashboard;
 use Filament\Widgets\AccountWidget;
@@ -215,6 +217,10 @@ return [
         'prefix' => 'view',
         'exclude' => [
             Dashboard::class,
+            // Halaman `/app` ini memakai permission yang sama dengan versi
+            // admin-nya, jadi cukup ditampilkan sekali di daftar Peran.
+            AppMaintenanceCalendar::class,
+            AppHousekeepingReport::class,
         ],
     ],
 
@@ -268,7 +274,9 @@ return [
     'discovery' => [
         'discover_all_resources' => false,
         'discover_all_widgets' => false,
-        'discover_all_pages' => false,
+        // Panel `/app` punya halaman sendiri; aktifkan agar permission-nya
+        // (mis. View:FieldDashboard) bisa diatur dari /admin → Peran.
+        'discover_all_pages' => true,
     ],
 
     /*

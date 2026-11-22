@@ -45,7 +45,6 @@ class StatsOverviewWidget extends BaseWidget
             ->whereIn('status', [
                 WorkOrder::STATUSES['Pending'],
                 WorkOrder::STATUSES['In Progress'],
-                WorkOrder::STATUSES['On Hold'],
             ])
             ->tap(fn ($q) => $this->applyDateFilter($q))
             ->tap(fn ($q) => $this->applyUserFilter($q))
@@ -56,7 +55,6 @@ class StatsOverviewWidget extends BaseWidget
             ->whereIn('status', [
                 WorkOrder::STATUSES['Pending'],
                 WorkOrder::STATUSES['In Progress'],
-                WorkOrder::STATUSES['On Hold'],
             ])
             ->whereDate('start_at', '<', today())
             ->tap(fn ($q) => $this->applyUserFilter($q))
@@ -99,7 +97,7 @@ class StatsOverviewWidget extends BaseWidget
                 ->descriptionIcon('heroicon-o-check-circle')
                 ->color('success'),
             Stat::make('WO Belum Selesai', $woOpen)
-                ->description('Pending / In Progress / On Hold')
+                ->description('Pending / In Progress')
                 ->descriptionIcon('heroicon-o-clock')
                 ->color($woOpen > 0 ? 'warning' : 'success'),
             Stat::make('Request Aktif', $mrPending)

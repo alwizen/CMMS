@@ -4,6 +4,7 @@ namespace App\Support;
 
 use App\Models\Activity;
 use App\Models\Equipment;
+use App\Models\EquipmentType;
 use App\Models\User;
 use App\Models\WorkOrder;
 use App\Models\WorkOrderActivity;
@@ -172,6 +173,117 @@ class WorkOrderGenerator
             'skip_reasons' => $skipReasons,
             'duplicates' => $duplicates,
         ];
+    }
+
+    /**
+     * Buat Work Order otomatis untuk rentang tanggal tertentu (dipakai scheduler).
+     *
+     * Untuk setiap Equipment Type aktif yang punya fungsi & checklist aktif,
+     * dibuat satu WO per equipment per interval per periode (harian/mingguan/
+     * bulanan/…). Periode yang sudah punya WO dilewati, sehingga aman dijalankan
+     * berulang kali.
+     *
+     * @return array{created: int, existing: int, types: int, equipment: int}
+     */
+    public function generateScheduled(Carbon $from, Carbon $to, ?int $issuedBy = null): array
+    {
+        $settings = WorkOrderSettings::all();
+        $skipWeekend = (bool) $settings['skip_weekend'];
+        $startTime = (string) $settings['start_time'];
+        $issuedBy ??= SystemUser::id();
+
+        $result = [
+            'created' => 0,
+            'existing' => 0,
+            'types' => 0,
+            'equipment' => 0,
+        ];
+
+        $workdays = Workday::workdaysBetween($from, $to, $skipWeekend);
+
+        if ($workdays === []) {
+            return $result;
+        }
+
+        $types = EquipmentType::query()
+            ->where('status', true)
+            ->whereNotNull('fungsi')
+            ->whereHas('activities', fn ($query) => $query->where('status', true)->whereNotNull('interval'))
+            ->whereHas('equipment')
+            ->with([
+                'activities' => fn ($query) => $query->where('status', true)->whereNotNull('interval')->orderBy('name'),
+                'equipment',
+            ])
+            ->get();
+
+        foreach ($types as $type) {
+            $fungsi = trim((string) $type->fungsi);
+
+            if ($fungsi === '' || ! User::query()->where('status', true)->where('fungsi', $fungsi)->exists()) {
+                continue;
+            }
+
+            $intervals = $type->activities->pluck('interval')->unique()->values();
+
+            if ($intervals->isEmpty()) {
+                continue;
+            }
+
+            $result['types']++;
+
+            foreach ($type->equipment as $equipment) {
+                $result['equipment']++;
+
+                foreach ($intervals as $interval) {
+                    $activities = $type->activities->where('interval', $interval)->values();
+
+                    if ($activities->isEmpty()) {
+                        continue;
+                    }
+
+                    foreach ($workdays as $day) {
+                        $startAt = $day->copy()->setTimeFromTimeString($startTime);
+
+                        if ($this->hasDuplicate($equipment->id, $interval, $startAt, $fungsi)) {
+                            $result['existing']++;
+
+                            continue;
+                        }
+
+                        DB::transaction(function () use ($equipment, $activities, $interval, $startAt, $issuedBy, $fungsi): void {
+                            $workOrder = WorkOrder::create([
+                                'equipment_id' => $equipment->id,
+                                'issued_by' => $issuedBy,
+                                'technician_coordinator_id' => null,
+                                'fungsi' => $fungsi,
+                                'classification' => 'Preventive',
+                                'interval' => $interval,
+                                'start_at' => $startAt,
+                                'expired_days' => null,
+                                'expired_at' => null,
+                                'note' => 'Dibuat otomatis oleh scheduler ('.$interval.')',
+                                'status' => WorkOrder::STATUSES['Pending'],
+                            ]);
+
+                            foreach ($activities as $activity) {
+                                WorkOrderActivity::create([
+                                    'work_order_id' => $workOrder->id,
+                                    'activity_id' => $activity->id,
+                                    'name' => $activity->name,
+                                    'reference' => $activity->reference,
+                                    'unit' => $activity->unit,
+                                    'executed' => false,
+                                ]);
+                            }
+                        });
+
+                        $result['created']++;
+                    }
+                }
+            }
+        }
+
+        return $result;
     }
 
     /**

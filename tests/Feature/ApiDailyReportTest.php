@@ -22,7 +22,7 @@ class ApiDailyReportTest extends TestCase
     {
         parent::setUp();
 
-        foreach (['super_admin', 'spv_mos', 'spv_gos', 'spv_hsse', 'pengawas', 'ltsa_tad', 'patra-jasa'] as $role) {
+        foreach (['super_admin', 'spv_mos', 'spv_gos', 'spv_hsse', 'pengawas', 'mos', 'patra-jasa'] as $role) {
             Role::findOrCreate($role, 'web');
         }
 
@@ -89,7 +89,7 @@ class ApiDailyReportTest extends TestCase
 
     public function test_other_roles_are_forbidden(): void
     {
-        Sanctum::actingAs($this->makeUser('ltsa_tad'), ['*']);
+        Sanctum::actingAs($this->makeUser('mos'), ['*']);
 
         $this->get('/api/reports/daily-housekeeping?date=2026-11-18')
             ->assertForbidden();

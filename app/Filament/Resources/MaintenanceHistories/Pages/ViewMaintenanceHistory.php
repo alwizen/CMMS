@@ -21,6 +21,7 @@ class ViewMaintenanceHistory extends ViewRecord
                 'equipment.equipmentType',
                 'equipment.area',
                 'performedBy',
+                'workOrder.maintenanceRequest',
                 'workOrder.workOrderActivities.activity',
             ])
             ->findOrFail($key);

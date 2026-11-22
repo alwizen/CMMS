@@ -2,6 +2,8 @@
 
 namespace App\Http\Resources;
 
+use App\Models\WorkOrder;
+use App\Support\UserVisibility;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -9,12 +11,27 @@ class WorkOrderResource extends JsonResource
 {
     public function toArray(Request $request): array
     {
+        $user = $request->user();
+        $isLocked = ! UserVisibility::hasFullAccess($user) && $this->isLockedFor($user);
+        $isExecutableStatus = in_array($this->status, [
+            WorkOrder::STATUSES['Pending'],
+            WorkOrder::STATUSES['In Progress'],
+        ], true);
+
         return [
             'id' => $this->id,
             'work_order_number' => $this->work_order_number,
             'classification' => $this->classification,
             'fungsi' => $this->fungsi,
             'is_unclaimed' => $this->isUnclaimed(),
+            'is_locked' => $isLocked,
+            'locked_by' => $isLocked
+                ? [
+                    'id' => $this->technician_coordinator_id,
+                    'name' => $this->lockedByName(),
+                ]
+                : null,
+            'lock_message' => $isLocked ? $this->lockMessage() : null,
             'interval' => $this->interval,
             'start_at' => $this->start_at?->toIso8601String(),
             'finish_at' => $this->finish_at?->toIso8601String(),
@@ -22,7 +39,15 @@ class WorkOrderResource extends JsonResource
             'is_expired' => $this->isExpired(),
             'note' => $this->note,
             'status' => $this->status,
-            'can_execute' => $this->isExecutable(),
+            'approval_status' => $this->approval_status,
+            'approval_notes' => $this->approval_notes,
+            'is_awaiting_review' => $this->isAwaitingReview(),
+            'approved_at' => $this->approved_at?->toIso8601String(),
+            'approved_by' => $this->whenLoaded('approvedBy', fn () => $this->approvedBy ? [
+                'id' => $this->approvedBy->id,
+                'name' => $this->approvedBy->name,
+            ] : null),
+            'can_execute' => $this->isExecutable() && $isExecutableStatus && ! $isLocked,
             'created_at' => $this->created_at?->toIso8601String(),
             'equipment' => $this->whenLoaded('equipment', fn () => [
                 'id' => $this->equipment->id,

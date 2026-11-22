@@ -15,6 +15,7 @@ use App\Models\WorkOrderActivity;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Gate;
 use Livewire\Livewire;
+use Spatie\Permission\Models\Role;
 use Tests\TestCase;
 
 class MaintenanceHistoryResourceTest extends TestCase
@@ -33,6 +34,7 @@ class MaintenanceHistoryResourceTest extends TestCase
         Gate::before(fn (): bool => true);
 
         $this->user = User::factory()->create();
+        $this->user->assignRole(Role::findOrCreate('super_admin', 'web'));
 
         $company = Company::create(['code' => 'CO', 'name' => 'Demo Company']);
         $area = Area::create(['company_id' => $company->id, 'code' => 'AR', 'name' => 'Demo Area']);
@@ -115,5 +117,73 @@ class MaintenanceHistoryResourceTest extends TestCase
             ->assertSee('Inspeksi Kebocoran Seal')
             ->assertSee('Tidak ada kebocoran')
             ->assertSee('Selesai dikerjakan');
+    }
+
+    public function test_maintenance_history_view_shows_manual_activities_without_master_activity(): void
+    {
+        $workOrder = WorkOrder::create([
+            'equipment_id' => $this->equipment->id,
+            'issued_by' => $this->user->id,
+            'classification' => 'Corrective',
+            'start_at' => now()->subHours(2),
+            'finish_at' => now(),
+            'status' => 'Completed',
+        ]);
+
+        // Aktivitas manual dari approval SPV: activity_id null, nama di work_order_activities.name.
+        WorkOrderActivity::create([
+            'work_order_id' => $workOrder->id,
+            'activity_id' => null,
+            'name' => 'Cek suhu bearing',
+            'final_result' => 'Normal 45°C',
+            'executed' => true,
+        ]);
+
+        WorkOrderActivity::create([
+            'work_order_id' => $workOrder->id,
+            'activity_id' => null,
+            'name' => 'Tambahkan oli',
+            'final_result' => 'Sudah ditambah',
+            'executed' => true,
+        ]);
+
+        $history = MaintenanceHistory::create([
+            'equipment_id' => $this->equipment->id,
+            'work_order_id' => $workOrder->id,
+            'work_order_number' => $workOrder->work_order_number,
+            'classification' => 'Corrective',
+            'description' => 'Perbaikan pompa',
+            'maintenance_date' => now(),
+            'performed_by' => $this->user->id,
+            'status' => 'Completed',
+        ]);
+
+        $this->actingAs($this->user);
+
+        Livewire::test(ViewMaintenanceHistory::class, ['record' => $history->getRouteKey()])
+            ->assertOk()
+            ->assertSee('Checklist & Hasil Eksekusi')
+            ->assertSee('Cek suhu bearing')
+            ->assertSee('Normal 45°C')
+            ->assertSee('Tambahkan oli')
+            ->assertSee('Sudah ditambah');
+    }
+
+    public function test_maintenance_history_without_work_order_hides_checklist_section(): void
+    {
+        $history = MaintenanceHistory::create([
+            'equipment_id' => $this->equipment->id,
+            'classification' => 'Preventive',
+            'description' => 'Pengecekan rutin pompa',
+            'maintenance_date' => now(),
+            'performed_by' => $this->user->id,
+            'status' => 'Completed',
+        ]);
+
+        $this->actingAs($this->user);
+
+        Livewire::test(ViewMaintenanceHistory::class, ['record' => $history->getRouteKey()])
+            ->assertOk()
+            ->assertDontSee('Checklist & Hasil Eksekusi');
     }
 }

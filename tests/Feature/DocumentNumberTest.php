@@ -15,6 +15,7 @@ use App\Support\DocumentNumber;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Gate;
 use Livewire\Livewire;
+use Spatie\Permission\Models\Role;
 use Tests\TestCase;
 
 class DocumentNumberTest extends TestCase
@@ -32,6 +33,7 @@ class DocumentNumberTest extends TestCase
         Setting::flushCache();
 
         $this->user = User::factory()->create();
+        $this->user->assignRole(Role::findOrCreate('super_admin', 'web'));
 
         $company = Company::create(['code' => 'CO', 'name' => 'Demo Company']);
         $area = Area::create(['company_id' => $company->id, 'code' => 'AR', 'name' => 'Demo Area']);

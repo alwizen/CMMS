@@ -55,7 +55,8 @@ class UserVisibility
     }
 
     /**
-     * Request terkait user: sebagai pelapor atau approver.
+     * Request terkait user: sebagai pelapor, approver, atau milik fungsi
+     * equipment yang sama (petugas MOS satu fungsi bisa saling melihat).
      */
     public static function scopeRequests(Builder $query, ?User $user): Builder
     {
@@ -64,10 +65,28 @@ class UserVisibility
         }
 
         $userId = $user->id;
+        $fungsi = $user->fungsi;
 
-        return $query->where(function (Builder $q) use ($userId) {
+        return $query->where(function (Builder $q) use ($userId, $fungsi) {
             $q->where('reported_by', $userId)
-                ->orWhere('approved_by', $userId);
+                ->orWhere('approved_by', $userId)
+                // Request dari WO yang terkait user (performed by / pemberi tugas / pelaksana).
+                ->orWhereHas('workOrders', function (Builder $wo) use ($userId, $fungsi): void {
+                    $wo->where('technician_coordinator_id', $userId)
+                        ->orWhere('issued_by', $userId)
+                        ->orWhereHas('workOrderWorkers', fn (Builder $worker) => $worker->where('user_id', $userId));
+
+                    if (filled($fungsi)) {
+                        $wo->orWhere('fungsi', $fungsi);
+                    }
+                });
+
+            if (filled($fungsi)) {
+                $q->orWhereHas(
+                    'equipment.equipmentType',
+                    fn (Builder $type) => $type->where('fungsi', $fungsi),
+                );
+            }
         });
     }
 
@@ -95,7 +114,26 @@ class UserVisibility
             return true;
         }
 
-        return $maintenanceRequest->reported_by === $user->id
-            || $maintenanceRequest->approved_by === $user->id;
+        if ($maintenanceRequest->reported_by === $user->id
+            || $maintenanceRequest->approved_by === $user->id) {
+            return true;
+        }
+
+        if (filled($user->fungsi) && $maintenanceRequest->equipment?->equipmentType?->fungsi === $user->fungsi) {
+            return true;
+        }
+
+        // Request terlihat oleh petugas yang memegang WO turunannya.
+        return $maintenanceRequest->workOrders()
+            ->where(function (Builder $wo) use ($user): void {
+                $wo->where('technician_coordinator_id', $user->id)
+                    ->orWhere('issued_by', $user->id)
+                    ->orWhereHas('workOrderWorkers', fn (Builder $worker) => $worker->where('user_id', $user->id));
+
+                if (filled($user->fungsi)) {
+                    $wo->orWhere('fungsi', $user->fungsi);
+                }
+            })
+            ->exists();
     }
 }

@@ -63,6 +63,15 @@ class RequestStatusSyncTest extends TestCase
         ]);
     }
 
+    protected function approveReview(WorkOrder $workOrder): void
+    {
+        $workOrder->update([
+            'approval_status' => WorkOrder::APPROVAL_APPROVED,
+            'approved_by' => $this->user->id,
+            'approved_at' => now(),
+        ]);
+    }
+
     public function test_creating_work_order_moves_open_request_to_assigned(): void
     {
         $this->request->update(['status' => MaintenanceRequest::STATUSES['Open']]);
@@ -87,16 +96,7 @@ class RequestStatusSyncTest extends TestCase
         $this->assertSame(MaintenanceRequest::STATUSES['In Progress'], $this->request->fresh()->status);
     }
 
-    public function test_on_hold_work_order_keeps_request_in_progress(): void
-    {
-        $workOrder = $this->makeWorkOrder();
-        $workOrder->update(['status' => WorkOrder::STATUSES['In Progress']]);
-        $workOrder->update(['status' => WorkOrder::STATUSES['On Hold']]);
-
-        $this->assertSame(MaintenanceRequest::STATUSES['In Progress'], $this->request->fresh()->status);
-    }
-
-    public function test_completing_work_order_completes_request(): void
+    public function test_completing_work_order_waits_for_spv_review_before_completing_request(): void
     {
         $workOrder = $this->makeWorkOrder();
         $workOrder->update(['status' => WorkOrder::STATUSES['In Progress']]);
@@ -104,6 +104,11 @@ class RequestStatusSyncTest extends TestCase
             'status' => WorkOrder::STATUSES['Completed'],
             'finish_at' => now(),
         ]);
+
+        $this->assertSame(WorkOrder::APPROVAL_PENDING, $workOrder->fresh()->approval_status);
+        $this->assertSame(MaintenanceRequest::STATUSES['In Progress'], $this->request->fresh()->status);
+
+        $this->approveReview($workOrder);
 
         $this->assertSame(MaintenanceRequest::STATUSES['Completed'], $this->request->fresh()->status);
     }
@@ -119,6 +124,12 @@ class RequestStatusSyncTest extends TestCase
 
         $second->update(['status' => WorkOrder::STATUSES['Completed'], 'finish_at' => now()]);
 
+        $this->assertSame(MaintenanceRequest::STATUSES['Approved'], $this->request->fresh()->status);
+
+        $this->approveReview($first);
+        $this->assertSame(MaintenanceRequest::STATUSES['Approved'], $this->request->fresh()->status);
+
+        $this->approveReview($second);
         $this->assertSame(MaintenanceRequest::STATUSES['Completed'], $this->request->fresh()->status);
     }
 
@@ -129,6 +140,10 @@ class RequestStatusSyncTest extends TestCase
 
         $first->update(['status' => WorkOrder::STATUSES['Completed'], 'finish_at' => now()]);
         $second->update(['status' => WorkOrder::STATUSES['Cancelled']]);
+
+        $this->assertSame(MaintenanceRequest::STATUSES['Approved'], $this->request->fresh()->status);
+
+        $this->approveReview($first);
 
         $this->assertSame(MaintenanceRequest::STATUSES['Completed'], $this->request->fresh()->status);
     }

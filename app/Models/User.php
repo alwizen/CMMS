@@ -20,12 +20,36 @@ class User extends Authenticatable implements FilamentUser
     use HasApiTokens, HasFactory, HasRoles, Notifiable;
 
     /**
-     * Semua user aktif boleh membuka panel Filament.
-     * Hak akses per menu/resource tetap diatur lewat permission Shield.
+     * Role yang boleh membuka panel admin (supervisor, pengawas, super admin).
+     *
+     * @var list<string>
+     */
+    public const ADMIN_PANEL_ROLES = [
+        'super_admin',
+        'spv_mos',
+        'spv_gos',
+        'spv_hsse',
+        'pengawas',
+    ];
+
+    /**
+     * Panel admin untuk supervisor/pengawas, panel app untuk petugas lapangan.
+     * Super admin boleh membuka keduanya untuk keperluan support.
+     *
+     * Akses panel app mengikuti permission Shield (`View:FieldDashboard`),
+     * sehingga role yang diberi izin tersebut otomatis bisa masuk.
      */
     public function canAccessPanel(Panel $panel): bool
     {
-        return (bool) $this->status;
+        if (! $this->status) {
+            return false;
+        }
+
+        return match ($panel->getId()) {
+            'admin' => $this->hasAnyRole(self::ADMIN_PANEL_ROLES),
+            'app' => $this->can('View:FieldDashboard'),
+            default => false,
+        };
     }
 
     /**
@@ -48,6 +72,27 @@ class User extends Authenticatable implements FilamentUser
     public static function fungsiValues(): array
     {
         return array_keys(self::FUNGSI);
+    }
+
+    /**
+     * Fungsi yang punya user aktif dengan role tertentu (default: role `mos`).
+     *
+     * Dipakai saat approval request: WO ditugaskan ke fungsi (shared pool),
+     * bukan ke satu orang. Hanya fungsi yang punya petugas `mos` yang muncul.
+     *
+     * @return array<string, string>
+     */
+    public static function fungsiOptionsForRole(string $role = 'mos'): array
+    {
+        $fungsi = static::query()
+            ->where('status', true)
+            ->whereNotNull('fungsi')
+            ->whereHas('roles', fn ($query) => $query->where('name', $role))
+            ->distinct()
+            ->pluck('fungsi')
+            ->all();
+
+        return array_intersect_key(self::FUNGSI, array_flip($fungsi));
     }
 
     /**

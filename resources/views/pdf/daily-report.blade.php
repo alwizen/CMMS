@@ -100,7 +100,6 @@
                                 $woColor = match ($wo->status) {
                                     'Completed' => 'b-green',
                                     'In Progress' => 'b-blue',
-                                    'On Hold' => 'b-amber',
                                     'Cancelled' => 'b-red',
                                     default => 'b-gray',
                                 };

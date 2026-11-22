@@ -16,6 +16,7 @@ use Filament\Actions\Testing\TestAction;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Gate;
 use Livewire\Livewire;
+use Spatie\Permission\Models\Role;
 use Tests\TestCase;
 
 class RequestApprovalTest extends TestCase
@@ -41,7 +42,8 @@ class RequestApprovalTest extends TestCase
         Gate::before(fn (): bool => true);
 
         $this->spv = User::factory()->create();
-        $this->penanggungJawab = User::factory()->create();
+        $this->penanggungJawab = User::factory()->create(['fungsi' => 'MOS LTSA']);
+        $this->penanggungJawab->assignRole(Role::findOrCreate('mos', 'web'));
 
         $company = Company::create(['code' => 'CO', 'name' => 'Demo Company']);
         $area = Area::create(['company_id' => $company->id, 'code' => 'AR', 'name' => 'Demo Area']);
@@ -87,7 +89,7 @@ class RequestApprovalTest extends TestCase
         ]);
     }
 
-    public function test_approve_turns_request_into_pending_work_order_with_one_responsible_user(): void
+    public function test_approve_turns_request_into_pending_work_order_owned_by_fungsi(): void
     {
         $request = $this->makeOpenRequest();
 
@@ -97,7 +99,7 @@ class RequestApprovalTest extends TestCase
             ->mountAction('approve')
             ->fillForm([
                 'start_date' => now()->addDay()->toDateString(),
-                'technician_coordinator_id' => $this->penanggungJawab->id,
+                'fungsi' => 'MOS LTSA',
                 'classification' => 'Corrective',
                 'approval_notes' => 'Segera ditangani',
             ])
@@ -111,7 +113,9 @@ class RequestApprovalTest extends TestCase
 
         $this->assertNotNull($workOrder);
         $this->assertSame(WorkOrder::STATUSES['Pending'], $workOrder->status);
-        $this->assertSame($this->penanggungJawab->id, $workOrder->technician_coordinator_id);
+        $this->assertSame('MOS LTSA', $workOrder->fungsi);
+        $this->assertNull($workOrder->technician_coordinator_id);
+        $this->assertTrue($workOrder->isUnclaimed());
         $this->assertSame('Corrective', $workOrder->classification);
         $this->assertSame($this->equipment->id, $workOrder->equipment_id);
 
@@ -124,7 +128,7 @@ class RequestApprovalTest extends TestCase
         $this->assertNull($workOrder->finish_at);
     }
 
-    public function test_approve_without_coordinator_creates_function_owned_work_order(): void
+    public function test_approve_requires_fungsi(): void
     {
         $request = $this->makeOpenRequest();
 
@@ -134,18 +138,25 @@ class RequestApprovalTest extends TestCase
             ->mountAction('approve')
             ->fillForm([
                 'start_date' => now()->addDay()->toDateString(),
-                'technician_coordinator_id' => null,
+                'fungsi' => null,
                 'classification' => 'Corrective',
                 'activity_ids' => [],
             ])
             ->callMountedAction()
-            ->assertHasNoActionErrors();
+            ->assertHasActionErrors(['fungsi' => 'required']);
 
-        $workOrder = WorkOrder::where('maintenance_request_id', $request->id)->firstOrFail();
+        $this->assertSame(MaintenanceRequest::STATUSES['Open'], $request->fresh()->status);
+        $this->assertSame(0, WorkOrder::where('maintenance_request_id', $request->id)->count());
+    }
 
-        $this->assertNull($workOrder->technician_coordinator_id);
-        $this->assertTrue($workOrder->isUnclaimed());
-        $this->assertSame(MaintenanceRequest::STATUSES['Approved'], $request->fresh()->status);
+    public function test_approve_fungsi_options_only_include_fungsi_with_mos_users(): void
+    {
+        $this->assertArrayHasKey('MOS LTSA', User::fungsiOptionsForRole('mos'));
+        $this->assertArrayNotHasKey('MOS TAD', User::fungsiOptionsForRole('mos'));
+
+        User::factory()->create(['fungsi' => 'MOS TAD'])->assignRole(Role::findOrCreate('mos', 'web'));
+
+        $this->assertArrayHasKey('MOS TAD', User::fungsiOptionsForRole('mos'));
     }
 
     public function test_approve_can_select_specific_activities_only(): void
@@ -158,7 +169,7 @@ class RequestApprovalTest extends TestCase
             ->mountAction('approve')
             ->fillForm([
                 'start_date' => now()->addDay()->toDateString(),
-                'technician_coordinator_id' => $this->penanggungJawab->id,
+                'fungsi' => 'MOS LTSA',
                 'classification' => 'Corrective',
                 'activity_ids' => [$this->activityB->id],
             ])
@@ -181,7 +192,7 @@ class RequestApprovalTest extends TestCase
             ->mountAction('approve')
             ->fillForm([
                 'start_date' => now()->addDay()->toDateString(),
-                'technician_coordinator_id' => $this->penanggungJawab->id,
+                'fungsi' => 'MOS LTSA',
                 'classification' => 'Corrective',
                 'activity_ids' => [],
             ])
@@ -227,7 +238,7 @@ class RequestApprovalTest extends TestCase
             ->mountAction('approve')
             ->fillForm([
                 'start_date' => now()->addDay()->toDateString(),
-                'technician_coordinator_id' => $this->penanggungJawab->id,
+                'fungsi' => 'MOS LTSA',
                 'classification' => 'Corrective',
                 'activity_ids' => [],
                 'manual_activities' => ['Cek manual bearing', '  Ganti seal  ', 'Cek manual bearing'],
@@ -254,7 +265,7 @@ class RequestApprovalTest extends TestCase
             ->mountAction('approve')
             ->fillForm([
                 'start_date' => now()->addDay()->toDateString(),
-                'technician_coordinator_id' => $this->penanggungJawab->id,
+                'fungsi' => 'MOS LTSA',
                 'classification' => 'Corrective',
                 'activity_ids' => [$this->activityA->id],
                 'manual_activities' => ['Pemeriksaan tambahan'],

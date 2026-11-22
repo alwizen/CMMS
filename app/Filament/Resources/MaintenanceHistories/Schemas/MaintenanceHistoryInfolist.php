@@ -4,6 +4,7 @@ namespace App\Filament\Resources\MaintenanceHistories\Schemas;
 
 use App\Filament\Resources\WorkOrders\WorkOrderResource;
 use App\Models\MaintenanceHistory;
+use App\Models\WorkOrderActivity;
 use App\Support\Downtime;
 use Filament\Infolists\Components\IconEntry;
 use Filament\Infolists\Components\ImageEntry;
@@ -97,23 +98,23 @@ class MaintenanceHistoryInfolist
                             ->columnSpanFull(),
                     ]),
 
-                Section::make('Temuan & Tindakan')
-                    ->icon(Heroicon::OutlinedExclamationTriangle)
-                    ->columnSpanFull()
-                    ->schema([
-                        TextEntry::make('findings')
-                            ->label('Findings')
-                            ->placeholder('-')
-                            ->columnSpanFull(),
-                        TextEntry::make('actions_taken')
-                            ->label('Actions Taken')
-                            ->placeholder('-')
-                            ->columnSpanFull(),
-                        TextEntry::make('notes')
-                            ->label('Notes')
-                            ->placeholder('-')
-                            ->columnSpanFull(),
-                    ]),
+                // Section::make('Temuan & Tindakan')
+                //     ->icon(Heroicon::OutlinedExclamationTriangle)
+                //     ->columnSpanFull()
+                //     ->schema([
+                //         TextEntry::make('findings')
+                //             ->label('Findings')
+                //             ->placeholder('-')
+                //             ->columnSpanFull(),
+                //         TextEntry::make('actions_taken')
+                //             ->label('Actions Taken')
+                //             ->placeholder('-')
+                //             ->columnSpanFull(),
+                //         TextEntry::make('notes')
+                //             ->label('Notes')
+                //             ->placeholder('-')
+                //             ->columnSpanFull(),
+                //     ]),
 
                 Section::make('Downtime')
                     ->icon(Heroicon::OutlinedClock)
@@ -151,13 +152,18 @@ class MaintenanceHistoryInfolist
                                 TableColumn::make('Executed'),
                                 TableColumn::make('Pre Inspection'),
                                 TableColumn::make('Final Result'),
-                                TableColumn::make('Follow Up'),
                                 TableColumn::make('Note'),
+                                TableColumn::make('Waktu Eksekusi'),
                                 TableColumn::make('Foto Dokumentasi'),
                             ])
                             ->schema([
-                                TextEntry::make('activity.name')
-                                    ->label('Activity'),
+                                // Aktivitas manual tidak punya activity_id: nama diambil
+                                // dari work_order_activities.name lewat displayName().
+                                TextEntry::make('name')
+                                    ->label('Activity')
+                                    ->state(fn (WorkOrderActivity $record): string => $record->displayName())
+                                    ->placeholder('-')
+                                    ->weight('bold'),
                                 TextEntry::make('reference')
                                     ->label('Reference')
                                     ->placeholder('-'),
@@ -170,23 +176,22 @@ class MaintenanceHistoryInfolist
                                 TextEntry::make('final_result')
                                     ->label('Final Result')
                                     ->placeholder('-'),
-                                TextEntry::make('follow_up')
-                                    ->label('Follow Up')
-                                    ->placeholder('-'),
                                 TextEntry::make('note')
                                     ->label('Note')
-                                    ->placeholder('-')
-                                    ->columnSpanFull(),
+                                    ->placeholder('-'),
+                                TextEntry::make('executed_at')
+                                    ->label('Waktu Eksekusi')
+                                    ->dateTime('d M Y H:i')
+                                    ->placeholder('-'),
                                 ImageEntry::make('photos')
                                     ->label('Foto Dokumentasi')
                                     ->disk('public')
-                                    ->size(160)
-                                    ->placeholder('-')
-                                    ->columnSpanFull(),
-                            ])
-                            ->columns(6),
+                                    ->stacked()
+                                    ->limit(3)
+                                    ->placeholder('-'),
+                            ]),
                     ])
-                    ->visible(fn (MaintenanceHistory $record): bool => (bool) $record->workOrder?->workOrderActivities->isNotEmpty()),
+                    ->visible(fn (MaintenanceHistory $record): bool => $record->work_order_id !== null),
             ]);
     }
 

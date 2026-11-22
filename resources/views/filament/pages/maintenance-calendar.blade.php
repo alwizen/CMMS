@@ -243,7 +243,7 @@
             const statusClass = {
                 'Completed': 'badge-status-completed', 'Active': 'badge-status-active',
                 'In Progress': 'badge-status-in-progress',
-                'On Hold': 'badge-status-on-hold', 'Delayed': 'badge-status-delayed', 'Scheduled': 'badge-status-scheduled',
+                'Delayed': 'badge-status-delayed', 'Scheduled': 'badge-status-scheduled',
                 'Cancelled': 'badge-status-cancelled',
             };
 

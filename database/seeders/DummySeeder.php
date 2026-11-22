@@ -29,6 +29,8 @@ class DummySeeder extends Seeder
 
         $this->seedRequests($equipment, $users);
 
+        $this->call(FieldPermissionSeeder::class);
+
         $this->command?->info(sprintf(
             'Dummy siap: %d company, %d area, %d equipment, %d activity, %d request, %d WO.',
             Company::count(),
@@ -45,7 +47,7 @@ class DummySeeder extends Seeder
      */
     protected function seedRoles(): array
     {
-        $names = ['super_admin', 'pengawas', 'spv_mos', 'spv_gos', 'spv_hsse', 'ltsa_tad'];
+        $names = ['super_admin', 'pengawas', 'spv_mos', 'spv_gos', 'spv_hsse', 'mos'];
 
         $roles = [];
 
@@ -71,10 +73,10 @@ class DummySeeder extends Seeder
             'spv' => ['SPV MOS', 'spv@demo.com', 'SPV-001', 'spv_mos'],
             'spvgos' => ['SPV GOS', 'spvgos@demo.com', 'SPV-GOS-001', 'spv_gos'],
             'spvhsse' => ['SPV HSSE', 'spvhsse@demo.com', 'SPV-HSSE-001', 'spv_hsse'],
-            'risna' => ['Risna', 'risna@demo.com', 'TAD-001', 'ltsa_tad'],
-            'kholis' => ['Kholis', 'kholis@demo.com', 'TAD-002', 'ltsa_tad'],
-            'behan' => ['Behan', 'behan@demo.com', 'LTSA-001', 'ltsa_tad'],
-            'irwan' => ['Irwan', 'irwan@demo.com', 'LTSA-002', 'ltsa_tad'],
+            'risna' => ['Risna', 'risna@demo.com', 'TAD-001', 'mos'],
+            'kholis' => ['Kholis', 'kholis@demo.com', 'TAD-002', 'mos'],
+            'behan' => ['Behan', 'behan@demo.com', 'LTSA-001', 'mos'],
+            'irwan' => ['Irwan', 'irwan@demo.com', 'LTSA-002', 'mos'],
         ];
 
         $users = [];

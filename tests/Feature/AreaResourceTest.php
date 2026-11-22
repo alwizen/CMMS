@@ -8,6 +8,7 @@ use App\Models\Company;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Gate;
+use Spatie\Permission\Models\Role;
 use Tests\TestCase;
 
 class AreaResourceTest extends TestCase
@@ -38,6 +39,7 @@ class AreaResourceTest extends TestCase
         Gate::before(fn (): bool => true);
 
         $user = User::factory()->create();
+        $user->assignRole(Role::findOrCreate('super_admin', 'web'));
         $company = Company::create(['code' => 'CO', 'name' => 'Demo Company']);
         $area = Area::create([
             'company_id' => $company->id,

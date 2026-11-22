@@ -19,10 +19,10 @@ class UserSeeder extends Seeder
         ['name' => 'SPV GOS', 'email' => 'spvgos@demo.com', 'employee_number' => 'SPV-GOS-001', 'role' => 'spv_gos', 'fungsi' => null],
         ['name' => 'SPV HSSE', 'email' => 'spvhsse@demo.com', 'employee_number' => 'SPV-HSSE-001', 'role' => 'spv_hsse', 'fungsi' => null],
         ['name' => 'Pengawas Lapangan', 'email' => 'pengawas@demo.com', 'employee_number' => 'PGW-001', 'role' => 'pengawas', 'fungsi' => null],
-        ['name' => 'Teknisi MOS LTSA', 'email' => 'ltsa@demo.com', 'employee_number' => 'TAD-001', 'role' => 'ltsa_tad', 'fungsi' => 'MOS LTSA'],
-        ['name' => 'Teknisi MOS PM Reborn', 'email' => 'pmreborn@demo.com', 'employee_number' => 'TAD-002', 'role' => 'ltsa_tad', 'fungsi' => 'MOS PM Reborn'],
-        ['name' => 'Teknisi MOS TAD', 'email' => 'tad@demo.com', 'employee_number' => 'TAD-003', 'role' => 'ltsa_tad', 'fungsi' => 'MOS TAD'],
-        ['name' => 'Petugas HSSE', 'email' => 'hsse@demo.com', 'employee_number' => 'HSSE-001', 'role' => 'ltsa_tad', 'fungsi' => 'HSSE'],
+        ['name' => 'Teknisi MOS LTSA', 'email' => 'ltsa@demo.com', 'employee_number' => 'TAD-001', 'role' => 'mos', 'fungsi' => 'MOS LTSA'],
+        ['name' => 'Teknisi MOS PM Reborn', 'email' => 'pmreborn@demo.com', 'employee_number' => 'TAD-002', 'role' => 'mos', 'fungsi' => 'MOS PM Reborn'],
+        ['name' => 'Teknisi MOS TAD', 'email' => 'tad@demo.com', 'employee_number' => 'TAD-003', 'role' => 'mos', 'fungsi' => 'MOS TAD'],
+        ['name' => 'Petugas HSSE', 'email' => 'hsse@demo.com', 'employee_number' => 'HSSE-001', 'role' => 'mos', 'fungsi' => 'HSSE'],
         ['name' => 'Petugas Housekeeping', 'email' => 'petugas@demo.com', 'employee_number' => 'HK-001', 'role' => 'patra-jasa', 'fungsi' => null],
     ];
 

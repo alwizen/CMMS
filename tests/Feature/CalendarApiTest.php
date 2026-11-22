@@ -29,7 +29,7 @@ class CalendarApiTest extends TestCase
 
         Setting::flushCache();
 
-        foreach (['super_admin', 'pengawas', 'spv_mos', 'ltsa_tad'] as $role) {
+        foreach (['super_admin', 'pengawas', 'spv_mos', 'mos'] as $role) {
             Role::firstOrCreate(['name' => $role, 'guard_name' => 'web']);
         }
 
@@ -70,8 +70,8 @@ class CalendarApiTest extends TestCase
 
     public function test_super_admin_sees_all_calendar_events(): void
     {
-        $risna = $this->makeUserWithRole('ltsa_tad');
-        $kholis = $this->makeUserWithRole('ltsa_tad');
+        $risna = $this->makeUserWithRole('mos');
+        $kholis = $this->makeUserWithRole('mos');
 
         $this->makeWorkOrder($risna, now()->toDateString());
         $this->makeWorkOrder($kholis, now()->toDateString());
@@ -85,8 +85,8 @@ class CalendarApiTest extends TestCase
 
     public function test_ltsa_only_sees_own_work_orders(): void
     {
-        $risna = $this->makeUserWithRole('ltsa_tad');
-        $kholis = $this->makeUserWithRole('ltsa_tad');
+        $risna = $this->makeUserWithRole('mos');
+        $kholis = $this->makeUserWithRole('mos');
 
         $mine = $this->makeWorkOrder($risna, now()->toDateString());
         $this->makeWorkOrder($kholis, now()->toDateString());
@@ -101,8 +101,8 @@ class CalendarApiTest extends TestCase
 
     public function test_ltsa_sees_work_order_when_assigned_as_worker(): void
     {
-        $risna = $this->makeUserWithRole('ltsa_tad');
-        $kholis = $this->makeUserWithRole('ltsa_tad');
+        $risna = $this->makeUserWithRole('mos');
+        $kholis = $this->makeUserWithRole('mos');
 
         $workOrder = WorkOrder::create([
             'equipment_id' => $this->equipment->id,
@@ -130,8 +130,8 @@ class CalendarApiTest extends TestCase
 
     public function test_ltsa_does_not_see_other_users_work_orders(): void
     {
-        $risna = $this->makeUserWithRole('ltsa_tad');
-        $kholis = $this->makeUserWithRole('ltsa_tad');
+        $risna = $this->makeUserWithRole('mos');
+        $kholis = $this->makeUserWithRole('mos');
 
         WorkOrder::create([
             'equipment_id' => $this->equipment->id,
@@ -151,7 +151,7 @@ class CalendarApiTest extends TestCase
 
     public function test_pengawas_and_spv_see_everything(): void
     {
-        $risna = $this->makeUserWithRole('ltsa_tad');
+        $risna = $this->makeUserWithRole('mos');
         $this->makeWorkOrder($risna, now()->toDateString());
 
         foreach (['pengawas', 'spv_mos'] as $role) {
@@ -165,7 +165,7 @@ class CalendarApiTest extends TestCase
 
     public function test_calendar_respects_date_range(): void
     {
-        $risna = $this->makeUserWithRole('ltsa_tad');
+        $risna = $this->makeUserWithRole('mos');
         $this->makeWorkOrder($risna, now()->toDateString());
 
         Sanctum::actingAs($this->admin, ['*']);
@@ -195,8 +195,8 @@ class CalendarApiTest extends TestCase
 
     public function test_work_order_list_is_scoped_for_ltsa(): void
     {
-        $risna = $this->makeUserWithRole('ltsa_tad');
-        $kholis = $this->makeUserWithRole('ltsa_tad');
+        $risna = $this->makeUserWithRole('mos');
+        $kholis = $this->makeUserWithRole('mos');
 
         $mine = WorkOrder::create([
             'equipment_id' => $this->equipment->id,

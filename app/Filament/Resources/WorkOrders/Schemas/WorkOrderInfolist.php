@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\WorkOrders\Schemas;
 
 use App\Models\Activity;
+use App\Models\WorkOrder;
 use App\Models\WorkOrderActivity;
 use Filament\Infolists\Components\IconEntry;
 use Filament\Infolists\Components\ImageEntry;
@@ -18,6 +19,32 @@ class WorkOrderInfolist
     {
         return $schema
             ->components([
+                Section::make('Sedang Dikerjakan')
+                    ->icon('heroicon-o-lock-closed')
+                    ->columnSpanFull()
+                    ->description('Work order ini sudah diambil petugas lain. Anda hanya dapat melihat sampai pekerjaan selesai atau ditunda.')
+                    ->schema([
+                        TextEntry::make('technicianCoordinator.name')
+                            ->label('Dikerjakan oleh')
+                            ->badge()
+                            ->color('warning')
+                            ->placeholder('-'),
+                        TextEntry::make('start_at')
+                            ->label('Mulai')
+                            ->dateTime('d M Y H:i')
+                            ->placeholder('-'),
+                        TextEntry::make('status')
+                            ->label('Status')
+                            ->badge()
+                            ->color(fn (?string $state): string => match ($state) {
+                                'In Progress' => 'warning',
+                                default => 'gray',
+                            }),
+                    ])
+                    ->columns(3)
+                    ->visible(fn (WorkOrder $record): bool => $record->technician_coordinator_id !== null
+                        && $record->status === WorkOrder::STATUSES['In Progress']),
+
                 Section::make('Informasi Work Order')
                     ->icon('heroicon-o-clipboard-document-list')
                     ->columnSpanFull()
@@ -34,7 +61,6 @@ class WorkOrderInfolist
                             ->color(fn (?string $state): string => match ($state) {
                                 'Completed' => 'success',
                                 'In Progress' => 'info',
-                                'On Hold' => 'warning',
                                 'Cancelled' => 'danger',
                                 default => 'gray',
                             }),
@@ -94,6 +120,36 @@ class WorkOrderInfolist
                     ])
                     ->columns(4),
 
+                Section::make('Review SPV MOS')
+                    ->icon('heroicon-o-shield-check')
+                    ->columnSpanFull()
+                    ->description('Work order yang selesai dikerjakan teknisi harus direview SPV MOS sebelum dianggap tuntas.')
+                    ->schema([
+                        TextEntry::make('approval_status')
+                            ->label('Status Review')
+                            ->badge()
+                            ->formatStateUsing(fn (string $state): string => WorkOrder::APPROVAL_STATUSES[$state] ?? $state)
+                            ->color(fn (string $state): string => match ($state) {
+                                'Approved' => 'success',
+                                'Rejected' => 'danger',
+                                default => 'warning',
+                            }),
+                        TextEntry::make('approvedBy.name')
+                            ->label('Direview Oleh')
+                            ->placeholder('-'),
+                        TextEntry::make('approved_at')
+                            ->label('Waktu Review')
+                            ->dateTime('d M Y H:i')
+                            ->placeholder('-'),
+                        TextEntry::make('approval_notes')
+                            ->label('Catatan Review')
+                            ->placeholder('-')
+                            ->columnSpanFull(),
+                    ])
+                    ->columns(3)
+                    ->visible(fn (WorkOrder $record): bool => $record->status === WorkOrder::STATUSES['Completed']
+                        || $record->approval_status !== WorkOrder::APPROVAL_PENDING),
+
                 Section::make('Checklist & Hasil Eksekusi')
                     ->icon('heroicon-o-check-circle')
                     ->columnSpanFull()
@@ -151,13 +207,14 @@ class WorkOrderInfolist
                 Section::make('Teknisi Pelaksana')
                     ->icon('heroicon-o-users')
                     ->columnSpanFull()
+                    ->description('Terisi otomatis saat petugas menekan "Mulai Pekerjaan" di panel lapangan.')
                     ->schema([
                         TextEntry::make('technicianCoordinator.name')
-                            ->label('Pelaksana (Penanggung Jawab Equipment Type)')
-                            ->placeholder('-'),
+                            ->label('Performed By')
+                            ->placeholder('Belum diambil'),
                         RepeatableEntry::make('workOrderWorkers')
                             ->hiddenLabel()
-                            ->placeholder('Tidak ada teknisi tambahan.')
+                            ->placeholder('Belum ada teknisi pelaksana tercatat.')
                             ->columnSpanFull()
                             ->table([
                                 TableColumn::make('Teknisi'),

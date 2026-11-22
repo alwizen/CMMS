@@ -101,8 +101,8 @@
             </nav>
 
             <div class="flex items-center gap-2">
-                <a href="/admin/login" class="hidden border border-white/15 px-3.5 py-2 font-mono text-[11px] uppercase tracking-[0.12em] text-white/70 transition-colors hover:border-white/30 hover:text-white sm:inline-flex">
-                    Masuk
+                <a href="/login" class="hidden border border-white/15 px-3.5 py-2 font-mono text-[11px] uppercase tracking-[0.12em] text-white/70 transition-colors hover:border-white/30 hover:text-white sm:inline-flex">
+                    Masuk petugas
                 </a>
                 <a href="/admin" class="inline-flex items-center gap-2 bg-white px-3.5 py-2 font-mono text-[11px] font-semibold uppercase tracking-[0.12em] text-ink transition-colors hover:bg-white/90">
                     Panel admin
@@ -487,7 +487,7 @@
                     <a href="/admin" class="inline-flex items-center justify-center bg-ink px-5 py-2.5 text-[13px] font-semibold text-white transition-colors hover:bg-ink/90">
                         Buka panel administrasi
                     </a>
-                    <a href="/admin/login" class="inline-flex items-center justify-center border border-rule px-5 py-2.5 text-[13px] font-medium text-ink/70 transition-colors hover:bg-paper">
+                    <a href="/login" class="inline-flex items-center justify-center border border-rule px-5 py-2.5 text-[13px] font-medium text-ink/70 transition-colors hover:bg-paper">
                         Masuk sebagai petugas
                     </a>
                 </div>
@@ -539,7 +539,8 @@
                     <p class="font-mono text-[10px] uppercase tracking-[0.14em] text-white/35">Akses</p>
                     <ul class="mt-3 space-y-2 text-[12px] text-white/60">
                         <li><a href="/admin" class="transition-colors hover:text-white">Panel administrasi</a></li>
-                        <li><a href="/admin/login" class="transition-colors hover:text-white">Masuk petugas</a></li>
+                        <li><a href="/app" class="transition-colors hover:text-white">Panel lapangan</a></li>
+                        <li><a href="/login" class="transition-colors hover:text-white">Masuk petugas</a></li>
                         <li>Aplikasi Android</li>
                     </ul>
                 </div>
