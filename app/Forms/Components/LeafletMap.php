@@ -19,6 +19,14 @@ class LeafletMap extends Field
 
     protected int|Closure $height = 400;
 
+    /**
+     * Polygon acuan (read-only) yang ditampilkan sebagai batas luar, mis.
+     * batas area housekeeping saat menggambar polygon fasilitas.
+     *
+     * @var array<int, array<int, array{0: float|int, 1: float|int}>>|Closure
+     */
+    protected array|Closure $referencePolygons = [];
+
     protected function setUp(): void
     {
         parent::setUp();
@@ -92,5 +100,23 @@ class LeafletMap extends Field
     public function getHeight(): int
     {
         return $this->evaluate($this->height);
+    }
+
+    /**
+     * @param  array<int, array<int, array{0: float|int, 1: float|int}>>|Closure  $polygons
+     */
+    public function referencePolygons(array|Closure $polygons = []): static
+    {
+        $this->referencePolygons = $polygons;
+
+        return $this;
+    }
+
+    /**
+     * @return array<int, array<int, array{0: float|int, 1: float|int}>>
+     */
+    public function getReferencePolygons(): array
+    {
+        return $this->evaluate($this->referencePolygons) ?? [];
     }
 }

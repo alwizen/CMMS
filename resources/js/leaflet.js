@@ -30,11 +30,13 @@ function leafletMapComponent(config) {    return {
         defaultLat: config.defaultLat ?? -6.870255717160778,
         defaultLng: config.defaultLng ?? 109.18670476501677,
         defaultZoom: config.defaultZoom ?? 13,
+        referencePolygons: config.referencePolygons ?? [],
         hint: '',
 
         map: null,
         marker: null,
         polygon: null,
+        referenceLayers: [],
 
         init() {
             this.hint = this.mode === 'polygon'
@@ -44,12 +46,15 @@ function leafletMapComponent(config) {    return {
             this.map = L.map(this.$refs.map, {
                 center: this.getInitialCenter(),
                 zoom: this.defaultZoom,
+                maxBoundsViscosity: 1.0,
             });
 
             L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
                 maxZoom: 19,
                 attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
             }).addTo(this.map);
+
+            this.drawReferencePolygons();
 
             if (this.mode === 'polygon') {
                 this.initPolygonMode();
@@ -58,7 +63,67 @@ function leafletMapComponent(config) {    return {
             }
 
             // Re-render correctly when inside modal / tabs
-            setTimeout(() => this.map.invalidateSize(), 300);
+            setTimeout(() => {
+                this.map.invalidateSize();
+                this.restrictToReferenceBounds();
+            }, 300);
+        },
+
+        /**
+         * Kunci tampilan peta pada batas area acuan (mis. batas area
+         * housekeeping) agar pengguna tidak perlu scroll/pan mencari lokasi.
+         */
+        restrictToReferenceBounds() {
+            const bounds = this.getReferenceBounds();
+
+            if (bounds) {
+                // Batasi geser peta pada area acuan (area housekeeping).
+                this.map.setMaxBounds(bounds.pad(0.35));
+            }
+
+            if (this.polygon) {
+                this.map.fitBounds(this.polygon.getBounds(), { padding: [20, 20] });
+            } else if (bounds) {
+                this.map.fitBounds(bounds, { padding: [20, 20] });
+            } else {
+                return;
+            }
+
+            // Cegah zoom out melewati area acuan (boleh mundur satu level).
+            this.map.setMinZoom(Math.max(0, this.map.getZoom() - 1));
+        },
+
+        getReferenceBounds() {
+            const polygons = (this.referencePolygons ?? []).filter(
+                (polygon) => Array.isArray(polygon) && polygon.length >= 3,
+            );
+
+            if (polygons.length === 0) {
+                return null;
+            }
+
+            return L.latLngBounds(polygons.flat());
+        },
+
+        drawReferencePolygons() {
+            if (!Array.isArray(this.referencePolygons) || this.referencePolygons.length === 0) {
+                return;
+            }
+
+            this.referencePolygons
+                .filter((polygon) => Array.isArray(polygon) && polygon.length >= 3)
+                .forEach((polygon) => {
+                    const layer = L.polygon(polygon, {
+                        color: '#015E4E',
+                        weight: 2,
+                        dashArray: '6 4',
+                        fillColor: '#015E4E',
+                        fillOpacity: 0.05,
+                        interactive: false,
+                    }).addTo(this.map);
+
+                    this.referenceLayers.push(layer);
+                });
         },
 
         getInitialCenter() {
@@ -68,6 +133,14 @@ function leafletMapComponent(config) {    return {
 
             if (this.mode === 'polygon' && Array.isArray(this.state) && this.state.length > 0) {
                 return this.state[0];
+            }
+
+            const reference = (this.referencePolygons ?? []).find(
+                (polygon) => Array.isArray(polygon) && polygon.length > 0,
+            );
+
+            if (reference) {
+                return reference[0];
             }
 
             return [this.defaultLat, this.defaultLng];
@@ -125,7 +198,6 @@ function leafletMapComponent(config) {    return {
             // Restore existing polygon
             if (Array.isArray(this.state) && this.state.length >= 3) {
                 this.polygon = L.polygon(this.state).addTo(this.map);
-                this.map.fitBounds(this.polygon.getBounds(), { padding: [20, 20] });
                 this.bindPolygonEdit(this.polygon);
             }
 
@@ -382,6 +454,14 @@ function housekeepingMapComponent(config) {
         drawAreas() {
             const allBounds = [];
 
+            const facilityPopup = (facility) => `
+                <div style="min-width:160px;max-width:240px">
+                    <div style="font-weight:600;font-size:13px">${this.escapeHtml(facility.name)}</div>
+                    ${facility.code ? `<div style="font-size:11px;color:#6b7280">${this.escapeHtml(facility.code)}</div>` : ''}
+                    <div style="font-size:12px;margin-top:2px">Luas: ${facility.area_size ? facility.area_size.toLocaleString('id-ID') + ' m²' : '-'}</div>
+                </div>
+            `;
+
             this.areas.forEach((area) => {
                 const color = this.colors[area.color] ?? '#f59e0b';
                 const hasPolygon = Array.isArray(area.polygon) && area.polygon.length >= 3;
@@ -425,6 +505,24 @@ function housekeepingMapComponent(config) {
                     marker.bindPopup(popupHtml);
                     allBounds.push([area.lat, area.lng]);
                 }
+
+                // Polygon fasilitas (bila sudah digambar) ditampilkan di dalam area.
+                facilities.forEach((facility) => {
+                    if (!Array.isArray(facility.polygon) || facility.polygon.length < 3) {
+                        return;
+                    }
+
+                    const facilityPolygon = L.polygon(facility.polygon, {
+                        color,
+                        weight: 1,
+                        dashArray: '4 3',
+                        fillColor: color,
+                        fillOpacity: 0.35,
+                    }).addTo(this.layers);
+
+                    facilityPolygon.bindPopup(facilityPopup(facility));
+                    allBounds.push(...facility.polygon);
+                });
             });
 
             if (allBounds.length) {

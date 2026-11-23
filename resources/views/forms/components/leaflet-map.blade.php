@@ -13,6 +13,7 @@
             defaultLat: @js($getDefaultLat()),
             defaultLng: @js($getDefaultLng()),
             defaultZoom: @js($getDefaultZoom()),
+            referencePolygons: @js($getReferencePolygons()),
         })"
         class="leaflet-map-field isolate"
         wire:ignore

@@ -13,10 +13,18 @@ class HousekeepingFacility extends Model
         'code',
         'name',
         'description',
+        'polygon',
+        'area_size',
+        'latitude',
+        'longitude',
         'is_active',
     ];
 
     protected $casts = [
+        'polygon' => 'array',
+        'area_size' => 'float',
+        'latitude' => 'float',
+        'longitude' => 'float',
         'is_active' => 'boolean',
     ];
 

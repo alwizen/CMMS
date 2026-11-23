@@ -57,6 +57,8 @@ class HousekeepingAreaMapWidget extends Widget
                         'id' => $facility->id,
                         'name' => $facility->name,
                         'code' => $facility->code,
+                        'polygon' => $facility->polygon,
+                        'area_size' => $facility->area_size,
                     ])->values()->all(),
                 ];
             })

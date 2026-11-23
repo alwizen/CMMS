@@ -12,6 +12,7 @@ use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Gate;
 use Livewire\Livewire;
+use Spatie\Permission\Models\Role;
 use Tests\TestCase;
 
 class HousekeepingFacilityChecklistTest extends TestCase
@@ -27,7 +28,10 @@ class HousekeepingFacilityChecklistTest extends TestCase
         parent::setUp();
 
         Gate::before(fn (): bool => true);
-        $this->actingAs(User::factory()->create());
+
+        $supervisor = User::factory()->create(['status' => true]);
+        $supervisor->assignRole(Role::findOrCreate('spv_gos', 'web'));
+        $this->actingAs($supervisor);
 
         $company = Company::create(['code' => 'HK', 'name' => 'HK Co']);
         $this->area = HousekeepingArea::create([
@@ -53,6 +57,15 @@ class HousekeepingFacilityChecklistTest extends TestCase
     public function test_checklist_action_is_available_on_facility_row(): void
     {
         $this->facilityRelationManager()->assertTableActionVisible('checklist', $this->facility);
+    }
+
+    public function test_checklist_action_is_hidden_for_executor_role(): void
+    {
+        $executor = User::factory()->create(['status' => true]);
+        $executor->assignRole(Role::findOrCreate('patra-jasa', 'web'));
+        $this->actingAs($executor);
+
+        $this->facilityRelationManager()->assertTableActionHidden('checklist', $this->facility);
     }
 
     public function test_checklist_action_creates_task_for_facility(): void

@@ -83,6 +83,8 @@ class HousekeepingAreaController extends Controller
                 'id' => $facility->id,
                 'name' => $facility->name,
                 'code' => $facility->code,
+                'polygon' => $facility->polygon,
+                'area_size' => $facility->area_size,
                 'tasks' => $facility->tasks->map(fn ($task) => [
                     'id' => $task->id,
                     'name' => $task->name,
