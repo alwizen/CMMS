@@ -4,6 +4,7 @@ namespace App\Filament\Pages;
 
 use App\Models\WorkOrder;
 use BackedEnum;
+use BezhanSalleh\FilamentShield\Traits\HasPageShield;
 use Carbon\CarbonInterface;
 use Filament\Pages\Page;
 use Filament\Support\Icons\Heroicon;
@@ -11,6 +12,8 @@ use UnitEnum;
 
 class MaintenanceCalendar extends Page
 {
+    use HasPageShield;
+
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedCalendarDays;
 
     protected static ?string $navigationLabel = 'Kalender Maintenance';

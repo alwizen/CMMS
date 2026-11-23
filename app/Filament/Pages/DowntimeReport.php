@@ -8,6 +8,7 @@ use App\Models\MaintenanceRequest;
 use App\Models\WorkOrder;
 use App\Support\Downtime;
 use BackedEnum;
+use BezhanSalleh\FilamentShield\Traits\HasPageShield;
 use Filament\Actions\Action;
 use Filament\Forms\Components\DatePicker;
 use Filament\Pages\Page;
@@ -30,7 +31,7 @@ use UnitEnum;
 
 class DowntimeReport extends Page implements HasTable
 {
-    use InteractsWithTable;
+    use HasPageShield, InteractsWithTable;
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedExclamationTriangle;
 

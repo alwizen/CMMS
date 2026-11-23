@@ -6,6 +6,7 @@ use App\Filament\Resources\HousekeepingPlans\HousekeepingPlanResource;
 use App\Models\HousekeepingArea;
 use App\Models\HousekeepingPlanTask;
 use BackedEnum;
+use BezhanSalleh\FilamentShield\Traits\HasPageShield;
 use Filament\Actions\Action;
 use Filament\Forms\Components\DatePicker;
 use Filament\Pages\Page;
@@ -29,7 +30,7 @@ use UnitEnum;
 
 class HousekeepingReport extends Page implements HasTable
 {
-    use InteractsWithTable;
+    use HasPageShield, InteractsWithTable;
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedDocumentChartBar;
 

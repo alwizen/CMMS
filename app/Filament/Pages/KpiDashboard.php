@@ -8,6 +8,7 @@ use App\Support\Kpi\KpiRegistry;
 use App\Support\Kpi\KpiResult;
 use App\Support\Kpi\KpiService;
 use BackedEnum;
+use BezhanSalleh\FilamentShield\Traits\HasPageShield;
 use Filament\Actions\Action;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Select;
@@ -31,7 +32,7 @@ use UnitEnum;
 
 class KpiDashboard extends Page implements HasTable
 {
-    use InteractsWithTable;
+    use HasPageShield, InteractsWithTable;
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedChartBar;
 

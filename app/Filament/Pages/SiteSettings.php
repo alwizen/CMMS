@@ -7,6 +7,7 @@ use App\Support\DocumentNumber;
 use App\Support\WorkOrderGenerator;
 use App\Support\WorkOrderSettings;
 use BackedEnum;
+use BezhanSalleh\FilamentShield\Traits\HasPageShield;
 use Closure;
 use Filament\Actions\Action;
 use Filament\Forms\Components\Select;
@@ -25,6 +26,8 @@ use UnitEnum;
 
 class SiteSettings extends Page
 {
+    use HasPageShield;
+
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedCog6Tooth;
 
     protected static ?string $navigationLabel = 'Site Setting';

@@ -7,6 +7,7 @@ use App\Filament\Actions\PrintDailyReportAction;
 use App\Filament\Actions\ResetDashboardFilterAction;
 use App\Filament\Widgets;
 use BackedEnum;
+use BezhanSalleh\FilamentShield\Traits\HasPageShield;
 use Filament\Forms;
 use Filament\Pages\Dashboard\Actions\FilterAction;
 use Filament\Pages\Dashboard as BaseDashboard;
@@ -17,7 +18,7 @@ use UnitEnum;
 
 class HousekeepingDashboard extends BaseDashboard
 {
-    use HasFiltersAction;
+    use HasFiltersAction, HasPageShield;
 
     /**
      * Filter global tidak disimpan di URL/session: setiap refresh atau
