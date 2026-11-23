@@ -80,6 +80,7 @@ class SiteSettings extends Page
             'wo_start_time' => WorkOrderSettings::startTime(),
             'wo_skip_weekend' => WorkOrderSettings::skipWeekend(),
             'wo_backfill_days' => WorkOrderSettings::backfillDays(),
+            'wo_expired_days' => WorkOrderSettings::expiredDays(),
         ];
     }
 
@@ -126,6 +127,13 @@ class SiteSettings extends Page
                         ->maxValue(365)
                         ->required()
                         ->helperText('0 = hanya jadwal ke depan. Isi >0 bila ingin mengejar jadwal yang terlewat saat scheduler sempat mati.'),
+                    TextInput::make('wo_expired_days')
+                        ->label(WorkOrderSettings::LABELS[WorkOrderSettings::EXPIRED_DAYS])
+                        ->numeric()
+                        ->minValue(0)
+                        ->maxValue(WorkOrderSettings::EXPIRED_DAYS_MAX)
+                        ->required()
+                        ->helperText('Batas masa berlaku WO otomatis sejak jam mulai. 0 = tanpa expired. Hanya berlaku untuk WO yang dibuat setelah pengaturan disimpan.'),
                 ])
                 ->columns(2),
         ]);
@@ -163,6 +171,7 @@ class SiteSettings extends Page
             WorkOrderSettings::START_TIME => (string) $state['wo_start_time'],
             WorkOrderSettings::SKIP_WEEKEND => (bool) $state['wo_skip_weekend'],
             WorkOrderSettings::BACKFILL_DAYS => (int) $state['wo_backfill_days'],
+            WorkOrderSettings::EXPIRED_DAYS => (int) $state['wo_expired_days'],
         ]);
 
         Notification::make()
@@ -180,6 +189,7 @@ class SiteSettings extends Page
             'wo_start_time' => '08:00',
             'wo_skip_weekend' => true,
             'wo_backfill_days' => 0,
+            'wo_expired_days' => 7,
         ]);
 
         Notification::make()

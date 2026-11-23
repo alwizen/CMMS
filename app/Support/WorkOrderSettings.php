@@ -16,9 +16,13 @@ class WorkOrderSettings
 
     public const BACKFILL_DAYS = 'work_order.backfill_days';
 
+    public const EXPIRED_DAYS = 'work_order.expired_days';
+
     public const LEAD_DAYS_MIN = 1;
 
     public const LEAD_DAYS_MAX = 5;
+
+    public const EXPIRED_DAYS_MAX = 365;
 
     public const LABELS = [
         self::AUTO_GENERATE => 'Buat Work Order Otomatis',
@@ -26,6 +30,7 @@ class WorkOrderSettings
         self::START_TIME => 'Jam Mulai WO',
         self::SKIP_WEEKEND => 'Lewati Sabtu & Minggu',
         self::BACKFILL_DAYS => 'Batas Backfill Jadwal Terlewat (hari)',
+        self::EXPIRED_DAYS => 'Masa Berlaku WO Otomatis (hari)',
     ];
 
     /**
@@ -66,6 +71,17 @@ class WorkOrderSettings
     }
 
     /**
+     * Masa berlaku WO otomatis (hari) sejak `start_at`. Default 7 hari.
+     * Nilai 0 berarti WO otomatis dibuat tanpa batas expired.
+     */
+    public static function expiredDays(): int
+    {
+        $value = (int) Setting::get(self::EXPIRED_DAYS, 7);
+
+        return max(0, min(self::EXPIRED_DAYS_MAX, $value));
+    }
+
+    /**
      * @return array<string, mixed>
      */
     public static function all(): array
@@ -76,6 +92,7 @@ class WorkOrderSettings
             'start_time' => static::startTime(),
             'skip_weekend' => static::skipWeekend(),
             'backfill_days' => static::backfillDays(),
+            'expired_days' => static::expiredDays(),
         ];
     }
 }

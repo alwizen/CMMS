@@ -190,6 +190,7 @@ class WorkOrderGenerator
         $settings = WorkOrderSettings::all();
         $skipWeekend = (bool) $settings['skip_weekend'];
         $startTime = (string) $settings['start_time'];
+        $expiredDays = (int) $settings['expired_days'];
         $issuedBy ??= SystemUser::id();
 
         $result = [
@@ -250,7 +251,7 @@ class WorkOrderGenerator
                             continue;
                         }
 
-                        DB::transaction(function () use ($equipment, $activities, $interval, $startAt, $issuedBy, $fungsi): void {
+                        DB::transaction(function () use ($equipment, $activities, $interval, $startAt, $expiredDays, $issuedBy, $fungsi): void {
                             $workOrder = WorkOrder::create([
                                 'equipment_id' => $equipment->id,
                                 'issued_by' => $issuedBy,
@@ -259,8 +260,8 @@ class WorkOrderGenerator
                                 'classification' => 'Preventive',
                                 'interval' => $interval,
                                 'start_at' => $startAt,
-                                'expired_days' => null,
-                                'expired_at' => null,
+                                'expired_days' => $expiredDays > 0 ? $expiredDays : null,
+                                'expired_at' => $expiredDays > 0 ? $startAt->copy()->addDays($expiredDays) : null,
                                 'note' => 'Dibuat otomatis oleh scheduler ('.$interval.')',
                                 'status' => WorkOrder::STATUSES['Pending'],
                             ]);

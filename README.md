@@ -488,6 +488,7 @@ WO yang ditandai **Completed** oleh teknisi belum langsung tuntas. WO masuk antr
 | Jam Mulai WO | `start_at` WO yang dibuat |
 | Lewati Sabtu & Minggu | Hari kerja yang dipakai |
 | Batas Backfill Jadwal Terlewat | Berapa hari ke belakang boleh dikejar (0 = tanpa backfill) |
+| Masa Berlaku WO Otomatis | Umur WO sejak `start_at` (default 7 hari, 0 = tanpa expired). Hanya berlaku untuk WO yang dibuat setelah pengaturan disimpan |
 
 Saat toggle aktif, scheduler harian pukul **00:05** menjalankan:
 
@@ -496,6 +497,8 @@ php artisan work-orders:generate-scheduled
 ```
 
 Command ini membuat WO preventif dari **Equipment Type + interval checklist** untuk setiap equipment, satu WO per periode (harian/mingguan/bulanan/…). Periode yang sudah punya WO dilewati, jadi aman dijalankan berulang. WO dibuat berstatus **Pending**, dimiliki **fungsi**, dengan checklist tersalin otomatis.
+
+WO yang tidak dikerjakan tidak diubah statusnya otomatis. Setelah `start_at` lewat, WO terhitung pada metrik **WO Terlambat** (`overdue_open_wo`). Bila `Masa Berlaku WO Otomatis` > 0, WO juga ditandai **Expired** (badge merah di tabel & detail, `is_expired` di API) begitu `expired_at` lewat, dan masuk metrik **WO Expired** (`expired_wo`). Status tetap `Pending`/`In Progress` — WO tidak hilang dari daftar dan masih bisa dikerjakan.
 
 Syarat: cron `php artisan schedule:run` harus aktif di server. Tombol **Generate WO Sekarang** di Site Setting bisa dipakai untuk menjalankan generator tanpa menunggu scheduler. Untuk mencoba manual:
 

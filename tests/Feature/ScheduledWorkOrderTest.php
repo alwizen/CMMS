@@ -134,6 +134,79 @@ class ScheduledWorkOrderTest extends TestCase
         $this->assertSame(1, $workOrder->workOrderActivities()->count());
     }
 
+    public function test_expired_days_defaults_to_seven(): void
+    {
+        $this->assertSame(7, WorkOrderSettings::expiredDays());
+    }
+
+    public function test_expired_days_is_clamped_and_can_be_disabled(): void
+    {
+        Setting::set(WorkOrderSettings::EXPIRED_DAYS, 0);
+        $this->assertSame(0, WorkOrderSettings::expiredDays());
+
+        Setting::set(WorkOrderSettings::EXPIRED_DAYS, -5);
+        $this->assertSame(0, WorkOrderSettings::expiredDays());
+
+        Setting::set(WorkOrderSettings::EXPIRED_DAYS, 9999);
+        $this->assertSame(WorkOrderSettings::EXPIRED_DAYS_MAX, WorkOrderSettings::expiredDays());
+    }
+
+    public function test_generated_work_orders_get_expiry_from_setting(): void
+    {
+        $this->enableAutoGenerate([WorkOrderSettings::EXPIRED_DAYS => 7]);
+
+        $this->artisan('work-orders:generate-scheduled')->assertSuccessful();
+
+        $workOrder = WorkOrder::where('interval', 'daily')->firstOrFail();
+
+        $this->assertSame(7, $workOrder->expired_days);
+        $this->assertSame(
+            $workOrder->start_at->copy()->addDays(7)->toDateTimeString(),
+            $workOrder->expired_at->toDateTimeString(),
+        );
+        $this->assertFalse($workOrder->isExpired());
+    }
+
+    public function test_generated_work_orders_have_no_expiry_when_disabled(): void
+    {
+        $this->enableAutoGenerate([WorkOrderSettings::EXPIRED_DAYS => 0]);
+
+        $this->artisan('work-orders:generate-scheduled')->assertSuccessful();
+
+        $workOrder = WorkOrder::where('interval', 'daily')->firstOrFail();
+
+        $this->assertNull($workOrder->expired_days);
+        $this->assertNull($workOrder->expired_at);
+        $this->assertFalse($workOrder->isExpired());
+    }
+
+    public function test_unfinished_generated_work_order_becomes_expired(): void
+    {
+        $this->enableAutoGenerate([WorkOrderSettings::EXPIRED_DAYS => 2]);
+
+        $this->artisan('work-orders:generate-scheduled')->assertSuccessful();
+
+        $workOrder = WorkOrder::where('interval', 'daily')->orderBy('start_at')->firstOrFail();
+
+        Carbon::setTestNow($workOrder->expired_at->copy()->addMinute());
+
+        $this->assertTrue($workOrder->fresh()->isExpired());
+        $this->assertSame(WorkOrder::STATUSES['Pending'], $workOrder->fresh()->status);
+    }
+
+    public function test_site_setting_saves_expired_days(): void
+    {
+        Gate::before(fn (): bool => true);
+        $this->actingAs(User::factory()->create());
+
+        Livewire::test(SiteSettings::class)
+            ->fillForm(['wo_expired_days' => 14])
+            ->call('save')
+            ->assertHasNoFormErrors();
+
+        $this->assertSame(14, WorkOrderSettings::expiredDays());
+    }
+
     public function test_command_is_idempotent(): void
     {
         $this->enableAutoGenerate();
