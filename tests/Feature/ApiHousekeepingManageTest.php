@@ -65,11 +65,21 @@ class ApiHousekeepingManageTest extends TestCase
             'housekeeping_area_id' => $this->area->id,
             'name' => 'Oil Catcher',
             'is_active' => true,
+            'polygon' => [[-6.8705, 109.1865], [-6.8700, 109.1870], [-6.8705, 109.1875]],
+            'area_size' => 1500.5,
+            'latitude' => -6.8703,
+            'longitude' => 109.187,
         ]);
         HousekeepingTask::create([
             'housekeeping_facility_id' => $facility->id,
             'name' => 'Cek oil catcher',
             'is_active' => true,
+        ]);
+
+        $this->area->update([
+            'polygon' => [[-6.8800, 109.1800], [-6.8700, 109.1900], [-6.8800, 109.1900]],
+            'latitude' => -6.875,
+            'longitude' => 109.185,
         ]);
 
         $this->getJson("/api/housekeeping-areas/{$this->area->id}/manpowers")
@@ -79,7 +89,14 @@ class ApiHousekeepingManageTest extends TestCase
         $this->getJson("/api/housekeeping-areas/{$this->area->id}/facilities")
             ->assertOk()
             ->assertJsonPath('data.0.name', 'Oil Catcher')
-            ->assertJsonPath('data.0.tasks.0.name', 'Cek oil catcher');
+            ->assertJsonPath('data.0.tasks.0.name', 'Cek oil catcher')
+            ->assertJsonPath('data.0.polygon.0.0', -6.8705)
+            ->assertJsonPath('data.0.latitude', -6.8703);
+
+        $this->getJson('/api/housekeeping-areas')
+            ->assertOk()
+            ->assertJsonPath('data.0.polygon.0.0', -6.8800)
+            ->assertJsonPath('data.0.latitude', -6.875);
     }
 
     public function test_creates_plan(): void

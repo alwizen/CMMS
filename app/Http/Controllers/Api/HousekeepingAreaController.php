@@ -33,6 +33,10 @@ class HousekeepingAreaController extends Controller
             'sla_days' => $area->sla_days,
             'kpi_class' => $area->kpi_class,
             'supervisor' => $area->supervisor?->name,
+            // Batas area untuk ditampilkan di peta aplikasi mobile.
+            'polygon' => $area->polygon,
+            'latitude' => $area->latitude,
+            'longitude' => $area->longitude,
         ])->values();
 
         return response()->json([
@@ -85,6 +89,8 @@ class HousekeepingAreaController extends Controller
                 'code' => $facility->code,
                 'polygon' => $facility->polygon,
                 'area_size' => $facility->area_size,
+                'latitude' => $facility->latitude,
+                'longitude' => $facility->longitude,
                 'tasks' => $facility->tasks->map(fn ($task) => [
                     'id' => $task->id,
                     'name' => $task->name,

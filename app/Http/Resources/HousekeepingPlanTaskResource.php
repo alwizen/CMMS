@@ -22,6 +22,10 @@ class HousekeepingPlanTaskResource extends JsonResource
                 'id' => $this->facility->id,
                 'name' => $this->facility->name,
                 'code' => $this->facility->code,
+                // Batas fasilitas untuk peta di aplikasi mobile.
+                'polygon' => $this->facility->polygon,
+                'latitude' => $this->facility->latitude,
+                'longitude' => $this->facility->longitude,
             ] : null),
             'master_task' => $this->whenLoaded('masterTask', fn () => $this->masterTask ? [
                 'id' => $this->masterTask->id,
