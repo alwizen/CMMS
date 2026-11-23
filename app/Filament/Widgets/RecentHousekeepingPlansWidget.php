@@ -29,7 +29,7 @@ class RecentHousekeepingPlansWidget extends BaseWidget
         return $table
             ->query(
                 HousekeepingPlanTask::query()
-                    ->with(['plan.area', 'facility', 'planFacility'])
+                    ->with(['plan.area', 'facility'])
                     ->when(
                         $this->dateFilterRange() === 'all',
                         // Default: tampilkan pekerjaan yang masih berjalan + yang
@@ -75,13 +75,13 @@ class RecentHousekeepingPlansWidget extends BaseWidget
                 Tables\Columns\TextColumn::make('photo_before')
                     ->label('Before')
                     ->badge()
-                    ->getStateUsing(fn (HousekeepingPlanTask $record): string => count($record->planFacility?->photo_before ?? []).' foto')
-                    ->color(fn (HousekeepingPlanTask $record): string => count($record->planFacility?->photo_before ?? []) > 0 ? 'success' : 'gray'),
+                    ->getStateUsing(fn (HousekeepingPlanTask $record): string => count($record->photo_before ?? []).' foto')
+                    ->color(fn (HousekeepingPlanTask $record): string => count($record->photo_before ?? []) > 0 ? 'success' : 'gray'),
                 Tables\Columns\TextColumn::make('photo_after')
                     ->label('After')
                     ->badge()
-                    ->getStateUsing(fn (HousekeepingPlanTask $record): string => count($record->planFacility?->photo_after ?? []).' foto')
-                    ->color(fn (HousekeepingPlanTask $record): string => count($record->planFacility?->photo_after ?? []) > 0 ? 'success' : 'gray'),
+                    ->getStateUsing(fn (HousekeepingPlanTask $record): string => count($record->photo_after ?? []).' foto')
+                    ->color(fn (HousekeepingPlanTask $record): string => count($record->photo_after ?? []) > 0 ? 'success' : 'gray'),
             ])
             ->recordActions([
                 Action::make('view_plan')

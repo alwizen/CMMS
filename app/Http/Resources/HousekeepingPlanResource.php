@@ -56,16 +56,6 @@ class HousekeepingPlanResource extends JsonResource
                 $this->relationLoaded('tasks'),
                 fn () => $this->tasks->where('status', 'Done')->count(),
             ),
-            'facilities' => $this->whenLoaded('facilities', fn () => $this->facilities->map(fn ($planFacility) => [
-                'id' => $planFacility->id,
-                'facility' => $planFacility->facility ? [
-                    'id' => $planFacility->facility->id,
-                    'name' => $planFacility->facility->name,
-                    'code' => $planFacility->facility->code,
-                ] : null,
-                'photo_before' => $planFacility->photo_before ?? [],
-                'photo_after' => $planFacility->photo_after ?? [],
-            ])->values()),
         ];
     }
 }

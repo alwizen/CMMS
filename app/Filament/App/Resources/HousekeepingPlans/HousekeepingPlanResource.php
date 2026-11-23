@@ -4,7 +4,6 @@ namespace App\Filament\App\Resources\HousekeepingPlans;
 
 use App\Filament\App\Resources\HousekeepingPlans\Pages\ListHousekeepingPlans;
 use App\Filament\App\Resources\HousekeepingPlans\Pages\ViewHousekeepingPlan;
-use App\Filament\App\Resources\HousekeepingPlans\RelationManagers\FacilitiesRelationManager;
 use App\Filament\App\Resources\HousekeepingPlans\RelationManagers\TasksRelationManager;
 use App\Filament\App\Resources\HousekeepingPlans\Tables\HousekeepingPlansTable;
 use App\Filament\Resources\HousekeepingPlans\Schemas\HousekeepingPlanInfolist;
@@ -55,7 +54,6 @@ class HousekeepingPlanResource extends Resource
     {
         return [
             TasksRelationManager::class,
-            FacilitiesRelationManager::class,
         ];
     }
 

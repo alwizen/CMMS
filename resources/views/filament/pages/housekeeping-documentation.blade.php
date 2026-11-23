@@ -1,8 +1,8 @@
 @php
     use Illuminate\Support\Facades\Storage;
 
-    $before = collect($record->planFacility?->photo_before ?? [])->filter()->values();
-    $after = collect($record->planFacility?->photo_after ?? [])->filter()->values();
+    $before = collect($record->photo_before ?? [])->filter()->values();
+    $after = collect($record->photo_after ?? [])->filter()->values();
 
     $meta = array_filter([
         $record->plan?->area?->name,

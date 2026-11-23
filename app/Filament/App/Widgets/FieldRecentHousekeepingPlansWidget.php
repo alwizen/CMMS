@@ -30,7 +30,7 @@ class FieldRecentHousekeepingPlansWidget extends BaseWidget
         return $table
             ->query(
                 HousekeepingVisibility::scopeTasks(
-                    HousekeepingPlanTask::query()->with(['plan.area', 'facility', 'planFacility']),
+                    HousekeepingPlanTask::query()->with(['plan.area', 'facility']),
                     auth()->user(),
                 )
                     ->latest('id')

@@ -12,6 +12,7 @@ use Filament\Actions\CreateAction;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
+use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
@@ -23,6 +24,7 @@ use Filament\Schemas\Components\Utilities\Set;
 use Filament\Schemas\Schema;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
+use Illuminate\Contracts\View\View;
 
 class TasksRelationManager extends RelationManager
 {
@@ -82,7 +84,7 @@ class TasksRelationManager extends RelationManager
                     ->columns(2),
                 Section::make('Catatan')
                     ->columnSpanFull()
-                    ->description('Foto before/after diunggah per fasilitas pada tab "Dokumentasi Fasilitas".')
+                    ->description('Foto before/after diunggah per item checklist lewat tombol Upload Before / Upload After.')
                     ->schema([
                         Textarea::make('note')
                             ->label('Note')
@@ -112,6 +114,16 @@ class TasksRelationManager extends RelationManager
                         'In Progress' => 'warning',
                         default => 'gray',
                     }),
+                TextColumn::make('photo_before')
+                    ->label('Before')
+                    ->badge()
+                    ->getStateUsing(fn (HousekeepingPlanTask $record): string => count($record->photo_before ?? []).' foto')
+                    ->color(fn (HousekeepingPlanTask $record): string => count($record->photo_before ?? []) > 0 ? 'success' : 'gray'),
+                TextColumn::make('photo_after')
+                    ->label('After')
+                    ->badge()
+                    ->getStateUsing(fn (HousekeepingPlanTask $record): string => count($record->photo_after ?? []).' foto')
+                    ->color(fn (HousekeepingPlanTask $record): string => count($record->photo_after ?? []) > 0 ? 'success' : 'gray'),
                 TextColumn::make('started_at')
                     ->label('Mulai')
                     ->dateTime('d M Y H:i')
@@ -134,6 +146,29 @@ class TasksRelationManager extends RelationManager
                     }),
             ])
             ->recordActions([
+                Action::make('upload_before')
+                    ->label('Upload Before')
+                    ->icon('heroicon-o-photo')
+                    ->color('warning')
+                    ->visible(fn (): bool => HousekeepingRole::canExecute(auth()->user()))
+                    ->form([
+                        FileUpload::make('photos')
+                            ->label('Foto Before')
+                            ->image()
+                            ->multiple()
+                            ->maxFiles(5)
+                            ->disk('public')
+                            ->directory('housekeeping/plan-tasks/before')
+                            ->visibility('public')
+                            ->required(),
+                    ])
+                    ->action(function (HousekeepingPlanTask $record, array $data): void {
+                        $existing = $record->photo_before ?? [];
+                        $record->update([
+                            'photo_before' => array_values(array_slice([...$existing, ...($data['photos'] ?? [])], 0, 5)),
+                        ]);
+                    })
+                    ->successNotificationTitle('Foto before tersimpan'),
                 Action::make('start')
                     ->label('Mulai Kerja')
                     ->icon('heroicon-o-play')
@@ -141,12 +176,10 @@ class TasksRelationManager extends RelationManager
                     ->visible(fn (HousekeepingPlanTask $record): bool => $record->status === 'Pending'
                         && HousekeepingRole::canExecute(auth()->user()))
                     ->action(function (HousekeepingPlanTask $record): void {
-                        $planFacility = $record->planFacility;
-
-                        if ($planFacility !== null && empty($planFacility->photo_before)) {
+                        if (! $record->hasPhotoBefore()) {
                             Notification::make()
                                 ->title('Foto before belum ada')
-                                ->body('Upload foto before fasilitas pada tab "Dokumentasi Fasilitas" terlebih dahulu.')
+                                ->body('Upload foto before item checklist ini terlebih dahulu lewat tombol "Upload Before".')
                                 ->danger()
                                 ->send();
 
@@ -173,12 +206,10 @@ class TasksRelationManager extends RelationManager
                             ->default(fn (HousekeepingPlanTask $record): ?string => $record->note),
                     ])
                     ->action(function (HousekeepingPlanTask $record, array $data): void {
-                        $planFacility = $record->planFacility;
-
-                        if ($planFacility !== null && empty($planFacility->photo_after)) {
+                        if (! $record->hasPhotoAfter()) {
                             Notification::make()
                                 ->title('Foto after belum ada')
-                                ->body('Upload foto after fasilitas pada tab "Dokumentasi Fasilitas" terlebih dahulu.')
+                                ->body('Upload foto after item checklist ini terlebih dahulu lewat tombol "Upload After".')
                                 ->danger()
                                 ->send();
 
@@ -195,6 +226,43 @@ class TasksRelationManager extends RelationManager
                             ->success()
                             ->send();
                     }),
+                Action::make('upload_after')
+                    ->label('Upload After')
+                    ->icon('heroicon-o-photo')
+                    ->color('success')
+                    ->visible(fn (): bool => HousekeepingRole::canExecute(auth()->user()))
+                    ->form([
+                        FileUpload::make('photos')
+                            ->label('Foto After')
+                            ->image()
+                            ->multiple()
+                            ->maxFiles(5)
+                            ->disk('public')
+                            ->directory('housekeeping/plan-tasks/after')
+                            ->visibility('public')
+                            ->required(),
+                    ])
+                    ->action(function (HousekeepingPlanTask $record, array $data): void {
+                        $existing = $record->photo_after ?? [];
+                        $record->update([
+                            'photo_after' => array_values(array_slice([...$existing, ...($data['photos'] ?? [])], 0, 5)),
+                        ]);
+                    })
+                    ->successNotificationTitle('Foto after tersimpan'),
+                Action::make('view_before')
+                    ->label('Lihat Before')
+                    ->icon('heroicon-o-eye')
+                    ->visible(fn (HousekeepingPlanTask $record): bool => count($record->photo_before ?? []) > 0)
+                    ->modalSubmitAction(false)
+                    ->modalCancelActionLabel('Tutup')
+                    ->modalContent(fn (HousekeepingPlanTask $record) => $this->renderPhotoModal($record, 'before')),
+                Action::make('view_after')
+                    ->label('Lihat After')
+                    ->icon('heroicon-o-eye')
+                    ->visible(fn (HousekeepingPlanTask $record): bool => count($record->photo_after ?? []) > 0)
+                    ->modalSubmitAction(false)
+                    ->modalCancelActionLabel('Tutup')
+                    ->modalContent(fn (HousekeepingPlanTask $record) => $this->renderPhotoModal($record, 'after')),
                 EditAction::make()
                     ->visible(fn (HousekeepingPlanTask $record): bool => HousekeepingRole::canManagePlan(auth()->user())),
                 DeleteAction::make()
@@ -206,5 +274,13 @@ class TasksRelationManager extends RelationManager
                         ->visible(fn (): bool => HousekeepingRole::canManagePlan(auth()->user())),
                 ]),
             ]);
+    }
+
+    public function renderPhotoModal(HousekeepingPlanTask $record, string $type): View
+    {
+        return view('filament.pages.housekeeping-task-documentation', [
+            'record' => $record,
+            'type' => $type,
+        ]);
     }
 }

@@ -3,11 +3,11 @@
 namespace App\Providers\Filament;
 
 use App\Filament\App\Pages\FieldDashboard;
+use App\Http\Middleware\AuthenticatePanel;
 use Elemind\PressFilamentTheme\PressFilamentTheme;
 use Filament\Enums\DatabaseNotificationsPosition;
 use Filament\Enums\GlobalSearchPosition;
 use Filament\Enums\UserMenuPosition;
-use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\AuthenticateSession;
 use Filament\Http\Middleware\DisableBladeIconComponents;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
@@ -83,7 +83,7 @@ class AppPanelProvider extends PanelProvider
                 fn () => view('filament.auth.login-footer'),
             )
             ->authMiddleware([
-                Authenticate::class,
+                AuthenticatePanel::class,
             ]);
     }
 }

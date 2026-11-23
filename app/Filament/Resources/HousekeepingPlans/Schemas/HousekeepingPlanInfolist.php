@@ -118,6 +118,8 @@ class HousekeepingPlanInfolist
                                 TableColumn::make('Daftar Cheklist'),
                                 TableColumn::make('Fasilitas'),
                                 TableColumn::make('Status'),
+                                TableColumn::make('Foto Before'),
+                                TableColumn::make('Foto After'),
                                 TableColumn::make('Mulai'),
                                 TableColumn::make('Selesai'),
                                 TableColumn::make('Catatan'),
@@ -137,6 +139,16 @@ class HousekeepingPlanInfolist
                                         'In Progress' => 'warning',
                                         default => 'gray',
                                     }),
+                                ImageEntry::make('photo_before')
+                                    ->label('Before')
+                                    ->disk('public')
+                                    ->size(60)
+                                    ->placeholder('-'),
+                                ImageEntry::make('photo_after')
+                                    ->label('After')
+                                    ->disk('public')
+                                    ->size(60)
+                                    ->placeholder('-'),
                                 TextEntry::make('started_at')
                                     ->label('Mulai')
                                     ->dateTime('d M Y H:i')
@@ -147,39 +159,6 @@ class HousekeepingPlanInfolist
                                     ->placeholder('-'),
                                 TextEntry::make('note')
                                     ->label('Catatan')
-                                    ->placeholder('-'),
-                            ])
-                            ->columns(3),
-                    ]),
-
-                Section::make('Dokumentasi Fasilitas')
-                    ->icon('heroicon-o-photo')
-                    ->columnSpanFull()
-                    ->description('Foto before/after per fasilitas (bukan per item checklist).')
-                    ->schema([
-                        RepeatableEntry::make('facilities')
-                            ->columnSpanFull()
-                            ->hiddenLabel()
-                            ->placeholder('Belum ada dokumentasi fasilitas.')
-                            ->table([
-                                TableColumn::make('Fasilitas/Objek'),
-                                TableColumn::make('Foto Before'),
-                                TableColumn::make('Foto After'),
-                            ])
-                            ->schema([
-                                TextEntry::make('facility.name')
-                                    ->label('Fasilitas')
-                                    ->weight('bold')
-                                    ->placeholder('-'),
-                                ImageEntry::make('photo_before')
-                                    ->label('Foto Before')
-                                    ->disk('public')
-                                    ->size(120)
-                                    ->placeholder('-'),
-                                ImageEntry::make('photo_after')
-                                    ->label('Foto After')
-                                    ->disk('public')
-                                    ->size(120)
                                     ->placeholder('-'),
                             ])
                             ->columns(3),

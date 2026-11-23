@@ -4,12 +4,12 @@ namespace App\Providers\Filament;
 
 use App\Filament\Pages\Dashboard;
 use App\Filament\Pages\HousekeepingDashboard;
+use App\Http\Middleware\AuthenticatePanel;
 use BezhanSalleh\FilamentShield\FilamentShieldPlugin;
 use Elemind\PressFilamentTheme\PressFilamentTheme;
 use Filament\Enums\DatabaseNotificationsPosition;
 use Filament\Enums\GlobalSearchPosition;
 use Filament\Enums\UserMenuPosition;
-use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\AuthenticateSession;
 use Filament\Http\Middleware\DisableBladeIconComponents;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
@@ -94,7 +94,7 @@ class AdminPanelProvider extends PanelProvider
                 fn () => view('filament.auth.login-footer'),
             )
             ->authMiddleware([
-                Authenticate::class,
+                AuthenticatePanel::class,
             ]);
     }
 }

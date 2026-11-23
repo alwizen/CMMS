@@ -166,34 +166,6 @@ class HousekeepingPlan extends Model
     }
 
     /**
-     * Pastikan setiap fasilitas yang dipakai task memiliki baris dokumentasi
-     * pada plan ini. Baris yang sudah ada tidak dihapus agar foto tetap aman.
-     */
-    public function syncFacilities(): void
-    {
-        $facilityIds = $this->tasks()
-            ->whereNotNull('housekeeping_facility_id')
-            ->distinct()
-            ->pluck('housekeeping_facility_id')
-            ->all();
-
-        $existing = $this->facilities()
-            ->pluck('housekeeping_facility_id')
-            ->all();
-
-        foreach (array_diff($facilityIds, $existing) as $facilityId) {
-            $planFacility = $this->facilities()->create([
-                'housekeeping_facility_id' => $facilityId,
-            ]);
-
-            $this->tasks()
-                ->where('housekeeping_facility_id', $facilityId)
-                ->whereNull('housekeeping_plan_facility_id')
-                ->update(['housekeeping_plan_facility_id' => $planFacility->id]);
-        }
-    }
-
-    /**
      * Persentase item checklist yang sudah Done (0-100).
      */
     public function getProgressPercentAttribute(): int
@@ -384,11 +356,6 @@ class HousekeepingPlan extends Model
     public function tasks(): HasMany
     {
         return $this->hasMany(HousekeepingPlanTask::class);
-    }
-
-    public function facilities(): HasMany
-    {
-        return $this->hasMany(HousekeepingPlanFacility::class);
     }
 
     public function requests(): HasMany

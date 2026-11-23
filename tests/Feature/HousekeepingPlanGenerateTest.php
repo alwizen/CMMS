@@ -101,13 +101,6 @@ class HousekeepingPlanGenerateTest extends TestCase
         $this->assertSame(2, $plan->tasks()->count());
         $this->assertSame(1, $plan->manpowers()->count());
         $this->assertSame('Budi', $plan->manpowers()->first()->name);
-
-        $this->assertSame(1, $plan->facilities()->count());
-        $this->assertSame($this->facility->id, $plan->facilities()->first()->housekeeping_facility_id);
-        $this->assertSame(
-            $plan->facilities()->first()->id,
-            $plan->tasks()->first()->housekeeping_plan_facility_id,
-        );
     }
 
     public function test_generator_skips_area_without_checklist(): void

@@ -25,7 +25,6 @@ class ViewHousekeepingPlan extends ViewRecord
                 'users',
                 'tasks' => fn ($query) => $query->orderBy('id'),
                 'tasks.facility',
-                'facilities.facility',
             ])
             ->findOrFail($key);
     }

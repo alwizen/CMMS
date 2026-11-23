@@ -65,7 +65,7 @@ class DailyReport
 
     protected function housekeeping(CarbonInterface $day): array
     {
-        $with = ['area.company', 'area.supervisor', 'tasks.facility', 'facilities.facility'];
+        $with = ['area.company', 'area.supervisor', 'approvedBy:id,name', 'tasks.facility'];
 
         // Plan yang dimulai pada tanggal laporan.
         $started = HousekeepingPlan::query()

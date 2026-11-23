@@ -38,7 +38,7 @@ class HousekeepingReport extends \App\Filament\Pages\HousekeepingReport
     {
         return HousekeepingVisibility::scopeTasks(
             HousekeepingPlanTask::query()
-                ->with(['plan.area.company', 'plan.area.supervisor', 'facility', 'planFacility']),
+                ->with(['plan.area.company', 'plan.area.supervisor', 'facility']),
             auth()->user(),
         );
     }

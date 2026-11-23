@@ -16,6 +16,8 @@
         .cards td { border: 1px solid #e5e7eb; background: #f9fafb; text-align: center; padding: 8px 4px; }
         .cards .value { font-size: 18px; font-weight: 700; color: #015E4E; }
         .cards .label { font-size: 9px; color: #6b7280; }
+        .approval-note { font-size: 9px; color: #374151; margin: 0 0 8px; }
+        .approval-note strong { color: #015E4E; }
         .badge { display: inline-block; padding: 1px 6px; border-radius: 8px; font-size: 8px; color: #fff; }
         .b-green { background: #16a34a; }
         .b-blue { background: #2563eb; }
@@ -166,7 +168,24 @@
 
             $overduePlans = $plansActive->filter(fn ($plan) => $plan->is_overdue);
             $sectionNumber = 0;
+
+            // Nama SPV GOS yang sudah mereview & menyetujui plan pada laporan ini.
+            $approvers = $plansStarted
+                ->merge($plansActive)
+                ->merge($plansCompleted)
+                ->unique('id')
+                ->filter(fn ($plan) => $plan->approval_status === \App\Models\HousekeepingPlan::APPROVAL_APPROVED)
+                ->map(fn ($plan) => $plan->approvedBy?->name)
+                ->filter()
+                ->unique()
+                ->values();
         @endphp
+
+        <div class="approval-note">
+            Sudah di review dan disetujui oleh:
+            <strong>{{ $approvers->isNotEmpty() ? $approvers->implode(', ') : '—' }}</strong>
+            <span>(SPV GOS)</span>
+        </div>
 
         <table class="cards">
             <tr>

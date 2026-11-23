@@ -76,8 +76,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::delete('/housekeeping-plans/{planId}/tasks/{taskId}', [HousekeepingPlanController::class, 'deleteTask']);
     Route::post('/housekeeping-plans/{planId}/manpowers', [HousekeepingPlanController::class, 'addManpowers']);
     Route::delete('/housekeeping-plans/{planId}/manpowers/{manpowerId}', [HousekeepingPlanController::class, 'removeManpower']);
-    Route::post('/housekeeping-plans/{planId}/facilities/{planFacilityId}/photos', [HousekeepingPlanController::class, 'uploadFacilityPhotos']);
-    Route::delete('/housekeeping-plans/{planId}/facilities/{planFacilityId}/photos', [HousekeepingPlanController::class, 'deleteFacilityPhoto']);
+    Route::post('/housekeeping-plans/{planId}/tasks/{taskId}/photos', [HousekeepingPlanController::class, 'uploadTaskPhotos']);
+    Route::delete('/housekeeping-plans/{planId}/tasks/{taskId}/photos', [HousekeepingPlanController::class, 'deleteTaskPhoto']);
 
     Route::get('/housekeeping-requests', [HousekeepingRequestController::class, 'index']);
     Route::post('/housekeeping-requests', [HousekeepingRequestController::class, 'store']);

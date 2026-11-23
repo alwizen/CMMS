@@ -17,15 +17,18 @@ class HousekeepingPlanTask extends Model
         'housekeeping_plan_id',
         'housekeeping_task_id',
         'housekeeping_facility_id',
-        'housekeeping_plan_facility_id',
         'name',
         'status',
+        'photo_before',
+        'photo_after',
         'started_at',
         'completed_at',
         'note',
     ];
 
     protected $casts = [
+        'photo_before' => 'array',
+        'photo_after' => 'array',
         'started_at' => 'datetime',
         'completed_at' => 'datetime',
     ];
@@ -40,15 +43,6 @@ class HousekeepingPlanTask extends Model
             if ($task->status === 'Done' && blank($task->completed_at)) {
                 $task->completed_at = now();
             }
-
-            if ($task->housekeeping_facility_id && $task->housekeeping_plan_id) {
-                $planFacility = HousekeepingPlanFacility::firstOrCreate([
-                    'housekeeping_plan_id' => $task->housekeeping_plan_id,
-                    'housekeeping_facility_id' => $task->housekeeping_facility_id,
-                ]);
-
-                $task->housekeeping_plan_facility_id = $planFacility->id;
-            }
         });
 
         static::saved(function (HousekeepingPlanTask $task): void {
@@ -57,14 +51,12 @@ class HousekeepingPlanTask extends Model
             $task->unsetRelation('plan');
             $task->plan?->reopenVerification();
             $task->plan?->syncStatusFromTasks();
-            $task->plan?->syncFacilities();
         });
 
         static::deleted(function (HousekeepingPlanTask $task): void {
             $task->unsetRelation('plan');
             $task->plan?->reopenVerification();
             $task->plan?->syncStatusFromTasks();
-            $task->plan?->syncFacilities();
         });
     }
 
@@ -84,10 +76,18 @@ class HousekeepingPlanTask extends Model
     }
 
     /**
-     * Baris dokumentasi fasilitas pada plan yang sama.
+     * Foto before sudah diunggah untuk item checklist ini.
      */
-    public function planFacility(): BelongsTo
+    public function hasPhotoBefore(): bool
     {
-        return $this->belongsTo(HousekeepingPlanFacility::class, 'housekeeping_plan_facility_id');
+        return ! empty($this->photo_before);
+    }
+
+    /**
+     * Foto after sudah diunggah untuk item checklist ini.
+     */
+    public function hasPhotoAfter(): bool
+    {
+        return ! empty($this->photo_after);
     }
 }

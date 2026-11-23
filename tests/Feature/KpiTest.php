@@ -10,7 +10,6 @@ use App\Models\Equipment;
 use App\Models\EquipmentType;
 use App\Models\HousekeepingArea;
 use App\Models\HousekeepingPlan;
-use App\Models\HousekeepingPlanFacility;
 use App\Models\HousekeepingPlanTask;
 use App\Models\KpiMetric;
 use App\Models\Setting;
@@ -300,16 +299,13 @@ class KpiTest extends TestCase
             'housekeeping_plan_id' => $plan->id,
             'name' => 'Sapu',
             'status' => 'Done',
+            'photo_after' => ['housekeeping/plan-tasks/after/a.jpg'],
         ]);
         HousekeepingPlanTask::create([
             'housekeeping_plan_id' => $plan->id,
             'name' => 'Pel',
             'status' => 'Pending',
-        ]);
-
-        HousekeepingPlanFacility::create([
-            'housekeeping_plan_id' => $plan->id,
-            'photo_after' => ['housekeeping/plan-facilities/after/a.jpg'],
+            'photo_after' => ['housekeeping/plan-tasks/after/b.jpg'],
         ]);
 
         $result = app(KpiService::class)

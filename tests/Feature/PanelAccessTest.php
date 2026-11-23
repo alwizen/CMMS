@@ -124,25 +124,25 @@ class PanelAccessTest extends TestCase
             ->assertSuccessful();
     }
 
-    public function test_field_user_is_forbidden_from_admin_panel(): void
+    public function test_field_user_is_redirected_from_admin_panel_to_app_panel(): void
     {
         $user = $this->makeUser('mos');
 
         $this->actingAs($user)
             ->get('/admin')
-            ->assertForbidden();
+            ->assertRedirect('/app');
 
         $this->actingAs($user)
             ->get('/app')
             ->assertSuccessful();
     }
 
-    public function test_supervisor_is_forbidden_from_app_panel(): void
+    public function test_supervisor_is_redirected_from_app_panel_to_admin_panel(): void
     {
         $user = $this->makeUser('spv_mos');
 
         $this->actingAs($user)
             ->get('/app')
-            ->assertForbidden();
+            ->assertRedirect('/admin');
     }
 }

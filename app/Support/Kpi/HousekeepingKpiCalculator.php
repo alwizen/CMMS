@@ -4,7 +4,6 @@ namespace App\Support\Kpi;
 
 use App\Models\HousekeepingArea;
 use App\Models\HousekeepingPlan;
-use App\Models\HousekeepingPlanFacility;
 use Carbon\Carbon;
 use Illuminate\Support\Collection;
 
@@ -34,8 +33,7 @@ class HousekeepingKpiCalculator
         $plans = HousekeepingPlan::query()
             ->whereBetween('plan_date', [$periodFrom, $periodTo])
             ->whereHas('area', fn ($query) => $query->where('kpi_class', $kpiClass))
-            ->with(['area:id,name,sla_days,kpi_class', 'tasks:id,housekeeping_plan_id,status,completed_at'])
-            ->with(['facilities' => fn ($query) => $query->select('id', 'housekeeping_plan_id', 'photo_after')])
+            ->with(['area:id,name,sla_days,kpi_class', 'tasks:id,housekeeping_plan_id,status,completed_at,photo_after'])
             ->get();
 
         if ($plans->isEmpty()) {
@@ -92,7 +90,6 @@ class HousekeepingKpiCalculator
         array $metrics,
     ): array {
         $tasks = $plans->flatMap(fn (HousekeepingPlan $plan): Collection => $plan->tasks);
-        $planFacilities = $plans->flatMap(fn (HousekeepingPlan $plan): Collection => $plan->facilities);
 
         $done = $tasks->where('status', 'Done');
         $backlog = $tasks->whereIn('status', ['Pending', 'In Progress']);
@@ -100,7 +97,8 @@ class HousekeepingKpiCalculator
         $completedPlans = $plans->where('status', 'Completed');
         $withinSla = $completedPlans->filter(fn (HousekeepingPlan $plan): bool => $plan->completed_within_sla === true);
 
-        $documented = $planFacilities->filter(fn (HousekeepingPlanFacility $facility): bool => ! empty($facility->photo_after));
+        // Dokumentasi dinilai per item checklist: checklist yang punya foto after.
+        $documented = $tasks->filter(fn ($task): bool => ! empty($task->photo_after));
 
         $values = [];
 
@@ -112,9 +110,9 @@ class HousekeepingKpiCalculator
                 'sla_compliance' => $completedPlans->isEmpty()
                     ? null
                     : round(($withinSla->count() / $completedPlans->count()) * 100, 2),
-                'documentation_compliance' => $planFacilities->isEmpty()
+                'documentation_compliance' => $tasks->isEmpty()
                     ? null
-                    : round(($documented->count() / $planFacilities->count()) * 100, 2),
+                    : round(($documented->count() / $tasks->count()) * 100, 2),
                 'backlog' => $backlog->count(),
                 'plan_consistency' => $this->planConsistency($plans, $periodDays),
                 'window_coverage' => $this->windowCoverage($plans, $periodStart, $periodEnd, $periodDays),

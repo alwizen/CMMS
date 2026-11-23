@@ -350,7 +350,7 @@ class ApiHousekeepingManageTest extends TestCase
             'status' => 'In Progress',
         ])->assertForbidden();
 
-        $this->deleteJson("/api/housekeeping-plans/{$plan->id}/facilities/999/photos", [
+        $this->deleteJson("/api/housekeeping-plans/{$plan->id}/tasks/999/photos", [
             'type' => 'before',
             'path' => 'x.jpg',
         ])->assertForbidden();

@@ -9,7 +9,6 @@ use App\Models\Company;
 use App\Models\HousekeepingArea;
 use App\Models\HousekeepingManpower;
 use App\Models\HousekeepingPlan;
-use App\Models\HousekeepingPlanFacility;
 use App\Models\HousekeepingPlanTask;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -37,17 +36,12 @@ class HousekeepingPlanViewTest extends TestCase
         ]);
         $plan->manpowers()->attach($manpower->id);
 
-        $planFacility = HousekeepingPlanFacility::create([
-            'housekeeping_plan_id' => $plan->id,
-            'photo_before' => ['housekeeping/plan-facilities/before/b.jpg'],
-            'photo_after' => ['housekeeping/plan-facilities/after/a.jpg'],
-        ]);
-
         HousekeepingPlanTask::create([
             'housekeeping_plan_id' => $plan->id,
-            'housekeeping_plan_facility_id' => $planFacility->id,
             'name' => 'Pemotongan Rumput',
             'status' => 'Done',
+            'photo_before' => ['housekeeping/plan-tasks/before/b.jpg'],
+            'photo_after' => ['housekeeping/plan-tasks/after/a.jpg'],
         ]);
 
         Livewire::test(ViewHousekeepingPlan::class, ['record' => $plan->getKey()])

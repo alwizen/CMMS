@@ -11,7 +11,6 @@ use App\Models\EquipmentType;
 use App\Models\HousekeepingArea;
 use App\Models\HousekeepingFacility;
 use App\Models\HousekeepingPlan;
-use App\Models\HousekeepingPlanFacility;
 use App\Models\HousekeepingPlanTask;
 use App\Models\MaintenanceRequest;
 use App\Models\Setting;
@@ -253,10 +252,10 @@ class DailyReportTest extends TestCase
     public function test_image_data_builds_square_thumbnail(): void
     {
         Storage::fake('public');
-        Storage::disk('public')->put('housekeeping/plan-facilities/before/a.jpg', UploadedFile::fake()->image('a.jpg')->getContent());
-        Storage::disk('public')->put('housekeeping/plan-facilities/before/b.jpg', UploadedFile::fake()->image('b.jpg')->getContent());
+        Storage::disk('public')->put('housekeeping/plan-tasks/before/a.jpg', UploadedFile::fake()->image('a.jpg')->getContent());
+        Storage::disk('public')->put('housekeeping/plan-tasks/before/b.jpg', UploadedFile::fake()->image('b.jpg')->getContent());
 
-        $uri = ImageData::thumbnailDataUri('housekeeping/plan-facilities/before/a.jpg', 160);
+        $uri = ImageData::thumbnailDataUri('housekeeping/plan-tasks/before/a.jpg', 160);
 
         $this->assertNotNull($uri);
         $this->assertStringStartsWith('data:image/jpeg;base64,', (string) $uri);
@@ -271,12 +270,12 @@ class DailyReportTest extends TestCase
         $this->assertSame(
             2,
             count(ImageData::thumbnailUris([
-                'housekeeping/plan-facilities/before/a.jpg',
-                'housekeeping/plan-facilities/before/b.jpg',
+                'housekeeping/plan-tasks/before/a.jpg',
+                'housekeeping/plan-tasks/before/b.jpg',
             ], 4)),
         );
 
-        $this->assertNull(ImageData::thumbnailDataUri('housekeeping/plan-facilities/before/missing.jpg'));
+        $this->assertNull(ImageData::thumbnailDataUri('housekeeping/plan-tasks/before/missing.jpg'));
         $this->assertNull(ImageData::thumbnailDataUri(null));
     }
 
@@ -284,8 +283,8 @@ class DailyReportTest extends TestCase
     {
         Storage::fake('public');
 
-        $before = UploadedFile::fake()->image('before.jpg')->store('housekeeping/plan-facilities/before', 'public');
-        $after = UploadedFile::fake()->image('after.jpg')->store('housekeeping/plan-facilities/after', 'public');
+        $before = UploadedFile::fake()->image('before.jpg')->store('housekeeping/plan-tasks/before', 'public');
+        $after = UploadedFile::fake()->image('after.jpg')->store('housekeeping/plan-tasks/after', 'public');
 
         $hkArea = HousekeepingArea::create([
             'company_id' => $this->equipment->area->company_id,
@@ -301,6 +300,8 @@ class DailyReportTest extends TestCase
             'housekeeping_plan_id' => $plan->id,
             'name' => 'Sapu',
             'status' => 'Done',
+            'photo_before' => [$before],
+            'photo_after' => [$after],
         ]);
 
         // Approval diberikan setelah pekerjaan tersusun: perubahan checklist
@@ -308,12 +309,6 @@ class DailyReportTest extends TestCase
         $plan->update([
             'approval_status' => HousekeepingPlan::APPROVAL_APPROVED,
             'approved_at' => now(),
-        ]);
-
-        HousekeepingPlanFacility::create([
-            'housekeeping_plan_id' => $plan->id,
-            'photo_before' => [$before],
-            'photo_after' => [$after],
         ]);
 
         $report = app(DailyReport::class)->build('2026-11-16');
@@ -329,7 +324,6 @@ class DailyReportTest extends TestCase
         // foto ada di tabel pekerjaan, bukan tabel terpisah.
         $this->assertStringContainsString('task-table', $html);
         $this->assertStringNotContainsString('facility-doc-title', $html);
-        $this->assertSame(2, substr_count($html, 'rowspan='), 'Foto fasilitas hanya dirender sekali per grup.');
 
         $this->actingAs($this->user);
 
@@ -338,26 +332,14 @@ class DailyReportTest extends TestCase
         $this->assertStringContainsString('/Image', $response->getContent(), 'PDF harus memuat objek gambar.');
     }
 
-    public function test_plan_detail_merges_tasks_and_photos_in_one_table(): void
+    public function test_housekeeping_pdf_shows_approval_note_with_spv_gos_name(): void
     {
-        Storage::fake('public');
-
-        $before = UploadedFile::fake()->image('before.jpg')->store('housekeeping/plan-facilities/before', 'public');
-        $after = UploadedFile::fake()->image('after.jpg')->store('housekeeping/plan-facilities/after', 'public');
+        $approver = User::factory()->create(['name' => 'Budi Santoso']);
 
         $area = HousekeepingArea::create([
             'company_id' => $this->equipment->area->company_id,
-            'code' => 'gabung',
-            'name' => 'Area Gabung',
-        ]);
-
-        $documented = HousekeepingFacility::create([
-            'housekeeping_area_id' => $area->id,
-            'name' => 'Fasilitas Terdokumentasi',
-        ]);
-        $withoutDocs = HousekeepingFacility::create([
-            'housekeeping_area_id' => $area->id,
-            'name' => 'Fasilitas Tanpa Dokumentasi',
+            'code' => 'approval',
+            'name' => 'Area Approval',
         ]);
 
         $plan = HousekeepingPlan::create([
@@ -368,13 +350,60 @@ class DailyReportTest extends TestCase
 
         HousekeepingPlanTask::create([
             'housekeeping_plan_id' => $plan->id,
-            'housekeeping_facility_id' => $documented->id,
+            'name' => 'Sapu',
+            'status' => 'Done',
+        ]);
+
+        $plan->update([
+            'approval_status' => HousekeepingPlan::APPROVAL_APPROVED,
+            'approved_by' => $approver->id,
+            'approved_at' => now(),
+        ]);
+
+        $report = app(DailyReport::class)->build('2026-11-16');
+
+        $html = view('pdf.daily-report', ['report' => $report, 'scope' => 'housekeeping'])->render();
+
+        $this->assertStringContainsString('Sudah di review dan disetujui oleh', $html);
+        $this->assertStringContainsString('Budi Santoso', $html);
+        $this->assertStringContainsString('(SPV GOS)', $html);
+    }
+
+    public function test_plan_detail_shows_photos_per_checklist(): void
+    {
+        Storage::fake('public');
+
+        $before = UploadedFile::fake()->image('before.jpg')->store('housekeeping/plan-tasks/before', 'public');
+        $after = UploadedFile::fake()->image('after.jpg')->store('housekeeping/plan-tasks/after', 'public');
+
+        $area = HousekeepingArea::create([
+            'company_id' => $this->equipment->area->company_id,
+            'code' => 'gabung',
+            'name' => 'Area Gabung',
+        ]);
+
+        $facility = HousekeepingFacility::create([
+            'housekeeping_area_id' => $area->id,
+            'name' => 'Fasilitas Satu',
+        ]);
+
+        $plan = HousekeepingPlan::create([
+            'housekeeping_area_id' => $area->id,
+            'plan_date' => '2026-11-16',
+            'status' => 'Draft',
+        ]);
+
+        HousekeepingPlanTask::create([
+            'housekeeping_plan_id' => $plan->id,
+            'housekeeping_facility_id' => $facility->id,
             'name' => 'Pekerjaan A',
             'status' => 'Done',
+            'photo_before' => [$before],
+            'photo_after' => [$after],
         ]);
         HousekeepingPlanTask::create([
             'housekeeping_plan_id' => $plan->id,
-            'housekeeping_facility_id' => $documented->id,
+            'housekeeping_facility_id' => $facility->id,
             'name' => 'Pekerjaan B',
             'status' => 'In Progress',
         ]);
@@ -382,22 +411,6 @@ class DailyReportTest extends TestCase
             'housekeeping_plan_id' => $plan->id,
             'name' => 'Pekerjaan Tanpa Fasilitas',
             'status' => 'Pending',
-        ]);
-
-        // Baris dokumentasi fasilitas dibuat otomatis saat checklist dibuat,
-        // jadi foto diunggah dengan memperbarui baris tersebut.
-        HousekeepingPlanFacility::query()
-            ->where('housekeeping_plan_id', $plan->id)
-            ->where('housekeeping_facility_id', $documented->id)
-            ->update([
-                'photo_before' => [$before],
-                'photo_after' => [$after],
-            ]);
-
-        // Fasilitas terdokumentasi tetapi belum punya checklist.
-        HousekeepingPlanFacility::create([
-            'housekeeping_plan_id' => $plan->id,
-            'housekeeping_facility_id' => $withoutDocs->id,
         ]);
 
         $report = app(DailyReport::class)->build('2026-11-16');
@@ -409,18 +422,14 @@ class DailyReportTest extends TestCase
         $this->assertStringContainsString('Foto After', $html);
         $this->assertStringNotContainsString('facility-doc-title', $html);
 
-        // Foto dirender sekali per fasilitas meskipun fasilitas punya 2 checklist.
+        // Hanya checklist Pekerjaan A yang punya foto.
         $this->assertSame(2, substr_count($html, 'data:image/'));
 
-        // Semua pekerjaan dan fasilitas muncul.
+        // Semua pekerjaan muncul.
         $this->assertStringContainsString('Pekerjaan A', $html);
         $this->assertStringContainsString('Pekerjaan B', $html);
         $this->assertStringContainsString('Pekerjaan Tanpa Fasilitas', $html);
-        $this->assertStringContainsString('Fasilitas Terdokumentasi', $html);
-        $this->assertStringContainsString('Fasilitas Tanpa Dokumentasi', $html);
-
-        // Fasilitas dengan 2 checklist memakai rowspan=2 pada sel foto.
-        $this->assertStringContainsString('rowspan="2"', $html);
+        $this->assertStringContainsString('Fasilitas Satu', $html);
     }
 
     public function test_both_dashboards_have_print_actions(): void

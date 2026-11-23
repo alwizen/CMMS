@@ -6,7 +6,6 @@ use App\Filament\Resources\HousekeepingPlans\Pages\CreateHousekeepingPlan;
 use App\Filament\Resources\HousekeepingPlans\Pages\EditHousekeepingPlan;
 use App\Filament\Resources\HousekeepingPlans\Pages\ListHousekeepingPlans;
 use App\Filament\Resources\HousekeepingPlans\Pages\ViewHousekeepingPlan;
-use App\Filament\Resources\HousekeepingPlans\RelationManagers\FacilitiesRelationManager;
 use App\Filament\Resources\HousekeepingPlans\RelationManagers\ManpowersRelationManager;
 use App\Filament\Resources\HousekeepingPlans\RelationManagers\TasksRelationManager;
 use App\Filament\Resources\HousekeepingPlans\Schemas\HousekeepingPlanForm;
@@ -67,7 +66,6 @@ class HousekeepingPlanResource extends Resource
     {
         return [
             TasksRelationManager::class,
-            FacilitiesRelationManager::class,
             ManpowersRelationManager::class,
         ];
     }

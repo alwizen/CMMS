@@ -3,12 +3,10 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Http\Resources\HousekeepingPlanFacilityResource;
 use App\Http\Resources\HousekeepingPlanResource;
 use App\Http\Resources\HousekeepingPlanTaskResource;
 use App\Models\HousekeepingArea;
 use App\Models\HousekeepingPlan;
-use App\Models\HousekeepingPlanFacility;
 use App\Models\HousekeepingPlanTask;
 use App\Models\HousekeepingTask;
 use App\Support\HousekeepingPlanGenerator;
@@ -83,10 +81,8 @@ class HousekeepingPlanController extends Controller
                 'approvedBy:id,name',
                 'manpowers',
                 'users:id,name,email,employee_number',
-                'facilities.facility',
                 'tasks.facility',
                 'tasks.masterTask',
-                'tasks.planFacility',
             ])
             ->findOrFail($id);
 
@@ -132,16 +128,6 @@ class HousekeepingPlanController extends Controller
                     'email' => $user->email,
                     'employee_number' => $user->employee_number,
                 ])->values(),
-                'facilities' => $plan->facilities->map(fn ($planFacility) => [
-                    'id' => $planFacility->id,
-                    'facility' => $planFacility->facility ? [
-                        'id' => $planFacility->facility->id,
-                        'name' => $planFacility->facility->name,
-                        'code' => $planFacility->facility->code,
-                    ] : null,
-                    'photo_before' => $planFacility->photo_before ?? [],
-                    'photo_after' => $planFacility->photo_after ?? [],
-                ])->values(),
                 'tasks' => HousekeepingPlanTaskResource::collection($plan->tasks),
             ],
         ]);
@@ -166,22 +152,18 @@ class HousekeepingPlanController extends Controller
 
         $newStatus = $request->input('status', $task->status);
 
-        $planFacility = $task->planFacility;
+        if ($newStatus === 'In Progress' && ! $task->hasPhotoBefore()) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Upload foto before item checklist terlebih dahulu sebelum memulai pekerjaan.',
+            ], 422);
+        }
 
-        if ($planFacility !== null) {
-            if ($newStatus === 'In Progress' && empty($planFacility->photo_before)) {
-                return response()->json([
-                    'success' => false,
-                    'message' => 'Upload foto before fasilitas terlebih dahulu sebelum memulai pekerjaan.',
-                ], 422);
-            }
-
-            if ($newStatus === 'Done' && empty($planFacility->photo_after)) {
-                return response()->json([
-                    'success' => false,
-                    'message' => 'Upload foto after fasilitas terlebih dahulu sebelum menyelesaikan pekerjaan.',
-                ], 422);
-            }
+        if ($newStatus === 'Done' && ! $task->hasPhotoAfter()) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Upload foto after item checklist terlebih dahulu sebelum menyelesaikan pekerjaan.',
+            ], 422);
         }
 
         $data = [];
@@ -199,22 +181,21 @@ class HousekeepingPlanController extends Controller
         return response()->json([
             'success' => true,
             'message' => 'Item checklist berhasil diperbarui.',
-            'data' => new HousekeepingPlanTaskResource($task->fresh(['facility', 'masterTask', 'planFacility'])),
+            'data' => new HousekeepingPlanTaskResource($task->fresh(['facility', 'masterTask'])),
         ]);
     }
 
     /**
-     * Unggah foto before/after untuk satu fasilitas pada plan.
+     * Unggah foto before/after untuk satu item checklist pada plan.
      * Parameter "type" menentukan jenis foto: "before" atau "after".
      */
-    public function uploadFacilityPhotos(Request $request, int $planId, int $planFacilityId): JsonResponse
+    public function uploadTaskPhotos(Request $request, int $planId, int $taskId): JsonResponse
     {
         $this->authorizeExecutor($request);
 
         $plan = HousekeepingPlan::findOrFail($planId);
 
-        $planFacility = HousekeepingPlanFacility::where('housekeeping_plan_id', $plan->id)
-            ->findOrFail($planFacilityId);
+        $task = HousekeepingPlanTask::where('housekeeping_plan_id', $plan->id)->findOrFail($taskId);
 
         $request->validate([
             'type' => 'required|string|in:before,after',
@@ -225,10 +206,10 @@ class HousekeepingPlanController extends Controller
         $type = $request->input('type');
         $column = $type === 'before' ? 'photo_before' : 'photo_after';
         $directory = $type === 'before'
-            ? 'housekeeping/plan-facilities/before'
-            : 'housekeeping/plan-facilities/after';
+            ? 'housekeeping/plan-tasks/before'
+            : 'housekeeping/plan-tasks/after';
 
-        $existing = $planFacility->{$column} ?? [];
+        $existing = $task->{$column} ?? [];
         $remaining = max(0, 5 - count($existing));
 
         if ($remaining === 0) {
@@ -246,23 +227,22 @@ class HousekeepingPlanController extends Controller
             $paths[] = $file->store($directory, 'public');
         }
 
-        $planFacility->update([$column => array_values($paths)]);
+        $task->update([$column => array_values($paths)]);
 
         return response()->json([
             'success' => true,
             'message' => 'Foto '.$type.' berhasil diunggah.',
-            'data' => new HousekeepingPlanFacilityResource($planFacility->fresh('facility')),
+            'data' => new HousekeepingPlanTaskResource($task->fresh(['facility', 'masterTask'])),
         ]);
     }
 
-    public function deleteFacilityPhoto(Request $request, int $planId, int $planFacilityId): JsonResponse
+    public function deleteTaskPhoto(Request $request, int $planId, int $taskId): JsonResponse
     {
         $this->authorizeExecutor($request);
 
         $plan = HousekeepingPlan::findOrFail($planId);
 
-        $planFacility = HousekeepingPlanFacility::where('housekeeping_plan_id', $plan->id)
-            ->findOrFail($planFacilityId);
+        $task = HousekeepingPlanTask::where('housekeeping_plan_id', $plan->id)->findOrFail($taskId);
 
         $request->validate([
             'type' => 'required|string|in:before,after',
@@ -273,25 +253,25 @@ class HousekeepingPlanController extends Controller
         $column = $type === 'before' ? 'photo_before' : 'photo_after';
         $path = $request->input('path');
 
-        $photos = $planFacility->{$column} ?? [];
+        $photos = $task->{$column} ?? [];
 
         if (! in_array($path, $photos, true)) {
             return response()->json([
                 'success' => false,
-                'message' => 'Foto tidak ditemukan pada fasilitas ini.',
+                'message' => 'Foto tidak ditemukan pada item checklist ini.',
             ], 404);
         }
 
         Storage::disk('public')->delete($path);
 
-        $planFacility->update([
+        $task->update([
             $column => array_values(array_diff($photos, [$path])),
         ]);
 
         return response()->json([
             'success' => true,
             'message' => 'Foto berhasil dihapus.',
-            'data' => new HousekeepingPlanFacilityResource($planFacility->fresh('facility')),
+            'data' => new HousekeepingPlanTaskResource($task->fresh(['facility', 'masterTask'])),
         ]);
     }
 
@@ -333,7 +313,7 @@ class HousekeepingPlanController extends Controller
             'created_by' => auth()->id(),
         ]);
 
-        $plan->load(['area.company:id,name', 'area.supervisor:id,name', 'manpowers', 'users', 'tasks', 'facilities.facility']);
+        $plan->load(['area.company:id,name', 'area.supervisor:id,name', 'manpowers', 'users', 'tasks']);
 
         return response()->json([
             'success' => true,
@@ -432,7 +412,7 @@ class HousekeepingPlanController extends Controller
         return response()->json([
             'success' => true,
             'message' => 'Item checklist berhasil ditambahkan.',
-            'data' => new HousekeepingPlanTaskResource($task->fresh(['facility', 'masterTask', 'planFacility'])),
+            'data' => new HousekeepingPlanTaskResource($task->fresh(['facility', 'masterTask'])),
         ], 201);
     }
 
@@ -490,7 +470,7 @@ class HousekeepingPlanController extends Controller
 
         $plans = collect($result['plans'])
             ->map(function (HousekeepingPlan $plan): HousekeepingPlanResource {
-                $plan->load(['area.company:id,name', 'area.supervisor:id,name', 'manpowers', 'users', 'tasks', 'facilities.facility']);
+                $plan->load(['area.company:id,name', 'area.supervisor:id,name', 'manpowers', 'users', 'tasks']);
 
                 return new HousekeepingPlanResource($plan);
             })
@@ -521,7 +501,7 @@ class HousekeepingPlanController extends Controller
 
         $plan->update($request->only(['plan_date', 'note']));
 
-        $plan->load(['area.company:id,name', 'area.supervisor:id,name', 'manpowers', 'users', 'tasks', 'facilities.facility']);
+        $plan->load(['area.company:id,name', 'area.supervisor:id,name', 'manpowers', 'users', 'tasks']);
 
         return response()->json([
             'success' => true,
