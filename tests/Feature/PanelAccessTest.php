@@ -2,9 +2,11 @@
 
 namespace Tests\Feature;
 
+use App\Filament\Pages\Dashboard;
 use App\Models\User;
 use Filament\Facades\Filament;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Gate;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\PermissionRegistrar;
@@ -144,5 +146,54 @@ class PanelAccessTest extends TestCase
         $this->actingAs($user)
             ->get('/app')
             ->assertRedirect('/admin');
+    }
+
+    public function test_maintenance_dashboard_is_restricted_to_allowed_roles(): void
+    {
+        $this->assertFalse(Dashboard::canAccess());
+
+        foreach (['super_admin', 'spv_mos', 'spv_hsse', 'pengawas'] as $role) {
+            $user = $this->makeUser($role);
+
+            $this->actingAs($user);
+
+            $this->assertTrue(
+                Dashboard::canAccess(),
+                "Role {$role} seharusnya boleh mengakses Maintenance Dashboard.",
+            );
+        }
+
+        $this->actingAs($this->makeUser('spv_gos'));
+
+        $this->assertFalse(Dashboard::canAccess());
+    }
+
+    public function test_spv_gos_is_redirected_from_maintenance_dashboard_to_housekeeping_dashboard(): void
+    {
+        $user = $this->makeUser('spv_gos');
+
+        $this->actingAs($user)
+            ->get('/admin')
+            ->assertRedirect('/admin/housekeeping-dashboard');
+    }
+
+    public function test_spv_gos_housekeeping_dashboard_is_accessible(): void
+    {
+        Gate::before(fn (): bool => true);
+
+        $user = $this->makeUser('spv_gos');
+
+        $this->actingAs($user)
+            ->get('/admin/housekeeping-dashboard')
+            ->assertSuccessful();
+    }
+
+    public function test_spv_mos_can_open_maintenance_dashboard(): void
+    {
+        $user = $this->makeUser('spv_mos');
+
+        $this->actingAs($user)
+            ->get('/admin')
+            ->assertSuccessful();
     }
 }

@@ -8,6 +8,7 @@ use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Gate;
 use Livewire\Livewire;
+use Spatie\Permission\Models\Role;
 use Tests\TestCase;
 
 class HousekeepingDashboardSmokeTest extends TestCase
@@ -18,6 +19,7 @@ class HousekeepingDashboardSmokeTest extends TestCase
     {
         Gate::before(fn () => true);
         $user = User::factory()->create();
+        $user->assignRole(Role::findOrCreate('super_admin', 'web'));
         $this->actingAs($user);
 
         Livewire::test(Dashboard::class)->assertOk();

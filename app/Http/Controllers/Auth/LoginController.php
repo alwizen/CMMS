@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Filament\Pages\Dashboard;
+use App\Filament\Pages\HousekeepingDashboard;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use Filament\Facades\Filament;
@@ -80,8 +82,16 @@ class LoginController extends Controller
      */
     protected function homeUrl(User $user): ?string
     {
-        if ($user->canAccessPanel(Filament::getPanel('admin'))) {
-            return Filament::getPanel('admin')->getUrl();
+        $adminPanel = Filament::getPanel('admin');
+
+        if ($user->canAccessPanel($adminPanel)) {
+            // SPV GOS tidak punya akses ke Maintenance Dashboard (`/admin`),
+            // jadi langsung arahkan ke Housekeeping Dashboard.
+            if (! $user->hasAnyRole(Dashboard::ALLOWED_ROLES)) {
+                return HousekeepingDashboard::getUrl(panel: 'admin');
+            }
+
+            return $adminPanel->getUrl();
         }
 
         if ($user->canAccessPanel(Filament::getPanel('app'))) {

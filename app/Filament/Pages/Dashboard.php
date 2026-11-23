@@ -5,6 +5,7 @@ namespace App\Filament\Pages;
 use App\Filament\Actions\PrintDailyReportAction;
 use App\Filament\Actions\ResetDashboardFilterAction;
 use App\Filament\Widgets;
+use App\Http\Middleware\RedirectFromMaintenanceDashboard;
 use App\Models\Activity;
 use App\Models\Equipment;
 use App\Models\EquipmentType;
@@ -28,6 +29,33 @@ use UnitEnum;
 class Dashboard extends BaseDashboard
 {
     use HasFiltersAction;
+
+    /**
+     * Maintenance Dashboard hanya untuk super admin, SPV MOS, SPV HSSE, dan
+     * pengawas. SPV GOS punya dashboard housekeeping sendiri.
+     *
+     * @var list<string>
+     */
+    public const ALLOWED_ROLES = [
+        'super_admin',
+        'spv_mos',
+        'spv_hsse',
+        'pengawas',
+    ];
+
+    /**
+     * User yang tidak berhak diarahkan ke Housekeeping Dashboard, bukan 403.
+     *
+     * @var string|array<string>
+     */
+    protected static string|array $routeMiddleware = [
+        RedirectFromMaintenanceDashboard::class,
+    ];
+
+    public static function canAccess(): bool
+    {
+        return auth()->user()?->hasAnyRole(self::ALLOWED_ROLES) ?? false;
+    }
 
     /**
      * Filter global tidak disimpan di URL/session: setiap refresh atau

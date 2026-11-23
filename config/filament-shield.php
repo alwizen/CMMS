@@ -3,6 +3,7 @@
 declare(strict_types=1);
 use App\Filament\App\Pages\HousekeepingReport as AppHousekeepingReport;
 use App\Filament\App\Pages\MaintenanceCalendar as AppMaintenanceCalendar;
+use App\Filament\Pages\Dashboard as AppDashboard;
 use BezhanSalleh\FilamentShield\Resources\Roles\RoleResource;
 use Filament\Pages\Dashboard;
 use Filament\Widgets\AccountWidget;
@@ -217,6 +218,9 @@ return [
         'prefix' => 'view',
         'exclude' => [
             Dashboard::class,
+            // Maintenance Dashboard dibatasi lewat pengecekan role di kode
+            // (bukan permission Shield), jadi tidak perlu muncul di daftar Peran.
+            AppDashboard::class,
             // Halaman `/app` ini memakai permission yang sama dengan versi
             // admin-nya, jadi cukup ditampilkan sekali di daftar Peran.
             AppMaintenanceCalendar::class,

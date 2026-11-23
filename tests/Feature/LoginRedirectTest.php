@@ -58,7 +58,7 @@ class LoginRedirectTest extends TestCase
 
     public function test_supervisor_and_admin_are_redirected_to_admin_panel(): void
     {
-        foreach (['super_admin', 'spv_mos', 'spv_gos', 'spv_hsse', 'pengawas'] as $role) {
+        foreach (['super_admin', 'spv_mos', 'spv_hsse', 'pengawas'] as $role) {
             $user = $this->makeUser($role);
 
             $this->post('/login', [
@@ -70,6 +70,18 @@ class LoginRedirectTest extends TestCase
 
             $this->post('/logout');
         }
+    }
+
+    public function test_spv_gos_is_redirected_to_housekeeping_dashboard(): void
+    {
+        $user = $this->makeUser('spv_gos');
+
+        $this->post('/login', [
+            'email' => $user->email,
+            'password' => 'password',
+        ])->assertRedirect('/admin/housekeeping-dashboard');
+
+        $this->assertAuthenticatedAs($user);
     }
 
     public function test_invalid_credentials_are_rejected(): void
