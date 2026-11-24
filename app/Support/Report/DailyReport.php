@@ -67,9 +67,18 @@ class DailyReport
     {
         $with = ['area.company', 'area.supervisor', 'approvedBy:id,name', 'tasks.facility'];
 
+        // Laporan hanya memuat plan yang sudah direview & disetujui SPV GOS.
+        // Plan yang masih menunggu/ditolak tidak menahan laporan, cukup
+        // dilewati (lihat HousekeepingReportGate untuk daftar yang dilewati).
+        $approved = fn ($query) => $query->where(
+            'approval_status',
+            HousekeepingPlan::APPROVAL_APPROVED,
+        );
+
         // Plan yang dimulai pada tanggal laporan.
         $started = HousekeepingPlan::query()
             ->whereDate('plan_date', $day)
+            ->tap($approved)
             ->with($with)
             ->orderBy('id')
             ->get();
@@ -81,6 +90,7 @@ class DailyReport
         $active = HousekeepingPlan::query()
             ->whereDate('plan_date', '<=', $day)
             ->where('status', '!=', HousekeepingPlan::STATUSES['Completed'])
+            ->tap($approved)
             ->with($with)
             ->orderBy('plan_date')
             ->get();
@@ -89,6 +99,7 @@ class DailyReport
         $completedPlans = HousekeepingPlan::query()
             ->whereDate('plan_date', '<=', $day)
             ->where('status', HousekeepingPlan::STATUSES['Completed'])
+            ->tap($approved)
             ->with($with)
             ->orderBy('plan_date')
             ->get()
@@ -97,6 +108,7 @@ class DailyReport
         // Task yang selesai pada tanggal laporan (bisa dari plan mana pun).
         $completedTasks = HousekeepingPlanTask::query()
             ->whereDate('completed_at', $day)
+            ->whereHas('plan', $approved)
             ->with(['plan.area.company', 'plan.area.supervisor', 'facility'])
             ->orderBy('completed_at')
             ->get();
@@ -127,6 +139,27 @@ class DailyReport
             ])
             ->values();
 
+        // Plan yang dimulai hari ini tetapi belum masuk dua seksi lain.
+        $startedOnly = $started
+            ->reject(fn (HousekeepingPlan $plan): bool => $active->contains('id', $plan->id)
+                || $completedPlans->contains('id', $plan->id))
+            ->values();
+
+        // Pisahkan laporan per penanggung jawab (PJ) area agar mudah dibaca
+        // dan ditandatangani masing-masing PJ.
+        $pjOf = fn (HousekeepingPlan $plan): string => (string) ($plan->area?->supervisor?->name ?: 'Tanpa Penanggung Jawab');
+
+        $bySupervisor = $planList
+            ->groupBy($pjOf)
+            ->sortKeys()
+            ->map(fn (Collection $plans, string $supervisor): array => [
+                'supervisor' => $supervisor,
+                'started' => $startedOnly->filter(fn (HousekeepingPlan $plan): bool => $pjOf($plan) === $supervisor)->values(),
+                'active' => $active->filter(fn (HousekeepingPlan $plan): bool => $pjOf($plan) === $supervisor)->values(),
+                'completed' => $completedPlans->filter(fn (HousekeepingPlan $plan): bool => $pjOf($plan) === $supervisor)->values(),
+            ])
+            ->values();
+
         return [
             'plans' => $planList->count(),
             'tasks_total' => $tasks->count(),
@@ -141,6 +174,7 @@ class DailyReport
             'plans_completed_today' => $completedPlans,
             'tasks_completed_today' => $completedTasks,
             'tasks_today' => $tasksToday,
+            'plans_by_supervisor' => $bySupervisor,
             // Dipertahankan untuk kompatibilitas view/laporan lama.
             'plan_list' => $planList,
         ];

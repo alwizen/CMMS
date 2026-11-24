@@ -165,6 +165,7 @@
             $plansActive = $hk['plans_active'] ?? collect();
             $plansCompleted = $hk['plans_completed_today'] ?? collect();
             $tasksToday = $hk['tasks_today'] ?? collect();
+            $bySupervisor = $hk['plans_by_supervisor'] ?? collect();
 
             $overduePlans = $plansActive->filter(fn ($plan) => $plan->is_overdue);
             $sectionNumber = 0;
@@ -174,7 +175,6 @@
                 ->merge($plansActive)
                 ->merge($plansCompleted)
                 ->unique('id')
-                ->filter(fn ($plan) => $plan->approval_status === \App\Models\HousekeepingPlan::APPROVAL_APPROVED)
                 ->map(fn ($plan) => $plan->approvedBy?->name)
                 ->filter()
                 ->unique()
@@ -197,51 +197,40 @@
             </tr>
         </table>
 
-        {{-- ===== Plan yang dimulai hari ini ===== --}}
-        @php
-            // Plan yang belum tercakup pada dua seksi berikutnya (mis. dimulai
-            // hari ini tetapi baru selesai di hari lain) tetap ditampilkan.
-            $plansStartedOnly = $plansStarted
-                ->reject(fn ($plan) => $plansActive->contains('id', $plan->id)
-                    || $plansCompleted->contains('id', $plan->id));
-        @endphp
+        {{-- Laporan dipisah per Penanggung Jawab (PJ) area. --}}
+        @forelse($bySupervisor as $pj)
+            <h2 style="font-size:12px; margin-top:14px;">PJ: {{ $pj['supervisor'] }}</h2>
 
-        @if($plansStartedOnly->isNotEmpty())
-            @php $sectionNumber++; @endphp
-            <h2 style="font-size:11px; margin-top:10px;">{{ $sectionNumber }}. Plan dimulai hari ini</h2>
+            @if($pj['started']->isNotEmpty())
+                <h2 style="font-size:11px; margin-top:10px;">{{ $pj['supervisor'] }} &middot; Plan dimulai hari ini</h2>
 
-            @foreach($plansStartedOnly as $plan)
-                @include('pdf.partials.housekeeping-plan-detail', ['plan' => $plan])
-            @endforeach
-        @endif
+                @foreach($pj['started'] as $plan)
+                    @include('pdf.partials.housekeeping-plan-detail', ['plan' => $plan])
+                @endforeach
+            @endif
 
-        {{-- ===== Detail plan yang masih berjalan (termasuk lewat SLA) ===== --}}
-        @if($plansActive->isNotEmpty())
-            @php $sectionNumber++; @endphp
-            <h2 style="font-size:11px; margin-top:10px;">{{ $sectionNumber }}. Plan masih berjalan</h2>
+            @if($pj['active']->isNotEmpty())
+                <h2 style="font-size:11px; margin-top:10px;">{{ $pj['supervisor'] }} &middot; Plan masih berjalan</h2>
 
-            @foreach($plansActive as $plan)
-                @include('pdf.partials.housekeeping-plan-detail', ['plan' => $plan])
-            @endforeach
-        @endif
+                @foreach($pj['active'] as $plan)
+                    @include('pdf.partials.housekeeping-plan-detail', ['plan' => $plan])
+                @endforeach
+            @endif
 
-        {{-- ===== Detail plan yang selesai hari ini ===== --}}
-        @if($plansCompleted->isNotEmpty())
-            @php $sectionNumber++; @endphp
-            <h2 style="font-size:11px; margin-top:10px;">{{ $sectionNumber }}. Plan selesai hari ini</h2>
+            @if($pj['completed']->isNotEmpty())
+                <h2 style="font-size:11px; margin-top:10px;">{{ $pj['supervisor'] }} &middot; Plan selesai hari ini</h2>
 
-            @foreach($plansCompleted as $plan)
-                @include('pdf.partials.housekeeping-plan-detail', ['plan' => $plan])
-            @endforeach
-        @endif
-
-        @if($plansActive->isEmpty() && $plansCompleted->isEmpty() && $plansStarted->isEmpty())
+                @foreach($pj['completed'] as $plan)
+                    @include('pdf.partials.housekeeping-plan-detail', ['plan' => $plan])
+                @endforeach
+            @endif
+        @empty
             <table>
                 <tbody>
-                    <tr><td class="empty">Tidak ada aktivitas housekeeping pada tanggal ini.</td></tr>
+                    <tr><td class="empty">Tidak ada plan yang sudah disetujui SPV GOS pada tanggal ini.</td></tr>
                 </tbody>
             </table>
-        @endif
+        @endforelse
     @endif
 
     <div class="footer">Dibuat otomatis oleh sistem RUMAT. Data housekeeping diambil saat laporan diunduh.</div>

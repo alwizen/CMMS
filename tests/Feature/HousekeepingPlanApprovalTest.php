@@ -300,6 +300,32 @@ class HousekeepingPlanApprovalTest extends TestCase
         $this->assertCount(1, $inspection['pending']);
     }
 
+    public function test_gate_allows_when_at_least_one_plan_is_approved(): void
+    {
+        $approved = $this->makePlan();
+        $this->completePlan($approved);
+        $approved->update([
+            'approval_status' => HousekeepingPlan::APPROVAL_APPROVED,
+            'approved_at' => now(),
+        ]);
+
+        // Plan lain pada tanggal yang sama masih menunggu review.
+        $pending = $this->makePlan();
+        HousekeepingPlanTask::create([
+            'housekeeping_plan_id' => $pending->id,
+            'name' => 'Masih Menunggu',
+            'status' => 'In Progress',
+        ]);
+
+        $inspection = HousekeepingReportGate::inspect($approved->plan_date->toDateString());
+
+        // Plan yang sudah disetujui tetap bisa dilaporkan; plan yang menunggu
+        // hanya dilewati.
+        $this->assertTrue($inspection['allowed']);
+        $this->assertCount(1, $inspection['approved']);
+        $this->assertCount(1, $inspection['pending']);
+    }
+
     public function test_gate_allows_date_without_any_plan(): void
     {
         $this->assertTrue(HousekeepingReportGate::allows('2026-12-01'));

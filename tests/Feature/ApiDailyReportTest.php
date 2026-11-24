@@ -167,10 +167,11 @@ class ApiDailyReportTest extends TestCase
         $this->getJson('/api/reports/daily-housekeeping?date=2026-11-18')->assertOk();
     }
 
-    public function test_running_plan_from_another_date_blocks_report(): void
+    public function test_unapproved_running_plan_from_another_date_is_excluded_not_blocking(): void
     {
-        // Plan yang masih berjalan ikut tampil di laporan, jadi harus
-        // direview SPV GOS lebih dulu.
+        // Plan lain yang masih berjalan tetapi belum disetujui SPV GOS tidak
+        // menahan laporan: plan tersebut hanya dilewati. Plan yang sudah
+        // disetujui tetap bisa dilaporkan.
         HousekeepingPlan::create([
             'housekeeping_area_id' => $this->area->id,
             'plan_date' => '2026-11-10',
@@ -179,8 +180,21 @@ class ApiDailyReportTest extends TestCase
 
         Sanctum::actingAs($this->makeUser('patra-jasa'), ['*']);
 
+        $this->getJson('/api/reports/daily-housekeeping?date=2026-11-18')->assertOk();
+    }
+
+    public function test_report_is_blocked_when_no_plan_is_approved_yet(): void
+    {
+        HousekeepingPlan::query()->update([
+            'approval_status' => HousekeepingPlan::APPROVAL_PENDING,
+            'approved_at' => null,
+        ]);
+
+        Sanctum::actingAs($this->makeUser('patra-jasa'), ['*']);
+
         $this->getJson('/api/reports/daily-housekeeping?date=2026-11-18')
-            ->assertStatus(422);
+            ->assertStatus(422)
+            ->assertJsonPath('success', false);
     }
 
     public function test_requires_authentication(): void

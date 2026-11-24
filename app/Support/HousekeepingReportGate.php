@@ -11,12 +11,13 @@ class HousekeepingReportGate
     /**
      * Apakah laporan harian housekeeping untuk tanggal tertentu boleh digenerate.
      *
-     * SPV GOS membuat plan lalu patra-jasa mengerjakan. Approval SPV GOS
-     * adalah trigger laporan: semua plan yang masuk laporan untuk tanggal itu
-     * harus sudah direview/disetujui. Selama masih ada plan yang belum
-     * di-approve (atau ditolak), laporan ditahan.
+     * Laporan hanya memuat plan yang sudah direview/disetujui SPV GOS. Plan
+     * yang masih menunggu atau ditolak tidak menahan laporan: plan tersebut
+     * dilewati dan dilaporkan lewat `pending`/`rejected` agar bisa ditindak
+     * lanjuti. Laporan baru ditahan bila sama sekali belum ada plan yang
+     * disetujui pada tanggal tersebut.
      *
-     * @return array{allowed: bool, pending: array<int, HousekeepingPlan>, rejected: array<int, HousekeepingPlan>}
+     * @return array{allowed: bool, approved: array<int, HousekeepingPlan>, pending: array<int, HousekeepingPlan>, rejected: array<int, HousekeepingPlan>}
      */
     public static function inspect(CarbonInterface|string $date): array
     {
@@ -34,6 +35,10 @@ class HousekeepingReportGate
             ->orderBy('plan_number')
             ->get();
 
+        $approved = $plans
+            ->filter(fn (HousekeepingPlan $plan): bool => $plan->approval_status === HousekeepingPlan::APPROVAL_APPROVED)
+            ->values();
+
         $pending = $plans
             ->filter(fn (HousekeepingPlan $plan): bool => $plan->approval_status === HousekeepingPlan::APPROVAL_PENDING)
             ->values();
@@ -43,7 +48,10 @@ class HousekeepingReportGate
             ->values();
 
         return [
-            'allowed' => $pending->isEmpty() && $rejected->isEmpty(),
+            // Tidak ada plan sama sekali -> laporan kosong tetap boleh dibuat.
+            // Ada plan tetapi belum satu pun disetujui -> tidak ada isi laporan.
+            'allowed' => $approved->isNotEmpty() || $plans->isEmpty(),
+            'approved' => $approved->all(),
             'pending' => $pending->all(),
             'rejected' => $rejected->all(),
         ];
@@ -74,7 +82,11 @@ class HousekeepingReportGate
             $parts[] = 'ditolak SPV GOS ('.$numbers.')';
         }
 
-        return 'Laporan belum bisa digenerate: plan '.implode(' dan plan ', $parts).'.';
+        if ($parts === []) {
+            return 'Laporan belum bisa digenerate: belum ada plan housekeeping pada tanggal ini.';
+        }
+
+        return 'Laporan belum bisa digenerate: belum ada plan yang disetujui SPV GOS. Plan '.implode(' dan plan ', $parts).'.';
     }
 
     public static function allows(CarbonInterface|string $date): bool

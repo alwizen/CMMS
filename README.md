@@ -1217,9 +1217,9 @@ Alur housekeeping:
 3. **SPV GOS me-review pekerjaan** — bisa saat masih berjalan maupun setelah selesai — lalu **Approve** (atau **Reject** dengan catatan) dari halaman Plan Harian (tabel maupun halaman detail). Tombol review muncul begitu pekerjaan dimulai, dan notifikasi dikirim saat pekerjaan selesai.
 4. **Approval SPV GOS adalah trigger laporan**: setelah di-approve, patra-jasa bisa **mengunduh laporan harian hari itu** dari Android (menu Housekeeping → ikon laporan).
 
-Laporan ditolak (422) bila ada plan yang **belum direview/disetujui** SPV GOS atau **ditolak**. Bila patra-jasa mengubah checklist setelah approval, status kembali `Pending` sehingga SPV GOS perlu review ulang (mencegah laporan berisi pekerjaan yang belum diperiksa). Notifikasi maintenance tetap ke `spv_mos`.
+Laporan harian housekeeping **hanya memuat plan yang sudah disetujui** SPV GOS. Plan yang masih `Pending` atau `Rejected` **tidak menahan laporan** — plan tersebut dilewati, sehingga PJ lain yang plan-nya sudah disetujui tetap bisa mengunduh laporan pada tanggal yang sama. Laporan baru ditolak (422) bila pada tanggal itu **belum ada satu pun** plan yang disetujui. Bila patra-jasa mengubah checklist setelah approval, status kembali `Pending` sehingga SPV GOS perlu review ulang (mencegah laporan berisi pekerjaan yang belum diperiksa). Notifikasi maintenance tetap ke `spv_mos`.
 
-Approval ini menjadi **gerbang generate laporan harian housekeeping**: laporan tanggal tertentu hanya bisa digenerate bila semua plan pada tanggal itu **dan** semua plan lain yang masih berjalan sudah `Approved`. Bila masih ada yang `Pending`/`Rejected`, web dan Android menerima pesan penolakan (422) berisi nomor plan yang menahan. Plan lama yang sudah ada sebelum fitur ini otomatis dianggap `Approved`.
+Di dalam PDF, plan dikelompokkan **per Penanggung Jawab (PJ) area** (heading `PJ: <nama>`), lalu dipisah lagi menjadi plan dimulai hari ini, plan masih berjalan, dan plan selesai hari ini. Plan lama yang sudah ada sebelum fitur approval otomatis dianggap `Approved`.
 
 Endpoint terkait:
 - `GET /api/housekeeping-plans/{id}` kini menyertakan `approval_status`, `approval_notes`, `approved_at`, `approved_by`.

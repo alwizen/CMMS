@@ -92,11 +92,16 @@ class DailyReportTest extends TestCase
             'housekeeping_area_id' => $hkArea->id,
             'plan_date' => '2026-11-16',
             'status' => 'Draft',
-            'approval_status' => HousekeepingPlan::APPROVAL_APPROVED,
-            'approved_at' => now(),
         ]);
         HousekeepingPlanTask::create(['housekeeping_plan_id' => $plan->id, 'name' => 'Sapu', 'status' => 'Done']);
         HousekeepingPlanTask::create(['housekeeping_plan_id' => $plan->id, 'name' => 'Pel', 'status' => 'Pending']);
+
+        // Approval diberikan setelah checklist tersusun: perubahan checklist
+        // membatalkan approval sebelumnya.
+        $plan->update([
+            'approval_status' => HousekeepingPlan::APPROVAL_APPROVED,
+            'approved_at' => now(),
+        ]);
 
         MaintenanceRequest::create([
             'equipment_id' => $this->equipment->id,
@@ -182,6 +187,15 @@ class DailyReportTest extends TestCase
             'status' => 'In Progress',
         ]);
 
+        // Approval diberikan setelah checklist tersusun (perubahan checklist
+        // membatalkan approval sebelumnya).
+        foreach ([$started, $running, $finished, $old] as $approvedPlan) {
+            $approvedPlan->update([
+                'approval_status' => HousekeepingPlan::APPROVAL_APPROVED,
+                'approved_at' => now(),
+            ]);
+        }
+
         $report = app(DailyReport::class)->build('2026-11-16');
         $hk = $report['housekeeping'];
 
@@ -215,6 +229,71 @@ class DailyReportTest extends TestCase
             ['Bersih Selokan', 'Plan Lampau', 'Potong Rumput', 'Sapu Pagi'],
             $hk['tasks_today']->pluck('name')->sort()->values()->all(),
         );
+    }
+
+    public function test_housekeeping_report_only_includes_approved_plans_and_groups_by_pj(): void
+    {
+        $companyId = $this->equipment->area->company_id;
+
+        $pjA = User::factory()->create(['name' => 'PJ Alfa']);
+        $pjB = User::factory()->create(['name' => 'PJ Bravo']);
+
+        $areaA = HousekeepingArea::create([
+            'company_id' => $companyId,
+            'code' => 'pj-a',
+            'name' => 'Area PJ Alfa',
+            'supervisor_id' => $pjA->id,
+        ]);
+        $areaB = HousekeepingArea::create([
+            'company_id' => $companyId,
+            'code' => 'pj-b',
+            'name' => 'Area PJ Bravo',
+            'supervisor_id' => $pjB->id,
+        ]);
+
+        $approvedA = HousekeepingPlan::create([
+            'housekeeping_area_id' => $areaA->id,
+            'plan_date' => '2026-11-16',
+            'status' => 'In Progress',
+        ]);
+        HousekeepingPlanTask::create([
+            'housekeeping_plan_id' => $approvedA->id,
+            'name' => 'Tugas PJ Alfa',
+            'status' => 'In Progress',
+        ]);
+        $approvedA->update([
+            'approval_status' => HousekeepingPlan::APPROVAL_APPROVED,
+            'approved_at' => now(),
+        ]);
+
+        // Plan PJ lain yang belum disetujui: harus dilewati, bukan menahan laporan.
+        $pendingB = HousekeepingPlan::create([
+            'housekeeping_area_id' => $areaB->id,
+            'plan_date' => '2026-11-16',
+            'status' => 'In Progress',
+        ]);
+        HousekeepingPlanTask::create([
+            'housekeeping_plan_id' => $pendingB->id,
+            'name' => 'Tugas PJ Bravo',
+            'status' => 'In Progress',
+        ]);
+
+        $report = app(DailyReport::class)->build('2026-11-16');
+        $hk = $report['housekeeping'];
+
+        $this->assertSame(1, $hk['plans']);
+        $this->assertSame([$approvedA->id], $hk['plans_active']->pluck('id')->all());
+
+        $groups = $hk['plans_by_supervisor'];
+        $this->assertCount(1, $groups);
+        $this->assertSame('PJ Alfa', $groups[0]['supervisor']);
+        $this->assertSame([$approvedA->id], $groups[0]['active']->pluck('id')->all());
+
+        $html = view('pdf.daily-report', ['report' => $report, 'scope' => 'housekeeping'])->render();
+
+        $this->assertStringContainsString('PJ: PJ Alfa', $html);
+        $this->assertStringContainsString('Tugas PJ Alfa', $html);
+        $this->assertStringNotContainsString('Tugas PJ Bravo', $html);
     }
 
     public function test_pdf_endpoint_returns_pdf_for_selected_date(): void
@@ -411,6 +490,11 @@ class DailyReportTest extends TestCase
             'housekeeping_plan_id' => $plan->id,
             'name' => 'Pekerjaan Tanpa Fasilitas',
             'status' => 'Pending',
+        ]);
+
+        $plan->update([
+            'approval_status' => HousekeepingPlan::APPROVAL_APPROVED,
+            'approved_at' => now(),
         ]);
 
         $report = app(DailyReport::class)->build('2026-11-16');
