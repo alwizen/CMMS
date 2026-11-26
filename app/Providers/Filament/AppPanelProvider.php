@@ -37,14 +37,12 @@ class AppPanelProvider extends PanelProvider
             ->userMenu(position: UserMenuPosition::Sidebar)
             ->databaseNotifications()
             ->sidebarCollapsibleOnDesktop()
-            // Petugas lapangan mengerjakan checklist/foto langsung dari halaman
-            // detail (View), jadi relation manager tidak boleh read-only.
             ->readOnlyRelationManagersOnResourceViewPagesByDefault(false)
             ->profile()
-            ->brandLogo(asset('img/logo.png'))
+            ->brandLogo(asset('img/lg.png'))
             ->darkMode(false)
             ->favicon(asset('img/logo.svg'))
-            ->brandLogoHeight('4.5rem')
+            ->brandLogoHeight('2.3em')
             ->login(fn () => redirect('/login'))
             ->colors([
                 'primary' => Color::Teal,

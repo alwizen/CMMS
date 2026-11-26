@@ -23,7 +23,7 @@ class HousekeepingRequestResource extends Resource
 
     protected static ?string $navigationLabel = 'Housekeeping Request';
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedArchiveBoxArrowDown;
 
     protected static string|UnitEnum|null $navigationGroup = 'Housekeeping';
 

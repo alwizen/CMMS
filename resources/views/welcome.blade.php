@@ -87,7 +87,7 @@
         <div class="mx-auto flex max-w-7xl items-center justify-between px-5 py-3 sm:px-8">
             <a href="/" class="flex items-center">
                 <img
-                    src="{{ asset('img/dark.png') }}"
+                    src="{{ asset('img/dk.png') }}"
                     alt="Rumat"
                     class="h-11 w-auto object-contain"
                 >

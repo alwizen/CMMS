@@ -346,7 +346,7 @@
 <body>
     <div class="shell">
         <aside class="brand">
-            <img src="{{ asset('img/dark.png') }}" alt="{{ config('app.name', 'Rumat') }}" class="brand-logo">
+            <img src="{{ asset('img/dk.png') }}" alt="{{ config('app.name', 'Rumat') }}" class="brand-logo">
 
             <div>
                 <div class="brand-copy">

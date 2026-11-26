@@ -6,6 +6,7 @@ use App\Filament\Pages\Dashboard;
 use App\Filament\Pages\HousekeepingDashboard;
 use App\Http\Middleware\AuthenticatePanel;
 use BezhanSalleh\FilamentShield\FilamentShieldPlugin;
+use Elemind\PressFilamentTheme\Enums\PressVariant;
 use Elemind\PressFilamentTheme\PressFilamentTheme;
 use Filament\Enums\DatabaseNotificationsPosition;
 use Filament\Enums\GlobalSearchPosition;
@@ -32,26 +33,27 @@ class AdminPanelProvider extends PanelProvider
         return $panel
             ->default()
             ->maxContentWidth(Width::Full)
-            ->globalSearch(position: GlobalSearchPosition::Sidebar)
-            ->databaseNotifications(position: DatabaseNotificationsPosition::Sidebar)
-            ->topbar(false)
-            ->userMenu(position: UserMenuPosition::Sidebar)
+            // ->globalSearch(position: GlobalSearchPosition::Sidebar)
+            // ->databaseNotifications(position: DatabaseNotificationsPosition::Sidebar)
+            // ->topbar(false)
+            // ->userMenu(position: UserMenuPosition::Sidebar)
             ->globalSearchKeyBindings(['command+k', 'ctrl+k'])
             ->databaseNotifications()
             ->sidebarCollapsibleOnDesktop()
             ->profile()
             ->id('admin')
             ->path('admin')
-            ->brandLogo(asset('img/logo.png'))
+            ->brandLogo(asset('img/lg.png'))
             ->darkMode(false)
             ->favicon(asset('img/logo.svg'))
-            ->brandLogoHeight('4.5rem')
+            ->brandLogoHeight('2.8rem')
             ->login(fn () => redirect('/login'))
             ->colors([
                 'primary' => Color::Amber,
             ])
             ->plugin(
-                PressFilamentTheme::make()->telex()->rail(false)
+                // PressFilamentTheme::make()->telex()->rail(false)
+                PressFilamentTheme::make()->runtimeSwitch([PressVariant::Telex, PressVariant::Broadsheet, PressVariant::Gutter, PressVariant::Vellum])->rail(false)
             )
 
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\Filament\Resources')
