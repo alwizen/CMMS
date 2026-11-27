@@ -62,6 +62,58 @@ class ImageCompressorTest extends TestCase
         $this->assertSame('image/webp', $info['mime']);
     }
 
+    protected function makeDetailedJpeg(int $width, int $height): string
+    {
+        $image = imagecreatetruecolor($width, $height);
+
+        for ($y = 0; $y < $height; $y += 4) {
+            $color = imagecolorallocate($image, (int) (120 * $y / $height) + 40, (int) (160 * $y / $height) + 60, (int) (200 * $y / $height) + 40);
+            imagefilledrectangle($image, 0, $y, $width, $y + 3, $color);
+        }
+
+        for ($i = 0; $i < 300; $i++) {
+            $color = imagecolorallocate($image, random_int(0, 255), random_int(0, 255), random_int(0, 255));
+            imagefilledellipse($image, random_int(0, $width), random_int(0, $height), random_int(20, 500), random_int(20, 500), $color);
+        }
+
+        $path = $this->tmpDir.'/detailed.jpg';
+        imagejpeg($image, $path, 95);
+        imagedestroy($image);
+
+        return $path;
+    }
+
+    public function test_output_is_compressed_toward_max_kb(): void
+    {
+        config([
+            'media.max_width' => 1920,
+            'media.webp_quality' => 82,
+            'media.max_kb' => 100,
+            'media.min_quality' => 62,
+        ]);
+
+        $webp = ImageCompressor::toWebp($this->makeDetailedJpeg(4032, 3024));
+
+        $this->assertIsString($webp);
+        $this->assertLessThanOrEqual(100 * 1024, strlen($webp), 'Ukuran WebP harus <= 100 KB.');
+
+        $info = getimagesizefromstring($webp);
+
+        // Dimensi tetap besar agar foto tidak pecah saat di-zoom.
+        $this->assertSame(1920, $info[0]);
+        $this->assertSame(1440, $info[1]);
+    }
+
+    public function test_max_kb_can_be_disabled(): void
+    {
+        config(['media.max_width' => 1920, 'media.webp_quality' => 90, 'media.max_kb' => 0]);
+
+        $webp = ImageCompressor::toWebp($this->makeDetailedJpeg(1200, 900));
+
+        $this->assertIsString($webp);
+        $this->assertNotSame('', $webp);
+    }
+
     public function test_to_webp_returns_null_for_non_image(): void
     {
         $path = $this->tmpDir.'/notes.txt';

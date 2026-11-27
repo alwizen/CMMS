@@ -63,6 +63,10 @@ class ImageCompressor
 
     /**
      * Ubah file gambar menjadi biner WebP. Null bila gagal/tidak didukung.
+     *
+     * Ukuran akhir ditekan agar mendekati target (default ~100 KB) dengan
+     * menurunkan kualitas bertahap, lalu memperkecil dimensi bila perlu.
+     * Kualitas tidak turun di bawah batas agar foto tetap tajam.
      */
     public static function toWebp(string $path, ?int $quality = null, ?int $maxWidth = null): ?string
     {
@@ -75,8 +79,11 @@ class ImageCompressor
             return null;
         }
 
-        $quality ??= (int) config('media.webp_quality', 75);
+        $quality ??= (int) config('media.webp_quality', 82);
         $maxWidth ??= (int) config('media.max_width', 1920);
+        $maxKb = (int) config('media.max_kb', 100);
+        $minQuality = (int) config('media.min_quality', 62);
+        $maxBytes = $maxKb > 0 ? $maxKb * 1024 : 0;
 
         try {
             $contents = @file_get_contents($path);
@@ -104,13 +111,75 @@ class ImageCompressor
 
         imagedestroy($image);
 
-        ob_start();
-        $success = imagewebp($canvas, null, max(0, min(100, $quality)));
-        $webp = ob_get_clean();
+        $quality = max(0, min(100, $quality));
+        $minQuality = max(0, min($quality, $minQuality));
+
+        $webp = static::encodeWebp($canvas, $quality);
+
+        // 1) Turunkan kualitas bertahap sampai masuk target.
+        while (
+            $webp !== null
+            && $maxBytes > 0
+            && strlen($webp) > $maxBytes
+            && $quality > $minQuality
+        ) {
+            $quality = max($minQuality, $quality - 5);
+            $webp = static::encodeWebp($canvas, $quality);
+        }
+
+        // 2) Bila masih terlalu besar, perkecil dimensi (kualitas dipertahankan).
+        $minWidth = 1024;
+
+        while (
+            $webp !== null
+            && $maxBytes > 0
+            && strlen($webp) > $maxBytes
+            && imagesx($canvas) > $minWidth
+        ) {
+            $canvas = static::scaleBy($canvas, 0.85);
+            $webp = static::encodeWebp($canvas, $quality);
+        }
 
         imagedestroy($canvas);
 
+        return $webp;
+    }
+
+    protected static function encodeWebp(GdImage $image, int $quality): ?string
+    {
+        ob_start();
+        $success = imagewebp($image, null, max(0, min(100, $quality)));
+        $webp = ob_get_clean();
+
         return $success && is_string($webp) && $webp !== '' ? $webp : null;
+    }
+
+    /**
+     * Perkecil gambar dengan rasio tertentu (dipakai saat target ukuran belum tercapai).
+     */
+    protected static function scaleBy(GdImage $image, float $ratio): GdImage
+    {
+        $width = max(1, (int) round(imagesx($image) * $ratio));
+        $height = max(1, (int) round(imagesy($image) * $ratio));
+
+        $canvas = imagecreatetruecolor($width, $height);
+
+        imagecopyresampled(
+            $canvas,
+            $image,
+            0,
+            0,
+            0,
+            0,
+            $width,
+            $height,
+            imagesx($image),
+            imagesy($image),
+        );
+
+        imagedestroy($image);
+
+        return $canvas;
     }
 
     /**

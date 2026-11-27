@@ -296,6 +296,41 @@ class DailyReportTest extends TestCase
         $this->assertStringNotContainsString('Tugas PJ Bravo', $html);
     }
 
+    public function test_report_uses_black_text_only(): void
+    {
+        $report = app(DailyReport::class)->build('2026-11-16');
+
+        foreach (['housekeeping', 'maintenance', 'all'] as $scope) {
+            $html = view('pdf.daily-report', ['report' => $report, 'scope' => $scope])->render();
+
+            $this->assertStringNotContainsString('#015E4E', $html);
+            $this->assertStringNotContainsString('#16a34a', $html);
+            $this->assertStringNotContainsString('#2563eb', $html);
+            $this->assertStringNotContainsString('#d97706', $html);
+            $this->assertStringNotContainsString('#dc2626', $html);
+        }
+    }
+
+    public function test_housekeeping_report_shows_ppn_logo_in_header(): void
+    {
+        $report = app(DailyReport::class)->build('2026-11-16');
+
+        $html = view('pdf.daily-report', ['report' => $report, 'scope' => 'housekeeping'])->render();
+
+        $this->assertStringContainsString('alt="PPN"', $html);
+        $this->assertStringContainsString('header-logo', $html);
+        $this->assertStringContainsString('data:image/png;base64,', $html);
+    }
+
+    public function test_maintenance_only_report_has_no_ppn_logo(): void
+    {
+        $report = app(DailyReport::class)->build('2026-11-16');
+
+        $html = view('pdf.daily-report', ['report' => $report, 'scope' => 'maintenance'])->render();
+
+        $this->assertStringNotContainsString('alt="PPN"', $html);
+    }
+
     public function test_pdf_endpoint_returns_pdf_for_selected_date(): void
     {
         $this->actingAs($this->user);
@@ -394,7 +429,8 @@ class DailyReportTest extends TestCase
 
         $html = view('pdf.daily-report', ['report' => $report, 'scope' => 'housekeeping'])->render();
 
-        $this->assertSame(2, substr_count($html, 'data:image/'), 'Foto before & after harus tampil di laporan.');
+        // Logo PPN di header + foto before & after.
+        $this->assertSame(3, substr_count($html, 'data:image/'), 'Logo PPN dan foto before & after harus tampil di laporan.');
         $this->assertStringContainsString('Foto Before', $html);
         $this->assertStringContainsString('Foto After', $html);
         $this->assertStringNotContainsString('Seluruh pekerjaan hari ini', $html);
@@ -506,8 +542,8 @@ class DailyReportTest extends TestCase
         $this->assertStringContainsString('Foto After', $html);
         $this->assertStringNotContainsString('facility-doc-title', $html);
 
-        // Hanya checklist Pekerjaan A yang punya foto.
-        $this->assertSame(2, substr_count($html, 'data:image/'));
+        // Logo PPN di header + hanya checklist Pekerjaan A yang punya foto.
+        $this->assertSame(3, substr_count($html, 'data:image/'));
 
         // Semua pekerjaan muncul.
         $this->assertStringContainsString('Pekerjaan A', $html);

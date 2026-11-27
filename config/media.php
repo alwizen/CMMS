@@ -8,14 +8,19 @@ return [
     |--------------------------------------------------------------------------
     |
     | Foto unggahan (maintenance & housekeeping) otomatis dikonversi ke WebP
-    | agar hemat penyimpanan. Atur kualitas (0-100) dan lebar maksimum
-    | (piksel) di sini. Nilai lebih kecil = file lebih kecil.
+    | agar hemat penyimpanan. Ukuran akhir ditekan mendekati `max_kb`
+    | (default 100 KB) dengan menurunkan kualitas bertahap, tetapi tidak
+    | di bawah `min_quality` supaya foto tetap tajam saat di-zoom.
     |
     */
 
-    'webp_quality' => (int) env('IMAGE_WEBP_QUALITY', 75),
+    'webp_quality' => (int) env('IMAGE_WEBP_QUALITY', 82),
 
     'max_width' => (int) env('IMAGE_MAX_WIDTH', 1920),
+
+    'max_kb' => (int) env('IMAGE_MAX_KB', 100),
+
+    'min_quality' => (int) env('IMAGE_MIN_QUALITY', 62),
 
     /*
     |--------------------------------------------------------------------------

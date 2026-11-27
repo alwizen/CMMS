@@ -3,9 +3,9 @@
 <head>
     <meta charset="utf-8">
     <style>
-        body { font-family: sans-serif; font-size: 10px; color: #1f2937; }
+        body { font-family: sans-serif; font-size: 10px; color: #111827; }
         h1 { font-size: 16px; margin: 0 0 4px; }
-        .meta { font-size: 9px; color: #6b7280; margin-bottom: 10px; }
+        .meta { font-size: 9px; color: #111827; margin-bottom: 10px; }
         table { width: 100%; border-collapse: collapse; }
         th, td { border: 1px solid #d1d5db; padding: 4px 6px; text-align: left; }
         th { background: #f3f4f6; font-weight: 600; }
@@ -45,12 +45,12 @@
                     <td>{{ $h->duration_minutes ?? '-' }}</td>
                 </tr>
             @empty
-                <tr><td colspan="8" style="text-align:center; color:#9ca3af;">Tidak ada data.</td></tr>
+                <tr><td colspan="8" style="text-align:center; color:#111827;">Tidak ada data.</td></tr>
             @endforelse
         </tbody>
     </table>
     @if($histories->isNotEmpty() && $histories->first()->description)
-        <p style="margin-top:10px; font-size:9px; color:#6b7280;">Deskripsi contoh record pertama: {{ Str::limit($histories->first()->description, 300) }}</p>
+        <p style="margin-top:10px; font-size:9px; color:#111827;">Deskripsi contoh record pertama: {{ Str::limit($histories->first()->description, 300) }}</p>
     @endif
 </body>
 </html>
