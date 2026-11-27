@@ -16,6 +16,7 @@ use App\Http\Controllers\Api\MaintenanceRequestController;
 use App\Http\Controllers\Api\NotificationController;
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\WorkOrderController;
+use App\Http\Controllers\WorkOrderReportPdfController;
 use Illuminate\Support\Facades\Route;
 
 // Public routes
@@ -36,6 +37,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/maintenance-calendar', [MaintenanceCalendarController::class, 'index']);
 
     Route::get('/work-orders', [WorkOrderController::class, 'index']);
+    Route::get('/work-orders/{workOrder}/report', WorkOrderReportPdfController::class);
     Route::get('/work-orders/{id}', [WorkOrderController::class, 'show']);
     Route::put('/work-orders/{id}', [WorkOrderController::class, 'update']);
     Route::put('/work-orders/{workOrderId}/activities/{activityId}', [WorkOrderController::class, 'updateActivity']);

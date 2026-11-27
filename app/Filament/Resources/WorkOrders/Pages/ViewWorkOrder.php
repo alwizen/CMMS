@@ -6,10 +6,12 @@ use App\Filament\Resources\WorkOrders\Actions\ReviewWorkOrderAction;
 use App\Filament\Resources\WorkOrders\Schemas\WorkOrderInfolist;
 use App\Filament\Resources\WorkOrders\WorkOrderResource;
 use App\Models\WorkOrder;
+use Filament\Actions\Action;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\EditAction;
 use Filament\Resources\Pages\ViewRecord;
 use Filament\Schemas\Schema;
+use Filament\Support\Icons\Heroicon;
 
 class ViewWorkOrder extends ViewRecord
 {
@@ -37,6 +39,13 @@ class ViewWorkOrder extends ViewRecord
     protected function getHeaderActions(): array
     {
         return [
+            Action::make('report')
+                ->label('Generate Laporan')
+                ->icon(Heroicon::OutlinedDocumentArrowDown)
+                ->color('gray')
+                ->visible(fn (): bool => $this->record->status === WorkOrder::STATUSES['Completed'])
+                ->url(fn (): string => route('work-orders.report.pdf', $this->record))
+                ->openUrlInNewTab(),
             ReviewWorkOrderAction::approve(),
             ReviewWorkOrderAction::reject(),
             EditAction::make(),

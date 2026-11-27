@@ -51,7 +51,7 @@ class AdminPanelProvider extends PanelProvider
             ->darkMode(false)
             ->favicon(asset('img/logo.svg'))
             ->brandLogoHeight('2.8rem')
-            ->login(fn () => redirect('/login'))
+            ->login(fn() => redirect('/login'))
             ->colors([
                 'primary' => Color::Blue,
             ])
@@ -96,11 +96,11 @@ class AdminPanelProvider extends PanelProvider
             ])
             ->renderHook(
                 PanelsRenderHook::AUTH_LOGIN_FORM_BEFORE,
-                fn () => view('filament.auth.login-background'),
+                fn() => view('filament.auth.login-background'),
             )
             ->renderHook(
                 PanelsRenderHook::AUTH_LOGIN_FORM_AFTER,
-                fn () => view('filament.auth.login-footer'),
+                fn() => view('filament.auth.login-footer'),
             )
             ->renderHook(
                 PanelsRenderHook::STYLES_AFTER,
@@ -134,12 +134,12 @@ class AdminPanelProvider extends PanelProvider
     protected function navigationGroups(): array
     {
         return [
-            NavigationGroup::make('Performance')
-                ->icon(Heroicon::OutlinedRocketLaunch),
             NavigationGroup::make('Maintenance')
                 ->icon(Heroicon::OutlinedWrenchScrewdriver),
             NavigationGroup::make('Housekeeping')
                 ->icon(Heroicon::OutlinedSparkles),
+            NavigationGroup::make('Performance')
+                ->icon(Heroicon::OutlinedRocketLaunch),
             NavigationGroup::make('Master Data')
                 ->icon(Heroicon::OutlinedCircleStack),
             NavigationGroup::make('User & Permission')

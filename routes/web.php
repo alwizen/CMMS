@@ -5,6 +5,7 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\DailyReportPdfController;
 use App\Http\Controllers\FieldDailyReportPdfController;
 use App\Http\Controllers\MaintenanceHistoryPdfController;
+use App\Http\Controllers\WorkOrderReportPdfController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -34,4 +35,7 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('/app/daily-report/pdf', FieldDailyReportPdfController::class)
         ->name('app.daily-report.pdf');
+
+    Route::get('/work-orders/{workOrder}/report/pdf', WorkOrderReportPdfController::class)
+        ->name('work-orders.report.pdf');
 });

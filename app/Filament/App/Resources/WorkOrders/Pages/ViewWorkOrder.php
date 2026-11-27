@@ -37,6 +37,13 @@ class ViewWorkOrder extends ViewRecord
     protected function getHeaderActions(): array
     {
         return [
+            Action::make('report')
+                ->label('Generate Laporan')
+                ->icon(Heroicon::OutlinedDocumentArrowDown)
+                ->color('gray')
+                ->visible(fn (): bool => $this->record->status === WorkOrder::STATUSES['Completed'])
+                ->url(fn (): string => route('work-orders.report.pdf', $this->record))
+                ->openUrlInNewTab(),
             Action::make('start')
                 ->label('Mulai Pekerjaan')
                 ->icon(Heroicon::OutlinedPlay)

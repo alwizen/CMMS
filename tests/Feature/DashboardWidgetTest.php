@@ -269,7 +269,7 @@ class DashboardWidgetTest extends TestCase
 
     public function test_stats_widget_respects_fungsi_filter(): void
     {
-        $ltsa = User::factory()->create(['name' => 'Teknisi LTSA', 'fungsi' => 'MOS LTSA']);
+        $ltsa = User::factory()->create(['name' => ' LTSA', 'fungsi' => 'MOS LTSA']);
         $hsse = User::factory()->create(['name' => 'Teknisi HSSE', 'fungsi' => 'HSSE']);
 
         WorkOrder::create([

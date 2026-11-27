@@ -11,7 +11,6 @@ use Filament\Actions\EditAction;
 use Filament\Forms\Components\DateTimePicker;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
-use Filament\Forms\Components\TextInput;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Schemas\Schema;
 use Filament\Tables\Columns\TextColumn;
@@ -21,7 +20,7 @@ class WorkersRelationManager extends RelationManager
 {
     protected static string $relationship = 'workOrderWorkers';
 
-    protected static ?string $title = 'Teknisi Pelaksana';
+    protected static ?string $title = 'Pelaksana';
 
     protected static ?string $modelLabel = 'worker';
 
@@ -32,7 +31,7 @@ class WorkersRelationManager extends RelationManager
         return $schema
             ->components([
                 Select::make('user_id')
-                    ->label('Teknisi')
+                    ->label('Pelaksana')
                     ->options(fn (): array => User::query()
                         ->where('status', true)
                         ->orderBy('name')
@@ -40,11 +39,6 @@ class WorkersRelationManager extends RelationManager
                         ->all())
                     ->searchable()
                     ->required(),
-                TextInput::make('role')
-                    ->label('Role')
-                    ->placeholder('e.g., Teknisi, Supervisor')
-                    ->default('Teknisi')
-                    ->nullable(),
                 DateTimePicker::make('started_at')
                     ->label('Started At')
                     ->nullable(),
@@ -64,11 +58,11 @@ class WorkersRelationManager extends RelationManager
         return $table
             ->columns([
                 TextColumn::make('user.name')
-                    ->label('Teknisi')
+                    ->label('Pelaksana')
                     ->searchable()
                     ->sortable(),
-                TextColumn::make('role')
-                    ->label('Role')
+                TextColumn::make('user.fungsi')
+                    ->label('Fungsi')
                     ->badge()
                     ->sortable(),
                 TextColumn::make('started_at')
@@ -96,7 +90,7 @@ class WorkersRelationManager extends RelationManager
                     DeleteBulkAction::make(),
                 ]),
             ])
-            ->emptyStateHeading('Belum ada teknisi pelaksana')
-            ->emptyStateDescription('Petugas yang menekan "Mulai Pekerjaan" di panel lapangan otomatis tercatat di sini. Anda juga bisa menambah teknisi manual.');
+            ->emptyStateHeading('Belum ada pelaksana')
+            ->emptyStateDescription('Petugas yang menekan "Mulai Pekerjaan" di panel lapangan otomatis tercatat di sini. Anda juga bisa menambah pelaksana manual.');
     }
 }

@@ -4,9 +4,12 @@ namespace App\Filament\App\Resources\WorkOrders\Tables;
 
 use App\Models\WorkOrder;
 use Filament\Actions\ViewAction;
+use Filament\Forms\Components\DatePicker;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Filters\Filter;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
 
 class WorkOrdersTable
 {
@@ -74,6 +77,23 @@ class WorkOrdersTable
                     ->toggleable(),
             ])
             ->filters([
+                Filter::make('start_period')
+                    ->label('Rentang Tanggal Mulai')
+                    ->schema([
+                        DatePicker::make('from')
+                            ->label('Dari Tanggal'),
+                        DatePicker::make('until')
+                            ->label('Sampai Tanggal'),
+                    ])
+                    ->query(fn (Builder $query, array $data): Builder => $query
+                        ->when(
+                            $data['from'] ?? null,
+                            fn (Builder $query, $date) => $query->whereDate('start_at', '>=', $date),
+                        )
+                        ->when(
+                            $data['until'] ?? null,
+                            fn (Builder $query, $date) => $query->whereDate('start_at', '<=', $date),
+                        )),
                 SelectFilter::make('status')
                     ->label('Status')
                     ->options(WorkOrder::STATUSES),

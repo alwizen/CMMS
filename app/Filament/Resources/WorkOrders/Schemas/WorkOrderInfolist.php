@@ -205,7 +205,7 @@ class WorkOrderInfolist
                             ]),
                     ]),
 
-                Section::make('Teknisi Pelaksana')
+                Section::make('Pelaksana')
                     ->icon('heroicon-o-users')
                     ->columnSpanFull()
                     ->description('Terisi otomatis saat petugas menekan "Mulai Pekerjaan" di panel lapangan.')
@@ -215,21 +215,21 @@ class WorkOrderInfolist
                             ->placeholder('Belum diambil'),
                         RepeatableEntry::make('workOrderWorkers')
                             ->hiddenLabel()
-                            ->placeholder('Belum ada teknisi pelaksana tercatat.')
+                            ->placeholder('Belum ada pelaksana tercatat.')
                             ->columnSpanFull()
                             ->table([
-                                TableColumn::make('Teknisi'),
-                                TableColumn::make('Role'),
+                                TableColumn::make('Pelaksana'),
+                                TableColumn::make('Fungsi'),
                                 TableColumn::make('Mulai'),
                                 TableColumn::make('Selesai'),
                                 TableColumn::make('Note'),
                             ])
                             ->schema([
                                 TextEntry::make('user.name')
-                                    ->label('Teknisi')
+                                    ->label('Pelaksana')
                                     ->placeholder('-'),
-                                TextEntry::make('role')
-                                    ->label('Role')
+                                TextEntry::make('user.fungsi')
+                                    ->label('Fungsi')
                                     ->placeholder('-'),
                                 TextEntry::make('started_at')
                                     ->label('Mulai')
