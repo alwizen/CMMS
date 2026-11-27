@@ -8,6 +8,8 @@ use App\Http\Resources\HousekeepingRequestResource;
 use App\Models\HousekeepingFacility;
 use App\Models\HousekeepingRequest;
 use App\Support\HousekeepingPlanGenerator;
+use App\Support\ImageCompressor;
+use App\Support\Media;
 use App\Support\UserVisibility;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -201,7 +203,7 @@ class HousekeepingRequestController extends Controller
         }
 
         foreach ($housekeepingRequest->photo ?? [] as $photo) {
-            Storage::disk('public')->delete($photo);
+            Storage::disk(Media::disk())->delete($photo);
         }
 
         $housekeepingRequest->delete();
@@ -263,7 +265,7 @@ class HousekeepingRequestController extends Controller
         ]);
 
         $photos = $housekeepingRequest->photo ?? [];
-        $path = $request->input('path');
+        $path = Media::pathFromUrl($request->input('path'));
 
         if (! in_array($path, $photos, true)) {
             return response()->json([
@@ -272,7 +274,7 @@ class HousekeepingRequestController extends Controller
             ], 404);
         }
 
-        Storage::disk('public')->delete($path);
+        Storage::disk(Media::disk())->delete($path);
 
         $housekeepingRequest->update([
             'photo' => array_values(array_diff($photos, [$path])),
@@ -416,7 +418,7 @@ class HousekeepingRequestController extends Controller
         $paths = array_values($existing);
 
         foreach ($request->file('photos', []) as $file) {
-            $paths[] = $file->store('housekeeping/requests', 'public');
+            $paths[] = ImageCompressor::storeAsWebp($file, 'housekeeping/requests');
         }
 
         return array_values(array_slice($paths, 0, 5));

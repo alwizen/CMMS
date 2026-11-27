@@ -6,6 +6,7 @@ use App\Filament\Resources\WorkOrders\WorkOrderResource;
 use App\Models\MaintenanceHistory;
 use App\Models\WorkOrderActivity;
 use App\Support\Downtime;
+use App\Support\Media;
 use Filament\Infolists\Components\IconEntry;
 use Filament\Infolists\Components\ImageEntry;
 use Filament\Infolists\Components\RepeatableEntry;
@@ -185,7 +186,7 @@ class MaintenanceHistoryInfolist
                                     ->placeholder('-'),
                                 ImageEntry::make('photos')
                                     ->label('Foto Dokumentasi')
-                                    ->disk('public')
+                                    ->disk(Media::disk())
                                     ->stacked()
                                     ->limit(3)
                                     ->placeholder('-'),

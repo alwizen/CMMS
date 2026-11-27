@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Auth\InvitationController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\DailyReportPdfController;
 use App\Http\Controllers\FieldDailyReportPdfController;
@@ -15,6 +16,14 @@ Route::post('/login', [LoginController::class, 'store'])
     ->middleware('throttle:10,1')
     ->name('login.store');
 Route::post('/logout', [LoginController::class, 'destroy'])->name('logout');
+
+// Undangan pengguna (invite-only): tautan bertanda tangan, sekali pakai.
+Route::get('/invitation/{user}', [InvitationController::class, 'show'])
+    ->middleware(['signed', 'throttle:30,1'])
+    ->name('invitations.accept');
+Route::post('/invitation/{user}', [InvitationController::class, 'store'])
+    ->middleware(['signed', 'throttle:30,1'])
+    ->name('invitations.store');
 
 Route::middleware(['auth'])->group(function () {
     Route::get('/admin/maintenance-histories/pdf', MaintenanceHistoryPdfController::class)

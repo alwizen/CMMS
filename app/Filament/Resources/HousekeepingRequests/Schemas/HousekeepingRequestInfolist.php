@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\HousekeepingRequests\Schemas;
 
+use App\Support\Media;
 use Filament\Infolists\Components\ImageEntry;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Schemas\Components\Section;
@@ -57,7 +58,7 @@ class HousekeepingRequestInfolist
                             ->placeholder('-'),
                         ImageEntry::make('photo')
                             ->label('Foto')
-                            ->disk('public')
+                            ->disk(Media::disk())
                             ->size(160)
                             ->columnSpanFull()
                             ->placeholder('-'),

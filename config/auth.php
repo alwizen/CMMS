@@ -114,4 +114,16 @@ return [
 
     'password_timeout' => env('AUTH_PASSWORD_TIMEOUT', 10800),
 
+    /*
+    |--------------------------------------------------------------------------
+    | Invitation Expiry
+    |--------------------------------------------------------------------------
+    |
+    | Berapa hari tautan undangan pengguna tetap berlaku sebelum harus
+    | dikirim ulang oleh super admin.
+    |
+    */
+
+    'invitation_expiry_days' => env('AUTH_INVITATION_EXPIRY_DAYS', 7),
+
 ];

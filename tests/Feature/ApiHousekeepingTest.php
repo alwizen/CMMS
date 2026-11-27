@@ -8,6 +8,7 @@ use App\Models\HousekeepingManpower;
 use App\Models\HousekeepingPlan;
 use App\Models\HousekeepingPlanTask;
 use App\Models\User;
+use App\Support\Media;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
@@ -212,8 +213,8 @@ class ApiHousekeepingTest extends TestCase
 
         $response = $this->getJson('/api/housekeeping-plans/'.$this->plan->id)->assertOk();
 
-        $response->assertJsonPath('data.tasks.0.photo_before.0', 'housekeeping/plan-tasks/before/x.jpg')
-            ->assertJsonPath('data.tasks.0.photo_after.0', 'housekeeping/plan-tasks/after/y.jpg')
+        $response->assertJsonPath('data.tasks.0.photo_before.0', Media::url('housekeeping/plan-tasks/before/x.jpg'))
+            ->assertJsonPath('data.tasks.0.photo_after.0', Media::url('housekeeping/plan-tasks/after/y.jpg'))
             ->assertJsonPath('data.progress_percent', 100)
             ->assertJsonPath('data.sla_days', 1)
             ->assertJsonMissingPath('data.facilities');

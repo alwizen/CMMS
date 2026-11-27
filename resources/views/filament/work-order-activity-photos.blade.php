@@ -32,7 +32,7 @@
     @else
         <div style="display:grid; grid-template-columns:repeat(auto-fill, minmax(200px, 1fr)); gap:0.75rem;">
             @foreach ($photos as $index => $photo)
-                @php($url = Storage::disk('public')->url($photo))
+                @php($url = \App\Support\Media::url($photo))
                 <a href="{{ $url }}" target="_blank" rel="noopener noreferrer"
                    style="display:block; overflow:hidden; border:1px solid #e5e7eb; border-radius:0.5rem; background:#f3f4f6; text-decoration:none;">
                     <img src="{{ $url }}" alt="Foto {{ $index + 1 }}" loading="lazy"

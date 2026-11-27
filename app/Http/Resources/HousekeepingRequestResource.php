@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use App\Support\Media;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -17,7 +18,7 @@ class HousekeepingRequestResource extends JsonResource
             'description' => $this->description,
             'priority' => $this->priority,
             'status' => $this->status,
-            'photo' => $this->photo ?? [],
+            'photo' => Media::urls($this->photo),
             'approval_notes' => $this->approval_notes,
             'approved_at' => $this->approved_at?->toIso8601String(),
             'created_at' => $this->created_at?->toIso8601String(),

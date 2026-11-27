@@ -5,6 +5,7 @@ namespace App\Filament\Resources\WorkOrders\Schemas;
 use App\Models\Activity;
 use App\Models\WorkOrder;
 use App\Models\WorkOrderActivity;
+use App\Support\Media;
 use Filament\Infolists\Components\IconEntry;
 use Filament\Infolists\Components\ImageEntry;
 use Filament\Infolists\Components\RepeatableEntry;
@@ -194,7 +195,7 @@ class WorkOrderInfolist
                                     ->placeholder('-'),
                                 ImageEntry::make('photos')
                                     ->label('Foto')
-                                    ->disk('public')
+                                    ->disk(Media::disk())
                                     ->stacked()
                                     ->limit(3),
                                 TextEntry::make('executed_at')

@@ -3,6 +3,7 @@
 namespace App\Http\Resources;
 
 use App\Models\WorkOrderActivity;
+use App\Support\Media;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -22,7 +23,7 @@ class WorkOrderActivityResource extends JsonResource
             'unit' => $this->unit,
             'executed' => $this->executed,
             'note' => $this->note,
-            'photos' => $this->photos ?? [],
+            'photos' => Media::urls($this->photos),
             'answer_type' => $isQualitative ? 'qualitative' : 'quantitative',
             'is_qualitative' => $isQualitative,
             // Android memakai daftar ini untuk dropdown Pre Inspection & Final Result.

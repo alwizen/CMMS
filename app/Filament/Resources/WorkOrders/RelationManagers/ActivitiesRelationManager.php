@@ -4,6 +4,8 @@ namespace App\Filament\Resources\WorkOrders\RelationManagers;
 
 use App\Models\Activity;
 use App\Models\WorkOrderActivity;
+use App\Support\ImageCompressor;
+use App\Support\Media;
 use Filament\Actions\Action;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\CreateAction;
@@ -110,9 +112,9 @@ class ActivitiesRelationManager extends RelationManager
                             ->multiple()
                             ->maxFiles(3)
                             ->image()
-                            ->disk('public')
+                            ->disk(Media::disk())
                             ->directory('work-order-activities')
-                            ->visibility('public')
+                            ->saveUploadedFileUsing(ImageCompressor::storeFilamentUpload(...))
                             ->reorderable()
                             ->columnSpanFull(),
                     ])

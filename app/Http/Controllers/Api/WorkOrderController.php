@@ -7,6 +7,8 @@ use App\Http\Resources\WorkOrderActivityResource;
 use App\Http\Resources\WorkOrderResource;
 use App\Models\WorkOrder;
 use App\Models\WorkOrderActivity;
+use App\Support\ImageCompressor;
+use App\Support\Media;
 use App\Support\UserVisibility;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -263,7 +265,7 @@ class WorkOrderController extends Controller
         $paths = $existing;
 
         foreach ($request->file('photos', []) as $file) {
-            $paths[] = $file->store('work-order-activities', 'public');
+            $paths[] = ImageCompressor::storeAsWebp($file, 'work-order-activities');
         }
 
         $workOrderActivity->update(['photos' => $paths]);
@@ -300,7 +302,7 @@ class WorkOrderController extends Controller
         ]);
 
         $photos = $workOrderActivity->photos ?? [];
-        $path = $request->input('path');
+        $path = Media::pathFromUrl($request->input('path'));
 
         if (! in_array($path, $photos, true)) {
             return response()->json([
@@ -309,7 +311,7 @@ class WorkOrderController extends Controller
             ], 404);
         }
 
-        Storage::disk('public')->delete($path);
+        Storage::disk(Media::disk())->delete($path);
 
         $workOrderActivity->update([
             'photos' => array_values(array_diff($photos, [$path])),

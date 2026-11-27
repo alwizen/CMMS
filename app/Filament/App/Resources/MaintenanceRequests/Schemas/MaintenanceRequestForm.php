@@ -5,6 +5,8 @@ namespace App\Filament\App\Resources\MaintenanceRequests\Schemas;
 use App\Models\Equipment;
 use App\Models\EquipmentType;
 use App\Models\MaintenanceRequest;
+use App\Support\ImageCompressor;
+use App\Support\Media;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Hidden;
@@ -93,8 +95,9 @@ class MaintenanceRequestForm
                             ->image()
                             ->multiple()
                             ->maxFiles(3)
-                            ->disk('public')
+                            ->disk(Media::disk())
                             ->directory('maintenance-requests')
+                            ->saveUploadedFileUsing(ImageCompressor::storeFilamentUpload(...))
                             ->columnSpanFull(),
                     ])
                     ->columns(2),

@@ -12,6 +12,8 @@ use App\Models\HousekeepingTask;
 use App\Support\HousekeepingPlanGenerator;
 use App\Support\HousekeepingRole;
 use App\Support\HousekeepingVisibility;
+use App\Support\ImageCompressor;
+use App\Support\Media;
 use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -224,7 +226,7 @@ class HousekeepingPlanController extends Controller
         $paths = $existing;
 
         foreach ($files as $file) {
-            $paths[] = $file->store($directory, 'public');
+            $paths[] = ImageCompressor::storeAsWebp($file, $directory);
         }
 
         $task->update([$column => array_values($paths)]);
@@ -251,7 +253,7 @@ class HousekeepingPlanController extends Controller
 
         $type = $request->input('type');
         $column = $type === 'before' ? 'photo_before' : 'photo_after';
-        $path = $request->input('path');
+        $path = Media::pathFromUrl($request->input('path'));
 
         $photos = $task->{$column} ?? [];
 
@@ -262,7 +264,7 @@ class HousekeepingPlanController extends Controller
             ], 404);
         }
 
-        Storage::disk('public')->delete($path);
+        Storage::disk(Media::disk())->delete($path);
 
         $task->update([
             $column => array_values(array_diff($photos, [$path])),

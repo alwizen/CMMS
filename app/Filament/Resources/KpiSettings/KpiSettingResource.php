@@ -32,7 +32,7 @@ class KpiSettingResource extends Resource
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedAdjustmentsHorizontal;
 
-    protected static string|UnitEnum|null $navigationGroup = 'KPI';
+    protected static string|UnitEnum|null $navigationGroup = 'Performance';
 
     protected static ?int $navigationSort = 2;
 

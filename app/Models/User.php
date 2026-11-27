@@ -10,14 +10,15 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Jeffgreco13\FilamentBreezy\Traits\TwoFactorAuthenticatable;
 use Laravel\Sanctum\HasApiTokens;
 use Spatie\Permission\Traits\HasRoles;
 
-#[Fillable(['name', 'email', 'password', 'employee_number', 'phone', 'fungsi', 'status'])]
+#[Fillable(['name', 'email', 'password', 'email_verified_at', 'employee_number', 'phone', 'fungsi', 'status', 'invitation_token', 'invited_at', 'invitation_accepted_at'])]
 #[Hidden(['password', 'remember_token'])]
 class User extends Authenticatable implements FilamentUser
 {
-    use HasApiTokens, HasFactory, HasRoles, Notifiable;
+    use HasApiTokens, HasFactory, HasRoles, Notifiable, TwoFactorAuthenticatable;
 
     /**
      * Role yang boleh membuka panel admin (supervisor, pengawas, super admin).
@@ -125,7 +126,17 @@ class User extends Authenticatable implements FilamentUser
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
             'status' => 'boolean',
+            'invited_at' => 'datetime',
+            'invitation_accepted_at' => 'datetime',
         ];
+    }
+
+    /**
+     * Undangan masih menunggu diterima (belum set password).
+     */
+    public function hasPendingInvitation(): bool
+    {
+        return filled($this->invitation_token) && $this->invitation_accepted_at === null;
     }
 
     /**

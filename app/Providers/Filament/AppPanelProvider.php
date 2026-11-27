@@ -22,6 +22,7 @@ use Illuminate\Foundation\Http\Middleware\PreventRequestForgery;
 use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
+use Jeffgreco13\FilamentBreezy\BreezyCore;
 
 class AppPanelProvider extends PanelProvider
 {
@@ -30,6 +31,7 @@ class AppPanelProvider extends PanelProvider
         return $panel
             ->id('app')
             ->path('app')
+            ->viteTheme('resources/css/filament/app/theme.css')
             ->maxContentWidth(Width::Full)
             ->globalSearch(position: GlobalSearchPosition::Sidebar)
             ->databaseNotifications(position: DatabaseNotificationsPosition::Sidebar)
@@ -38,7 +40,7 @@ class AppPanelProvider extends PanelProvider
             ->databaseNotifications()
             ->sidebarCollapsibleOnDesktop()
             ->readOnlyRelationManagersOnResourceViewPagesByDefault(false)
-            ->profile()
+            // ->profile()
             ->brandLogo(asset('img/lg.png'))
             ->darkMode(false)
             ->favicon(asset('img/logo.svg'))
@@ -49,6 +51,14 @@ class AppPanelProvider extends PanelProvider
             ])
             ->plugin(
                 PressFilamentTheme::make()->telex()->rail(false)
+            )
+            ->plugin(
+                BreezyCore::make()
+                    ->myProfile(
+                        shouldRegisterUserMenu: true,
+                        shouldRegisterNavigation: false,
+                    )
+                    ->enableTwoFactorAuthentication(force: false),
             )
             ->discoverResources(in: app_path('Filament/App/Resources'), for: 'App\Filament\App\Resources')
             ->discoverPages(in: app_path('Filament/App/Pages'), for: 'App\Filament\App\Pages')

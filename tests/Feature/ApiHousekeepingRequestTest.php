@@ -11,6 +11,7 @@ use App\Models\HousekeepingRequest;
 use App\Models\HousekeepingTask;
 use App\Models\Setting;
 use App\Models\User;
+use App\Support\Media;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
@@ -195,7 +196,7 @@ class ApiHousekeepingRequestTest extends TestCase
         $response->assertJsonCount(1, 'data.photo');
 
         $photo = $response->json('data.photo.0');
-        Storage::disk('public')->assertExists($photo);
+        Storage::disk('public')->assertExists(Media::pathFromUrl($photo));
     }
 
     public function test_index_supports_mine_filter(): void
@@ -308,10 +309,12 @@ class ApiHousekeepingRequestTest extends TestCase
             'photos' => [UploadedFile::fake()->image('a.jpg')],
         ], ['Accept' => 'application/json'])->assertOk();
 
-        $path = $response->json('data.photo.0');
+        $url = $response->json('data.photo.0');
+        $path = Media::pathFromUrl($url);
         Storage::disk('public')->assertExists($path);
 
-        $this->deleteJson("/api/housekeeping-requests/{$request->id}/photos", ['path' => $path])
+        // App mengirim balik URL yang diterimanya; server harus menormalkannya.
+        $this->deleteJson("/api/housekeeping-requests/{$request->id}/photos", ['path' => $url])
             ->assertOk()
             ->assertJsonCount(0, 'data.photo');
 

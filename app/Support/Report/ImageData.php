@@ -2,6 +2,7 @@
 
 namespace App\Support\Report;
 
+use App\Support\Media;
 use Illuminate\Support\Facades\Storage;
 use Throwable;
 
@@ -11,11 +12,13 @@ use Throwable;
  */
 class ImageData
 {
-    public static function dataUri(?string $path, string $disk = 'public'): ?string
+    public static function dataUri(?string $path, ?string $disk = null): ?string
     {
         if (blank($path)) {
             return null;
         }
+
+        $disk ??= Media::disk();
 
         try {
             $storage = Storage::disk($disk);
@@ -44,7 +47,7 @@ class ImageData
      * @param  array<int, string>|null  $paths
      * @return array<int, string>
      */
-    public static function dataUris(?array $paths, int $limit = 2, string $disk = 'public'): array
+    public static function dataUris(?array $paths, int $limit = 2, ?string $disk = null): array
     {
         return collect($paths ?? [])
             ->filter()
@@ -63,7 +66,7 @@ class ImageData
      * @param  array<int, string>|null  $paths
      * @return array<int, string>
      */
-    public static function thumbnailUris(?array $paths, int $limit = 4, int $size = 160, string $disk = 'public'): array
+    public static function thumbnailUris(?array $paths, int $limit = 4, int $size = 160, ?string $disk = null): array
     {
         return collect($paths ?? [])
             ->filter()
@@ -74,11 +77,13 @@ class ImageData
             ->all();
     }
 
-    public static function thumbnailDataUri(?string $path, int $size = 160, string $disk = 'public'): ?string
+    public static function thumbnailDataUri(?string $path, int $size = 160, ?string $disk = null): ?string
     {
         if (blank($path)) {
             return null;
         }
+
+        $disk ??= Media::disk();
 
         try {
             $storage = Storage::disk($disk);

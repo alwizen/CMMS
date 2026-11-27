@@ -4,6 +4,7 @@ namespace App\Filament\Resources\MaintenanceRequests\Schemas;
 
 use App\Models\MaintenanceRequest;
 use App\Support\Downtime;
+use App\Support\Media;
 use Filament\Infolists\Components\ImageEntry;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Schemas\Components\Section;
@@ -96,7 +97,7 @@ class MaintenanceRequestInfolist
                     ->icon(Heroicon::OutlinedPhoto)
                     ->schema([
                         ImageEntry::make('photo')
-                            ->disk('public')
+                            ->disk(Media::disk())
                             ->size(400)
                             ->placeholder('Tidak ada foto'),
                     ])

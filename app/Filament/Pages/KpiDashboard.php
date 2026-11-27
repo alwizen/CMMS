@@ -40,7 +40,7 @@ class KpiDashboard extends Page implements HasTable
 
     protected static ?string $title = 'KPI Dashboard';
 
-    protected static string|UnitEnum|null $navigationGroup = 'KPI';
+    protected static string|UnitEnum|null $navigationGroup = 'Performance';
 
     protected static ?int $navigationSort = 1;
 

@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\HousekeepingPlans\Schemas;
 
 use App\Models\HousekeepingPlan;
+use App\Support\Media;
 use Filament\Forms\Components\Repeater\TableColumn;
 use Filament\Infolists\Components\ImageEntry;
 use Filament\Infolists\Components\RepeatableEntry;
@@ -141,12 +142,12 @@ class HousekeepingPlanInfolist
                                     }),
                                 ImageEntry::make('photo_before')
                                     ->label('Before')
-                                    ->disk('public')
+                                    ->disk(Media::disk())
                                     ->size(60)
                                     ->placeholder('-'),
                                 ImageEntry::make('photo_after')
                                     ->label('After')
-                                    ->disk('public')
+                                    ->disk(Media::disk())
                                     ->size(60)
                                     ->placeholder('-'),
                                 TextEntry::make('started_at')

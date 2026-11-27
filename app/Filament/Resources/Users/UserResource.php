@@ -44,11 +44,9 @@ class UserResource extends Resource
                 TextInput::make('email')
                     ->label('Email address')
                     ->email()
-                    ->required(),
+                    ->required()
+                    ->unique(ignoreRecord: true),
                 DateTimePicker::make('email_verified_at'),
-                TextInput::make('password')
-                    ->password()
-                    ->required(),
                 TextInput::make('employee_number'),
                 TextInput::make('phone')
                     ->tel(),

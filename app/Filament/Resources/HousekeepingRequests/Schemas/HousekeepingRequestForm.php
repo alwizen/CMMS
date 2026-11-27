@@ -5,6 +5,8 @@ namespace App\Filament\Resources\HousekeepingRequests\Schemas;
 use App\Models\HousekeepingArea;
 use App\Models\HousekeepingFacility;
 use App\Models\HousekeepingRequest;
+use App\Support\ImageCompressor;
+use App\Support\Media;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Select;
@@ -76,8 +78,9 @@ class HousekeepingRequestForm
                             ->image()
                             ->multiple()
                             ->maxFiles(3)
-                            ->disk('public')
+                            ->disk(Media::disk())
                             ->directory('housekeeping/requests')
+                            ->saveUploadedFileUsing(ImageCompressor::storeFilamentUpload(...))
                             ->columnSpanFull(),
                     ])
                     ->columns(2),

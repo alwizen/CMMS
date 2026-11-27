@@ -29,8 +29,8 @@ class Activity extends Model
     public const CLASSIFICATIONS = [
         'preventive' => 'Preventive',
         'corrective' => 'Corrective',
-        'predictive' => 'Predictive',
-        'condition_based' => 'Condition-Based',
+        // 'predictive' => 'Predictive',
+        // 'condition_based' => 'Condition-Based',
     ];
 
     /**

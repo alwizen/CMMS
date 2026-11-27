@@ -6,6 +6,8 @@ use App\Models\HousekeepingFacility;
 use App\Models\HousekeepingPlanTask;
 use App\Models\HousekeepingTask;
 use App\Support\HousekeepingRole;
+use App\Support\ImageCompressor;
+use App\Support\Media;
 use Filament\Actions\Action;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\CreateAction;
@@ -157,9 +159,9 @@ class TasksRelationManager extends RelationManager
                             ->image()
                             ->multiple()
                             ->maxFiles(5)
-                            ->disk('public')
+                            ->disk(Media::disk())
                             ->directory('housekeeping/plan-tasks/before')
-                            ->visibility('public')
+                            ->saveUploadedFileUsing(ImageCompressor::storeFilamentUpload(...))
                             ->required(),
                     ])
                     ->action(function (HousekeepingPlanTask $record, array $data): void {
@@ -237,9 +239,9 @@ class TasksRelationManager extends RelationManager
                             ->image()
                             ->multiple()
                             ->maxFiles(5)
-                            ->disk('public')
+                            ->disk(Media::disk())
                             ->directory('housekeeping/plan-tasks/after')
-                            ->visibility('public')
+                            ->saveUploadedFileUsing(ImageCompressor::storeFilamentUpload(...))
                             ->required(),
                     ])
                     ->action(function (HousekeepingPlanTask $record, array $data): void {

@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\MaintenanceRequestResource;
 use App\Models\MaintenanceRequest;
 use App\Support\DocumentNumber;
+use App\Support\ImageCompressor;
+use App\Support\Media;
 use App\Support\UserVisibility;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -100,7 +102,7 @@ class MaintenanceRequestController extends Controller
         $photoPaths = [];
         if ($request->hasFile('photo')) {
             foreach ($request->file('photo') as $file) {
-                $photoPaths[] = $file->store('maintenance-requests', 'public');
+                $photoPaths[] = ImageCompressor::storeAsWebp($file, 'maintenance-requests');
             }
         }
 
@@ -164,12 +166,12 @@ class MaintenanceRequestController extends Controller
         if ($request->hasFile('photo')) {
             if ($maintenanceRequest->photo) {
                 foreach ($maintenanceRequest->photo as $oldPhoto) {
-                    Storage::disk('public')->delete($oldPhoto);
+                    Storage::disk(Media::disk())->delete($oldPhoto);
                 }
             }
             $photoPaths = [];
             foreach ($request->file('photo') as $file) {
-                $photoPaths[] = $file->store('maintenance-requests', 'public');
+                $photoPaths[] = ImageCompressor::storeAsWebp($file, 'maintenance-requests');
             }
             $data['photo'] = $photoPaths;
         }
@@ -191,7 +193,7 @@ class MaintenanceRequestController extends Controller
 
         if ($maintenanceRequest->photo) {
             foreach ($maintenanceRequest->photo as $photo) {
-                Storage::disk('public')->delete($photo);
+                Storage::disk(Media::disk())->delete($photo);
             }
         }
 

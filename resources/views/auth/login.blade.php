@@ -399,6 +399,12 @@
                     <p>Gunakan akun yang sudah terdaftar. Sistem akan mengarahkan Anda ke panel yang sesuai.</p>
                 </div>
 
+                @if (session('status'))
+                    <div class="alert" role="status" style="border-color:#bbf7d0;background:#f0fdf4;color:#166534;">
+                        <span>{{ session('status') }}</span>
+                    </div>
+                @endif
+
                 @if ($errors->any())
                     <div class="alert" role="alert">
                         <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">

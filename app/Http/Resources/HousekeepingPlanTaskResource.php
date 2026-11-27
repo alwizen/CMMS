@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use App\Support\Media;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -14,8 +15,8 @@ class HousekeepingPlanTaskResource extends JsonResource
             'name' => $this->name,
             'status' => $this->status,
             'note' => $this->note,
-            'photo_before' => $this->photo_before ?? [],
-            'photo_after' => $this->photo_after ?? [],
+            'photo_before' => Media::urls($this->photo_before),
+            'photo_after' => Media::urls($this->photo_after),
             'started_at' => $this->started_at?->toIso8601String(),
             'completed_at' => $this->completed_at?->toIso8601String(),
             'facility' => $this->whenLoaded('facility', fn () => $this->facility ? [
