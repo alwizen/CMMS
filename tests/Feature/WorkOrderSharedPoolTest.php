@@ -139,6 +139,12 @@ class WorkOrderSharedPoolTest extends TestCase
     {
         $wo = $this->generate();
 
+        // Checklist baru bisa diisi setelah pekerjaan dimulai. WO dibuat
+        // berjalan tanpa pemilik (mis. dimulai oleh supervisor), sehingga
+        // eksekusi checklist oleh petugas pertama tetap mengklaim WO.
+        $wo->update(['status' => WorkOrder::STATUSES['In Progress']]);
+        $this->assertTrue($wo->fresh()->isUnclaimed());
+
         $activity = WorkOrderActivity::create([
             'work_order_id' => $wo->id,
             'name' => 'Cek',

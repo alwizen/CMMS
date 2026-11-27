@@ -40,6 +40,7 @@ class WorkOrderReportPdfController extends Controller
             'maintenanceRequest',
             'workOrderActivities.activity',
             'workOrderWorkers.user',
+            'findings',
         ]);
 
         $activities = $workOrder->workOrderActivities

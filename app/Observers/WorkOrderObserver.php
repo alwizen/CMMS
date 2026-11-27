@@ -5,6 +5,7 @@ namespace App\Observers;
 use App\Models\MaintenanceHistory;
 use App\Models\MaintenanceRequest;
 use App\Models\WorkOrder;
+use App\Models\WorkOrderFinding;
 use App\Notifications\WorkOrderPendingReviewNotification;
 use App\Support\DocumentNumber;
 use App\Support\Notify;
@@ -94,6 +95,7 @@ class WorkOrderObserver
         ) {
             $this->createMaintenanceHistory($workOrder);
             $this->syncRequestStatus($workOrder);
+            $this->resolveFindings($workOrder);
         }
     }
 
@@ -225,6 +227,26 @@ class WorkOrderObserver
         if ($allClosed && $anyFinalized) {
             $request->update(['status' => MaintenanceRequest::STATUSES['Completed']]);
         }
+    }
+
+    /**
+     * WO korektif yang berasal dari temuan selesai & disetujui: tandai temuan
+     * terkait sebagai Resolved.
+     */
+    private function resolveFindings(WorkOrder $workOrder): void
+    {
+        if (! $workOrder->maintenance_request_id) {
+            return;
+        }
+
+        WorkOrderFinding::query()
+            ->where('maintenance_request_id', $workOrder->maintenance_request_id)
+            ->where('status', WorkOrderFinding::STATUSES['Requested'])
+            ->update([
+                'status' => WorkOrderFinding::STATUSES['Resolved'],
+                'resolution_work_order_id' => $workOrder->id,
+                'resolved_at' => now(),
+            ]);
     }
 
     public function deleted(WorkOrder $workOrder): void {}

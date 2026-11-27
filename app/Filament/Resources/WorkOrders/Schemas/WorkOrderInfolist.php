@@ -5,6 +5,7 @@ namespace App\Filament\Resources\WorkOrders\Schemas;
 use App\Models\Activity;
 use App\Models\WorkOrder;
 use App\Models\WorkOrderActivity;
+use App\Models\WorkOrderFinding;
 use App\Support\Media;
 use Filament\Infolists\Components\IconEntry;
 use Filament\Infolists\Components\ImageEntry;
@@ -201,6 +202,57 @@ class WorkOrderInfolist
                                 TextEntry::make('executed_at')
                                     ->label('Waktu Eksekusi')
                                     ->dateTime('d M Y H:i')
+                                    ->placeholder('-'),
+                            ]),
+                    ]),
+
+                Section::make('Temuan')
+                    ->icon('heroicon-o-exclamation-triangle')
+                    ->columnSpanFull()
+                    ->description('Temuan terbentuk otomatis dari hasil checklist bermasalah (Poor/Not Working atau di luar batas).')
+                    ->schema([
+                        RepeatableEntry::make('findings')
+                            ->hiddenLabel()
+                            ->placeholder('Tidak ada temuan.')
+                            ->columnSpanFull()
+                            ->table([
+                                TableColumn::make('No. Temuan'),
+                                TableColumn::make('Aktivitas'),
+                                TableColumn::make('Hasil'),
+                                TableColumn::make('Severity'),
+                                TableColumn::make('Status'),
+                                TableColumn::make('Tindak Lanjut'),
+                            ])
+                            ->schema([
+                                TextEntry::make('finding_number')
+                                    ->label('No. Temuan'),
+                                TextEntry::make('activity_name')
+                                    ->label('Aktivitas')
+                                    ->state(fn (WorkOrderFinding $record): string => $record->displayName()),
+                                TextEntry::make('result')
+                                    ->label('Hasil')
+                                    ->placeholder('-'),
+                                TextEntry::make('severity')
+                                    ->label('Severity')
+                                    ->badge()
+                                    ->color(fn (string $state): string => match ($state) {
+                                        'Critical' => 'danger',
+                                        'High' => 'warning',
+                                        'Medium' => 'info',
+                                        default => 'gray',
+                                    }),
+                                TextEntry::make('status')
+                                    ->label('Status')
+                                    ->badge()
+                                    ->formatStateUsing(fn (string $state): string => WorkOrderFinding::STATUSES[$state] ?? $state)
+                                    ->color(fn (string $state): string => match ($state) {
+                                        'Open' => 'warning',
+                                        'Requested' => 'info',
+                                        'Resolved' => 'success',
+                                        default => 'gray',
+                                    }),
+                                TextEntry::make('maintenanceRequest.request_number')
+                                    ->label('Tindak Lanjut')
                                     ->placeholder('-'),
                             ]),
                     ]),

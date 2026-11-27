@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Support\WorkOrderFindingSync;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
@@ -51,6 +52,19 @@ class WorkOrderActivity extends Model
             if (! $activity->executed) {
                 $activity->executed_at = null;
             }
+        });
+
+        // Hasil bermasalah otomatis menjadi temuan; temuan Open diabaikan
+        // kembali bila hasil diperbaiki.
+        static::saved(function (WorkOrderActivity $activity): void {
+            WorkOrderFindingSync::sync($activity);
+        });
+
+        static::deleting(function (WorkOrderActivity $activity): void {
+            WorkOrderFinding::query()
+                ->where('work_order_activity_id', $activity->id)
+                ->where('status', WorkOrderFinding::STATUSES['Open'])
+                ->delete();
         });
     }
 

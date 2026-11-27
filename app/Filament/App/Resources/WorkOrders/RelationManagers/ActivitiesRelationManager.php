@@ -2,6 +2,7 @@
 
 namespace App\Filament\App\Resources\WorkOrders\RelationManagers;
 
+use App\Filament\App\Resources\WorkOrders\WorkOrderResource;
 use App\Models\WorkOrder;
 use App\Models\WorkOrderActivity;
 use App\Support\ImageCompressor;
@@ -154,15 +155,20 @@ class ActivitiesRelationManager extends RelationManager
                     ->button()
                     ->visible(fn (WorkOrderActivity $record): bool => (bool) auth()->user()?->can('Update:WorkOrder')
                         && (bool) $record->workOrder?->isExecutable()
-                        && in_array($record->workOrder?->status, [
-                            WorkOrder::STATUSES['Pending'],
-                            WorkOrder::STATUSES['In Progress'],
-                        ], true)
+                        // Checklist baru bisa diisi setelah pekerjaan dimulai.
+                        && $record->workOrder?->status === WorkOrder::STATUSES['In Progress']
                         && ! $record->workOrder?->isLockedFor(auth()->user()))
                     ->after(function (WorkOrderActivity $record): void {
                         if ($record->executed) {
                             $record->workOrder?->claimBy(auth()->id());
                         }
+
+                        // Muat ulang halaman agar tombol "Tandai Selesai" di header
+                        // langsung memperbarui status aktif/nonaktifnya berdasarkan
+                        // jumlah checklist yang sudah diisi.
+                        $this->redirect(
+                            WorkOrderResource::getUrl('view', ['record' => $record->work_order_id]),
+                        );
                     }),
             ])
             ->emptyStateHeading('Belum ada item checklist')

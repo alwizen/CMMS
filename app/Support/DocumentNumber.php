@@ -24,6 +24,7 @@ class DocumentNumber
         'document' => 'DOC-{YYYY}{MM}-{SEQ}',
         'housekeeping_plan' => 'HKP-{YYYY}{MM}{DD}-{SEQ}',
         'housekeeping_request' => 'HKR-{YYYY}{MM}{DD}-{SEQ}',
+        'finding' => 'TMD-{YYYY}{MM}{DD}-{SEQ}',
     ];
 
     /**
@@ -35,6 +36,7 @@ class DocumentNumber
         'document' => 'Document',
         'housekeeping_plan' => 'Housekeeping Plan',
         'housekeeping_request' => 'Housekeeping Request',
+        'finding' => 'Temuan',
     ];
 
     public static function format(string $type): string

@@ -7,6 +7,7 @@ use App\Http\Controllers\Api\DocumentController;
 use App\Http\Controllers\Api\DocumentFileController;
 use App\Http\Controllers\Api\DowntimeController;
 use App\Http\Controllers\Api\EquipmentController;
+use App\Http\Controllers\Api\FindingController;
 use App\Http\Controllers\Api\HousekeepingAreaController;
 use App\Http\Controllers\Api\HousekeepingDashboardController;
 use App\Http\Controllers\Api\HousekeepingPlanController;
@@ -54,6 +55,10 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/maintenance-requests', [MaintenanceRequestController::class, 'store']);
     Route::put('/maintenance-requests/{id}', [MaintenanceRequestController::class, 'update']);
     Route::delete('/maintenance-requests/{id}', [MaintenanceRequestController::class, 'destroy']);
+
+    Route::get('/findings', [FindingController::class, 'index']);
+    Route::get('/findings/{id}', [FindingController::class, 'show']);
+    Route::post('/findings/{id}/request', [FindingController::class, 'request']);
 
     Route::get('/downtime', [DowntimeController::class, 'index']);
 

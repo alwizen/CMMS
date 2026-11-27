@@ -2,6 +2,7 @@
 
 namespace App\Filament\App\Resources\WorkOrders\Tables;
 
+use App\Models\Activity;
 use App\Models\WorkOrder;
 use Filament\Actions\ViewAction;
 use Filament\Forms\Components\DatePicker;
@@ -100,6 +101,9 @@ class WorkOrdersTable
                 SelectFilter::make('classification')
                     ->label('Classification')
                     ->options(WorkOrder::CLASSIFICATIONS),
+                SelectFilter::make('interval')
+                    ->label('Interval')
+                    ->options(Activity::INTERVALS),
                 SelectFilter::make('approval_status')
                     ->label('Review')
                     ->options(WorkOrder::APPROVAL_STATUSES),

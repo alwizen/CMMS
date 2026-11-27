@@ -176,6 +176,44 @@
         </table>
     @endif
 
+    @if($workOrder->findings->isNotEmpty())
+        <h2>Temuan</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th style="width:22px;">#</th>
+                    <th>No. Temuan</th>
+                    <th>Aktivitas</th>
+                    <th>Tipe</th>
+                    <th>Hasil</th>
+                    <th>Severity</th>
+                    <th>Status</th>
+                    <th>Tindak Lanjut</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach($workOrder->findings as $i => $finding)
+                    <tr>
+                        <td>{{ $i + 1 }}</td>
+                        <td>{{ $finding->finding_number }}</td>
+                        <td>{{ $finding->displayName() }}</td>
+                        <td>{{ \App\Models\WorkOrderFinding::ANSWER_TYPES[$finding->answer_type] ?? $finding->answer_type }}</td>
+                        <td>{{ $finding->result ?? '-' }}</td>
+                        <td>{{ $finding->severity }}</td>
+                        <td>{{ \App\Models\WorkOrderFinding::STATUSES[$finding->status] ?? $finding->status }}</td>
+                        <td>
+                            @if($finding->maintenanceRequest)
+                                {{ $finding->maintenanceRequest->request_number }}
+                            @else
+                                -
+                            @endif
+                        </td>
+                    </tr>
+                @endforeach
+            </tbody>
+        </table>
+    @endif
+
     <h2>Checklist &amp; Hasil Eksekusi</h2>
     <table>
         <thead>

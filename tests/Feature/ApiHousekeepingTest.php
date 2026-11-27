@@ -66,6 +66,52 @@ class ApiHousekeepingTest extends TestCase
             ->assertJsonStructure(['data', 'meta' => ['current_page', 'last_page', 'per_page', 'total']]);
     }
 
+    public function test_index_filters_by_status_and_search(): void
+    {
+        $otherArea = HousekeepingArea::create([
+            'company_id' => $this->area->company_id,
+            'code' => 'parkir',
+            'supervisor_id' => $this->user->id,
+            'name' => 'Parkir Basement',
+        ]);
+
+        HousekeepingPlan::create([
+            'housekeeping_area_id' => $otherArea->id,
+            'plan_date' => now()->subDay(),
+            'status' => 'Completed',
+        ]);
+
+        // Search by area name.
+        $this->getJson('/api/housekeeping-plans?search=Parkir')
+            ->assertOk()
+            ->assertJsonPath('meta.total', 1)
+            ->assertJsonPath('data.0.area.name', 'Parkir Basement');
+
+        // Filter by status.
+        $this->getJson('/api/housekeeping-plans?status=Completed')
+            ->assertOk()
+            ->assertJsonPath('meta.total', 1)
+            ->assertJsonPath('data.0.status', 'Completed');
+    }
+
+    public function test_index_paginates_results(): void
+    {
+        for ($i = 0; $i < 3; $i++) {
+            HousekeepingPlan::create([
+                'housekeeping_area_id' => $this->area->id,
+                'plan_date' => now()->subDays($i + 1),
+                'status' => 'Draft',
+            ]);
+        }
+
+        $response = $this->getJson('/api/housekeeping-plans?per_page=2&page=1')->assertOk();
+
+        $response->assertJsonPath('meta.per_page', 2)
+            ->assertJsonPath('meta.total', 4)
+            ->assertJsonPath('meta.last_page', 2);
+        $this->assertCount(2, $response->json('data'));
+    }
+
     public function test_show_returns_plan_detail_with_tasks_and_manpowers(): void
     {
         $manpower = HousekeepingManpower::create([

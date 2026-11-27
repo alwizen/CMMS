@@ -27,6 +27,7 @@ class ViewWorkOrder extends ViewRecord
                 'technicianCoordinator',
                 'workOrderActivities.activity',
                 'workOrderWorkers.user',
+                'findings',
             ])
             ->findOrFail($key);
     }

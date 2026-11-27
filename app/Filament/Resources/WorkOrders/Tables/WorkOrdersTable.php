@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\WorkOrders\Tables;
 
 use App\Filament\Resources\WorkOrders\Actions\ReviewWorkOrderAction;
+use App\Models\Activity;
 use App\Models\WorkOrder;
 use Filament\Actions\ActionGroup;
 use Filament\Actions\DeleteAction;
@@ -113,6 +114,9 @@ class WorkOrdersTable
                 SelectFilter::make('classification')
                     ->label('Classification')
                     ->options(WorkOrder::CLASSIFICATIONS),
+                SelectFilter::make('interval')
+                    ->label('Interval')
+                    ->options(Activity::INTERVALS),
                 SelectFilter::make('status')
                     ->label('Status')
                     ->options(WorkOrder::STATUSES),

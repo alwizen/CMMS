@@ -100,6 +100,7 @@ class SiteSettings extends Page
                     $this->formatField('housekeeping_plan'),
                     $this->formatField('housekeeping_request'),
                     $this->formatField('document'),
+                    $this->formatField('finding'),
                 ])
                 ->columns(2),
             Section::make('Work Order Otomatis')

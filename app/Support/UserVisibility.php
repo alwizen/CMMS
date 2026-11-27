@@ -5,6 +5,7 @@ namespace App\Support;
 use App\Models\MaintenanceRequest;
 use App\Models\User;
 use App\Models\WorkOrder;
+use App\Models\WorkOrderFinding;
 use Illuminate\Database\Eloquent\Builder;
 
 class UserVisibility
@@ -103,6 +104,34 @@ class UserVisibility
             || $workOrder->issued_by === $user->id
             || (filled($user->fungsi) && $workOrder->fungsi === $user->fungsi)
             || $workOrder->workOrderWorkers()->where('user_id', $user->id)->exists();
+    }
+
+    /**
+     * Temuan yang berasal dari WO yang dapat diakses user.
+     */
+    public static function scopeFindings(Builder $query, ?User $user): Builder
+    {
+        if (! $user || static::hasFullAccess($user)) {
+            return $query;
+        }
+
+        return $query->whereHas(
+            'workOrder',
+            fn (Builder $workOrder) => static::scopeWorkOrders($workOrder, $user),
+        );
+    }
+
+    /**
+     * Pemeriksaan akses per record untuk temuan.
+     */
+    public static function canAccessFinding(WorkOrderFinding $finding, ?User $user): bool
+    {
+        if (! $user || static::hasFullAccess($user)) {
+            return true;
+        }
+
+        return $finding->workOrder !== null
+            && static::canAccessWorkOrder($finding->workOrder, $user);
     }
 
     /**

@@ -275,6 +275,14 @@ class WorkOrder extends Model
     }
 
     /**
+     * Temuan hasil checklist WO ini.
+     */
+    public function findings(): HasMany
+    {
+        return $this->hasMany(WorkOrderFinding::class);
+    }
+
+    /**
      * Catat petugas pelaksana WO (idempotent per user).
      *
      * Dipakai otomatis saat user mulai mengerjakan WO (performed by) agar

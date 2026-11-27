@@ -32,6 +32,9 @@ class FieldPanelPermissions
         'Update:MaintenanceRequest',
         'ViewAny:MaintenanceHistory',
         'View:MaintenanceHistory',
+        // Temuan hasil checklist: dibuat otomatis, petugas menindaklanjuti.
+        'ViewAny:WorkOrderFinding',
+        'View:WorkOrderFinding',
         // Arsip dokumen hanya bisa dilihat/diunduh (tanpa create/update/delete).
         'ViewAny:Document',
         'View:Document',

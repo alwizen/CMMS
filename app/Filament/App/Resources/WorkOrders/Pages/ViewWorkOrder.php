@@ -25,6 +25,7 @@ class ViewWorkOrder extends ViewRecord
                 'technicianCoordinator',
                 'workOrderActivities.activity',
                 'workOrderWorkers.user',
+                'findings',
             ])
             ->findOrFail($key);
     }
@@ -68,14 +69,31 @@ class ViewWorkOrder extends ViewRecord
                         ->title('Pekerjaan dimulai')
                         ->success()
                         ->send();
-                }),
+                })
+                // Muat ulang halaman agar relation manager (tombol isi checklist)
+                // langsung mencerminkan status baru tanpa refresh manual.
+                ->after(fn () => $this->redirectToView()),
             Action::make('complete')
                 ->label('Tandai Selesai')
                 ->icon(Heroicon::OutlinedCheckCircle)
                 ->color('success')
                 ->requiresConfirmation()
                 ->visible(fn (): bool => $this->canExecute() && in_array($this->record->status, [WorkOrder::STATUSES['Pending'], WorkOrder::STATUSES['In Progress']], true))
+                ->disabled(fn (): bool => $this->pendingChecklistCount() > 0)
+                ->tooltip(fn (): ?string => $this->pendingChecklistCount() > 0
+                    ? 'Lengkapi '.$this->pendingChecklistCount().' checklist yang belum diisi sebelum menandai selesai.'
+                    : null)
                 ->action(function (): void {
+                    if ($this->pendingChecklistCount() > 0) {
+                        Notification::make()
+                            ->title('Checklist belum lengkap')
+                            ->body('Masih ada '.$this->pendingChecklistCount().' checklist yang belum diisi. Lengkapi terlebih dahulu sebelum menandai selesai.')
+                            ->warning()
+                            ->send();
+
+                        return;
+                    }
+
                     if (! $this->record->isExecutable()) {
                         $this->notifyNotExecutable();
 
@@ -98,8 +116,20 @@ class ViewWorkOrder extends ViewRecord
                         ->body('Hasil pekerjaan dikirim ke SPV MOS untuk direview.')
                         ->success()
                         ->send();
-                }),
+                })
+                ->after(fn () => $this->redirectToView()),
         ];
+    }
+
+    /**
+     * Kembali ke halaman detail WO dengan state terbaru (memuat ulang
+     * relation manager agar visibilitas tombol checklist ikut diperbarui).
+     */
+    protected function redirectToView(): void
+    {
+        $this->redirect(
+            WorkOrderResource::getUrl('view', ['record' => $this->record->getKey()]),
+        );
     }
 
     /**
@@ -110,6 +140,19 @@ class ViewWorkOrder extends ViewRecord
     {
         return (bool) auth()->user()?->can('Update:WorkOrder')
             && ! $this->record->isLockedFor(auth()->user());
+    }
+
+    /**
+     * Jumlah item checklist yang belum ditandai dieksekusi. WO tidak boleh
+     * diselesaikan selama masih ada checklist yang belum diisi.
+     */
+    protected function pendingChecklistCount(): int
+    {
+        return $this->record->workOrderActivities()
+            ->where(function ($query): void {
+                $query->where('executed', false)->orWhereNull('executed');
+            })
+            ->count();
     }
 
     protected function notifyLocked(): void

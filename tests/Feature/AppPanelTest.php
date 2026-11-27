@@ -375,6 +375,8 @@ class AppPanelTest extends TestCase
     {
         $mos = $this->makeUser('mos', 'MOS PM Reborn');
         $workOrder = $this->workOrder($mos, 'MOS PM Reborn', 'WO-CHECK-001');
+        // Checklist hanya bisa diisi setelah pekerjaan dimulai.
+        $workOrder->update(['status' => WorkOrder::STATUSES['In Progress']]);
 
         $activity = WorkOrderActivity::create([
             'work_order_id' => $workOrder->id,
@@ -470,6 +472,8 @@ class AppPanelTest extends TestCase
     {
         $mos = $this->makeUser('mos', 'MOS PM Reborn');
         $workOrder = $this->workOrder($mos, 'MOS PM Reborn', 'WO-CHECK-003');
+        // Checklist hanya bisa diisi setelah pekerjaan dimulai.
+        $workOrder->update(['status' => WorkOrder::STATUSES['In Progress']]);
 
         $type = $this->equipment->equipmentType;
 
@@ -516,6 +520,8 @@ class AppPanelTest extends TestCase
     {
         $mos = $this->makeUser('mos', 'MOS PM Reborn');
         $workOrder = $this->workOrder($mos, 'MOS PM Reborn', 'WO-CHECK-004');
+        // Checklist hanya bisa diisi setelah pekerjaan dimulai.
+        $workOrder->update(['status' => WorkOrder::STATUSES['In Progress']]);
 
         $type = $this->equipment->equipmentType;
 

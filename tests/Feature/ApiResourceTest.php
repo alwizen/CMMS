@@ -204,4 +204,30 @@ class ApiResourceTest extends TestCase
 
         $this->assertSame(['Completed'], $statuses);
     }
+
+    public function test_work_order_interval_filter_applies(): void
+    {
+        $technician = User::factory()->create();
+        Role::create(['name' => 'technician', 'guard_name' => 'web']);
+        $technician->assignRole('technician');
+
+        $this->workOrder([
+            'technician_coordinator_id' => $technician->id,
+            'interval' => 'monthly',
+        ]);
+        $this->workOrder([
+            'technician_coordinator_id' => $technician->id,
+            'interval' => 'weekly',
+        ]);
+
+        Sanctum::actingAs($technician, ['*']);
+
+        $intervals = collect($this->getJson('/api/work-orders?interval=monthly')->assertOk()->json('data'))
+            ->pluck('interval')
+            ->unique()
+            ->values()
+            ->all();
+
+        $this->assertSame(['monthly'], $intervals);
+    }
 }

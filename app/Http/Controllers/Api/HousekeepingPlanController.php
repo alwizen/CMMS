@@ -53,6 +53,14 @@ class HousekeepingPlanController extends Controller
             $query->whereDate('plan_date', '<=', $request->date_to);
         }
 
+        if ($request->filled('search')) {
+            $search = $request->search;
+            $query->where(function ($q) use ($search): void {
+                $q->where('plan_number', 'like', "%{$search}%")
+                    ->orWhereHas('area', fn ($area) => $area->where('name', 'like', "%{$search}%"));
+            });
+        }
+
         $plans = $query->paginate($this->perPage($request));
 
         return response()->json([

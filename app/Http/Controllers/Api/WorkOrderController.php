@@ -32,6 +32,10 @@ class WorkOrderController extends Controller
             $query->where('classification', $request->classification);
         }
 
+        if ($request->filled('interval')) {
+            $query->where('interval', $request->interval);
+        }
+
         if ($request->filled('date_from')) {
             $query->whereDate('start_at', '>=', $request->date_from);
         }
@@ -77,6 +81,7 @@ class WorkOrderController extends Controller
             'maintenanceRequest',
             'workOrderActivities.activity',
             'workOrderWorkers.user',
+            'findings',
         ])->findOrFail($id);
 
         $this->authorizeWorkOrder($request, $workOrder);
@@ -145,6 +150,7 @@ class WorkOrderController extends Controller
                 'approvedBy',
                 'workOrderActivities.activity',
                 'workOrderWorkers.user',
+                'findings',
             ])),
         ]);
     }
@@ -329,22 +335,22 @@ class WorkOrderController extends Controller
      * atau role dengan akses penuh yang boleh mengakses.
      */
     /**
-     * Item checklist/foto hanya boleh diubah selama pekerjaan masih berjalan.
+     * Item checklist/foto hanya boleh diubah setelah pekerjaan dimulai
+     * (status In Progress) hingga sebelum diselesaikan.
      */
     protected function statusEditableResponse(WorkOrder $workOrder): ?JsonResponse
     {
-        if (in_array($workOrder->status, [
-            WorkOrder::STATUSES['Pending'],
-            WorkOrder::STATUSES['In Progress'],
-        ], true)) {
+        if ($workOrder->status === WorkOrder::STATUSES['In Progress']) {
             return null;
         }
 
         return response()->json([
             'success' => false,
-            'message' => $workOrder->status === WorkOrder::STATUSES['Completed']
-                ? 'Work order sudah diselesaikan dan menunggu review SPV MOS.'
-                : 'Work order berstatus '.$workOrder->status.' tidak dapat diubah.',
+            'message' => match ($workOrder->status) {
+                WorkOrder::STATUSES['Pending'] => 'Mulai pekerjaan terlebih dahulu sebelum mengisi checklist.',
+                WorkOrder::STATUSES['Completed'] => 'Work order sudah diselesaikan dan menunggu review SPV MOS.',
+                default => 'Work order berstatus '.$workOrder->status.' tidak dapat diubah.',
+            },
             'data' => [
                 'status' => $workOrder->status,
                 'approval_status' => $workOrder->approval_status,

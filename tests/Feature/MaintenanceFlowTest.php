@@ -340,6 +340,6 @@ class MaintenanceFlowTest extends TestCase
         Livewire::test(EditWorkOrder::class, ['record' => $workOrder->getKey()])
             ->assertSuccessful()
             ->assertSeeLivewire(WorkOrderActivitiesRelationManager::class)
-            ->assertSee('Teknisi Pelaksana');
+            ->assertSee('Pelaksana');
     }
 }

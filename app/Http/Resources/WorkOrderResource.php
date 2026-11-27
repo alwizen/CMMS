@@ -17,6 +17,7 @@ class WorkOrderResource extends JsonResource
             WorkOrder::STATUSES['Pending'],
             WorkOrder::STATUSES['In Progress'],
         ], true);
+        $isInProgress = $this->status === WorkOrder::STATUSES['In Progress'];
 
         return [
             'id' => $this->id,
@@ -48,6 +49,8 @@ class WorkOrderResource extends JsonResource
                 'name' => $this->approvedBy->name,
             ] : null),
             'can_execute' => $this->isExecutable() && $isExecutableStatus && ! $isLocked,
+            // Checklist hanya bisa diisi setelah pekerjaan dimulai (In Progress).
+            'can_fill_checklist' => $this->isExecutable() && $isInProgress && ! $isLocked,
             'created_at' => $this->created_at?->toIso8601String(),
             'equipment' => $this->whenLoaded('equipment', fn () => [
                 'id' => $this->equipment->id,
@@ -74,6 +77,7 @@ class WorkOrderResource extends JsonResource
             ]),
             'activities' => WorkOrderActivityResource::collection($this->whenLoaded('workOrderActivities')),
             'workers' => WorkOrderWorkerResource::collection($this->whenLoaded('workOrderWorkers')),
+            'findings' => WorkOrderFindingResource::collection($this->whenLoaded('findings')),
         ];
     }
 }

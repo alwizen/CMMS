@@ -210,7 +210,10 @@ class MobileExecutionTest extends TestCase
 
     public function test_activity_cannot_be_filled_before_scheduled_date(): void
     {
-        $this->workOrder->update(['start_at' => now()->addDays(3)]);
+        $this->workOrder->update([
+            'start_at' => now()->addDays(3),
+            'status' => WorkOrder::STATUSES['In Progress'],
+        ]);
 
         Sanctum::actingAs($this->technician, ['*']);
 
@@ -225,8 +228,27 @@ class MobileExecutionTest extends TestCase
         ]);
     }
 
+    public function test_activity_cannot_be_filled_while_work_order_is_pending(): void
+    {
+        // Status awal WO adalah Pending: checklist belum boleh diisi sebelum
+        // teknisi menekan "Mulai Pekerjaan".
+        Sanctum::actingAs($this->technician, ['*']);
+
+        $this->putJson(
+            "/api/work-orders/{$this->workOrder->id}/activities/{$this->activity->id}",
+            ['final_result' => 'Good', 'executed' => true],
+        )->assertStatus(403);
+
+        $this->assertDatabaseMissing('work_order_activities', [
+            'id' => $this->activity->id,
+            'final_result' => 'Good',
+        ]);
+    }
+
     public function test_assigned_technician_can_update_activity_result(): void
     {
+        $this->workOrder->update(['status' => WorkOrder::STATUSES['In Progress']]);
+
         Sanctum::actingAs($this->technician, ['*']);
 
         $response = $this->putJson(
@@ -252,6 +274,8 @@ class MobileExecutionTest extends TestCase
 
     public function test_qualitative_activity_rejects_value_outside_dropdown_options(): void
     {
+        $this->workOrder->update(['status' => WorkOrder::STATUSES['In Progress']]);
+
         Sanctum::actingAs($this->technician, ['*']);
 
         $this->putJson(
@@ -286,6 +310,7 @@ class MobileExecutionTest extends TestCase
     public function test_quantitative_activity_keeps_free_text_result(): void
     {
         $this->activity->activity->update(['answer_type' => 'quantitative']);
+        $this->workOrder->update(['status' => WorkOrder::STATUSES['In Progress']]);
 
         Sanctum::actingAs($this->technician, ['*']);
 
@@ -343,6 +368,8 @@ class MobileExecutionTest extends TestCase
 
     public function test_activity_result_length_is_validated(): void
     {
+        $this->workOrder->update(['status' => WorkOrder::STATUSES['In Progress']]);
+
         Sanctum::actingAs($this->technician, ['*']);
 
         $this->putJson(

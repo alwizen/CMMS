@@ -23,9 +23,9 @@ class AdminNavigationGroupsTest extends TestCase
         );
 
         $this->assertSame([
-            'Performance',
             'Maintenance',
             'Housekeeping',
+            'Performance',
             'Master Data',
             'User & Permission',
         ], $labels);

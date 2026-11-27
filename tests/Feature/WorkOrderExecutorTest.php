@@ -215,7 +215,7 @@ class WorkOrderExecutorTest extends TestCase
 
         Livewire::test(ViewWorkOrder::class, ['record' => $workOrder->id])
             ->assertOk()
-            ->assertSee('Teknisi Pelaksana')
+            ->assertSee('Pelaksana')
             ->assertSee($this->technician->name);
     }
 }
